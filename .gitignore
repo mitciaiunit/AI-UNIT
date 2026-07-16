@@ -1,0 +1,20 @@
+# Videos
+*.mp4
+
+# Audio
+*.mp3
+
+# Documents
+*.pdf
+
+# Subtitles / captions
+*.vtt
+
+# Python / backend
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.env
+*.egg-info/

@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Speech Synthesis API Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f6f8;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #0f172a;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 850px;
+      margin: 30px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    h1, h2 {
+      margin-top: 0;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0;
+      padding: 18px;
+      background: #eef2ff;
+      border-radius: 12px;
+    }
+
+    button, select, input {
+      font-size: 16px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    button:focus, select:focus, input:focus {
+      outline: 3px solid #facc15;
+      outline-offset: 2px;
+    }
+
+    .stop {
+      background: #dc2626;
+    }
+
+    .stop:hover {
+      background: #b91c1c;
+    }
+
+    .pause {
+      background: #ca8a04;
+    }
+
+    .pause:hover {
+      background: #a16207;
+    }
+
+    .status {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #334155;
+    }
+
+    .box {
+      background: #f8fafc;
+      border-left: 5px solid #2563eb;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Speech Synthesis API Demo</h1>
+    <p>A simple website with a Read Aloud feature.</p>
+  </header>
+
+  <main>
+    <section class="controls" aria-label="Read aloud controls">
+      <button onclick="readAloud()">Read Aloud</button>
+      <button class="pause" onclick="pauseReading()">Pause</button>
+      <button onclick="resumeReading()">Resume</button>
+      <button class="stop" onclick="stopReading()">Stop</button>
+
+      <label for="voiceSelect">Voice:</label>
+      <select id="voiceSelect"></select>
+
+      <label for="speedRange">Speed:</label>
+      <input id="speedRange" type="range" min="0.5" max="1.5" step="0.1" value="1" />
+    </section>
+
+    <p id="status" class="status">Status: Not reading.</p>
+
+    <article id="contentToRead">
+      <h2>What is Artificial Intelligence?</h2>
+      <p>
+        Artificial Intelligence, also called AI, is a technology that allows computers and systems
+        to perform tasks that normally require human intelligence. These tasks can include reading,
+        writing, recognising patterns, making predictions and helping people make better decisions.
+      </p>
+
+      <p>
+        In Mauritius, AI can support public services, education, healthcare, transport, agriculture,
+        tourism and business innovation. However, AI must be used responsibly so that it remains fair,
+        safe, transparent and useful for citizens.
+      </p>
+
+      <h2>Why is a Read Aloud Button Useful?</h2>
+      <p>
+        A Read Aloud button helps users listen to website content instead of reading it on screen.
+        This can support blind users, low vision users, elderly users, students and anyone who prefers
+        listening to information.
+      </p>
+
+      <p>
+        This demo uses the browser's Speech Synthesis API. When the user clicks the Read Aloud button,
+        the website collects the text from this article and converts it into spoken audio.
+      </p>
+    </article>
+
+    <div class="box">
+      <h2>How it works</h2>
+      <p>
+        The JavaScript code takes the text from the page, creates a speech object using
+        <strong>SpeechSynthesisUtterance</strong>, then asks the browser to speak it using
+        <strong>window.speechSynthesis.speak()</strong>.
+      </p>
+    </div>
+  </main>
+
+  <script>
+    const voiceSelect = document.getElementById("voiceSelect");
+    const speedRange = document.getElementById("speedRange");
+    const statusText = document.getElementById("status");
+
+    let voices = [];
+    let currentSpeech = null;
+
+    function loadVoices() {
+      voices = window.speechSynthesis.getVoices();
+      voiceSelect.innerHTML = "";
+
+      voices.forEach((voice, index) => {
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        voiceSelect.appendChild(option);
+      });
+    }
+
+    function readAloud() {
+      stopReading();
+
+      const text = document.getElementById("contentToRead").innerText;
+      currentSpeech = new SpeechSynthesisUtterance(text);
+
+      const selectedVoice = voices[voiceSelect.value];
+      if (selectedVoice) {
+        currentSpeech.voice = selectedVoice;
+      }
+
+      currentSpeech.rate = Number(speedRange.value);
+      currentSpeech.pitch = 1;
+      currentSpeech.volume = 1;
+
+      currentSpeech.onstart = () => {
+        statusText.textContent = "Status: Reading aloud...";
+      };
+
+      currentSpeech.onend = () => {
+        statusText.textContent = "Status: Finished reading.";
+      };
+
+      currentSpeech.onerror = () => {
+        statusText.textContent = "Status: Something went wrong while reading.";
+      };
+
+      window.speechSynthesis.speak(currentSpeech);
+    }
+
+    function pauseReading() {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.pause();
+        statusText.textContent = "Status: Paused.";
+      }
+    }
+
+    function resumeReading() {
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+        statusText.textContent = "Status: Reading aloud...";
+      }
+    }
+
+    function stopReading() {
+      window.speechSynthesis.cancel();
+      statusText.textContent = "Status: Stopped.";
+    }
+
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+  </script>
+</body>
+</html>
