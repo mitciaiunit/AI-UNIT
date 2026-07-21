@@ -18,3 +18,11 @@ venv/
 env/
 .env
 *.egg-info/
+
+# Runtime storage & user uploads (keep the folders, ignore their contents)
+storage/logs/*
+storage/cache/*
+!storage/logs/.gitkeep
+!storage/cache/.gitkeep
+uploads/*
+!uploads/.gitkeep
