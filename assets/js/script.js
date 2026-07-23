@@ -236,22 +236,33 @@ const revealObs=new IntersectionObserver(entries=>{
 },{threshold:0.08,rootMargin:'0px 0px -32px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
 
-document.getElementById('contactForm')?.addEventListener('submit', function(e) {
+document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
   e.preventDefault();
   const form = e.target;
   const name = document.getElementById('name');
   const email = document.getElementById('email');
-  const subject = document.getElementById('subject');
   const message = document.getElementById('message');
   const status = document.getElementById('formStatus');
   const btn = form.querySelector('[type="submit"]');
 
-  let valid = true;
+  function showFieldError(fieldId, msg) {
+    const field = document.getElementById(fieldId);
+    const errorEl = document.getElementById(fieldId + '-error');
+    if (field) field.classList.add('invalid');
+    if (errorEl) {
+      errorEl.textContent = msg;
+      errorEl.classList.add('show');
+    }
+  }
 
-  // Clear previous errors
-  [name, email, message].forEach(field => field.classList.remove('invalid'));
-  document.querySelectorAll('.field-error').forEach(el => { el.textContent = ''; el.classList.remove('show'); });
-  status.classList.remove('show', 'success', 'error');
+  function clearErrors() {
+    [name, email, message].forEach(field => field.classList.remove('invalid'));
+    document.querySelectorAll('.field-error').forEach(el => { el.textContent = ''; el.classList.remove('show'); });
+    status.classList.remove('show', 'success', 'error');
+  }
+
+  let valid = true;
+  clearErrors();
 
   // Validate name
   if (!name.value.trim()) {
@@ -281,40 +292,45 @@ document.getElementById('contactForm')?.addEventListener('submit', function(e) {
     return;
   }
 
-  // Build mailto link as a fallback "send" mechanism (no backend available)
-  const topic = subject.value || 'General Enquiry';
-  const mailtoSubject = encodeURIComponent('[AI Unit Contact] ' + topic);
-  const mailtoBody = encodeURIComponent(
-    'Name: ' + name.value.trim() + '\n' +
-    'Email: ' + email.value.trim() + '\n' +
-    'Topic: ' + topic + '\n\n' +
-    'Message:\n' + message.value.trim()
-  );
-  const mailtoLink = 'mailto:info@aiunit.govmu.org?subject=' + mailtoSubject + '&body=' + mailtoBody;
+  const originalBtnHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = 'Sending…';
 
-  // Open the user's email client
-  window.location.href = mailtoLink;
+  try {
+    const response = await fetch(form.dataset.endpoint, {
+      method: 'POST',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      body: new FormData(form),
+    });
+    const data = await response.json();
 
-  // Show success feedback
-  status.textContent = 'Your email client should open with the message ready to send. If it didn\'t, please email us directly at info@aiunit.govmu.org.';
-  status.classList.add('show', 'success');
+    if (data.success) {
+      status.textContent = data.message;
+      status.classList.add('show', 'success');
+      form.reset();
 
-  btn.innerHTML = '✓ Opening email client… <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
-  btn.style.background = '#047857';
-
-  setTimeout(() => {
-    btn.innerHTML = 'Send Message <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-    btn.style.background = '';
-  }, 3000);
-
-  function showFieldError(fieldId, msg) {
-    const field = document.getElementById(fieldId);
-    const errorEl = document.getElementById(fieldId + '-error');
-    field.classList.add('invalid');
-    if (errorEl) {
-      errorEl.textContent = msg;
-      errorEl.classList.add('show');
+      btn.innerHTML = '✓ Sent <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+      btn.style.background = '#047857';
+      setTimeout(() => {
+        btn.innerHTML = originalBtnHtml;
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3000);
+      return;
     }
+
+    // Field-specific validation errors from the server
+    if (data.errors) {
+      Object.keys(data.errors).forEach(field => showFieldError(field, data.errors[field]));
+    }
+    status.textContent = data.message || 'Please correct the errors above.';
+    status.classList.add('show', 'error');
+  } catch (err) {
+    status.textContent = 'Something went wrong. Please check your connection and try again.';
+    status.classList.add('show', 'error');
+  } finally {
+    btn.disabled = false;
+    if (btn.innerHTML === 'Sending…') btn.innerHTML = originalBtnHtml;
   }
 
   // Clear error on input

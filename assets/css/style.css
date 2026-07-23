@@ -311,6 +311,12 @@ button{font-family:'Sora',sans-serif;}
 .contact-block h3{font-size:0.74rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;font-family:'Sora',sans-serif;}
 .contact-block p{font-size:0.9rem;color:var(--text-2);line-height:1.6;}
 .contact-form{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:36px 32px;display:flex;flex-direction:column;gap:18px;box-shadow:var(--shadow-md);}
+/* Honeypot spam trap: must be display:none, not just off-screen. Browser
+   autofill/password managers do NOT skip position:absolute;left:-9999px
+   fields (they're still rendered) and will fill them with the same value
+   as a nearby real email field, which false-triggers the spam guard for
+   genuine users. display:none is reliably excluded by both. */
+.hp-field{display:none;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .form-group{display:flex;flex-direction:column;gap:7px;}
 .form-group label{font-size:0.84rem;font-weight:600;color:var(--text-2);}

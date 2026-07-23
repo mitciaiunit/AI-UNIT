@@ -19,6 +19,11 @@ final class Router
         $this->routes[] = ['method' => 'GET', 'pattern' => $pattern, 'handler' => $handler];
     }
 
+    public function post(string $pattern, callable|array $handler): void
+    {
+        $this->routes[] = ['method' => 'POST', 'pattern' => $pattern, 'handler' => $handler];
+    }
+
     /**
      * @param string $basePath The app's base directory (e.g. "/AI-UNIT/public"
      *                         when installed under a subdirectory), stripped

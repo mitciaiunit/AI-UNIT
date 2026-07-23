@@ -39,4 +39,28 @@ return [
         'env' => getenv('APP_ENV') ?: 'local',
         'debug' => filter_var(getenv('APP_DEBUG') ?: 'true', FILTER_VALIDATE_BOOLEAN),
     ],
+
+    // Contact form notification email. Sending is off by default — until
+    // EMAIL_ENABLED=true and SMTP_* are supplied, submissions are only saved
+    // to the database (see App\Services\EmailService).
+    'mail' => [
+        'enabled' => filter_var(getenv('EMAIL_ENABLED') ?: 'false', FILTER_VALIDATE_BOOLEAN),
+        'to_address' => getenv('CONTACT_EMAIL') ?: 'aiunit@govmu.org',
+        'from_address' => getenv('MAIL_FROM_ADDRESS') ?: 'no-reply@aiunit.govmu.org',
+        'from_name' => getenv('MAIL_FROM_NAME') ?: 'AI Unit Website',
+        'smtp' => [
+            'host' => getenv('SMTP_HOST') ?: '',
+            'port' => (int) (getenv('SMTP_PORT') ?: 587),
+            'username' => getenv('SMTP_USERNAME') ?: '',
+            'password' => getenv('SMTP_PASSWORD') ?: '',
+            'encryption' => getenv('SMTP_ENCRYPTION') ?: 'tls',
+        ],
+    ],
+
+    // Contact form spam/abuse guards (App\Services\SpamGuard).
+    'contact' => [
+        'min_submit_seconds' => (int) (getenv('CONTACT_MIN_SUBMIT_SECONDS') ?: 3),
+        'rate_limit_max' => (int) (getenv('CONTACT_RATE_LIMIT_MAX') ?: 5),
+        'rate_limit_window_seconds' => (int) (getenv('CONTACT_RATE_LIMIT_WINDOW') ?: 600),
+    ],
 ];

@@ -31,12 +31,22 @@ function config(string $key, mixed $default = null): mixed
 
 /**
  * Build an absolute URL to a file under assets/ (e.g. asset('css/style.css')).
+ *
+ * Appends a `?v=<mtime>` cache-busting query string when the file exists on
+ * disk, so browsers pick up changes to style.css/script.js immediately
+ * instead of serving a stale cached copy after a deploy.
  */
 function asset(string $path): string
 {
-    return rtrim((string) config('site.root_url'), '/')
+    $relative = ltrim($path, '/');
+    $url = rtrim((string) config('site.root_url'), '/')
         . rtrim((string) config('site.asset_path'), '/')
-        . '/' . ltrim($path, '/');
+        . '/' . $relative;
+
+    $absolutePath = dirname(__DIR__, 2) . '/assets/' . $relative;
+    $mtime = @filemtime($absolutePath);
+
+    return $mtime !== false ? $url . '?v=' . $mtime : $url;
 }
 
 /**
@@ -62,7 +72,7 @@ function page_title(string $title = ''): string
 }
 
 /**
- * Reserved for future use (contact form, etc.) — not called anywhere yet.
+ * Reserved for future use — not called anywhere yet.
  */
 function redirect(string $path): never
 {
@@ -76,4 +86,12 @@ function redirect(string $path): never
 function e(?string $value): string
 {
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
+}
+
+/**
+ * The current session's CSRF token, for embedding in a form's hidden field.
+ */
+function csrf_token(): string
+{
+    return \App\Core\Csrf::token();
 }

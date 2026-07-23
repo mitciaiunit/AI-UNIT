@@ -435,7 +435,13 @@ $isHome = true;
         <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.89 12 19.79 19.79 0 0 1 1.86 3.35 2 2 0 0 1 3.83 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.91 5.91l.95-.95a2 2 0 0 1 2.11.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><h3 data-i18n="contact_phone_title">Phone</h3><p><?= e(config('site.contact_phone')) ?></p></div></div>
         <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><div><h3 data-i18n="contact_hours_title">Office Hours</h3><p data-i18n="contact_hours_text">Monday - Friday: 8:45 AM - 4:00 PM<br>Closed on Public Holidays</p></div></div>
       </div>
-      <form class="contact-form reveal" id="contactForm" novalidate aria-label="Contact form">
+      <form class="contact-form reveal" id="contactForm" novalidate aria-label="Contact form" data-endpoint="<?= e(url('contact')) ?>">
+        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>" />
+        <input type="hidden" name="form_rendered_at" value="<?= time() ?>" />
+        <div class="hp-field" aria-hidden="true">
+          <label for="website">Leave this field blank</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
         <div class="form-row">
           <div class="form-group">
             <label for="name" data-i18n="form_name">Your Name <span aria-hidden="true" style="color:red;">*</span></label>
@@ -460,6 +466,7 @@ $isHome = true;
             <option data-i18n="form_topic6">Media &amp; Press</option>
             <option data-i18n="form_topic7">Other</option>
           </select>
+          <span class="field-error" id="subject-error" role="alert"></span>
         </div>
         <div class="form-group">
           <label for="message" data-i18n="form_message">Your Message <span aria-hidden="true" style="color:red;">*</span></label>

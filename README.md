@@ -80,12 +80,34 @@ using a one-line `router.php` that serves real files as-is and otherwise require
 
 ## Database Configuration
 
-The database is **prepared but not required yet** — no page currently reads from or writes to it. To set it up anyway (for future development):
+The database backs the live contact form (`contact_messages`); `site_settings`, `documents`, and `videos` remain scaffolding for future work. To set it up:
 
 1. In phpMyAdmin (or the MySQL CLI), import `database/schema.sql`. It creates the `ai_unit` database and four tables: `site_settings`, `documents`, `videos`, `contact_messages`.
 2. By default, `config/database.php` connects as `root` with no password to `127.0.0.1:3306/ai_unit` — the standard XAMPP/EasyPHP MySQL defaults. Override any of these with environment variables if your setup differs:
    - `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASS`
 3. Get a connection anywhere in the app via `App\Core\Database::connection()`, which returns a configured `PDO` instance (exceptions on error, prepared-statement-friendly).
+
+## Contact Form
+
+The homepage contact form (`Controller -> Service -> Repository -> Database`) is fully wired up:
+
+- `App\Controllers\ContactController` — thin HTTP adapter; checks the CSRF token and returns JSON.
+- `App\Services\ContactService` — orchestrates spam checks, validation, saving, and the email notification.
+- `App\Services\ContactValidator` — required/optional fields, length limits, email format.
+- `App\Services\SpamGuard` — honeypot field, minimum fill time, session-based rate limiting (no CAPTCHA).
+- `App\Repositories\ContactMessageRepository` — the only class that writes SQL for this feature (prepared statements throughout).
+- `App\Core\Csrf` — session-bound token, embedded as a hidden field and checked on every submit.
+
+Every successful (and honeypot/timing-blocked) submission is logged or stored; database errors are written to `storage/logs/app.log` via `App\Core\Logger` and never shown to the user.
+
+Email notifications are **off by default** — submissions are always saved to the database regardless. To enable them, set:
+
+- `EMAIL_ENABLED=true`
+- `CONTACT_EMAIL` — where notifications are sent (defaults to the site contact email)
+- `MAIL_FROM_ADDRESS`, `MAIL_FROM_NAME`
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_ENCRYPTION` — read into config now so a real SMTP client can be dropped into `App\Services\EmailService` later without touching any calling code; not required while `EMAIL_ENABLED` is false.
+
+Spam-guard thresholds (`CONTACT_MIN_SUBMIT_SECONDS`, `CONTACT_RATE_LIMIT_MAX`, `CONTACT_RATE_LIMIT_WINDOW`) are also environment-overridable — see `config('contact.*')`.
 
 ## Configuration (`config/config.php`)
 
