@@ -8,7 +8,7 @@ const translations = {
     about_body1: "The AI Unit is the dedicated body established under the Ministry of Information Technology, Communication and Innovation (MITCI) to lead Mauritius' artificial intelligence journey. We coordinate AI governance, promote innovation, and ensure that technology serves all Mauritians - fairly and transparently.",
     about_body2: "We are the strategic vehicle for MITCI's <strong>Digital Transformation 2025-2029</strong> blueprint - a bold roadmap to modernise public services and position Mauritius as a leading AI nation in Africa.",
     about_body3: "Whether you are a citizen curious about AI, a business exploring new solutions, or a student building your future - the AI Unit is here for you.",
-    diva_title: "Meet DIVA - Digital Interactive Virtual Assistant", diva_desc: "The Government's AI-powered assistant helps you access public services, answer your questions, and guide you through digital platforms - anytime, in English.", diva_chat: "Chat with DIVA",
+    diva_title: "Meet DIVA - Digital Interactive Virtual Assistant", diva_desc: "DIVA is a prototype assistant that answers questions based on four key documents: the Digital Transformation Blueprint, AI Strategy, FAIR Guidelines, and AI Playbook.", diva_chat: "Chat with DIVA",
     vision_title: "Our Vision", vision_text: "Position Mauritius as a regional leader in trusted, responsible AI - powering economic transformation, elevating public services, and enhancing the quality of life for every citizen.",
     mission_title: "Our Mission", mission_text: "Drive responsible AI in Mauritius by leading its implementation and governance - ensuring every system is secure, ethical, and transparent, and that AI delivers meaningful impact for citizens and businesses.",
     objectives_title: "Our Six Objectives", obj1: "Govern Trusted AI", obj2: "Modernize Public Services", obj3: "Grow the AI Ecosystem", obj4: "Build Future-Ready Skills", obj5: "Strengthen Data Infrastructure", obj6: "Elevate Mauritius' Global Standing",
@@ -129,52 +129,6 @@ if (savedLang && (savedLang === 'fr' || savedLang === 'km')) {
   currentLang = savedLang;
   applyTranslations();
 }
-
-(function(){
-  const canvas=document.getElementById('heroCanvas');
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  let W,H,nodes=[],mouse={x:-999,y:-999};
-  const NODE_COUNT=55,CONN_DIST=150;
-  function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
-  resize();
-  window.addEventListener('resize',()=>{resize();initScene();});
-  canvas.addEventListener('mousemove',e=>{const r=canvas.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;});
-  canvas.addEventListener('mouseleave',()=>{mouse.x=-999;mouse.y=-999;});
-  class Node{
-    constructor(){this.reset();}
-    reset(){
-      this.x=Math.random()*W;this.y=Math.random()*H;
-      this.z=0.3+Math.random()*0.7;this.r=1.5+this.z*3;
-      this.vx=(Math.random()-0.5)*0.3*this.z;this.vy=(Math.random()-0.5)*0.3*this.z;
-      this.pulse=Math.random()*Math.PI*2;this.pulseSpeed=0.015+Math.random()*0.02;
-      const p=Math.random();
-      if(p<0.45){this.color='26,58,143';this.alpha=0.18+this.z*0.28;}
-      else if(p<0.8){this.color='11,114,133';this.alpha=0.15+this.z*0.22;}
-      else{this.color='91,33,182';this.alpha=0.12+this.z*0.18;}
-      this.isHub=Math.random()<0.08;
-      if(this.isHub)this.r=4+this.z*3;
-    }
-    update(){
-      this.x+=this.vx;this.y+=this.vy;this.pulse+=this.pulseSpeed;
-      const dx=this.x-mouse.x,dy=this.y-mouse.y,d=Math.sqrt(dx*dx+dy*dy);
-      if(d<100&&d>0){const f=(100-d)/100*0.25;this.vx+=(dx/d)*f;this.vy+=(dy/d)*f;}
-      this.vx*=0.985;this.vy*=0.985;
-      if(this.x<-20)this.x=W+20;if(this.x>W+20)this.x=-20;
-      if(this.y<-20)this.y=H+20;if(this.y>H+20)this.y=-20;
-    }
-    draw(){
-      const pf=1+Math.sin(this.pulse)*0.15,r=this.r*pf;
-      if(this.isHub){const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,r*4);g.addColorStop(0,`rgba(${this.color},${this.alpha*0.5})`);g.addColorStop(1,`rgba(${this.color},0)`);ctx.beginPath();ctx.arc(this.x,this.y,r*4,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();}
-      const d=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,r);d.addColorStop(0,`rgba(${this.color},${this.alpha})`);d.addColorStop(1,`rgba(${this.color},0)`);ctx.beginPath();ctx.arc(this.x,this.y,r,0,Math.PI*2);ctx.fillStyle=d;ctx.fill();
-    }
-  }
-  function initScene(){nodes=Array.from({length:NODE_COUNT},()=>new Node());}
-  function drawGrid(){ctx.fillStyle='rgba(26,58,143,0.035)';for(let x=40;x<W;x+=40)for(let y=40;y<H;y+=40){ctx.beginPath();ctx.arc(x,y,1,0,Math.PI*2);ctx.fill();}}
-  function drawConnections(){for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){const a=nodes[i],b=nodes[j];const dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<CONN_DIST){const alpha=(1-d/CONN_DIST)*0.16;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(26,58,143,${alpha})`;ctx.lineWidth=0.7;ctx.stroke();}}}
-  function animate(){ctx.clearRect(0,0,W,H);drawGrid();drawConnections();nodes.forEach(n=>{n.update();n.draw();});requestAnimationFrame(animate);}
-  initScene();animate();
-})();
 
 const navbar=document.getElementById('navbar');
 const navLinksDiv=document.getElementById('navLinks');

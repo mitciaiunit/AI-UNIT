@@ -4,32 +4,21 @@ $isHome = true;
 ?>
 <!-- HERO -->
 <section class="hero" id="hero" aria-label="Hero">
-  <canvas id="heroCanvas" aria-hidden="true"></canvas>
+  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline aria-hidden="true">
+    <source src="<?= e(asset('video/hero-background.mp4')) ?>" type="video/mp4">
+  </video>
+  <div class="hero-video-overlay" aria-hidden="true"></div>
   <div class="hero-inner" id="main-content">
     <div class="hero-content">
       <div class="hero-badge" aria-label="Ministry badge">
         <span class="badge-dot" aria-hidden="true"></span>
         <span data-i18n="hero_badge">Ministry of ICT, Communication &amp; Innovation</span>
       </div>
-      <h1 class="hero-title"><span data-i18n="hero_title_prefix">Where</span> <em>Intelligence</em><br><span data-i18n="hero_title_suffix">Meets Impact</span></h1>
+      <h1 class="hero-title"><span data-i18n="hero_title_prefix">Where</span> <em>Intelligence</em> <span data-i18n="hero_title_suffix">Meets Impact</span></h1>
       <p class="hero-subtitle" data-i18n="hero_subtitle">Welcome to the AI Unit of Mauritius - your guide to how artificial intelligence is making public services smarter, faster, and fairer for every citizen.</p>
       <div class="hero-cta">
-        <a href="https://aimarketplace.govmu.org/" class="btn-primary" target="_blank" rel="noopener"><span data-i18n="hero_cta_marketplace">Explore Regional AI Marketplace</span> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="https://aimarketplace.govmu.org/" class="btn-primary" target="_blank" rel="noopener"><span data-i18n="hero_cta_marketplace">Explore Regional AI Marketplace</span> <span class="cta-arrow" aria-hidden="true">→</span></a>
         <a href="#about-combined" class="btn-ghost" data-scroll="about-combined" data-i18n="hero_cta_learn">Learn More</a>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="hero-orb">
-        <div class="orb-core" aria-hidden="true">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="url(#orbG)" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/><defs><linearGradient id="orbG" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#1A3A8F"/><stop offset="1" stop-color="#0B7285"/></linearGradient></defs></svg>
-          <span>AI Unit</span>
-        </div>
-        <a href="#framework" class="float-badge badge-1" data-scroll="framework"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="badge_fair">FAIR Guidelines</span></a>
-        <a href="#framework" class="float-badge badge-2" data-scroll="framework"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span data-i18n="badge_ai4all">AI4ALL Inclusion</span></a>
-        <a href="https://aimarketplace.govmu.org/" class="float-badge badge-3" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span data-i18n="badge_marketplace">AI Marketplace</span></a>
-        <a href="#action" class="float-badge badge-4" data-scroll="action"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg><span data-i18n="badge_smart">Smart Services</span></a>
-        <a href="#framework" class="float-badge badge-5" data-scroll="framework"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span data-i18n="badge_ppp">PPP Adoption</span></a>
-        <a href="#about-combined" class="float-badge badge-6" data-scroll="about-combined"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 11V7a5 5 0 0 1 10 0v4"/><rect x="3" y="11" width="18" height="11" rx="2"/></svg><span data-i18n="badge_privacy">Data Privacy</span></a>
       </div>
     </div>
   </div>
@@ -53,7 +42,7 @@ $isHome = true;
           <div class="diva-icon" aria-hidden="true"><img src="<?= e(asset('images/DIVA.png')) ?>" alt="DIVA"></div>
           <div>
             <h3 data-i18n="diva_title">Meet DIVA - Digital Interactive Virtual Assistant</h3>
-            <p data-i18n="diva_desc">The Government's AI-powered assistant helps you access public services, answer your questions, and guide you through digital platforms - anytime, in English, French or Kreol.</p>
+            <p data-i18n="diva_desc">DIVA is a prototype assistant that answers questions based on four key documents: the Digital Transformation Blueprint, AI Strategy, FAIR Guidelines, and AI Playbook.</p>
             <button class="btn-sm" id="openDiva"><span data-i18n="diva_chat">Chat with DIVA</span> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
           </div>
         </div>
@@ -127,7 +116,7 @@ $isHome = true;
     <h2 class="section-title" id="action-title"><span data-i18n="action_title_prefix">AI Making a</span> <em data-i18n="action_title_suffix">Difference</em></h2>
     <p class="section-desc" style="margin-bottom:40px;" data-i18n="action_desc">From protecting children online to making technology accessible for every Mauritian - see how AI is already transforming lives across our communities.</p>
     <div class="action-grid">
-      <div class="action-card">
+      <div class="action-card reveal">
         <div class="action-chip chip-blue">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <span data-i18n="action_chip1">Child Protection</span>
@@ -161,7 +150,7 @@ $isHome = true;
           </a>
         </div>
       </div>
-      <div class="action-card">
+      <div class="action-card reveal">
         <div class="action-chip chip-teal">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
           <span data-i18n="action_chip2">AI for All</span>
@@ -176,6 +165,19 @@ $isHome = true;
         <div class="ai-for-all-box"><strong data-i18n="ai_km_title">🇲🇺 AI Pou Nou Tou - Version Kreol</strong><em data-i18n="ai_km_sub">Lavenir Apartenir A Nou Tou</em><button class="btn-redesign" id="readKmBooklet" data-i18n="ai_km_btn">Lire Livre la →</button></div>
       </div>
     </div>
+  </div>
+  <div class="marketplace-wave-top" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <defs>
+        <path id="marketplaceWaveCurve" fill="none" d="M0 55 C360 95 1080 15 1440 55"/>
+      </defs>
+      <path d="M0 40 C360 80 1080 0 1440 40 L1440 80 L0 80 Z" fill="#1e3a5f"/>
+      <text class="marketplace-ticker-text" fill="#FFFFFF">
+        <textPath href="#marketplaceWaveCurve" xlink:href="#marketplaceWaveCurve" startOffset="0">Regional AI Marketplace &#160;&#10022;&#160; Regional AI Marketplace &#160;&#10022;&#160; Regional AI Marketplace &#160;&#10022;&#160; Regional AI Marketplace &#160;&#10022;&#160; Regional AI Marketplace &#160;&#10022;&#160; Regional AI Marketplace &#160;&#10022;&#160;
+          <animate attributeName="startOffset" from="0" to="-1600" dur="34s" repeatCount="indefinite"/>
+        </textPath>
+      </text>
+    </svg>
   </div>
 </section>
 
@@ -193,9 +195,9 @@ $isHome = true;
         </div>
       </div>
       <div class="marketplace-cards">
-        <div class="mkt-card" onclick="window.open('https://aimarketplace.govmu.org/','_blank','noopener')" style="cursor:pointer;"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h3 data-i18n="marketplace_card1_title">For Startups &amp; Innovators</h3><p data-i18n="marketplace_card1_desc">List your AI product or service and reach government buyers and businesses</p></div></div>
-        <div class="mkt-card" onclick="window.open('https://aimarketplace.govmu.org/','_blank','noopener')" style="cursor:pointer;"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><div><h3 data-i18n="marketplace_card2_title">For Businesses</h3><p data-i18n="marketplace_card2_desc">Discover vetted AI solutions that can transform your operations</p></div></div>
-        <div class="mkt-card" onclick="window.open('https://aimarketplace.govmu.org/','_blank','noopener')" style="cursor:pointer;"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><div><h3 data-i18n="marketplace_card3_title">For Public Institutions</h3><p data-i18n="marketplace_card3_desc">Find trusted AI tools to modernise government services for citizens</p></div></div>
+        <div class="mkt-card reveal" onclick="window.open('https://aimarketplace.govmu.org/','_blank','noopener')" style="cursor:pointer;"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h3 data-i18n="marketplace_card1_title">For Startups &amp; Innovators</h3><p data-i18n="marketplace_card1_desc">List your AI product or service and reach government buyers and businesses</p></div></div>
+        <div class="mkt-card reveal" onclick="window.open('https://aimarketplace.govmu.org/','_blank','noopener')" style="cursor:pointer;"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><div><h3 data-i18n="marketplace_card2_title">For Businesses</h3><p data-i18n="marketplace_card2_desc">Discover vetted AI solutions that can transform your operations</p></div></div>
+        <div class="mkt-card reveal" onclick="window.open('https://aimarketplace.govmu.org/','_blank','noopener')" style="cursor:pointer;"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><div><h3 data-i18n="marketplace_card3_title">For Public Institutions</h3><p data-i18n="marketplace_card3_desc">Find trusted AI tools to modernise government services for citizens</p></div></div>
       </div>
     </div>
   </div>
