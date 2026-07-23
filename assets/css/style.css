@@ -95,8 +95,9 @@ button{font-family:'Sora',sans-serif;}
 
 /* ─── HERO ─── */
 .hero{position:relative;min-height:calc(100vh - 100px);display:flex;align-items:center;overflow:hidden;background:linear-gradient(140deg,#EEF2FF 0%,#F0FDFF 35%,#FFF8F0 70%,#FDF4FF 100%);}
-#heroCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.55;}
-.hero-inner{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:80px 28px 100px;display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center;width:100%;}
+.hero-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.hero-video-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(140deg,rgba(238,242,255,0.88) 0%,rgba(240,253,255,0.82) 35%,rgba(255,248,240,0.82) 70%,rgba(253,244,255,0.88) 100%);}
+.hero-inner{position:relative;z-index:2;max-width:1180px;margin:0 auto;padding:80px 28px 100px;display:flex;align-items:center;width:100%;}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 10px;border:1px solid rgba(26,58,143,0.2);border-radius:100px;font-size:0.76rem;font-weight:600;color:var(--blue);background:rgba(26,58,143,0.07);margin-bottom:22px;animation:fadeUp 0.7s ease both;}
 .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--blue-mid);animation:pulseDot 2s infinite;}
 @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
@@ -114,21 +115,7 @@ button{font-family:'Sora',sans-serif;}
 .stat-num{font-family:'Lora',serif;font-size:1.7rem;font-weight:700;color:var(--amber);line-height:1;}
 .stat-label{font-size:0.72rem;font-weight:500;color:var(--text-3);white-space:nowrap;}
 .stat-divider{width:1px;height:34px;background:var(--border);flex-shrink:0;}
-.hero-visual{display:flex;align-items:center;justify-content:center;animation:fadeUp 1s 0.4s ease both;}
-.hero-orb{position:relative;width:340px;height:340px;display:flex;align-items:center;justify-content:center;}
-.orb-core{width:120px;height:120px;background:linear-gradient(135deg,var(--blue-pale),var(--teal-pale));border:2px solid rgba(26,58,143,0.18);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-shadow:0 0 60px rgba(26,58,143,0.12),0 0 120px rgba(11,114,133,0.08);animation:orbFloat 6s ease-in-out infinite;}
-.orb-core span{font-size:0.7rem;font-weight:700;color:var(--blue);letter-spacing:0.04em;}
-@keyframes orbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.float-badge{position:absolute;display:flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(255,255,255,0.9);border:1px solid var(--border);border-radius:100px;font-size:0.75rem;font-weight:600;color:var(--text-2);box-shadow:var(--shadow-md);backdrop-filter:blur(8px);cursor:pointer;transition:all var(--trans);white-space:nowrap;}
-.float-badge:hover{background:var(--blue-pale);border-color:var(--blue-mid);color:var(--blue-mid);transform:scale(1.04);}
-.badge-1{top:10%;left:-10%;animation:floatA 7s ease-in-out infinite;}
-.badge-2{top:5%;right:-5%;animation:floatB 8s ease-in-out infinite;}
-.badge-3{top:38%;right:-18%;animation:floatA 6s 1s ease-in-out infinite;}
-.badge-4{bottom:20%;right:-12%;animation:floatB 7s 0.5s ease-in-out infinite;}
-.badge-5{bottom:12%;left:-8%;animation:floatA 8s 1.5s ease-in-out infinite;}
-.badge-6{top:55%;left:-20%;animation:floatB 6s 2s ease-in-out infinite;}
-@keyframes floatA{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes floatB{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+.hero-content{position:relative;z-index:2;max-width:640px;}
 .hero-wave{position:absolute;bottom:-1px;left:0;right:0;z-index:3;}
 .hero-wave svg{display:block;width:100%;}
 
@@ -208,6 +195,11 @@ button{font-family:'Sora',sans-serif;}
 .btn-redesign{display:inline-flex;align-items:center;gap:6px;background:white;border:1.5px solid var(--blue-mid);color:var(--blue-mid);padding:8px 18px;border-radius:40px;font-weight:600;font-size:0.8rem;cursor:pointer;transition:all 0.2s ease;}
 .btn-redesign:hover{background:var(--blue-mid);color:white;transform:translateY(-2px);box-shadow:var(--shadow-sm);}
 @media(max-width:768px){.action-grid{grid-template-columns:1fr;}}
+
+/* ─── MARKETPLACE TICKER (between AI in Action and Marketplace sections) ─── */
+.marketplace-wave-top{position:relative;margin-top:-1px;line-height:0;}
+.marketplace-wave-top svg{display:block;width:100%;height:auto;}
+.marketplace-ticker-text{font-family:'Sora',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.04em;}
 
 /* ─── MARKETPLACE ─── */
 .marketplace-section{background:linear-gradient(135deg,#1e3a5f 0%,var(--blue) 40%,var(--teal) 100%);padding:80px 0;position:relative;overflow:hidden;}
@@ -561,18 +553,13 @@ button{font-family:'Sora',sans-serif;}
 .reveal.visible{opacity:1;transform:translateY(0);}
 
 /* ─── RESPONSIVE ─── */
-@media(max-width:1024px){.footer-grid{grid-template-columns:1fr 1fr;}.marketplace-inner{grid-template-columns:1fr;gap:40px;}.hero-inner{gap:40px;}.team-member-panel{grid-template-columns:280px 1fr;gap:36px;}
-    /* Floating hero badges intentionally overhang the orb on desktop; the narrower
-       tablet column has less spare room, so they need to sit closer in to avoid overflow. */
-    .badge-3{right:-8%;}
-    .badge-4{right:-6%;}
-}
+@media(max-width:1024px){.footer-grid{grid-template-columns:1fr 1fr;}.marketplace-inner{grid-template-columns:1fr;gap:40px;}.team-member-panel{grid-template-columns:280px 1fr;gap:36px;}}
 /* Navbar collapses to the hamburger menu earlier than other tablet/phone
    layout rules below: at ~1024px the full logo + nav links + search + a11y
    trigger row no longer fits in one line, well before the 768px breakpoint
    used for stacking the rest of the page's grids. */
 @media(max-width:1100px){.nav-links{position:fixed;top:68px;left:0;right:0;background:rgba(255,255,255,0.97);border-bottom:1px solid var(--border);flex-direction:column;padding:16px 20px;gap:2px;transform:translateY(-110%);opacity:0;transition:all var(--trans);backdrop-filter:blur(16px);box-shadow:var(--shadow-lg);}.nav-links.mobile-open{transform:translateY(0);opacity:1;}.hamburger{display:flex;}}
-@media(max-width:768px){.lang-bar{display:none;}.hero-inner{grid-template-columns:1fr;padding:60px 24px 80px;}.hero-visual{display:none;}.hero-stats{gap:14px;flex-wrap:wrap;}.stat-divider{display:none;}.about-grid{grid-template-columns:1fr;}.contact-grid{grid-template-columns:1fr;gap:36px;}.footer-grid{grid-template-columns:1fr 1fr;gap:28px;}.form-row{grid-template-columns:1fr;}.footer-bottom{flex-direction:column;text-align:center;}.section{padding:72px 0;}.diva-panel{width:290px;}.team-member-panel{grid-template-columns:1fr;gap:28px;align-items:center;}.team-photo-img{max-width:280px;margin:0 auto;}.team-stats-strip{flex-direction:column;}.team-stat{border-right:none;border-bottom:1px solid var(--border);}.team-stat:last-child{border-bottom:none;}}
+@media(max-width:768px){.lang-bar{display:none;}.hero-inner{padding:60px 24px 80px;}.about-grid{grid-template-columns:1fr;}.contact-grid{grid-template-columns:1fr;gap:36px;}.footer-grid{grid-template-columns:1fr 1fr;gap:28px;}.form-row{grid-template-columns:1fr;}.footer-bottom{flex-direction:column;text-align:center;}.section{padding:72px 0;}.diva-panel{width:290px;}.team-member-panel{grid-template-columns:1fr;gap:28px;align-items:center;}.team-photo-img{max-width:280px;margin:0 auto;}.team-stats-strip{flex-direction:column;}.team-stat{border-right:none;border-bottom:1px solid var(--border);}.team-stat:last-child{border-bottom:none;}}
 @media(max-width:480px){.footer-grid{grid-template-columns:1fr;}.hero-cta{flex-direction:column;align-items:flex-start;}.team-tabs{gap:6px;}.team-tab{padding:8px 16px;font-size:0.8rem;}
     /* Navbar: logo + search + a11y trigger + hamburger don't all fit on narrow phones */
     .nav-inner{padding:0 16px;gap:10px;}
