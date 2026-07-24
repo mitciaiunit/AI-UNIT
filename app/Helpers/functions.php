@@ -8,6 +8,29 @@ declare(strict_types=1);
  */
 
 /**
+ * Read an environment variable, checking $_ENV, $_SERVER, and getenv() in
+ * that order. Covers both phpdotenv's default behaviour (populates $_ENV
+ * and $_SERVER from .env, see bootstrap.php) and variables set directly by
+ * the web server (e.g. Apache's SetEnv), without one clobbering the other —
+ * a real server-set value always wins over .env, since Dotenv::safeLoad()
+ * never overwrites a variable that's already set.
+ *
+ * An empty string is treated the same as "not set" and falls back to
+ * $default, matching how every config/*.php file already treated a blank
+ * getenv() result before this helper existed.
+ */
+function env(string $key, mixed $default = null): mixed
+{
+    $value = $_ENV[$key] ?? $_SERVER[$key] ?? getenv($key);
+
+    if ($value === false || $value === null || $value === '') {
+        return $default;
+    }
+
+    return $value;
+}
+
+/**
  * Fetch a config value using dot notation, e.g. config('site.name').
  */
 function config(string $key, mixed $default = null): mixed

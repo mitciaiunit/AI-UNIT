@@ -74,6 +74,7 @@ final class ContactController extends Controller
                 (string) config('mail.to_address'),
                 (string) config('mail.from_address'),
                 (string) config('mail.from_name'),
+                (array) config('mail.smtp'),
             ),
         );
     }

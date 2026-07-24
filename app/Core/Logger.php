@@ -31,6 +31,14 @@ final class Logger
     /**
      * @param array<string, mixed> $context
      */
+    public static function info(string $message, array $context = []): void
+    {
+        self::write('INFO', $message, $context);
+    }
+
+    /**
+     * @param array<string, mixed> $context
+     */
     private static function write(string $level, string $message, array $context): void
     {
         $line = sprintf(

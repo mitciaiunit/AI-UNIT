@@ -16,8 +16,17 @@ __pycache__/
 .venv/
 venv/
 env/
-.env
 *.egg-info/
+
+# Environment configuration (config/config.php, config/database.php — see
+# .env.example). Contains real credentials once filled in, so it must never
+# be committed; .env.example (the template) IS tracked.
+.env
+
+# Composer dependencies (currently just PHPMailer, for SMTP mail sending).
+# composer.json and composer.lock ARE tracked — run `composer install` to
+# regenerate this folder.
+vendor/
 
 # Runtime storage & user uploads (keep the folders, ignore their contents)
 storage/logs/*
