@@ -1,9 +1,9 @@
 -- AI Unit website — database schema
 --
--- This schema only prepares the project for future development (site settings
--- management, a document/video library backed by the database, and a contact
--- form inbox). None of these tables are read from or written to by the
--- application yet — the current pages use static PHP config arrays instead.
+-- site_settings, documents, and videos only prepare the project for future
+-- development — the current pages still use static PHP config arrays for
+-- those. contact_messages is live: the homepage contact form (see
+-- App\Controllers\ContactController) reads and writes it.
 --
 -- Usage (XAMPP/EasyPHP): create a database named `ai_unit` in phpMyAdmin,
 -- then import this file.
@@ -56,13 +56,15 @@ CREATE TABLE IF NOT EXISTS videos (
     UNIQUE KEY uq_videos_slug (slug)
 ) ENGINE=InnoDB;
 
--- Submissions from the homepage contact form (not wired up yet).
+-- Submissions from the homepage contact form.
 CREATE TABLE IF NOT EXISTS contact_messages (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(150) NOT NULL,
+    full_name VARCHAR(150) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    topic VARCHAR(150) NULL,
+    subject VARCHAR(150) NULL,
     message TEXT NOT NULL,
+    ip_address VARCHAR(45) NULL,
+    user_agent VARCHAR(255) NULL,
     status ENUM('new', 'read', 'archived') NOT NULL DEFAULT 'new',
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    submitted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;

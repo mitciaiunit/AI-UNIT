@@ -9,6 +9,7 @@ declare(strict_types=1);
  */
 
 use App\Controllers\BookletController;
+use App\Controllers\ContactController;
 use App\Controllers\DocumentController;
 use App\Controllers\PageController;
 use App\Controllers\VideoController;
@@ -19,6 +20,8 @@ $router->get('/privacy-policy', [PageController::class, 'privacyPolicy']);
 $router->get('/disclaimer', [PageController::class, 'disclaimer']);
 $router->get('/cookie-policy', [PageController::class, 'cookiePolicy']);
 $router->get('/accessibility', [PageController::class, 'accessibility']);
+
+$router->post('/contact', [ContactController::class, 'submit']);
 
 $router->get('/document/{slug}', [DocumentController::class, 'show']);
 

@@ -8,6 +8,29 @@ declare(strict_types=1);
  */
 
 /**
+ * Read an environment variable, checking $_ENV, $_SERVER, and getenv() in
+ * that order. Covers both phpdotenv's default behaviour (populates $_ENV
+ * and $_SERVER from .env, see bootstrap.php) and variables set directly by
+ * the web server (e.g. Apache's SetEnv), without one clobbering the other —
+ * a real server-set value always wins over .env, since Dotenv::safeLoad()
+ * never overwrites a variable that's already set.
+ *
+ * An empty string is treated the same as "not set" and falls back to
+ * $default, matching how every config/*.php file already treated a blank
+ * getenv() result before this helper existed.
+ */
+function env(string $key, mixed $default = null): mixed
+{
+    $value = $_ENV[$key] ?? $_SERVER[$key] ?? getenv($key);
+
+    if ($value === false || $value === null || $value === '') {
+        return $default;
+    }
+
+    return $value;
+}
+
+/**
  * Fetch a config value using dot notation, e.g. config('site.name').
  */
 function config(string $key, mixed $default = null): mixed
@@ -31,12 +54,22 @@ function config(string $key, mixed $default = null): mixed
 
 /**
  * Build an absolute URL to a file under assets/ (e.g. asset('css/style.css')).
+ *
+ * Appends a `?v=<mtime>` cache-busting query string when the file exists on
+ * disk, so browsers pick up changes to style.css/script.js immediately
+ * instead of serving a stale cached copy after a deploy.
  */
 function asset(string $path): string
 {
-    return rtrim((string) config('site.root_url'), '/')
+    $relative = ltrim($path, '/');
+    $url = rtrim((string) config('site.root_url'), '/')
         . rtrim((string) config('site.asset_path'), '/')
-        . '/' . ltrim($path, '/');
+        . '/' . $relative;
+
+    $absolutePath = dirname(__DIR__, 2) . '/assets/' . $relative;
+    $mtime = @filemtime($absolutePath);
+
+    return $mtime !== false ? $url . '?v=' . $mtime : $url;
 }
 
 /**
@@ -62,7 +95,7 @@ function page_title(string $title = ''): string
 }
 
 /**
- * Reserved for future use (contact form, etc.) — not called anywhere yet.
+ * Reserved for future use — not called anywhere yet.
  */
 function redirect(string $path): never
 {
@@ -76,4 +109,12 @@ function redirect(string $path): never
 function e(?string $value): string
 {
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
+}
+
+/**
+ * The current session's CSRF token, for embedding in a form's hidden field.
+ */
+function csrf_token(): string
+{
+    return \App\Core\Csrf::token();
 }
