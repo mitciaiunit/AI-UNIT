@@ -45,6 +45,8 @@ final class EmailService
      */
     public function sendContactNotification(ContactMessage $contactMessage): bool
     {
+        Logger::info('EmailService started');
+        
         if (!$this->enabled) {
             Logger::info('Contact notification email skipped (EMAIL_ENABLED is false)', [
                 'to' => $this->toAddress,
