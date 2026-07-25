@@ -70,6 +70,40 @@ storage/             (empty — reserved for logs/cache; not web-accessible)
 
 No build step and no Node tooling are required — this is plain PHP served directly by Apache, with Composer used solely to pull in two small dependencies (PHPMailer and phpdotenv — no framework).
 
+### Media files (videos, audio, PDFs, captions) — required, not in this repo
+
+The site's videos, audio narrations, PDFs and caption files total roughly **1.5 GB** and are **not stored in git**. `.gitignore` excludes `*.mp4`, `*.mp3`, `*.pdf` and `*.vtt`, and GitHub rejects files over 100 MB (one video alone is 385 MB). A fresh clone therefore has empty `assets/video`, `assets/audio`, `assets/documents` and `assets/captions` folders.
+
+Without these files the site still loads, but: **videos stay at 0:00, the Listen buttons stay at 0:00, the PDF viewer reports "Unable to load the booklet", and document View/Download links 404.** If you are seeing those symptoms, this is why.
+
+They live in the original pre-migration project folder (`AI-Unit-Website`), whose layout differs from this one. To copy them in with the right mapping:
+
+```
+powershell -ExecutionPolicy Bypass -File tools\deploy-media.ps1
+```
+
+| Source | Destination |
+|---|---|
+| `video\*.mp4` | `assets\video\` |
+| `Audio\*.mp3` | `assets\audio\` |
+| `document\*.pdf` | `assets\documents\` |
+| `vtt\*.vtt` | `assets\captions\` |
+
+> **Known gap:** the hero section references `assets/video/hero-background.mp4`, which does not exist in the source media set. The hero falls back to its gradient background until that file is supplied.
+
+### Deploying changes to the running site
+
+Apache serves the site from its own document root (e.g. `D:\xampp2\htdocs\AI-UNIT`), which is a **separate copy** from your git working tree. Editing a file in the repo has no effect on the running site until it is copied across — a mismatch that repeatedly looked like "my change didn't work" when the change was correct and simply had not been deployed.
+
+Run this after any change you want to see in the browser:
+
+```
+powershell -ExecutionPolicy Bypass -File tools\deploy.ps1          # copy code
+powershell -ExecutionPolicy Bypass -File tools\deploy.ps1 -DryRun  # preview only
+```
+
+It copies tracked code only and deliberately preserves the target's `.env`, `vendor/`, `storage/logs/`, `uploads/` and the large media folders, so deploying code never wipes credentials or media. Then hard-refresh the browser (Ctrl+F5).
+
 ### Quick check without XAMPP
 
 You can also smoke-test the app with PHP's built-in server from the project root:

@@ -1,3 +1,15 @@
+/**
+ * Server-provided runtime config, emitted by includes/layouts/app.php as
+ * window.AI_UNIT just before this file loads.
+ *
+ * assetBase must come from the server because the site can be installed in a
+ * subdirectory (e.g. /AI-UNIT/), where a hardcoded "/assets/..." would resolve
+ * against the domain root and 404. The fallbacks below only apply if the
+ * config block is missing (e.g. a page that loads this script standalone).
+ */
+const AI_UNIT_CONFIG = window.AI_UNIT || {};
+const ASSET_BASE = AI_UNIT_CONFIG.assetBase || '/assets';
+
 // Translation Data - English only
 const translations = {
   en: {
@@ -129,6 +141,25 @@ if (savedLang && (savedLang === 'fr' || savedLang === 'km')) {
   currentLang = savedLang;
   applyTranslations();
 }
+
+/* ─── HERO BACKGROUND VIDEO ───
+   The hero sits on a CSS gradient with the video layered over it. If the video
+   file is missing or fails to decode, an empty <video> box can paint black over
+   that gradient, so hide the element and let the gradient show through. */
+(function () {
+  const heroVideo = document.getElementById('heroVideo');
+  if (!heroVideo) return;
+
+  const markUnavailable = () => heroVideo.classList.add('is-unavailable');
+
+  // A failing <source> fires "error" on the source element, not the <video>.
+  heroVideo.querySelectorAll('source').forEach(s => s.addEventListener('error', markUnavailable));
+  heroVideo.addEventListener('error', markUnavailable);
+  heroVideo.addEventListener('loadeddata', () => heroVideo.classList.remove('is-unavailable'));
+
+  // Covers the case where every source failed before these listeners attached.
+  if (heroVideo.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) markUnavailable();
+})();
 
 const navbar=document.getElementById('navbar');
 const navLinksDiv=document.getElementById('navLinks');
@@ -297,9 +328,10 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
   });
 });
 
-// Task 6: point DIVA at the new FastAPI backend instead of the Cloudflare worker.
-// When deployed, change this to your server's public /api/chat URL.
-const WORKER_URL='http://127.0.0.1:8000/api/chat';
+// DIVA's backend URL comes from server config (config('diva.api_url'), settable
+// via the DIVA_API_URL environment variable) rather than being hardcoded here,
+// so it can be repointed per-environment without editing this file.
+const WORKER_URL = AI_UNIT_CONFIG.divaApiUrl || 'http://127.0.0.1:8000/api/chat';
 const divaTrigger=document.getElementById('divaTrigger');
 const divaPanel=document.getElementById('divaPanel');
 const divaClose=document.getElementById('divaClose');
@@ -733,10 +765,15 @@ document.getElementById('listSolutionBtn')?.addEventListener('click', () => wind
 
   function openVideoModal(src,title){
     modalVideo.pause();
+    // Caption files use the source media set's naming: "videoN.vtt" is French
+    // and "videoNe.vtt" is English. The video files are "video0N.mp4", so the
+    // leading zero has to be dropped to find the matching captions. There is
+    // no Kreol caption file in the source set, so that track is left empty.
     const baseName = src.split('/').pop().replace('.mp4', '');
-    if (trackEn) trackEn.src = '/assets/captions/' + baseName + '-en.vtt';
-    if (trackFr) trackFr.src = '/assets/captions/' + baseName + '-fr.vtt';
-    if (trackKm) trackKm.src = '/assets/captions/' + baseName + '-km.vtt';
+    const captionBase = baseName.replace(/^video0*/, 'video');
+    if (trackEn) trackEn.src = ASSET_BASE + '/captions/' + captionBase + 'e.vtt';
+    if (trackFr) trackFr.src = ASSET_BASE + '/captions/' + captionBase + '.vtt';
+    if (trackKm) trackKm.src = '';
     modalVideo.src = src;
     modalVideo.load();
     modalVideo.addEventListener('loadedmetadata', function onLoaded() {
