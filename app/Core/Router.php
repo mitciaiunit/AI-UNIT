@@ -25,9 +25,11 @@ final class Router
     }
 
     /**
-     * @param string $basePath The app's base directory (e.g. "/AI-UNIT/public"
-     *                         when installed under a subdirectory), stripped
-     *                         from the request path before route matching.
+     * @param string $basePath The prefix the app is mounted under (e.g.
+     *                         "/AI-UNIT/public", or "/AI-UNIT/public/index.php"
+     *                         when the front controller is addressed directly),
+     *                         stripped from the request path before matching.
+     *                         Resolved by public/index.php.
      */
     public function dispatch(string $method, string $uri, string $basePath = ''): void
     {
