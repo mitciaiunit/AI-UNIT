@@ -13,10 +13,23 @@ use App\Core\Controller;
  */
 final class VideoController extends Controller
 {
-    /** @var array<int, array{file: string, chip: array{en:string,fr:string}, videoNum: array{en:string,fr:string}, title: array{en:string,fr:string}, desc: array{en:string,fr:string}}> */
+    /**
+     * Per-video content and asset filenames.
+     *
+     * captionFr/captionEn are stored explicitly rather than derived from the
+     * video number because the source caption files use an opaque naming
+     * convention — "videoN.vtt" is the French track and "videoNe.vtt" (with a
+     * trailing "e") is the English one. Deriving those would silently 404 if
+     * anyone assumed a "-fr"/"-en" suffix, which is exactly what happened
+     * before: the generated names never matched the real files.
+     *
+     * @var array<int, array{file: string, captionFr: string, captionEn: string, chip: array{en:string,fr:string}, videoNum: array{en:string,fr:string}, title: array{en:string,fr:string}, desc: array{en:string,fr:string}}>
+     */
     private const VIDEOS = [
         1 => [
             'file' => 'video01.mp4',
+            'captionFr' => 'video1.vtt',
+            'captionEn' => 'video1e.vtt',
             'chip' => ['en' => 'Child Safety', 'fr' => 'Sécurité enfants'],
             'videoNum' => ['en' => 'Video 1 of 4 · 2:37', 'fr' => 'Vidéo 1 sur 4 · 2:37'],
             'title' => ['en' => 'Forms of Digital Violence', 'fr' => 'Formes de violence numérique'],
@@ -27,6 +40,8 @@ final class VideoController extends Controller
         ],
         2 => [
             'file' => 'video02.mp4',
+            'captionFr' => 'video2.vtt',
+            'captionEn' => 'video2e.vtt',
             'chip' => ['en' => 'Child Safety', 'fr' => 'Sécurité enfants'],
             'videoNum' => ['en' => 'Video 2 of 4 · 4:21', 'fr' => 'Vidéo 2 sur 4 · 4:21'],
             'title' => ['en' => 'Consequences and Effects of Digital Violence', 'fr' => 'Conséquences et effets de la violence numérique'],
@@ -37,6 +52,8 @@ final class VideoController extends Controller
         ],
         3 => [
             'file' => 'video03.mp4',
+            'captionFr' => 'video3.vtt',
+            'captionEn' => 'video3e.vtt',
             'chip' => ['en' => 'Child Safety', 'fr' => 'Sécurité enfants'],
             'videoNum' => ['en' => 'Video 3 of 4 · 2:37', 'fr' => 'Vidéo 3 sur 4 · 2:37'],
             'title' => ["en" => "Children's Rights & Parental Responsibility", 'fr' => 'Les droits des enfants et la responsabilité parentale'],
@@ -47,6 +64,8 @@ final class VideoController extends Controller
         ],
         4 => [
             'file' => 'video04.mp4',
+            'captionFr' => 'video4.vtt',
+            'captionEn' => 'video4e.vtt',
             'chip' => ['en' => 'Child Safety', 'fr' => 'Sécurité enfants'],
             'videoNum' => ['en' => 'Video 4 of 4 · 4:21', 'fr' => 'Vidéo 4 sur 4 · 4:21'],
             'title' => ['en' => 'Regaining Control', 'fr' => 'Reprendre le contrôle'],
@@ -77,8 +96,8 @@ final class VideoController extends Controller
             'videoId' => $videoId,
             'video' => $video,
             'videoSrc' => asset('video/' . $video['file']),
-            'captionFr' => asset('captions/video' . $videoId . '-fr.vtt'),
-            'captionEn' => asset('captions/video' . $videoId . '-en.vtt'),
+            'captionFr' => asset('captions/' . $video['captionFr']),
+            'captionEn' => asset('captions/' . $video['captionEn']),
             'prevUrl' => $prev ? url('video/' . ($videoId - 1)) : null,
             'prevTitle' => $prev ? ['en' => $prev['title']['en'], 'fr' => $prev['title']['fr']] : null,
             'nextUrl' => $next ? url('video/' . ($videoId + 1)) : null,

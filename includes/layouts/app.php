@@ -32,6 +32,19 @@ $isHome = $isHome ?? false;
 
 <?php require __DIR__ . '/../a11y-panel.php'; ?>
 
+<?php
+/**
+ * Runtime config handed to assets/js/script.js. Keeps environment-specific
+ * values (install sub-path, DIVA endpoint) out of the JavaScript file so it
+ * stays a static, cacheable asset that works regardless of where the site is
+ * installed. Must be emitted before script.js loads.
+ */
+$jsConfig = [
+    'assetBase' => rtrim((string) config('site.root_url'), '/') . rtrim((string) config('site.asset_path'), '/'),
+    'divaApiUrl' => (string) config('diva.api_url'),
+];
+?>
+<script>window.AI_UNIT = <?= json_encode($jsConfig, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?>;</script>
 <script src="<?= e(asset('js/script.js')) ?>"></script>
 
 </body></html>
