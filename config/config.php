@@ -34,9 +34,9 @@ return [
         'default_lang' => 'en',
     ],
 
-    // Placeholder for the future DIVA API integration (not implemented yet).
+    // DIVA API integration — proxies chat requests to the Anthropic API.
     'diva' => [
-        'api_url' => env('DIVA_API_URL', 'http://127.0.0.1:8000/api/chat'),
+        'api_url' => env('DIVA_API_URL', 'https://diva-proxy.ruben-ramdhony.workers.dev/proxy'),
     ],
 
     'app' => [
