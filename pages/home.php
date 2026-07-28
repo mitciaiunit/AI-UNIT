@@ -5,7 +5,7 @@ $isHome = true;
 <!-- HERO -->
 <section class="hero" id="hero" aria-label="Hero">
   <video class="hero-video" id="heroVideo" autoplay muted loop playsinline aria-hidden="true">
-    <source src="<?= e(asset('video/hero-background.mp4')) ?>" type="video/mp4">
+    <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_105406_16f4600d-7a92-4292-b96e-b19156c7830a.mp4" type="video/mp4">
   </video>
   <div class="hero-video-overlay" aria-hidden="true"></div>
   <div class="hero-inner" id="main-content">
@@ -166,12 +166,13 @@ $isHome = true;
       </div>
     </div>
   </div>
+</section>
   <div class="marketplace-wave-top" aria-hidden="true">
     <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
       <defs>
         <path id="marketplaceWaveCurve" fill="none" d="M0 55 C360 95 1080 15 1440 55"/>
       </defs>
-      <path d="M0 40 C360 80 1080 0 1440 40 L1440 80 L0 80 Z" fill="#1e3a5f"/>
+      <path d="M0 40 C360 80 1080 0 1440 40 L1440 80 L0 80 Z" fill="#284773"/>
       <text class="marketplace-ticker-text" fill="#FFFFFF">
         <textPath href="#marketplaceWaveCurve" xlink:href="#marketplaceWaveCurve" startOffset="0">Regional AI Marketplace &#160;&#10022;&#160; Regional AI Marketplace &#160;&#10022;&#160; Regional AI Marketplace &#160;&#10022;&#160; Regional AI Marketplace &#160;&#10022;&#160; Regional AI Marketplace &#160;&#10022;&#160; Regional AI Marketplace &#160;&#10022;&#160;
           <animate attributeName="startOffset" from="0" to="-1600" dur="34s" repeatCount="indefinite"/>
@@ -179,7 +180,6 @@ $isHome = true;
       </text>
     </svg>
   </div>
-</section>
 
 <!-- AI MARKETPLACE -->
 <section class="marketplace-section" id="marketplace" aria-labelledby="marketplace-title">
