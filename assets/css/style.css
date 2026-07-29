@@ -380,12 +380,29 @@ button{font-family:'Sora',sans-serif;}
     overflow:hidden;
     margin-top:-2px;
     padding:70px 0 80px;   /* slightly smaller top padding */
-    background:linear-gradient(
-        135deg,
-        #284773 0%,
-        #2C4A96 45%,
-        #236C9A 100%
-    );
+    /* Two layers, top-most first.
+       The wave above is a single flat SVG fill (#284773) spanning the full
+       width, but the 135deg gradient below runs toward the bottom-right, so
+       along the section's top edge it has already shifted toward #2C4A96 —
+       progressively more so the wider the viewport. Flat colour meeting a
+       horizontally-varying one drew a hard seam right under the ticker.
+       The first layer restates that flat colour edge-to-edge at the join and
+       fades it out vertically, so the wave dissolves into the diagonal
+       gradient instead of butting against it. Percentages, not pixels, keep
+       the blend proportional as the section reflows. */
+    background:
+        linear-gradient(
+            180deg,
+            #284773 0%,
+            rgba(40,71,115,0.72) 26%,
+            rgba(40,71,115,0) 58%
+        ),
+        linear-gradient(
+            135deg,
+            #284773 0%,
+            #2C4A96 45%,
+            #236C9A 100%
+        );
 }
 
 .marketplace-section::before{
