@@ -524,7 +524,10 @@ button{font-family:'Sora',sans-serif;}
 .footer-col ul{display:flex;flex-direction:column;gap:9px;}
 .footer-col ul li a{font-size:0.875rem;color:var(--text-2);transition:color var(--trans);}
 .footer-col ul li a:hover{color:var(--blue-mid);}
-.footer-bottom{border-top:1px solid var(--border);padding-top:22px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+/* justify-content is "center", not "space-between": this row holds a single
+   copyright paragraph, and space-between pushes a lone flex item to the left
+   edge. text-align keeps the copy centred once it wraps on narrow viewports. */
+.footer-bottom{border-top:1px solid var(--border);padding-top:22px;display:flex;justify-content:center;align-items:center;text-align:center;gap:16px;flex-wrap:wrap;}
 .footer-bottom p{font-size:0.78rem;color:var(--text-3);}
 .footer-disclaimer{border-top:1px solid var(--border);padding:22px 0;margin-bottom:0;}
 .footer-disclaimer p{font-size:0.78rem;color:var(--text-3);line-height:1.7;text-align:center;max-width:900px;margin:0 auto;}
