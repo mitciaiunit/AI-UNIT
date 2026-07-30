@@ -388,9 +388,9 @@ $isHome = true;
     <h2 class="section-title" id="team-title"><span data-i18n="team_title1">The People</span> <em data-i18n="team_title2">Behind the Work</em></h2>
     <p class="section-desc" data-i18n="team_desc">Meet the experts driving Mauritius' AI strategy and digital transformation.</p>
     <div class="team-tabs" role="tablist" aria-label="Team members">
-      <button class="team-tab active" role="tab" aria-selected="true" aria-controls="panel-rama" data-member="0" data-i18n="team_tab1">Mr. Ramakrishna</button>
-      <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-heman" data-member="1" data-i18n="team_tab2">Dr. Heman</button>
-      <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-ruben" data-member="2" data-i18n="team_tab3">Mr. Ruben</button>
+      <button class="team-tab active" role="tab" aria-selected="true" aria-controls="panel-rama" data-member="0" data-i18n="team_tab1">Mr. Mudaliar</button>
+      <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-heman" data-member="1" data-i18n="team_tab2">Dr. Mohabeer</button>
+      <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-ruben" data-member="2" data-i18n="team_tab3">Mr. Ramdhony</button>
     </div>
     <div class="team-member-panel active reveal" id="panel-rama" role="tabpanel">
       <div class="team-photo-wrap"><img src="<?= e(asset('images/rm.jpg')) ?>" alt="Portrait of Mr. Ramakrishna Mudaliar" class="team-photo-img" /></div>
