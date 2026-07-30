@@ -535,6 +535,7 @@ html[style*="--a11y-font-scale"] body{
 }
 #a11y-sr-prompt[hidden]{display:none;}
 .a11y-sr-prompt-card{
+  position:relative;
   background:var(--surface);
   border-radius:var(--radius);
   box-shadow:var(--shadow-xl);
@@ -542,7 +543,18 @@ html[style*="--a11y-font-scale"] body{
   padding:28px;
   font-family:'Sora',sans-serif;
 }
-.a11y-sr-prompt-card h2{font-family:'Lora',serif;font-size:1.15rem;font-weight:700;color:var(--text-1);margin-bottom:10px;}
+.a11y-sr-prompt-close{
+  position:absolute;top:14px;right:14px;
+  width:30px;height:30px;border-radius:50%;
+  background:var(--surface-2);border:1.5px solid var(--border);
+  color:var(--text-3);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.05rem;font-weight:700;line-height:1;padding:0;
+  transition:all var(--trans);
+}
+.a11y-sr-prompt-close:hover{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-pale);}
+.a11y-sr-prompt-close:focus-visible{outline:3px solid var(--blue-mid);outline-offset:2px;}
+.a11y-sr-prompt-card h2{font-family:'Lora',serif;font-size:1.15rem;font-weight:700;color:var(--text-1);margin-bottom:10px;padding-right:28px;}
 .a11y-sr-prompt-card p{font-size:0.88rem;color:var(--text-2);line-height:1.6;margin-bottom:20px;}
 .a11y-sr-prompt-actions{display:flex;flex-direction:column;gap:10px;}
 .a11y-sr-prompt-btn{
@@ -560,6 +572,7 @@ html[style*="--a11y-font-scale"] body{
 
     document.body.insertAdjacentHTML('beforeend', `<div id="a11y-sr-prompt" role="dialog" aria-modal="true" aria-labelledby="a11y-sr-prompt-title" aria-describedby="a11y-sr-prompt-desc" hidden>
   <div class="a11y-sr-prompt-card">
+    <button type="button" id="a11y-sr-prompt-close" class="a11y-sr-prompt-close" aria-label="Close">&times;</button>
     <h2 id="a11y-sr-prompt-title">Screen Reader</h2>
     <p id="a11y-sr-prompt-desc">This site has a built-in screen reader. If you already use your own assistive technology (NVDA, JAWS, VoiceOver, TalkBack, etc.), you may prefer to keep using that instead to avoid both reading at once.</p>
     <div class="a11y-sr-prompt-actions">
@@ -1488,6 +1501,7 @@ document.addEventListener('keydown', function (e) {
 // --- First-visit screen reader choice prompt ---
 const SR_PROMPT_KEY = 'a11y-sr-prompt-choice';
 const srPrompt = document.getElementById('a11y-sr-prompt');
+const srPromptCloseBtn = document.getElementById('a11y-sr-prompt-close');
 const srPromptUseBtn = document.getElementById('a11y-sr-prompt-use');
 const srPromptOwnBtn = document.getElementById('a11y-sr-prompt-own');
 
@@ -1505,7 +1519,7 @@ function onSRPromptKeydown(e) {
     return;
   }
   if (e.key !== 'Tab') return;
-  const focusable = [srPromptUseBtn, srPromptOwnBtn].filter(Boolean);
+  const focusable = [srPromptCloseBtn, srPromptUseBtn, srPromptOwnBtn].filter(Boolean);
   if (!focusable.length) return;
   const first = focusable[0];
   const last = focusable[focusable.length - 1];
@@ -1542,6 +1556,9 @@ if (srPrompt) {
     }, 200);
   });
   srPromptOwnBtn && srPromptOwnBtn.addEventListener('click', function () {
+    dismissSRPrompt('own');
+  });
+  srPromptCloseBtn && srPromptCloseBtn.addEventListener('click', function () {
     dismissSRPrompt('own');
   });
 }
