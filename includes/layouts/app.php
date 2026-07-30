@@ -17,7 +17,7 @@ $isHome = $isHome ?? false;
 
 <body>
 
-<?php require __DIR__ . '/../cookie-banner.php'; ?>
+<?php require __DIR__ . '/../skip-link.php'; ?>
 
 <?php require __DIR__ . '/../navbar.php'; ?>
 
