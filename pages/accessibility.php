@@ -15,11 +15,11 @@
 
     <div class="block">
       <h2>What you can do on this site</h2>
-      <p>We have built a number of tools directly into the site. You can find them by clicking <strong>Accessibility</strong> in the top navigation bar.</p>
+      <p>We have built a number of tools directly into the site. You can find them in the <strong>Accessibility</strong> button in the bottom-right corner of every page, or by pressing <strong>Alt + A</strong> anywhere.</p>
       <div class="tool-list" role="list">
         <div class="tool-row" role="listitem">
           <div class="tool-name">Read the page aloud</div>
-          <div class="tool-desc">Press "Read page aloud" in the Accessibility panel and the site will read the full page to you using your browser's built-in voice. You can pause it with Space, stop it with S, and change the speed using the slider.</div>
+          <div class="tool-desc">On your first visit we ask whether you'd like to use our built-in screen reader or keep using your own (NVDA, JAWS, VoiceOver, etc.) — this avoids two voices reading at once. You can start it any time from the panel with "Read page aloud". Pause with Space, stop with S, change speed with the slider, and pick a voice from the dropdown.</div>
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Make text bigger or smaller</div>
@@ -30,12 +30,12 @@
           <div class="tool-desc">Switch to high contrast, dark, greyscale, or negative colour mode — whichever is easiest for you to read.</div>
         </div>
         <div class="tool-row" role="listitem">
-          <div class="tool-name">Dark mode</div>
-          <div class="tool-desc">Click the moon icon in the navigation bar to switch to a dark background. It is remembered on your next visit.</div>
+          <div class="tool-name">Simplify the page</div>
+          <div class="tool-desc">"Remove All Styling" strips the page back to plain text and links, with no colour or layout — useful if the design itself is what's getting in your way.</div>
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Dyslexia-friendly font and reading line</div>
-          <div class="tool-desc">Turn on a dyslexia-friendly font and a horizontal guide line that follows your cursor as you read.</div>
+          <div class="tool-desc">Turn on a dyslexia-friendly font, wider letter spacing, and a horizontal guide line that follows your cursor as you read.</div>
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Stop all movement</div>
@@ -43,7 +43,7 @@
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Keyboard navigation</div>
-          <div class="tool-desc">You can use the entire site with just a keyboard. Tab moves between links and buttons, Enter activates them, and Escape closes panels. Every focused element has a visible blue outline so you always know where you are.</div>
+          <div class="tool-desc">You can use the entire site with just a keyboard. Tab moves between links and buttons, Enter activates them, and Escape closes panels. Turn on "Bold Focus Outline" in the panel for an extra-visible focus ring.</div>
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Quick profiles</div>
@@ -115,7 +115,7 @@
       <h2>When we last checked</h2>
       <ul class="plain">
         <li>We ran an automated accessibility audit using WAVE in May 2026 and fixed all critical issues found.</li>
-        <li>We built and launched the Accessibility toolbar in May 2026.</li>
+        <li>We built and launched the Accessibility toolbar in May 2026, and replaced it with an updated version in July 2026.</li>
         <li>Our next review is planned for November 2026.</li>
       </ul>
     </div>

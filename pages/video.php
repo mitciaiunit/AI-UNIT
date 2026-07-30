@@ -1217,5 +1217,6 @@ document.getElementById('btn-fr').addEventListener('click', () => setLang('fr'))
 
 console.info('Video shortcuts: Space/K=play, ← →=seek 10s, ↑↓=volume, M=mute, F=fullscreen, C=captions');
 </script>
+<script src="<?= e(asset('js/accessibility-widget.js')) ?>"></script>
 </body>
 </html>

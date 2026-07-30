@@ -792,6 +792,7 @@
   init();
 })();
 </script>
+<script src="<?= e(asset('js/accessibility-widget.js')) ?>"></script>
 
 </body>
 </html>

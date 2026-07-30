@@ -2,9 +2,10 @@
 /**
  * Master layout for every "full site" page (home, privacy-policy, disclaimer,
  * cookie-policy, accessibility). Wraps the page's $content with the shared
- * header, navbar, footer, cookie banner, search modal, video modal, DIVA
- * widget, and accessibility panel — the components the task asks to be
- * de-duplicated into single shared includes.
+ * header, navbar, footer, cookie banner, search modal, video modal, and DIVA
+ * widget — the components the task asks to be de-duplicated into single
+ * shared includes. Accessibility tooling is provided by the third-party
+ * accessibility-widget.js (self-injecting; no markup include needed).
  */
 $isHome = $isHome ?? false;
 ?>
@@ -30,8 +31,6 @@ $isHome = $isHome ?? false;
 
 <?php require __DIR__ . '/../diva-widget.php'; ?>
 
-<?php require __DIR__ . '/../a11y-panel.php'; ?>
-
 <?php
 /**
  * Runtime config handed to assets/js/script.js. Keeps environment-specific
@@ -46,5 +45,6 @@ $jsConfig = [
 ?>
 <script>window.AI_UNIT = <?= json_encode($jsConfig, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?>;</script>
 <script src="<?= e(asset('js/script.js')) ?>"></script>
+<script src="<?= e(asset('js/accessibility-widget.js')) ?>"></script>
 
 </body></html>

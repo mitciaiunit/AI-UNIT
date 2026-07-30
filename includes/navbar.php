@@ -39,14 +39,6 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         <span data-i18n="search">Search</span>
       </button>
-      <div class="a11y-trigger-wrap" id="a11y-trigger" role="button" tabindex="0" aria-label="Accessibility Tools" aria-haspopup="dialog" aria-expanded="false" aria-controls="a11y-panel">
-        <img src="<?= e(asset('images/accessibility.png')) ?>" alt="" aria-hidden="true" class="a11y-trigger-img"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block'" />
-        <svg aria-hidden="true" style="display:none;flex-shrink:0;color:var(--blue);" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="5" r="2"/><path d="M12 22v-8"/><path d="M5 9l7-2 7 2"/><path d="M5 9l2 6h10l2-6"/>
-        </svg>
-        <span data-i18n="accessibility">Accessibility</span>
-      </div>
       <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
