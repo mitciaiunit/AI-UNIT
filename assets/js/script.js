@@ -361,6 +361,7 @@ function addDivaMessage(text, role) {
     const speakBtn = document.createElement('button');
     speakBtn.className = 'diva-read-aloud';
     speakBtn.title = 'Read aloud';
+    speakBtn.setAttribute('aria-label', 'Read this response aloud');
     speakBtn.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
@@ -375,6 +376,7 @@ function addDivaMessage(text, role) {
     const copyBtn = document.createElement('button');
     copyBtn.className = 'diva-copy-btn';
     copyBtn.title = 'Copy Response';
+    copyBtn.setAttribute('aria-label', 'Copy this response');
     copyBtn.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -431,6 +433,7 @@ async function typeDivaMessage(text, source = null) {
   const speakBtn = document.createElement('button');
   speakBtn.className = 'diva-read-aloud';
   speakBtn.title = 'Read Aloud';
+  speakBtn.setAttribute('aria-label', 'Read this response aloud');
   speakBtn.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
@@ -445,6 +448,7 @@ async function typeDivaMessage(text, source = null) {
   const copyBtn = document.createElement('button');
   copyBtn.className = 'diva-copy-btn';
   copyBtn.title = 'Copy Response';
+  copyBtn.setAttribute('aria-label', 'Copy this response');
   copyBtn.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>

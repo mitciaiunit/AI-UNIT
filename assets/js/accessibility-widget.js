@@ -591,7 +591,7 @@ html[style*="--a11y-font-scale"] body{
     </div>
     <div class="a11y-header-right">
       <button class="a11y-reset" id="a11y-reset-btn" aria-label="Reset all settings" data-i18n="a11y_reset">Reset</button>
-      <button class="a11y-close" id="a11y-close-btn" aria-label="Close">&times;</button>
+      <button class="a11y-close" id="a11y-close-btn" aria-label="Close accessibility panel">&times;</button>
     </div>
   </div>
 
@@ -621,7 +621,7 @@ html[style*="--a11y-font-scale"] body{
     <div class="sr-status" id="sr-status" role="status" aria-live="polite"></div>
     <div class="sr-speed-row">
       <span class="sr-speed-label" data-i18n="a11y_speed_label">Speed:</span>
-      <input type="range" class="sr-speed-slider" id="sr-speed" min="0.5" max="2" step="0.1" value="1" aria-label="Reading speed" aria-valuemin="0.5" aria-valuemax="2" aria-valuenow="1">
+      <input type="range" class="sr-speed-slider" id="sr-speed" min="0.5" max="2" step="0.1" value="1" aria-label="Reading speed">
       <span id="sr-speed-display" style="font-size:0.75rem;font-weight:700;color:#1A3A8F;min-width:32px;">1&times;</span>
     </div>
   </div>
@@ -966,17 +966,20 @@ setTimeout(function () {
         srReadBtn.classList.remove('paused');
         if (srReadLabelStrong) srReadLabelStrong.textContent = translations[currentLang] && translations[currentLang]['a11y_read_btn_label'] ? translations[currentLang]['a11y_read_btn_label'] : 'Reading…';
         if (srReadLabelSpan) srReadLabelSpan.textContent = 'Press Space to pause';
+        srReadBtn.setAttribute('aria-label', 'Reading page aloud, press Space to pause');
         if (icon) icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
       } else if (state === 'paused') {
         srReadBtn.classList.remove('active');
         srReadBtn.classList.add('paused');
         if (srReadLabelStrong) srReadLabelStrong.textContent = 'Paused';
         if (srReadLabelSpan) srReadLabelSpan.textContent = 'Press Space to resume';
+        srReadBtn.setAttribute('aria-label', 'Paused, press Space to resume reading page aloud');
         if (icon) icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
       } else {
         srReadBtn.classList.remove('active', 'paused');
         if (srReadLabelStrong) srReadLabelStrong.textContent = translations[currentLang] && translations[currentLang]['a11y_read_btn_label'] ? translations[currentLang]['a11y_read_btn_label'] : 'Read page aloud';
         if (srReadLabelSpan) srReadLabelSpan.textContent = translations[currentLang] && translations[currentLang]['a11y_read_btn_hint'] ? translations[currentLang]['a11y_read_btn_hint'] : 'Click to start · Space to pause / resume';
+        srReadBtn.setAttribute('aria-label', 'Start reading page aloud');
         if (icon) icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
       }
     }

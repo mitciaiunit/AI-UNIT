@@ -134,19 +134,19 @@ $isHome = true;
         </div>
         <div class="video-list">
           <a class="video-item" href="<?= e(url('video/1')) ?>" target="_blank" rel="noopener">
-            <div class="video-icon">▶</div>
+            <div class="video-icon" aria-hidden="true">▶</div>
             <div><strong data-i18n="video1_title">Video 1</strong> - <span data-i18n="video1_desc">Forms of Digital Violence</span> <span style="color:var(--text-3);">2:37</span></div>
           </a>
           <a class="video-item" href="<?= e(url('video/2')) ?>" target="_blank" rel="noopener">
-            <div class="video-icon">▶</div>
+            <div class="video-icon" aria-hidden="true">▶</div>
             <div><strong data-i18n="video2_title">Video 2</strong> - <span data-i18n="video2_desc">Consequences and Effects</span> <span style="color:var(--text-3);">4:21</span></div>
           </a>
           <a class="video-item" href="<?= e(url('video/3')) ?>" target="_blank" rel="noopener">
-            <div class="video-icon">▶</div>
+            <div class="video-icon" aria-hidden="true">▶</div>
             <div><strong data-i18n="video3_title">Video 3</strong> - <span data-i18n="video3_desc">Children's Rights &amp; Parental Responsibility</span> <span style="color:var(--text-3);">2:37</span></div>
           </a>
           <a class="video-item" href="<?= e(url('video/4')) ?>" target="_blank" rel="noopener">
-            <div class="video-icon">▶</div>
+            <div class="video-icon" aria-hidden="true">▶</div>
             <div><strong data-i18n="video4_title">Video 4</strong> - <span data-i18n="video4_desc">Regaining Control</span> <span style="color:var(--text-3);">4:21</span></div>
           </a>
         </div>
@@ -196,9 +196,9 @@ $isHome = true;
         </div>
       </div>
       <div class="marketplace-cards">
-        <div class="mkt-card reveal" onclick="window.open('https://aimarketplace.govmu.org/','_blank','noopener')" style="cursor:pointer;"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h3 data-i18n="marketplace_card1_title">For Startups &amp; Innovators</h3><p data-i18n="marketplace_card1_desc">List your AI product or service and reach government buyers and businesses</p></div></div>
-        <div class="mkt-card reveal" onclick="window.open('https://aimarketplace.govmu.org/','_blank','noopener')" style="cursor:pointer;"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><div><h3 data-i18n="marketplace_card2_title">For Businesses</h3><p data-i18n="marketplace_card2_desc">Discover vetted AI solutions that can transform your operations</p></div></div>
-        <div class="mkt-card reveal" onclick="window.open('https://aimarketplace.govmu.org/','_blank','noopener')" style="cursor:pointer;"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><div><h3 data-i18n="marketplace_card3_title">For Public Institutions</h3><p data-i18n="marketplace_card3_desc">Find trusted AI tools to modernise government services for citizens</p></div></div>
+        <a class="mkt-card reveal" href="https://aimarketplace.govmu.org/" target="_blank" rel="noopener"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h3 data-i18n="marketplace_card1_title">For Startups &amp; Innovators</h3><p data-i18n="marketplace_card1_desc">List your AI product or service and reach government buyers and businesses</p></div></a>
+        <a class="mkt-card reveal" href="https://aimarketplace.govmu.org/" target="_blank" rel="noopener"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><div><h3 data-i18n="marketplace_card2_title">For Businesses</h3><p data-i18n="marketplace_card2_desc">Discover vetted AI solutions that can transform your operations</p></div></a>
+        <a class="mkt-card reveal" href="https://aimarketplace.govmu.org/" target="_blank" rel="noopener"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><div><h3 data-i18n="marketplace_card3_title">For Public Institutions</h3><p data-i18n="marketplace_card3_desc">Find trusted AI tools to modernise government services for citizens</p></div></a>
       </div>
     </div>
   </div>
