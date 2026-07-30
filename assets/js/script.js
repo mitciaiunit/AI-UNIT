@@ -541,7 +541,7 @@ if (recognition) {
 /* ─── SPEAK TEXT (TTS) - shared by DIVA and used by screen reader for Kreol fallback ───
  *
  * Language mapping:
- *   en  → en-GB  (British English — used for both DIVA and screen reader)
+ *   en  → en-GB  (British English - used for both DIVA and screen reader)
  *   fr  → fr-FR
  *   km  → fr-FR  (Kreol Morisien has no native TTS; French is the closest match)
  *

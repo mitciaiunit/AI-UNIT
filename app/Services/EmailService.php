@@ -39,7 +39,7 @@ final class EmailService
     }
 
     /**
-     * Best-effort notification — failures are logged, not thrown, since a
+     * Best-effort notification - failures are logged, not thrown, since a
      * failed notification email should never fail the whole submission
      * (the message is already saved to the database by the time this runs).
      */
@@ -82,7 +82,7 @@ final class EmailService
         } catch (Throwable $e) {
             // $mailer->ErrorInfo carries PHPMailer's own diagnostic text
             // (e.g. "SMTP connect() failed", "SMTP Error: Could not
-            // authenticate.") — that's the useful part for debugging
+            // authenticate.") - that's the useful part for debugging
             // delivery problems, so it's logged ahead of the exception
             // message, which is often just a generic wrapper string.
             Logger::error('Contact notification email failed to send', [

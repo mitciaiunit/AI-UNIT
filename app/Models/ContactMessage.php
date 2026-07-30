@@ -8,7 +8,7 @@ namespace App\Models;
  * A validated, ready-to-persist contact form submission.
  *
  * Constructing one implies the data has already passed through
- * App\Services\ContactValidator — this class does not validate.
+ * App\Services\ContactValidator - this class does not validate.
  */
 final class ContactMessage
 {

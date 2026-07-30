@@ -238,7 +238,7 @@
 <!-- TOP BAR -->
 <header class="topbar" role="banner">
   <div class="topbar-left">
-    <a href="<?= e(url('/')) ?>" class="logo-wrap" aria-label="AI Unit — Back to homepage">
+    <a href="<?= e(url('/')) ?>" class="logo-wrap" aria-label="AI Unit - Back to homepage">
       <img src="<?= e(asset('images/logo.gif')) ?>" alt="" aria-hidden="true" />
       <div class="logo-text">
         <span class="logo-main">AI Unit</span>
@@ -270,7 +270,7 @@
   </div>
 </header>
 
-<!-- VIEWER — takes all remaining height -->
+<!-- VIEWER - takes all remaining height -->
 <main class="viewer-main" role="main">
   <iframe
     id="pdfEmbed"

@@ -8,7 +8,7 @@ use App\Core\Controller;
 
 /**
  * The pdf.js-based booklet reader. One template (pages/booklet.php) shared by
- * all three booklets, driven entirely by this per-booklet config — including
+ * all three booklets, driven entirely by this per-booklet config - including
  * the fully translated UI strings each booklet originally hardcoded.
  */
 final class BookletController extends Controller
@@ -17,14 +17,14 @@ final class BookletController extends Controller
     private const BOOKLETS = [
         'aie' => [
             'lang' => 'en',
-            'pageTitle' => "AI For All — English Version · AI Unit, Mauritius",
+            'pageTitle' => "AI For All - English Version · AI Unit, Mauritius",
             'file' => 'documents/Booklet_English.pdf',
             'downloadName' => 'AI-For-All-English.pdf',
             'strings' => [
                 'skipLink' => 'Skip to main content',
                 'backBtn' => 'Back To Homepage',
                 'breadcrumbCategory' => 'AI in Action',
-                'breadcrumbTitle' => 'AI For All — English Version',
+                'breadcrumbTitle' => 'AI For All - English Version',
                 'downloadAria' => 'Download the booklet as PDF',
                 'downloadLabel' => 'Download PDF',
                 'thumbSidebarAria' => 'Page thumbnails',
@@ -56,21 +56,21 @@ final class BookletController extends Controller
                 'errorHint' => 'Please ensure',
                 'errorHint2' => 'is present and accessible on the server.',
                 'errorDownloadHint' => 'You can also use the Download PDF button above.',
-                'pageAlt' => 'Page %d of AI For All — English Version',
+                'pageAlt' => 'Page %d of AI For All - English Version',
                 'linkCopied' => 'Link copied to clipboard!',
                 'linkCopyFailed' => 'Could not copy link.',
             ],
         ],
         'aim' => [
             'lang' => 'mfe',
-            'pageTitle' => "AI Pou Nou Tou — Version Kreol · Linite L'IA, Moris",
+            'pageTitle' => "AI Pou Nou Tou - Version Kreol · Linite L'IA, Moris",
             'file' => 'documents/Booklet_Kreol.pdf',
             'downloadName' => 'AI-Pou-Nou-Tou-Kreol.pdf',
             'strings' => [
                 'skipLink' => 'Ale direkteman lor kontenu',
                 'backBtn' => 'Retourne',
                 'breadcrumbCategory' => "L'IA an Aksyon",
-                'breadcrumbTitle' => 'AI Pou Nou Tou — Version Kreol',
+                'breadcrumbTitle' => 'AI Pou Nou Tou - Version Kreol',
                 'downloadAria' => 'Telecharge livret la koumm PDF',
                 'downloadLabel' => 'Telecharge PDF',
                 'thumbSidebarAria' => 'Miniature bann paz',
@@ -102,14 +102,14 @@ final class BookletController extends Controller
                 'errorHint' => 'Asire ou ki fichier',
                 'errorHint2' => 'disponib lor server.',
                 'errorDownloadHint' => 'Ou kapav itiliz bouton Telecharge PDF anlerla.',
-                'pageAlt' => 'Paz %d AI Pou Nou Tou — Version Kreol',
+                'pageAlt' => 'Paz %d AI Pou Nou Tou - Version Kreol',
                 'linkCopied' => 'Lyen kopye!',
                 'linkCopyFailed' => 'Nou pa finn arrive kopye lyen la.',
             ],
         ],
         'livret' => [
             'lang' => 'fr',
-            'pageTitle' => 'Violence Numérique Contre Les Enfants — Livret Pédagogique',
+            'pageTitle' => 'Violence Numérique Contre Les Enfants - Livret Pédagogique',
             'file' => 'documents/violence.pdf',
             'downloadName' => 'Livret-Violence-Numerique.pdf',
             'strings' => [

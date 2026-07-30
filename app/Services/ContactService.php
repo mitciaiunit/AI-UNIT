@@ -33,7 +33,7 @@ final class ContactService
     public function submit(array $input, ?string $ipAddress, ?string $userAgent): array
     {
         // Bot signals get an indistinguishable "success" response and are
-        // silently dropped — never saved, never emailed — so automated
+        // silently dropped - never saved, never emailed - so automated
         // submitters get no feedback to learn from.
         if ($this->spamGuard->isHoneypotTriggered($input) || $this->spamGuard->isTooFast($input)) {
             Logger::warning('Contact submission blocked by spam guard', ['ip' => $ipAddress]);

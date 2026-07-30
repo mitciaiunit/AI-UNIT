@@ -18,7 +18,7 @@ final class VideoController extends Controller
      *
      * captionFr/captionEn are stored explicitly rather than derived from the
      * video number because the source caption files use an opaque naming
-     * convention — "videoN.vtt" is the French track and "videoNe.vtt" (with a
+     * convention - "videoN.vtt" is the French track and "videoNe.vtt" (with a
      * trailing "e") is the English one. Deriving those would silently 404 if
      * anyone assumed a "-fr"/"-en" suffix, which is exactly what happened
      * before: the generated names never matched the real files.
@@ -34,8 +34,8 @@ final class VideoController extends Controller
             'videoNum' => ['en' => 'Video 1 of 4 · 2:37', 'fr' => 'Vidéo 1 sur 4 · 2:37'],
             'title' => ['en' => 'Forms of Digital Violence', 'fr' => 'Formes de violence numérique'],
             'desc' => [
-                'en' => "This video introduces the different forms of digital violence targeting children and young people — including cyberbullying, online harassment, grooming, and identity theft. Designed to raise awareness among children, parents, and educators.",
-                'fr' => "Cette vidéo présente les différentes formes de violence numérique ciblant les enfants et les jeunes — cyberharcèlement, harcèlement en ligne, grooming et usurpation d'identité. Conçue pour sensibiliser les enfants, les parents et les éducateurs.",
+                'en' => "This video introduces the different forms of digital violence targeting children and young people - including cyberbullying, online harassment, grooming, and identity theft. Designed to raise awareness among children, parents, and educators.",
+                'fr' => "Cette vidéo présente les différentes formes de violence numérique ciblant les enfants et les jeunes - cyberharcèlement, harcèlement en ligne, grooming et usurpation d'identité. Conçue pour sensibiliser les enfants, les parents et les éducateurs.",
             ],
         ],
         2 => [
@@ -46,8 +46,8 @@ final class VideoController extends Controller
             'videoNum' => ['en' => 'Video 2 of 4 · 4:21', 'fr' => 'Vidéo 2 sur 4 · 4:21'],
             'title' => ['en' => 'Consequences and Effects of Digital Violence', 'fr' => 'Conséquences et effets de la violence numérique'],
             'desc' => [
-                'en' => "This video explores the serious consequences of digital violence on victims — from cyberbullying and sextortion to grooming and identity theft. It shows how these forms of harm affect young people's mental health, academic performance, and physical wellbeing.",
-                'fr' => "Cette vidéo explore les graves conséquences de la violence numérique sur les victimes — du cyberharcèlement et de la sextorsion au grooming et à l'usurpation d'identité. Elle montre comment ces formes de violence affectent la santé mentale, les résultats scolaires et le bien-être physique des jeunes.",
+                'en' => "This video explores the serious consequences of digital violence on victims - from cyberbullying and sextortion to grooming and identity theft. It shows how these forms of harm affect young people's mental health, academic performance, and physical wellbeing.",
+                'fr' => "Cette vidéo explore les graves conséquences de la violence numérique sur les victimes - du cyberharcèlement et de la sextorsion au grooming et à l'usurpation d'identité. Elle montre comment ces formes de violence affectent la santé mentale, les résultats scolaires et le bien-être physique des jeunes.",
             ],
         ],
         3 => [
@@ -58,8 +58,8 @@ final class VideoController extends Controller
             'videoNum' => ['en' => 'Video 3 of 4 · 2:37', 'fr' => 'Vidéo 3 sur 4 · 2:37'],
             'title' => ["en" => "Children's Rights & Parental Responsibility", 'fr' => 'Les droits des enfants et la responsabilité parentale'],
             'desc' => [
-                'en' => "This video explains the rights children have when facing digital violence — including the right to protection, privacy, and respect. It also outlines parents' and teachers' responsibilities, and shows victims how to report incidents to authorities such as CERT-MU, the Cybercrime Unit, Befrienders, and the Family Support line (113).",
-                'fr' => "Cette vidéo explique les droits des enfants face à la violence numérique — notamment le droit à la protection, à la vie privée et au respect. Elle précise également les responsabilités des parents et des enseignants, et montre aux victimes comment signaler les incidents aux autorités : CERT-MU (MAUCORS+), la Cybercrime Unit, les Befrienders et le service Family Support (113).",
+                'en' => "This video explains the rights children have when facing digital violence - including the right to protection, privacy, and respect. It also outlines parents' and teachers' responsibilities, and shows victims how to report incidents to authorities such as CERT-MU, the Cybercrime Unit, Befrienders, and the Family Support line (113).",
+                'fr' => "Cette vidéo explique les droits des enfants face à la violence numérique - notamment le droit à la protection, à la vie privée et au respect. Elle précise également les responsabilités des parents et des enseignants, et montre aux victimes comment signaler les incidents aux autorités : CERT-MU (MAUCORS+), la Cybercrime Unit, les Befrienders et le service Family Support (113).",
             ],
         ],
         4 => [
@@ -70,8 +70,8 @@ final class VideoController extends Controller
             'videoNum' => ['en' => 'Video 4 of 4 · 4:21', 'fr' => 'Vidéo 4 sur 4 · 4:21'],
             'title' => ['en' => 'Regaining Control', 'fr' => 'Reprendre le contrôle'],
             'desc' => [
-                'en' => "In this final episode, Sarah, Yusuf, and Priyashinee find the courage to speak up and reclaim their lives. Their stories show that silence protects abusers — but speaking out protects victims. No one is alone, and your voice is your strength.",
-                'fr' => "Dans ce dernier épisode, Sarah, Yusuf et Priyashinee trouvent le courage de parler et de reprendre leur vie en main. Leurs histoires montrent que le silence protège les agresseurs — mais que la parole protège les victimes. Personne n'est seul, et votre voix est votre force.",
+                'en' => "In this final episode, Sarah, Yusuf, and Priyashinee find the courage to speak up and reclaim their lives. Their stories show that silence protects abusers - but speaking out protects victims. No one is alone, and your voice is your strength.",
+                'fr' => "Dans ce dernier épisode, Sarah, Yusuf et Priyashinee trouvent le courage de parler et de reprendre leur vie en main. Leurs histoires montrent que le silence protège les agresseurs - mais que la parole protège les victimes. Personne n'est seul, et votre voix est votre force.",
             ],
         ],
     ];
@@ -91,7 +91,7 @@ final class VideoController extends Controller
         $next = self::VIDEOS[$videoId + 1] ?? null;
 
         $this->view('video', [
-            'title' => sprintf('Video %d — %s · AI Unit Mauritius', $videoId, $video['title']['en']),
+            'title' => sprintf('Video %d - %s · AI Unit Mauritius', $videoId, $video['title']['en']),
             'isHome' => false,
             'videoId' => $videoId,
             'video' => $video,

@@ -383,7 +383,7 @@ $isHome = true;
 <!-- TEAM -->
 <section class="team-section" id="team" aria-labelledby="team-title">
   <div class="container">
-    <div class="section-eyebrow" style="opacity:0;visibility:hidden;height:0;margin-bottom:0;">—</div>
+    <div class="section-eyebrow" style="opacity:0;visibility:hidden;height:0;margin-bottom:0;">-</div>
     <h2 class="section-title" id="team-title"><span data-i18n="team_title1">The People</span> <em data-i18n="team_title2">Behind the Work</em></h2>
     <p class="section-desc" data-i18n="team_desc">Meet the experts driving Mauritius' AI strategy and digital transformation.</p>
     <div class="team-tabs" role="tablist" aria-label="Team members">

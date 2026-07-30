@@ -19,7 +19,7 @@
       <div class="tool-list" role="list">
         <div class="tool-row" role="listitem">
           <div class="tool-name">Read the page aloud</div>
-          <div class="tool-desc">On your first visit we ask whether you'd like to use our built-in screen reader or keep using your own (NVDA, JAWS, VoiceOver, etc.) — this avoids two voices reading at once. You can start it any time from the panel with "Read page aloud". Pause with Space, stop with S, change speed with the slider, and pick a voice from the dropdown.</div>
+          <div class="tool-desc">On your first visit we ask whether you'd like to use our built-in screen reader or keep using your own (NVDA, JAWS, VoiceOver, etc.) - this avoids two voices reading at once. You can start it any time from the panel with "Read page aloud". Pause with Space, stop with S, change speed with the slider, and pick a voice from the dropdown.</div>
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Make text bigger or smaller</div>
@@ -27,11 +27,11 @@
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Change colours</div>
-          <div class="tool-desc">Switch to high contrast, dark, greyscale, or negative colour mode — whichever is easiest for you to read.</div>
+          <div class="tool-desc">Switch to high contrast, dark, greyscale, or negative colour mode - whichever is easiest for you to read.</div>
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Simplify the page</div>
-          <div class="tool-desc">"Remove All Styling" strips the page back to plain text and links, with no colour or layout — useful if the design itself is what's getting in your way.</div>
+          <div class="tool-desc">"Remove All Styling" strips the page back to plain text and links, with no colour or layout - useful if the design itself is what's getting in your way.</div>
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Dyslexia-friendly font and reading line</div>
@@ -47,7 +47,7 @@
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Quick profiles</div>
-          <div class="tool-desc">Choose a pre-set profile — Low Vision, Motor, Dyslexia, Cognitive, or Senior — and all the relevant settings turn on at once.</div>
+          <div class="tool-desc">Choose a pre-set profile - Low Vision, Motor, Dyslexia, Cognitive, or Senior - and all the relevant settings turn on at once.</div>
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Speak to DIVA</div>
@@ -63,7 +63,7 @@
     <div class="block">
       <h2>Languages</h2>
       <p>This site is available in <strong>English</strong>, <strong>French</strong> and <strong>Kreol Morisien</strong>. Use the language buttons at the top of the page to switch.</p>
-      <p>Please note that the language switching feature is still being completed — some sections may not yet be available in all three languages. We are working on this.</p>
+      <p>Please note that the language switching feature is still being completed - some sections may not yet be available in all three languages. We are working on this.</p>
     </div>
 
     <hr />

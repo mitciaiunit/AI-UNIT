@@ -8,7 +8,7 @@ use PDO;
 use PDOException;
 
 /**
- * Lazily-created PDO singleton. Not used by any page yet — reserved for the
+ * Lazily-created PDO singleton. Not used by any page yet - reserved for the
  * future Repositories that will back the site_settings/documents/videos/
  * contact_messages tables.
  */

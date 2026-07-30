@@ -1,7 +1,7 @@
--- AI Unit website — database schema
+-- AI Unit website - database schema
 --
 -- site_settings, documents, and videos only prepare the project for future
--- development — the current pages still use static PHP config arrays for
+-- development - the current pages still use static PHP config arrays for
 -- those. contact_messages is live: the homepage contact form (see
 -- App\Controllers\ContactController) reads and writes it.
 --

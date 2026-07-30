@@ -385,7 +385,7 @@ button{font-family:'Sora',sans-serif;}
     /* Two layers, top-most first.
        The wave above is a single flat SVG fill (#284773) spanning the full
        width, but the 135deg gradient below runs toward the bottom-right, so
-       along the section's top edge it has already shifted toward #2C4A96 —
+       along the section's top edge it has already shifted toward #2C4A96 -
        progressively more so the wider the viewport. Flat colour meeting a
        horizontally-varying one drew a hard seam right under the ticker.
        The first layer restates that flat colour edge-to-edge at the join and

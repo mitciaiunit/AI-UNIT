@@ -424,7 +424,7 @@
 
   <div class="bb-page">
     <input type="number" id="pageInput" value="1" min="1" aria-label="Current page number" />
-    <span class="bb-total" id="totalDisp" aria-live="polite">/ —</span>
+    <span class="bb-total" id="totalDisp" aria-live="polite">/ -</span>
   </div>
   <div class="progress-wrap" title="Reading progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
     <div class="progress-fill" id="progressFill" style="width:0%"></div>

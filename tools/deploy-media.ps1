@@ -6,7 +6,7 @@
 .DESCRIPTION
     The site's videos, audio narrations, PDFs and caption files total roughly
     1.5 GB. They are excluded by .gitignore (*.mp4, *.mp3, *.pdf, *.vtt) and are
-    NOT stored in this repository — GitHub rejects files over 100 MB and one of
+    NOT stored in this repository - GitHub rejects files over 100 MB and one of
     the videos alone is 385 MB. They therefore have to be copied in separately
     on each machine, which is what this script does.
 

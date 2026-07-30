@@ -1,6 +1,6 @@
 {
     "name": "aiunit/ai-unit-website",
-    "description": "AI Unit Government Website — vanilla PHP application. Composer is used only as a dependency manager (PHPMailer for outbound SMTP mail, phpdotenv for .env loading); there is no framework here.",
+    "description": "AI Unit Government Website - vanilla PHP application. Composer is used only as a dependency manager (PHPMailer for outbound SMTP mail, phpdotenv for .env loading); there is no framework here.",
     "type": "project",
     "license": "proprietary",
     "require": {

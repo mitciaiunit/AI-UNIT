@@ -2,7 +2,7 @@
 #
 # Apache's bundled mime.types (2.4.x on Windows/XAMPP) has no entry for .vtt,
 # so caption files are sent with no Content-Type header. Browsers require
-# "text/vtt" for a <track> element and silently ignore the captions otherwise —
+# "text/vtt" for a <track> element and silently ignore the captions otherwise -
 # the file downloads fine (HTTP 200) but subtitles never appear, which makes it
 # look like the caption files are broken when they are not.
 #

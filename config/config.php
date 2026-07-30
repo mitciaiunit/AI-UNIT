@@ -15,7 +15,7 @@ declare(strict_types=1);
 // reached via http://localhost/AI-UNIT/public/ (the front controller's URL).
 $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/public/index.php'));
 
-// The repo root's own URL, one level above public/ — this is where the
+// The repo root's own URL, one level above public/ - this is where the
 // sibling assets/ directory is actually served from by Apache.
 $repoRootUrl = rtrim((string) preg_replace('#/public$#', '', $scriptDir), '/');
 
@@ -44,7 +44,7 @@ return [
         'debug' => filter_var(env('APP_DEBUG', 'true'), FILTER_VALIDATE_BOOLEAN),
     ],
 
-    // Contact form notification email. Sending is off by default — until
+    // Contact form notification email. Sending is off by default - until
     // EMAIL_ENABLED=true and SMTP_* are supplied, submissions are only saved
     // to the database (see App\Services\EmailService).
     'mail' => [

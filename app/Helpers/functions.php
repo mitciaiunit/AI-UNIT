@@ -11,7 +11,7 @@ declare(strict_types=1);
  * Read an environment variable, checking $_ENV, $_SERVER, and getenv() in
  * that order. Covers both phpdotenv's default behaviour (populates $_ENV
  * and $_SERVER from .env, see bootstrap.php) and variables set directly by
- * the web server (e.g. Apache's SetEnv), without one clobbering the other —
+ * the web server (e.g. Apache's SetEnv), without one clobbering the other -
  * a real server-set value always wins over .env, since Dotenv::safeLoad()
  * never overwrites a variable that's already set.
  *
@@ -85,17 +85,17 @@ function url(string $path = ''): string
 
 /**
  * Compose a <title> value consistent with the original pages' convention:
- * "{Page Title} — AI Unit, Ministry of ICT, Mauritius".
+ * "{Page Title} - AI Unit, Ministry of ICT, Mauritius".
  */
 function page_title(string $title = ''): string
 {
     $full = (string) config('site.full_name');
 
-    return $title === '' ? $full : $title . ' — ' . $full;
+    return $title === '' ? $full : $title . ' - ' . $full;
 }
 
 /**
- * Reserved for future use — not called anywhere yet.
+ * Reserved for future use - not called anywhere yet.
  */
 function redirect(string $path): never
 {

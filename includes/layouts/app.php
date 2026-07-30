@@ -3,7 +3,7 @@
  * Master layout for every "full site" page (home, privacy-policy, disclaimer,
  * cookie-policy, accessibility, student-corner). Wraps the page's $content with
  * the shared header, navbar, footer, cookie banner, video modal, and DIVA
- * widget — the components the task asks to be de-duplicated into single
+ * widget - the components the task asks to be de-duplicated into single
  * shared includes. Accessibility tooling is provided by the third-party
  * accessibility-widget.js (self-injecting; no markup include needed).
  */

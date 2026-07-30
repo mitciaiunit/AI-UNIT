@@ -23,7 +23,7 @@ $i18n = [
         'navBackTitle' => $prevTitle['en'] ?? '',
         'navNextLabel' => 'Next video',
         'navNextTitle' => $nextTitle['en'] ?? '',
-        'topbarLabel' => sprintf('Video %d — %s', $videoId, $video['title']['en']),
+        'topbarLabel' => sprintf('Video %d - %s', $videoId, $video['title']['en']),
         'backBtn' => 'Back',
     ],
     'fr' => [
@@ -38,7 +38,7 @@ $i18n = [
         'navBackTitle' => $prevTitle['fr'] ?? '',
         'navNextLabel' => 'Vidéo suivante',
         'navNextTitle' => $nextTitle['fr'] ?? '',
-        'topbarLabel' => sprintf('Vidéo %d — %s', $videoId, $video['title']['fr']),
+        'topbarLabel' => sprintf('Vidéo %d - %s', $videoId, $video['title']['fr']),
         'backBtn' => 'Retour',
     ],
 ];

@@ -13,7 +13,7 @@ final class SpamGuard
 {
     private const SESSION_KEY = 'contact_rate_limit';
 
-    /** Name of the hidden honeypot input — real users never see or fill it. */
+    /** Name of the hidden honeypot input - real users never see or fill it. */
     public const HONEYPOT_FIELD = 'website';
 
     /** Hidden field carrying the server timestamp of when the form was rendered. */

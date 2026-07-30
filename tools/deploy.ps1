@@ -5,7 +5,7 @@
 .DESCRIPTION
     Apache serves the site from its own directory (e.g. D:\xampp2\htdocs\AI-UNIT),
     which is a SEPARATE copy from this git working tree. Editing a file here has
-    no effect on the running site until it is copied across — a mismatch that has
+    no effect on the running site until it is copied across - a mismatch that has
     repeatedly looked like "my change didn't work" when the change was fine and
     simply wasn't deployed.
 
@@ -13,12 +13,12 @@
     only, and deliberately does NOT touch:
 
       .env            per-machine secrets (DB password, SMTP credentials)
-      vendor/         Composer packages — run `composer install` in the target
+      vendor/         Composer packages - run `composer install` in the target
       storage/logs/   runtime logs
       uploads/        user-uploaded content
       assets/video,audio,documents,captions
                       large media files (~1.5 GB) that are gitignored and are
-                      NOT in this repo — see tools/deploy-media.ps1
+                      NOT in this repo - see tools/deploy-media.ps1
 
     Run this after every change you want to see in the browser.
 
