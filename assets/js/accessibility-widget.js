@@ -998,7 +998,6 @@ setTimeout(function () {
         SR.paused = false;
         highlightElement(item.element);
         updateReadButton('playing');
-        updateSRStatus('Reading: ' + item.text.substring(0, 60) + (item.text.length > 60 ? '…' : ''));
       };
 
       u.onend = function () {
@@ -1041,6 +1040,7 @@ setTimeout(function () {
       SR.currentIndex = 0;
       SR.speaking = true;
       SR.paused = false;
+      updateSRStatus('Reading page aloud');
       speakNext();
     }
 

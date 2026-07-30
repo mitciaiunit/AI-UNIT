@@ -406,6 +406,11 @@ async function typeDivaMessage(text, source = null) {
   const div = document.createElement('div');
   div.className = 'diva-msg bot';
   const content = document.createElement('div');
+  // Hidden from the accessibility tree while typing, so the word-by-word
+  // visual effect doesn't fire a separate live-region announcement per
+  // word inside #divaMessages (role="log"). The finished message is
+  // exposed to assistive tech in one step once typing completes below.
+  content.setAttribute('aria-hidden', 'true');
   div.appendChild(content);
   divaMessages.appendChild(div);
   const words = text.split(' ');
@@ -415,6 +420,8 @@ async function typeDivaMessage(text, source = null) {
     divaMessages.scrollTop = divaMessages.scrollHeight;
     await new Promise(resolve => setTimeout(resolve, 25));
   }
+
+  content.removeAttribute('aria-hidden');
 
   // ACTION BUTTONS CONTAINER
   const actions = document.createElement('div');

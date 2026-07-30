@@ -240,7 +240,7 @@ $isHome = true;
               <span>Listen</span>
             </button>
           </div>
-          <div class="audio-player-inline" aria-live="polite">
+          <div class="audio-player-inline">
             <div class="audio-time-row">
               <span class="audio-played">0:00 played</span>
               <span class="audio-left">0:00 left</span>
@@ -278,7 +278,7 @@ $isHome = true;
               <span>Listen</span>
             </button>
           </div>
-          <div class="audio-player-inline" aria-live="polite">
+          <div class="audio-player-inline">
             <div class="audio-time-row">
               <span class="audio-played">0:00 played</span>
               <span class="audio-left">0:00 left</span>
@@ -316,7 +316,7 @@ $isHome = true;
               <span>Listen</span>
             </button>
           </div>
-          <div class="audio-player-inline" aria-live="polite">
+          <div class="audio-player-inline">
             <div class="audio-time-row">
               <span class="audio-played">0:00 played</span>
               <span class="audio-left">0:00 left</span>
@@ -354,7 +354,7 @@ $isHome = true;
               <span>Listen</span>
             </button>
           </div>
-          <div class="audio-player-inline" aria-live="polite">
+          <div class="audio-player-inline">
             <div class="audio-time-row">
               <span class="audio-played">0:00 played</span>
               <span class="audio-left">0:00 left</span>

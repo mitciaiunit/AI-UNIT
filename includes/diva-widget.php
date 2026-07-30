@@ -11,7 +11,7 @@
       <button class="diva-close" id="divaClose" aria-label="Close DIVA chat">✕</button>
       <button class="diva-clear" id="divaClear" aria-label="Clear conversation">Clear</button>
     </div>
-    <div class="diva-messages" id="divaMessages" aria-live="polite">
+    <div class="diva-messages" id="divaMessages" role="log" aria-label="Conversation with DIVA">
       <div class="diva-msg bot" data-i18n="diva_welcome">Hello! I'm <strong>DIVA</strong> - the Government of Mauritius' AI assistant. I'm here to help you with questions about our Digital Transformation Blueprint, AI strategy, and government services.<br><br>You can also <strong>speak to me</strong> - press the microphone button below and ask your question out loud.</div>
       <div class="diva-suggestions">
         <button class="diva-suggestion-btn" onclick="pickSuggestion(this)" data-i18n="diva_sug1">What is the Digital Transformation Blueprint?</button>
