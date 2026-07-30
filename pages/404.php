@@ -2,7 +2,7 @@
 $title = 'Page Not Found';
 $isHome = false;
 ?>
-<main class="main-content" id="main-content">
+<main class="main-content" id="main-content" tabindex="-1">
   <div class="container">
     <div class="page-header">
       <div class="page-eyebrow">Error 404</div>

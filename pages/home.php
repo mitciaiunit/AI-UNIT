@@ -8,7 +8,7 @@ $isHome = true;
     <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_105406_16f4600d-7a92-4292-b96e-b19156c7830a.mp4" type="video/mp4">
   </video>
   <div class="hero-video-overlay" aria-hidden="true"></div>
-  <div class="hero-inner" id="main-content">
+  <div class="hero-inner" id="main-content" tabindex="-1">
     <div class="hero-content">
       <div class="hero-badge" aria-label="Ministry badge">
         <span class="badge-dot" aria-hidden="true"></span>
