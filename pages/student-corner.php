@@ -81,7 +81,7 @@
           <div class="hero__head">
             <p class="kicker" data-reveal>
               <span class="kicker__dot" aria-hidden="true"></span>
-              AI Unit &middot; Mauritius Emerging Technologies Council
+              AI Unit &middot; Ministry of ICT
             </p>
 
             <h1 class="hero__title" id="hero-title" data-reveal data-reveal-delay="60">
