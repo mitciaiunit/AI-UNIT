@@ -823,6 +823,44 @@ setTimeout(function () {
     });
 
     // --- Text Extraction ---
+    // Widget/UI chrome that should never end up in the read-aloud queue,
+    // regardless of its current visibility state.
+    var A11Y_READER_SKIP_SELECTOR = '.video-modal, .diva-panel, #divaWidget, #a11y-announcer, #a11y-read-guide, #a11y-sr-prompt, #sr-speed-display';
+
+    // getComputedStyle(el) only ever reflects el's own specified/computed
+    // style - display:none (or visibility/opacity/hidden/aria-hidden) on an
+    // ANCESTOR does not cascade into a descendant's own computed values, so
+    // checking only node.parentElement (as this used to) lets fully hidden
+    // content - inactive team-bio tabs (display:none), collapsed framework
+    // accordions (max-height:0 + overflow:hidden, no display/visibility
+    // change at all), the closed mobile nav - pass the filter and get read
+    // aloud anyway, in an order matching nothing on screen. Walk every
+    // ancestor up to <body> instead.
+    function isHiddenOrCollapsed(el) {
+      for (var node = el; node && node !== document.body; node = node.parentElement) {
+        if (node.hidden || node.getAttribute('aria-hidden') === 'true') return true;
+        var style = window.getComputedStyle(node);
+        if (style.display === 'none' || style.visibility === 'hidden') return true;
+        // .reveal is this site's scroll-triggered fade-in (script.js's
+        // IntersectionObserver adds .visible the first time an element
+        // scrolls into view - see assets/js/script.js). It starts every
+        // section at opacity:0 by design, one-way, regardless of whether a
+        // sighted user has scrolled there yet; treating that as "hidden"
+        // here would make the reader silently skip most of the page for
+        // anyone who hits "Read page aloud" without scrolling first, which
+        // is a normal, common pattern for screen-reader users. Real,
+        // permanently-hidden content never carries this class, so it's
+        // excluded from the opacity check rather than the check being
+        // dropped entirely.
+        if (style.opacity === '0' && !node.classList.contains('reveal')) return true;
+        // Collapsed accordion: content is there and would scroll into view,
+        // but overflow:hidden + a collapsed max-height/height clips it to
+        // nothing (dimension-body etc. use max-height:0, not display:none).
+        if (style.overflow === 'hidden' && node.clientHeight === 0 && node.scrollHeight > 0) return true;
+      }
+      return false;
+    }
+
     function getReadableText() {
       const walker = document.createTreeWalker(
         document.body,
@@ -830,11 +868,10 @@ setTimeout(function () {
         function (node) {
           const parent = node.parentElement;
           if (!parent) return NodeFilter.FILTER_REJECT;
-          const style = window.getComputedStyle(parent);
-          if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return NodeFilter.FILTER_REJECT;
           const tag = parent.tagName.toLowerCase();
-          if (['script', 'style', 'noscript', 'iframe', 'canvas'].includes(tag)) return NodeFilter.FILTER_REJECT;
-          if (parent.closest && parent.closest('.video-modal, .diva-panel, #divaWidget, #a11y-announcer, #a11y-read-guide, #a11y-sr-prompt, #sr-speed-display')) return NodeFilter.FILTER_REJECT;
+          if (['script', 'style', 'noscript', 'iframe', 'canvas', 'svg'].includes(tag)) return NodeFilter.FILTER_REJECT;
+          if (parent.closest && parent.closest(A11Y_READER_SKIP_SELECTOR)) return NodeFilter.FILTER_REJECT;
+          if (isHiddenOrCollapsed(parent)) return NodeFilter.FILTER_REJECT;
           const text = node.textContent.trim();
           if (!text) return NodeFilter.FILTER_REJECT;
           return NodeFilter.FILTER_ACCEPT;
