@@ -1043,13 +1043,17 @@ function resetPlayer(player) {
 }
 
 function setButtonPlay(button) {
-    button.textContent = '▶ Play';
+    const label = button.querySelector('span');
+    if (label) label.textContent = 'Play';
     button.classList.remove('is-playing');
+    button.setAttribute('aria-pressed', 'false');
 }
 
 function setButtonPause(button) {
-    button.textContent = '⏸ Pause';
+    const label = button.querySelector('span');
+    if (label) label.textContent = 'Pause';
     button.classList.add('is-playing');
+    button.setAttribute('aria-pressed', 'true');
 }
 
 function formatTime(seconds) {

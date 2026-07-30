@@ -227,17 +227,17 @@ $isHome = true;
             <span class="meta-chip">2025 - 2029</span>
           </div>
           <div class="doc-actions">
-            <a href="<?= e(asset('documents/blueprint.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary" data-i18n="doc_download">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-              <span>Download</span>
+            <a href="<?= e(asset('documents/blueprint.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+              <span data-i18n="doc_download">Download</span>
             </a>
-            <a href="<?= e(url('document/blueprint')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost" data-i18n="doc_view">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-              <span>View Online</span>
+            <a href="<?= e(url('document/blueprint')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span data-i18n="doc_view">View Online</span>
             </a>
-            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Blueprint.mp3')) ?>" data-i18n="doc_play">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
-              <span>Listen</span>
+            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Blueprint.mp3')) ?>" aria-pressed="false">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
+              <span data-i18n="doc_play">Listen</span>
             </button>
           </div>
           <div class="audio-player-inline">
@@ -265,17 +265,17 @@ $isHome = true;
             <span class="meta-chip">2025 - 2029</span>
           </div>
           <div class="doc-actions">
-            <a href="<?= e(asset('documents/aistrategy.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary" data-i18n="doc_download">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-              <span>Download</span>
+            <a href="<?= e(asset('documents/aistrategy.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+              <span data-i18n="doc_download">Download</span>
             </a>
-            <a href="<?= e(url('document/aistrategy')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost" data-i18n="doc_view">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-              <span>View Online</span>
+            <a href="<?= e(url('document/aistrategy')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span data-i18n="doc_view">View Online</span>
             </a>
-            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/AIStrategy.mp3')) ?>" data-i18n="doc_play">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
-              <span>Listen</span>
+            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/AIStrategy.mp3')) ?>" aria-pressed="false">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
+              <span data-i18n="doc_play">Listen</span>
             </button>
           </div>
           <div class="audio-player-inline">
@@ -303,17 +303,17 @@ $isHome = true;
             <span class="meta-chip">2025 - 2029</span>
           </div>
           <div class="doc-actions">
-            <a href="<?= e(asset('documents/fairguidelines.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary" data-i18n="doc_download">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-              <span>Download</span>
+            <a href="<?= e(asset('documents/fairguidelines.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+              <span data-i18n="doc_download">Download</span>
             </a>
-            <a href="<?= e(url('document/fairguidelines')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost" data-i18n="doc_view">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-              <span>View Online</span>
+            <a href="<?= e(url('document/fairguidelines')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span data-i18n="doc_view">View Online</span>
             </a>
-            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Fairguidelines.mp3')) ?>" data-i18n="doc_play">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
-              <span>Listen</span>
+            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Fairguidelines.mp3')) ?>" aria-pressed="false">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
+              <span data-i18n="doc_play">Listen</span>
             </button>
           </div>
           <div class="audio-player-inline">
@@ -341,17 +341,17 @@ $isHome = true;
             <span class="meta-chip">2026 Edition</span>
           </div>
           <div class="doc-actions">
-            <a href="<?= e(asset('documents/playbook.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary" data-i18n="doc_download">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-              <span>Download</span>
+            <a href="<?= e(asset('documents/playbook.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+              <span data-i18n="doc_download">Download</span>
             </a>
-            <a href="<?= e(url('document/playbook')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost" data-i18n="doc_view">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-              <span>View Online</span>
+            <a href="<?= e(url('document/playbook')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span data-i18n="doc_view">View Online</span>
             </a>
-            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Playbook.mp3')) ?>" data-i18n="doc_play">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
-              <span>Listen</span>
+            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Playbook.mp3')) ?>" aria-pressed="false">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
+              <span data-i18n="doc_play">Listen</span>
             </button>
           </div>
           <div class="audio-player-inline">
