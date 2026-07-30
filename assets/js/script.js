@@ -105,6 +105,10 @@ const translations = {
 };
   
 let currentLang = 'en';
+// mfe = Morisyen (ISO 639-3) - the correct <html lang> value for Kreol
+// Morisien content, so screen readers switch phonetics/voice instead of
+// reading it with English pronunciation rules.
+const HTML_LANG = { en: 'en', fr: 'fr', km: 'mfe' };
 
 function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -122,6 +126,11 @@ function applyTranslations() {
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
   });
+  // Update document lang attribute for screen reader and accessibility.
+  // Lives here (not just the click handler below) so every caller of
+  // applyTranslations() - including restoring a saved language on page
+  // load - keeps <html lang> in sync with the actual content language.
+  document.documentElement.lang = HTML_LANG[currentLang] || 'en';
   // Notify screen reader and other components of language change
   window.dispatchEvent(new CustomEvent('aiunit-lang-changed', { detail: { lang: currentLang } }));
 }
@@ -131,8 +140,6 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
     currentLang = btn.getAttribute('data-lang');
     applyTranslations();
     localStorage.setItem('ai_unit_lang', currentLang);
-    // Update document lang attribute for screen reader and accessibility
-    document.documentElement.lang = currentLang === 'km' ? 'mfe' : currentLang;
   });
 });
 

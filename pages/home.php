@@ -163,7 +163,7 @@ $isHome = true;
         <p data-i18n="action_card2_desc">Our national booklet designed to make Artificial Intelligence accessible, understandable and beneficial to every citizen.</p>
         <div class="action-description" data-i18n="action_card2_note">Making AI understandable for everyone - available in English and Kreol versions.</div>
         <div class="ai-for-all-box"><strong data-i18n="ai_en_title">🇬🇧 AI For All - English Version</strong><em data-i18n="ai_en_sub">The Future Belongs to Us</em><button class="btn-redesign" id="readEnBooklet" data-i18n="ai_en_btn">Read the Booklet →</button></div>
-        <div class="ai-for-all-box"><strong data-i18n="ai_km_title">🇲🇺 AI Pou Nou Tou - Version Kreol</strong><em data-i18n="ai_km_sub">Lavenir Apartenir A Nou Tou</em><button class="btn-redesign" id="readKmBooklet" data-i18n="ai_km_btn">Lire Livre la →</button></div>
+        <div class="ai-for-all-box"><strong lang="mfe" data-i18n="ai_km_title">🇲🇺 AI Pou Nou Tou - Version Kreol</strong><em lang="mfe" data-i18n="ai_km_sub">Lavenir Apartenir A Nou Tou</em><button class="btn-redesign" id="readKmBooklet" lang="mfe" data-i18n="ai_km_btn">Lire Livre la →</button></div>
       </div>
     </div>
   </div>
