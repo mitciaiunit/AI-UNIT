@@ -148,11 +148,19 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text-1);}
   z-index:2000;
   overflow-y:auto;
   transform:translateX(100%);
-  transition:transform 0.32s cubic-bezier(0.4,0,0.2,1);
+  /* visibility is delayed on the way in (0s 0s) but instant on the way out
+     (0s .3s) so the slide animation still plays, while removing the closed
+     panel from the accessibility tree - see openPanel()/closePanel(), which
+     toggle aria-modal in lockstep with this class. Without this, NVDA (which
+     enforces aria-modal strictly) treats the still-present, merely
+     off-screen panel as the active modal from first page load and hides the
+     entire rest of the document, even though nothing looks wrong visually. */
+  visibility:hidden;
+  transition:transform 0.32s cubic-bezier(0.4,0,0.2,1), visibility 0s 0.32s;
   font-family:'Sora',sans-serif;
   padding-bottom:24px;
 }
-#a11y-panel.open{transform:translateX(0);}
+#a11y-panel.open{transform:translateX(0);visibility:visible;transition:transform 0.32s cubic-bezier(0.4,0,0.2,1), visibility 0s 0s;}
 #a11y-panel::-webkit-scrollbar{width:6px;}
 #a11y-panel::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:4px;}
 
@@ -573,7 +581,7 @@ html[style*="--a11y-font-scale"] body{
 <div id="a11y-announcer" aria-live="polite" aria-atomic="true" role="status"></div>
 <div id="a11y-read-guide" aria-hidden="true"></div>
 
-<div id="a11y-panel" role="dialog" aria-modal="true" aria-label="Accessibility options">
+<div id="a11y-panel" role="dialog" aria-label="Accessibility options">
   <div class="a11y-header">
     <div class="a11y-header-left">
       <div class="a11y-header-icon" aria-hidden="true">
@@ -1401,6 +1409,11 @@ function onPanelKeydown(e) {
 function openPanel() {
   lastFocused = document.activeElement;
   panel.classList.add('open');
+  // aria-modal is only true while the panel is actually open and its focus
+  // trap (onPanelKeydown, below) is active. Left on permanently, screen
+  // readers that enforce it strictly (NVDA) treat the panel as an
+  // always-active modal and hide the rest of the document from first load.
+  panel.setAttribute('aria-modal', 'true');
   backdrop.classList.add('show');
   trigger.setAttribute('aria-expanded', 'true');
   document.addEventListener('keydown', onPanelKeydown);
@@ -1409,6 +1422,7 @@ function openPanel() {
 
 function closePanel() {
   panel.classList.remove('open');
+  panel.removeAttribute('aria-modal');
   backdrop.classList.remove('show');
   trigger.setAttribute('aria-expanded', 'false');
   document.removeEventListener('keydown', onPanelKeydown);
