@@ -13,7 +13,7 @@ const ASSET_BASE = AI_UNIT_CONFIG.assetBase || '/assets';
 // Translation Data - English only
 const translations = {
   en: {
-    nav_action: "AI in Action", nav_framework: "Framework", nav_about: "About Us", nav_contact: "Contact Us", search: "Search", accessibility: "Accessibility",
+    nav_action: "AI in Action", nav_framework: "Framework", nav_about: "About Us", nav_contact: "Contact Us", nav_student: "Student Corner", accessibility: "Accessibility",
     hero_badge: "Ministry of ICT, Communication & Innovation", hero_title_prefix: "Where", hero_title_suffix: "Meets Impact", hero_subtitle: "Welcome to the AI Unit of Mauritius - your guide to how artificial intelligence is making public services smarter, faster, and fairer for every citizen.",
     hero_cta_marketplace: "Explore Regional AI Marketplace", hero_cta_learn: "Learn More", badge_fair: "FAIR Guidelines", badge_ai4all: "AI4ALL Inclusion", badge_marketplace: "AI Marketplace", badge_smart: "Smart Services", badge_ppp: "PPP Adoption", badge_privacy: "Data Privacy",
     about_eyebrow: "Who We Are", about_title_prefix: "Driving Mauritius", about_title_suffix: "AI Future", about_mission_quote: "\"Mauritius is committed to becoming a smart, inclusive and future-ready nation - where every citizen benefits from responsible AI.\"",
@@ -208,13 +208,6 @@ document.querySelectorAll('.team-tab').forEach(tab=>{
     if(panels[idx])panels[idx].classList.add('active');
   });
 });
-
-const searchModal=document.getElementById('searchModal');
-const searchInput=document.getElementById('searchInput');
-document.getElementById('searchBtn').addEventListener('click',()=>{searchModal.classList.add('open');setTimeout(()=>searchInput.focus(),100);});
-document.getElementById('searchClose').addEventListener('click',()=>searchModal.classList.remove('open'));
-document.querySelector('.search-backdrop').addEventListener('click',()=>searchModal.classList.remove('open'));
-document.addEventListener('keydown',e=>{if(e.key==='Escape')searchModal.classList.remove('open');});
 
 const revealObs=new IntersectionObserver(entries=>{
   entries.forEach((entry,i)=>{if(entry.isIntersecting)setTimeout(()=>entry.target.classList.add('visible'),(i%4)*80);});

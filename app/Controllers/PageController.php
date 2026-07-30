@@ -36,4 +36,21 @@ final class PageController extends Controller
     {
         $this->view('accessibility', ['title' => 'Accessibility Statement', 'isHome' => false]);
     }
+
+    /**
+     * The only page that carries styling and behaviour of its own: it is a
+     * self-contained case study with a different design language from the rest
+     * of the site, so it loads student-corner.css/.js on top of the shared
+     * assets rather than folding its rules into style.css.
+     */
+    public function studentCorner(): void
+    {
+        $this->view('student-corner', [
+            'title' => 'Student Corner',
+            'isHome' => false,
+            'navCurrent' => 'student-corner',
+            'pageStyles' => ['student-corner.css'],
+            'pageScripts' => ['student-corner.js'],
+        ]);
+    }
 }

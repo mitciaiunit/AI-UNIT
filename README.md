@@ -14,6 +14,7 @@ public/             Web root — the ONLY folder your web server should point at
 pages/               PHP view templates — one (or one shared) template per route
   home.php             Homepage content (hero, about, framework, team, contact, …)
   privacy-policy.php, disclaimer.php, cookie-policy.php, accessibility.php
+  student-corner.php     Internship case study; ships its own CSS/JS (see below)
   document.php          PDF viewer chrome (used by every /document/{slug} route)
   video.php              Video player template (used by every /video/{id} route)
   booklet.php            pdf.js booklet reader (used by every /booklet/{slug} route)
@@ -21,7 +22,7 @@ pages/               PHP view templates — one (or one shared) template per rou
 
 includes/            Shared, reusable HTML partials (no duplicated layout code)
   header.php, navbar.php, footer.php
-  cookie-banner.php, a11y-panel.php, diva-widget.php, search-modal.php, video-modal.php
+  cookie-banner.php, a11y-panel.php, diva-widget.php, video-modal.php
   layouts/app.php       Wraps a page's content with the partials above
 
 config/
@@ -190,6 +191,30 @@ The base URL is auto-detected from the request, so the site works unmodified whe
 4. Use `asset('images/foo.png')` for any asset reference and `url('my-new-page')` for any internal link — never hardcode `/assets/...` or page paths directly, so the site keeps working regardless of install location.
 
 For a page that needs its own completely different layout (like the PDF/booklet/video viewers, which intentionally don't use the main navbar), pass `null` as the layout in `$this->view('page', $data, null)` and make the template a full, self-contained HTML document.
+
+### Pages with their own CSS or JavaScript
+
+A page that needs styling or behaviour of its own — rather than a full separate
+layout — adds `pageStyles` / `pageScripts` to its view data. They are filenames
+under `assets/css/` and `assets/js/`, loaded after the shared assets (scripts
+are deferred), and only on that page:
+
+```php
+$this->view('student-corner', [
+    'title' => 'Student Corner',
+    'pageStyles' => ['student-corner.css'],
+    'pageScripts' => ['student-corner.js'],
+]);
+```
+
+**Scope such a stylesheet under a single root class.** `student-corner.css`
+brings its own design system (Inter, its own token ramp, its own element
+resets), so every rule in it is nested under `.sc`, the class on the page's
+outermost wrapper. Without that, its `body`, `img`, `h1–h4` and `:root` rules
+would restyle the shared navbar, footer and DIVA widget that the same layout
+renders around it. Where a class name is shared with `style.css` (`.hero`), the
+scoped rule resets the inherited properties explicitly — higher specificity only
+wins for properties both rules declare.
 
 ## Architecture Notes
 

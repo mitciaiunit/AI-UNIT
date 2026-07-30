@@ -1,0 +1,1649 @@
+/* ===========================================================================
+   Students & Internships - AI Unit Internship Case Study
+   ---------------------------------------------------------------------------
+   Light mode only. White and very light blue-grey surfaces, restrained blue
+   accents, generous whitespace. There is no dark theme and no dark section.
+
+   Contents
+     01. Design tokens
+     02. Reset & base
+     03. Typography & helpers
+     04. Layout primitives
+     05. Header & navigation
+     06. Hero
+     07. Media components (framed figures, browser frames, image reveal)
+     08. Two-column blocks
+     09. Project sections
+     10. Accessibility section
+     11. Development journey timeline
+     12. Gallery
+     13. Skills & technologies
+     14. Final reflection
+     15. Footer
+     16. Lightbox
+     17. Scroll reveal & motion
+     18. Responsive
+     19. Reduced motion & print
+   ======================================================================== */
+
+
+/* ===========================================================================
+   01. Design tokens
+   ======================================================================== */
+
+.sc {
+  /* Blue ramp - the only chromatic family on the page. */
+  --blue-50:  #eff5ff;
+  --blue-100: #dbe8fe;
+  --blue-200: #c2d8fd;
+  --blue-400: #6096f8;
+  --blue-500: #3b7ef0;
+  --blue-600: #1d4ed8;
+  --blue-700: #1740b0;
+  --navy:     #10224e;
+  --sky-400:  #38bdf8;
+
+  /* Subtle gradients - blue to sky only. */
+  --gradient-accent: linear-gradient(120deg, var(--blue-600) 0%, var(--blue-500) 52%, var(--sky-400) 100%);
+  --gradient-wash: linear-gradient(135deg, rgba(29, 78, 216, .055) 0%, rgba(56, 189, 248, .05) 100%);
+
+  /* Surfaces - white and light greys only. */
+  --white: #ffffff;
+  --grey-50: #f7f9fc;
+  --grey-100: #eff3f9;
+
+  /* Text */
+  --ink: #131c31;
+  --ink-muted: #4d5771;
+  --ink-subtle: #6b7590;
+
+  /* Hairlines */
+  --line: rgba(19, 28, 49, .08);
+  --line-strong: rgba(19, 28, 49, .14);
+
+  /* Elevation - soft and low-contrast. */
+  --shadow-xs: 0 1px 2px rgba(19, 28, 49, .04);
+  --shadow-sm: 0 2px 10px rgba(19, 28, 49, .05), 0 1px 2px rgba(19, 28, 49, .03);
+  --shadow-md: 0 16px 34px -16px rgba(19, 28, 49, .16), 0 3px 10px rgba(19, 28, 49, .04);
+  --shadow-lg: 0 38px 68px -30px rgba(19, 28, 49, .24), 0 12px 26px -18px rgba(19, 28, 49, .10);
+  --shadow-blue: 0 16px 32px -14px rgba(29, 78, 216, .40);
+
+  /* Geometry */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+  --radius-pill: 999px;
+
+  /* Rhythm - spacious but compact enough to keep content on screen. */
+  --shell: 1120px;
+  --shell-wide: 1320px;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --section-y: clamp(3.75rem, 7.5vw, 6.5rem);
+  --block-gap: clamp(2.75rem, 5.5vw, 4.75rem);
+
+  /* Type */
+  --font-sans: "Inter", "Segoe UI Variable", "Segoe UI", -apple-system,
+               BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Consolas, monospace;
+
+  /* Motion */
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-spring: cubic-bezier(.34, 1.4, .64, 1);
+  --dur-fast: 160ms;
+  --dur: 300ms;
+  --dur-slow: 700ms;
+  --dur-reveal: 900ms;
+
+  color-scheme: light;
+}
+
+
+/* ===========================================================================
+   02. Reset & base
+   ======================================================================== */
+
+.sc *, .sc *::before, .sc *::after { box-sizing: border-box; }
+
+.sc * { margin: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 6.5rem;
+}
+
+.sc {
+  min-height: 100vh;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: clamp(.9375rem, .9rem + .2vw, 1.0313rem);
+  line-height: 1.65;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+body.is-locked { overflow: hidden; }
+
+.sc img, .sc svg, .sc picture { display: block; max-width: 100%; }
+.sc img { height: auto; }
+
+.sc button { font: inherit; color: inherit; cursor: pointer; }
+.sc a { color: inherit; }
+
+.sc ul[role="list"], .sc ol[role="list"] { list-style: none; padding: 0; }
+
+.sc :target { scroll-margin-top: 6.5rem; }
+
+.sc :focus-visible {
+  outline: 2px solid var(--blue-600);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.sc ::selection { background: var(--blue-100); color: var(--ink); }
+
+.sc .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.sc kbd {
+  display: inline-block;
+  padding: .1rem .38rem;
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  background: var(--grey-50);
+  font-family: var(--font-mono);
+  font-size: .78em;
+  color: var(--ink);
+}
+
+
+/* ===========================================================================
+   03. Typography & helpers
+   ======================================================================== */
+
+.sc h1, .sc h2, .sc h3, .sc h4 {
+  /* font-family is stated explicitly, unlike in the standalone page where the
+     headings simply inherited from body. The shared style.css has its own
+     `h1,h2,h3,h4 { font-family:'Lora',serif }`, which the wrapper's inherited
+     font cannot override - an element rule beats inheritance - so all 57
+     headings on this page would otherwise render in Lora rather than Inter. */
+  font-family: var(--font-sans);
+  line-height: 1.14;
+  letter-spacing: -.024em;
+  font-weight: 660;
+  color: var(--navy);
+  text-wrap: balance;
+}
+
+.sc p { text-wrap: pretty; }
+
+.sc .h2 {
+  font-size: clamp(1.875rem, 1.25rem + 2.6vw, 3rem);
+  margin-bottom: 1rem;
+}
+
+/* Larger display size for the three project titles. */
+.sc .h2--display {
+  font-size: clamp(2.125rem, 1.35rem + 3.4vw, 3.75rem);
+  letter-spacing: -.032em;
+}
+
+.sc .h3 {
+  font-size: clamp(1.3125rem, 1.15rem + .7vw, 1.625rem);
+  margin-bottom: .85rem;
+}
+
+.sc .lede {
+  font-size: clamp(1rem, .95rem + .3vw, 1.0938rem);
+  color: var(--ink-muted);
+  max-width: 40rem;
+}
+
+.sc .lede--wide { max-width: 46rem; }
+
+.sc .eyebrow {
+  display: block;
+  margin-bottom: .85rem;
+  font-size: .8125rem;
+  font-weight: 650;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--blue-600);
+}
+
+.sc .sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sc .skip-link {
+  position: fixed;
+  top: .75rem; left: .75rem;
+  z-index: 200;
+  padding: .7rem 1.15rem;
+  background: var(--white);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.sc .skip-link:focus-visible { transform: translateY(0); }
+
+.sc .icon { width: 1.25rem; height: 1.25rem; flex: none; }
+
+/* Thin reading-progress bar across the top of the viewport. */
+/* z-index raised from the standalone's 120: there the bar only had to clear a
+   header at z-index 100, but the shared AI-UNIT navbar sits at 1000, and a
+   sticky navbar would otherwise paint straight over the bar. */
+.sc .scroll-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 1100;
+  height: 2px;
+  background: transparent;
+  pointer-events: none;
+}
+
+.sc .scroll-progress span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--gradient-accent);
+  transition: width 90ms linear;
+}
+
+
+/* ===========================================================================
+   04. Layout primitives
+   ======================================================================== */
+
+.sc .shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.sc .shell--wide { max-width: var(--shell-wide); }
+
+.sc .section {
+  position: relative;
+  padding-block: var(--section-y);
+}
+
+/* Alternating very light band. */
+.sc .section--tint {
+  background: var(--grey-50);
+  border-block: 1px solid var(--line);
+}
+
+.sc .section__head {
+  max-width: 44rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.sc .section__head--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.sc .section__head--center .lede { margin-inline: auto; }
+
+
+/* ===========================================================================
+   05. Header & navigation
+   ======================================================================== */
+
+.sc .site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out);
+}
+
+.sc .site-header.is-scrolled {
+  background: rgba(255, 255, 255, .84);
+  border-bottom-color: var(--line);
+  box-shadow: var(--shadow-sm);
+  -webkit-backdrop-filter: blur(18px) saturate(170%);
+  backdrop-filter: blur(18px) saturate(170%);
+}
+
+.sc .site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  min-height: 4.5rem;
+}
+
+.sc .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+  flex: none;
+  text-decoration: none;
+}
+
+/* Logo: height is fixed and width follows the natural aspect ratio, so the
+   artwork is never stretched. */
+.sc .brand__logo {
+  height: 2.4rem;
+  width: auto;
+  flex: none;
+  object-fit: contain;
+}
+
+/* The logo already carries the AI Unit wordmark, so the repeated text label
+   is dropped in the header and kept only in the footer, where the subtitle
+   sits beneath it. */
+.sc .site-header .brand__text { display: none; }
+
+.sc .brand__text { display: grid; line-height: 1.2; }
+
+.sc .brand__text strong {
+  font-size: 1rem;
+  font-weight: 680;
+  letter-spacing: -.02em;
+  color: var(--navy);
+}
+
+.sc .brand__text span { font-size: .75rem; color: var(--ink-subtle); }
+
+.sc .site-nav { margin-left: auto; }
+
+.sc .site-nav__list {
+  display: flex;
+  align-items: center;
+  gap: .1rem;
+  margin: 0; padding: 0;
+  list-style: none;
+}
+
+.sc .site-nav__link {
+  position: relative;
+  display: block;
+  padding: .5rem .75rem;
+  border-radius: var(--radius-pill);
+  font-size: .9063rem;
+  font-weight: 560;
+  color: var(--ink-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out);
+}
+
+.sc .site-nav__link:hover { color: var(--blue-700); background: var(--blue-50); }
+
+.sc .site-nav__link.is-active { color: var(--blue-700); }
+
+.sc .site-nav__link.is-active::after {
+  content: "";
+  position: absolute;
+  left: 50%; bottom: .12rem;
+  width: 1rem; height: 2px;
+  border-radius: 2px;
+  background: var(--gradient-accent);
+  transform: translateX(-50%);
+}
+
+.sc .nav-toggle {
+  display: none;
+  place-items: center;
+  width: 2.5rem; height: 2.5rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  transition: background-color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
+}
+
+.sc .nav-toggle:hover { background: var(--blue-50); border-color: var(--blue-200); }
+.sc .nav-toggle > .icon { grid-area: 1 / 1; transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-spring); }
+.sc .nav-toggle .icon--close { opacity: 0; transform: scale(.6); }
+.sc .nav-toggle[aria-expanded="true"] .icon--close { opacity: 1; transform: none; }
+.sc .nav-toggle[aria-expanded="true"] .icon--menu { opacity: 0; transform: scale(.6); }
+
+
+/* ===========================================================================
+   06. Hero
+   ======================================================================== */
+
+/* The standalone's 7-9rem top padding existed to clear its own position:fixed
+   header, which occupied no layout space. The shared AI-UNIT navbar is sticky,
+   so its 72px is already in the flow; keeping the original value would stack
+   the two and open a gap roughly a header taller than intended. The header
+   height is subtracted to preserve the *rendered* spacing above the kicker. */
+.sc .hero {
+  position: relative;
+  padding-top: clamp(2.5rem, 11vw - 4.5rem, 4.5rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  isolation: isolate;
+  overflow: hidden;
+
+  /* `.hero` is the one class name this page shares with the shared style.css,
+     where it is the homepage's full-viewport banner:
+        .hero { min-height:calc(100vh - 100px); display:flex;
+                align-items:center; background:linear-gradient(140deg,#1A3A8F …) }
+     Scoping wins on specificity only for properties both rules declare, so
+     those four would still apply here - turning this white opening section
+     into a viewport-tall dark navy flex row. They are reset explicitly. */
+  display: block;
+  min-height: 0;
+  align-items: normal;
+  background: none;
+}
+
+/* Very soft blue wash behind the opening, fading to white. */
+.sc .hero__wash {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 78%;
+  z-index: -1;
+  background:
+    radial-gradient(70% 60% at 18% 0%, rgba(59, 126, 240, .13) 0%, transparent 62%),
+    radial-gradient(60% 55% at 88% 8%, rgba(56, 189, 248, .13) 0%, transparent 58%),
+    linear-gradient(180deg, var(--blue-50) 0%, rgba(255, 255, 255, 0) 88%);
+}
+
+.sc .hero__head {
+  max-width: 52rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.sc .kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .45rem 1.05rem .45rem .75rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, .8);
+  box-shadow: var(--shadow-xs);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-size: .8125rem;
+  font-weight: 560;
+  color: var(--ink-muted);
+}
+
+.sc .kicker__dot {
+  width: .5rem; height: .5rem;
+  border-radius: 50%;
+  background: var(--blue-600);
+}
+
+.sc .hero__title {
+  font-size: clamp(2.75rem, 1.5rem + 5.4vw, 5.75rem);
+  font-weight: 700;
+  letter-spacing: -.04em;
+  line-height: 1.02;
+  margin-bottom: 1.25rem;
+  color: var(--navy);
+}
+
+.sc .hero__lead {
+  max-width: 44rem;
+  font-size: clamp(1rem, .94rem + .4vw, 1.1875rem);
+  color: var(--ink-muted);
+}
+
+.sc .hero__figure { margin: 0; }
+
+.sc .hero__figure .reveal-image {
+  border-radius: clamp(var(--radius-lg), 2.5vw, var(--radius-xl));
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg);
+}
+
+.sc .hero__figure img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center 32%;
+}
+
+.sc figcaption {
+  margin-top: .8rem;
+  font-size: .8125rem;
+  color: var(--ink-subtle);
+}
+
+.sc .hero__figure figcaption { text-align: center; }
+
+/* Scroll cue */
+.sc .scroll-cue {
+  display: grid;
+  justify-items: center;
+  gap: .6rem;
+  width: max-content;
+  margin: clamp(2rem, 4vw, 2.75rem) auto 0;
+  text-decoration: none;
+  color: var(--ink-subtle);
+}
+
+.sc .scroll-cue__label {
+  font-size: .6875rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: color var(--dur) var(--ease-out);
+}
+
+.sc .scroll-cue:hover .scroll-cue__label { color: var(--blue-600); }
+
+.sc .scroll-cue__rail {
+  position: relative;
+  width: 1px; height: 3rem;
+  background: linear-gradient(var(--line-strong), transparent);
+  overflow: hidden;
+}
+
+.sc .scroll-cue__dot {
+  position: absolute;
+  inset-inline: -1px;
+  height: 1rem;
+  background: var(--blue-600);
+  animation: scroll-hint 2.4s var(--ease-out) infinite;
+}
+
+@keyframes scroll-hint {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  35%  { opacity: 1; }
+  100% { transform: translateY(300%); opacity: 0; }
+}
+
+
+/* ===========================================================================
+   07. Media components
+   ======================================================================== */
+
+/* Image reveal: the frame wipes open and the image settles from a slight
+   zoom once its containing [data-reveal] block enters the viewport. */
+.sc.js .reveal-image {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path var(--dur-reveal) var(--ease-out);
+}
+
+.sc.js .reveal-image img {
+  transform: scale(1.07);
+  transition: transform 1.15s var(--ease-out);
+}
+
+.sc.js .is-revealed .reveal-image { clip-path: inset(0 0 0 0); }
+.sc.js .is-revealed .reveal-image img { transform: none; }
+
+/* Plain framed photo. */
+.sc .framed { margin: 0; }
+
+.sc .framed .reveal-image {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-md);
+  background: var(--white);
+}
+
+.sc .framed img { width: 100%; }
+
+/* Screenshots that benefit from breathing room inside the frame. */
+.sc .framed--pad .reveal-image { padding: clamp(.75rem, 2vw, 1.25rem); }
+
+/* Browser chrome around product screenshots. */
+.sc .browser { margin: 0; }
+
+.sc .browser__frame {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg);
+  background: var(--white);
+}
+
+.sc .browser--narrow .browser__frame {
+  max-width: 52rem;
+  margin-inline: auto;
+}
+
+.sc .browser__bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: .7rem 1rem;
+  background: var(--grey-50);
+  border-bottom: 1px solid var(--line);
+}
+
+.sc .browser__dots { display: flex; gap: .4rem; flex: none; }
+
+.sc .browser__dots i {
+  width: .625rem; height: .625rem;
+  border-radius: 50%;
+  background: var(--line-strong);
+}
+
+.sc .browser__url {
+  flex: 1;
+  max-width: 26rem;
+  margin-inline: auto;
+  padding: .28rem .9rem;
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  color: var(--ink-subtle);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sc .browser__frame .reveal-image { overflow: hidden; }
+.sc .browser img { width: 100%; }
+
+.sc .browser figcaption {
+  max-width: 44rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+/* Large closing photograph. */
+.sc .closing-figure { margin: clamp(2.5rem, 4.5vw, 3.5rem) 0 0; }
+
+.sc .closing-figure .reveal-image {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg);
+}
+
+.sc .closing-figure img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center 38%;
+}
+
+.sc .closing-figure figcaption { text-align: center; }
+
+
+/* ===========================================================================
+   08. Two-column blocks
+   ======================================================================== */
+
+.sc .duo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+/* Flips the visual order without changing the DOM order. */
+.sc .duo--reverse .duo__media { order: 2; }
+
+.sc .duo--tight { margin-top: var(--block-gap); }
+
+.sc .duo__body > p { color: var(--ink-muted); }
+.sc .duo__body > p + p { margin-top: 1rem; }
+
+/* Checklist of themes. */
+.sc .ticks {
+  display: grid;
+  gap: 1.25rem;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sc .ticks li { display: flex; gap: 1rem; }
+
+.sc .ticks__icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem; height: 2.5rem;
+  flex: none;
+  border-radius: 12px;
+  background: var(--blue-50);
+  border: 1px solid var(--blue-100);
+  color: var(--blue-600);
+  transition: background var(--dur) var(--ease-out),
+              color var(--dur) var(--ease-out),
+              transform var(--dur) var(--ease-spring);
+}
+
+.sc .ticks li:hover .ticks__icon {
+  background: var(--gradient-accent);
+  border-color: transparent;
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.sc .ticks h3 { font-size: 1.0313rem; font-weight: 640; margin-bottom: .2rem; }
+.sc .ticks p { font-size: .875rem; color: var(--ink-muted); line-height: 1.6; }
+
+/* Numbered process steps. */
+.sc .steps {
+  display: grid;
+  gap: .9rem;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.sc .steps li {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out);
+}
+
+.sc .steps li:hover {
+  transform: translateX(4px);
+  border-color: var(--blue-200);
+  box-shadow: var(--shadow-sm);
+}
+
+.sc .steps li > span {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: .8125rem;
+  font-weight: 600;
+  color: var(--blue-600);
+  padding-top: .1rem;
+}
+
+.sc .steps h4 { font-size: .9375rem; font-weight: 640; margin-bottom: .15rem; }
+.sc .steps p { font-size: .8438rem; color: var(--ink-muted); line-height: 1.55; }
+
+/* Capability cards beside the process. */
+.sc .spec-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.sc .spec {
+  padding: 1.35rem 1.25rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+
+.sc .spec:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+.sc .spec__icon {
+  display: grid;
+  place-items: center;
+  width: 2.35rem; height: 2.35rem;
+  margin-bottom: .85rem;
+  border-radius: 11px;
+  background: var(--blue-50);
+  border: 1px solid var(--blue-100);
+  color: var(--blue-600);
+}
+
+.sc .spec__icon .icon { width: 1.2rem; height: 1.2rem; }
+
+.sc .spec h4 { font-size: .9688rem; font-weight: 640; margin-bottom: .25rem; }
+.sc .spec p { font-size: .8438rem; color: var(--ink-muted); line-height: 1.55; }
+
+/* Icon + text rows (DIVA features). */
+.sc .feature-rows {
+  display: grid;
+  gap: 1.15rem;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sc .feature-rows li { display: flex; gap: 1rem; }
+
+.sc .feature-rows li > span {
+  display: grid;
+  place-items: center;
+  width: 2.35rem; height: 2.35rem;
+  flex: none;
+  border-radius: 11px;
+  background: var(--blue-50);
+  border: 1px solid var(--blue-100);
+  color: var(--blue-600);
+  transition: transform var(--dur) var(--ease-spring);
+}
+
+.sc .feature-rows li:hover > span { transform: scale(1.08); }
+
+.sc .feature-rows h4 { font-size: .9688rem; font-weight: 640; margin-bottom: .2rem; }
+.sc .feature-rows p { font-size: .875rem; color: var(--ink-muted); line-height: 1.6; }
+
+/* Workflow chips. */
+.sc .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sc .chips li {
+  padding: .35rem .85rem;
+  border: 1px solid var(--blue-100);
+  border-radius: var(--radius-pill);
+  background: var(--blue-50);
+  font-size: .8125rem;
+  font-weight: 560;
+  color: var(--blue-700);
+  transition: transform var(--dur) var(--ease-spring), background var(--dur) var(--ease-out);
+}
+
+.sc .chips li:hover { transform: translateY(-2px); background: var(--blue-100); }
+
+/* Small labelled facts. */
+.sc .mini-facts {
+  display: grid;
+  gap: .75rem;
+  margin: 1.75rem 0 0;
+  padding: 1.4rem 0 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+
+.sc .mini-facts li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: .875rem;
+}
+
+.sc .mini-facts span { color: var(--ink-subtle); }
+.sc .mini-facts strong { font-weight: 620; color: var(--ink); text-align: right; }
+
+
+/* ===========================================================================
+   09. Project sections
+   ======================================================================== */
+
+.sc .project__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: start;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+/* Oversized outlined index number. */
+.sc .project__index {
+  font-size: clamp(3rem, 2rem + 4vw, 5.5rem);
+  font-weight: 750;
+  line-height: .85;
+  letter-spacing: -.05em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--blue-200);
+  user-select: none;
+}
+
+
+/* ===========================================================================
+   10. Accessibility section
+   ======================================================================== */
+
+.sc .panels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.sc .panel {
+  margin: 0;
+  padding: clamp(1rem, 2vw, 1.35rem);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+
+.sc .panel:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+
+.sc .panel .reveal-image {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--grey-50);
+}
+
+/* Contain rather than crop - these are UI panels and detail matters. */
+.sc .panel img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  object-position: center top;
+}
+
+.sc .panel figcaption { margin-top: 1rem; color: inherit; }
+.sc .panel figcaption h3 { font-size: 1.0313rem; margin-bottom: .3rem; }
+.sc .panel figcaption p { font-size: .875rem; color: var(--ink-muted); line-height: 1.6; }
+
+.sc .a11y-principles { margin-top: var(--block-gap); }
+
+.sc .a11y-principles__intro {
+  max-width: 40rem;
+  margin-bottom: clamp(1.75rem, 3vw, 2.25rem);
+}
+
+.sc .a11y-principles__intro p { color: var(--ink-muted); }
+
+.sc .principle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin: 0;
+  padding: 0;
+}
+
+.sc .principle {
+  position: relative;
+  padding: clamp(1.4rem, 2.5vw, 1.85rem);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+  transition: transform var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out);
+}
+
+.sc .principle::after {
+  content: "";
+  position: absolute;
+  top: -45%; right: -25%;
+  width: 14rem; height: 14rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 126, 240, .13), transparent 68%);
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-out);
+  pointer-events: none;
+}
+
+.sc .principle:hover {
+  transform: translateY(-4px);
+  border-color: var(--blue-200);
+  box-shadow: var(--shadow-md);
+}
+
+.sc .principle:hover::after { opacity: 1; }
+
+.sc .principle > * { position: relative; }
+
+.sc .principle__icon {
+  display: grid;
+  place-items: center;
+  width: 2.6rem; height: 2.6rem;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  background: var(--gradient-accent);
+  color: var(--white);
+  box-shadow: var(--shadow-blue);
+}
+
+.sc .principle__icon .icon { width: 1.3rem; height: 1.3rem; }
+
+.sc .principle h4 { font-size: 1.0313rem; margin-bottom: .3rem; }
+.sc .principle p { font-size: .875rem; color: var(--ink-muted); line-height: 1.6; }
+
+
+/* ===========================================================================
+   11. Development journey timeline
+   ======================================================================== */
+
+.sc .timeline {
+  position: relative;
+  max-width: 60rem;
+  margin: clamp(2.5rem, 4.5vw, 3.5rem) auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Rail plus a progress fill driven by --timeline-progress from JS. */
+.sc .timeline::before, .sc .timeline::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.sc .timeline::before { height: 100%; background: var(--line-strong); }
+
+.sc .timeline::after {
+  height: var(--timeline-progress, 0%);
+  background: var(--gradient-accent);
+  transition: height 120ms linear;
+}
+
+.sc .timeline__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0 2.5rem;
+  padding-block: clamp(.65rem, 1.4vw, 1rem);
+}
+
+.sc .timeline__item:nth-child(odd) .timeline__card { grid-column: 1; text-align: right; }
+.sc .timeline__item:nth-child(even) .timeline__card { grid-column: 3; }
+
+.sc .timeline__marker {
+  grid-column: 2;
+  display: grid;
+  place-items: center;
+  width: 3.125rem; height: 3.125rem;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-sm);
+  color: var(--blue-600);
+  z-index: 1;
+  transition:
+    transform var(--dur) var(--ease-spring),
+    background var(--dur) var(--ease-out),
+    color var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out);
+}
+
+/* Marker fills once its stage scrolls into view. */
+.sc .timeline__item.is-revealed .timeline__marker {
+  background: var(--gradient-accent);
+  border-color: transparent;
+  color: var(--white);
+  box-shadow: var(--shadow-blue);
+}
+
+.sc .timeline__item:hover .timeline__marker { transform: scale(1.08); }
+
+.sc .timeline__card {
+  padding: 1.25rem 1.5rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+
+.sc .timeline__item:hover .timeline__card {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.sc .timeline__step {
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--blue-600);
+  margin-bottom: .3rem;
+}
+
+.sc .timeline__card h3 { font-size: 1.125rem; margin-bottom: .35rem; }
+.sc .timeline__card p { font-size: .875rem; color: var(--ink-muted); line-height: 1.6; }
+
+
+/* ===========================================================================
+   12. Gallery
+   ======================================================================== */
+
+.sc .gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.sc .gallery__item { margin: 0; }
+
+.sc .gallery__trigger {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+
+.sc .gallery__trigger:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.sc .gallery__trigger img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+/* Images enlarge within their frame on hover. */
+.sc .gallery__trigger:hover img, .sc .gallery__trigger:focus-visible img { transform: scale(1.07); }
+
+/* Light caption scrim rather than a dark one. */
+.sc .gallery__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.15rem;
+  background: linear-gradient(to top, rgba(255, 255, 255, .96) 0%, rgba(255, 255, 255, .72) 34%, rgba(255, 255, 255, 0) 68%);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.sc .gallery__trigger:hover .gallery__overlay, .sc .gallery__trigger:focus-visible .gallery__overlay { opacity: 1; }
+
+.sc .gallery__caption {
+  display: grid;
+  gap: .1rem;
+  text-align: left;
+  transform: translateY(8px);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.sc .gallery__trigger:hover .gallery__caption { transform: translateY(0); }
+
+.sc .gallery__caption strong { font-size: .9375rem; font-weight: 650; color: var(--navy); }
+.sc .gallery__caption span { font-size: .8125rem; color: var(--ink-muted); }
+
+.sc .gallery__zoom {
+  display: grid;
+  place-items: center;
+  width: 2.15rem; height: 2.15rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1px solid var(--line);
+  color: var(--blue-600);
+  box-shadow: var(--shadow-sm);
+}
+
+
+/* ===========================================================================
+   13. Skills & technologies
+   ======================================================================== */
+
+.sc .tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  gap: clamp(.85rem, 1.6vw, 1.15rem);
+  margin: 0;
+  padding: 0;
+}
+
+.sc .tech {
+  position: relative;
+  padding: 1.35rem 1.25rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+  transition:
+    transform var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out);
+}
+
+.sc .tech::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-wash);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.sc .tech:hover {
+  transform: translateY(-5px);
+  border-color: var(--blue-200);
+  box-shadow: var(--shadow-md);
+}
+
+.sc .tech:hover::before { opacity: 1; }
+
+.sc .tech > * { position: relative; }
+
+.sc .tech__icon {
+  display: grid;
+  place-items: center;
+  width: 2.65rem; height: 2.65rem;
+  margin-bottom: 1rem;
+  border-radius: 13px;
+  background: var(--blue-50);
+  border: 1px solid var(--blue-100);
+  color: var(--blue-600);
+  transition:
+    background var(--dur) var(--ease-out),
+    color var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-spring);
+}
+
+.sc .tech__icon .icon { width: 1.35rem; height: 1.35rem; }
+
+.sc .tech:hover .tech__icon {
+  background: var(--gradient-accent);
+  border-color: transparent;
+  color: var(--white);
+  transform: rotate(-5deg) scale(1.06);
+}
+
+.sc .tech h3 { font-size: 1rem; margin-bottom: .25rem; }
+.sc .tech p { font-size: .8125rem; color: var(--ink-muted); line-height: 1.5; }
+
+
+/* ===========================================================================
+   14. Final reflection
+   ======================================================================== */
+
+.sc .section--reflection {
+  background: var(--grey-50);
+  border-top: 1px solid var(--line);
+}
+
+.sc .reflection {
+  max-width: 46rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.sc .reflection p { color: var(--ink-muted); }
+.sc .reflection p + p { margin-top: 1.15rem; }
+
+.sc .reflection__lead {
+  font-size: clamp(1.0625rem, 1rem + .4vw, 1.1875rem);
+  color: var(--ink) !important;
+}
+
+.sc .reflection__close {
+  margin-top: 2rem !important;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--line);
+  font-size: 1rem;
+  font-weight: 560;
+  color: var(--navy) !important;
+}
+
+
+/* ===========================================================================
+   15. Footer
+   ======================================================================== */
+
+.sc .site-footer {
+  padding-block: clamp(2.5rem, 5vw, 3.25rem) 1.75rem;
+  background: var(--white);
+  border-top: 1px solid var(--line);
+}
+
+.sc .site-footer__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.sc .site-footer__brand p {
+  margin-top: 1rem;
+  max-width: 28rem;
+  font-size: .875rem;
+  color: var(--ink-muted);
+}
+
+.sc .site-footer__nav h2 {
+  font-size: .8125rem;
+  font-weight: 650;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-subtle);
+  margin-bottom: 1rem;
+}
+
+.sc .site-footer__nav ul { display: grid; gap: .55rem; margin: 0; padding: 0; list-style: none; }
+
+.sc .site-footer__nav a {
+  font-size: .875rem;
+  color: var(--ink-muted);
+  text-decoration: none;
+  transition: color var(--dur) var(--ease-out);
+}
+
+.sc .site-footer__nav a:hover { color: var(--blue-600); }
+
+.sc .site-footer__legal {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: .5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--line);
+  font-size: .8438rem;
+  color: var(--ink-subtle);
+}
+
+.sc .site-footer__legal a { color: var(--ink-muted); text-decoration: none; }
+.sc .site-footer__legal a:hover { color: var(--blue-600); }
+
+
+/* ===========================================================================
+   16. Lightbox - light frosted overlay, never a dark scrim
+   ======================================================================== */
+
+/* Raised from the standalone's 150 to the site's full-screen modal tier (the
+   shared .video-modal also uses 9999), so the lightbox covers the navbar and
+   the floating DIVA widget at 1500 rather than appearing beneath them. */
+.sc .lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 2.5rem);
+}
+
+.sc .lightbox[hidden] { display: none; }
+
+.sc .lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(247, 249, 252, .9);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  animation: fade-in var(--dur) var(--ease-out);
+}
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(14px) scale(.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+.sc .lightbox__dialog {
+  position: relative;
+  width: min(64rem, 100%);
+  animation: pop-in var(--dur) var(--ease-out);
+}
+
+.sc .lightbox__figure { margin: 0; }
+
+.sc .lightbox__figure img {
+  width: 100%;
+  max-height: 76vh;
+  object-fit: contain;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.sc .lightbox__caption {
+  margin-top: .9rem;
+  text-align: center;
+  font-size: .9375rem;
+  font-weight: 560;
+  color: var(--navy);
+}
+
+.sc .lightbox__nav, .sc .lightbox__close {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 2.85rem; height: 2.85rem;
+  background: var(--white);
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  color: var(--ink);
+  box-shadow: var(--shadow-md);
+  transition: background var(--dur) var(--ease-out),
+              color var(--dur) var(--ease-out),
+              transform var(--dur) var(--ease-spring);
+}
+
+.sc .lightbox__nav:hover, .sc .lightbox__close:hover {
+  background: var(--blue-600);
+  border-color: transparent;
+  color: var(--white);
+}
+
+.sc .lightbox__nav { top: 50%; transform: translateY(-50%); }
+.sc .lightbox__nav:hover { transform: translateY(-50%) scale(1.06); }
+.sc .lightbox__nav--prev { left: -1.25rem; }
+.sc .lightbox__nav--next { right: -1.25rem; }
+.sc .lightbox__close { top: -1.25rem; right: -1.25rem; }
+
+.sc .lightbox__counter {
+  margin-top: .45rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: .8125rem;
+  color: var(--ink-subtle);
+}
+
+
+/* ===========================================================================
+   17. Scroll reveal & motion
+   Only applied when JS is present to remove it again.
+   ======================================================================== */
+
+/* The starting offset is expressed as two custom properties rather than as
+   competing `transform` declarations. Only this rule and `.is-revealed` ever
+   set `transform`, so the reset always wins regardless of how specific the
+   directional selectors below need to be. */
+.sc.js [data-reveal] {
+  --reveal-x: 0px;
+  --reveal-y: 26px;
+
+  opacity: 0;
+  transform: translate(var(--reveal-x), var(--reveal-y));
+  transition:
+    opacity var(--dur-reveal) var(--ease-out),
+    transform var(--dur-reveal) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Directional variants: the media column of an alternating project block
+   slides in from the side it sits on. */
+.sc.js .duo--reverse > .duo__media[data-reveal] { --reveal-x: 28px; --reveal-y: 0px; }
+.sc.js .duo:not(.duo--reverse) > .duo__media[data-reveal] { --reveal-x: -28px; --reveal-y: 0px; }
+
+.sc.js [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+
+/* ===========================================================================
+   18. Responsive
+   ======================================================================== */
+
+/* --- Laptop --------------------------------------------------------------- */
+@media (max-width: 1140px) {
+  .sc .site-nav__link { padding-inline: .55rem; font-size: .875rem; }
+  .sc .brand__text span { display: none; }
+}
+
+/* --- Small laptop / large tablet ------------------------------------------ */
+@media (max-width: 1000px) {
+  .sc .panels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sc .panels .panel:last-child { grid-column: span 2; }
+  .sc .panels .panel:last-child img { aspect-ratio: 16 / 9; }
+  .sc .principle-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* --- Tablet --------------------------------------------------------------- */
+@media (max-width: 900px) {
+  html { scroll-padding-top: 5.25rem; }
+
+  /* Nav collapses into a light glass sheet. */
+  .sc .nav-toggle { display: grid; margin-left: auto; }
+
+  .sc .site-nav {
+    position: fixed;
+    inset: 4.5rem .75rem auto;
+    margin: 0;
+    padding: .65rem;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, .94);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-lg);
+    -webkit-backdrop-filter: blur(18px) saturate(170%);
+    backdrop-filter: blur(18px) saturate(170%);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition:
+      opacity var(--dur) var(--ease-out),
+      transform var(--dur) var(--ease-out),
+      visibility 0s linear var(--dur);
+  }
+
+  .sc .site-nav.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  .sc .site-nav__list { flex-direction: column; align-items: stretch; gap: .1rem; }
+
+  .sc .site-nav__link { padding: .8rem 1rem; border-radius: var(--radius-sm); font-size: 1rem; }
+  .sc .site-nav__link.is-active::after { display: none; }
+  .sc .site-nav__link.is-active { background: var(--blue-50); }
+
+  /* Two-column blocks stack; media always leads. */
+  .sc .duo { grid-template-columns: 1fr; }
+  .sc .duo--reverse .duo__media { order: 0; }
+  .sc .duo__media { max-width: 40rem; }
+
+  /* Once stacked, media blocks fade up like everything else. */
+  .sc.js .duo__media[data-reveal] { --reveal-x: 0px; --reveal-y: 26px; }
+
+  .sc .spec-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .sc .project__head { grid-template-columns: 1fr; gap: .5rem; }
+  .sc .project__index { font-size: 3.25rem; }
+
+  .sc .gallery { grid-template-columns: 1fr; }
+  .sc .gallery__trigger img { aspect-ratio: 16 / 10; }
+
+  .sc .site-footer__inner { grid-template-columns: 1fr; }
+
+  /* Timeline drops to a single left-hand rail. */
+  .sc .timeline::before, .sc .timeline::after { left: 1.5625rem; }
+
+  .sc .timeline__item { grid-template-columns: auto 1fr; gap: 0 1.25rem; }
+
+  .sc .timeline__item:nth-child(odd) .timeline__card, .sc .timeline__item:nth-child(even) .timeline__card {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .sc .timeline__marker { grid-column: 1; grid-row: 1; align-self: start; }
+}
+
+/* --- Large phone ---------------------------------------------------------- */
+@media (max-width: 700px) {
+  .sc .panels { grid-template-columns: 1fr; }
+  .sc .panels .panel:last-child { grid-column: auto; }
+  .sc .panels .panel img, .sc .panels .panel:last-child img { aspect-ratio: 3 / 4; }
+
+  .sc .principle-grid { grid-template-columns: 1fr; }
+  .sc .spec-cards { grid-template-columns: 1fr; }
+
+  .sc .lightbox__nav--prev { left: .5rem; }
+  .sc .lightbox__nav--next { right: .5rem; }
+  .sc .lightbox__close { top: -3.25rem; right: 0; }
+}
+
+/* --- Phone ---------------------------------------------------------------- */
+@media (max-width: 520px) {
+  .sc .hero__figure img { aspect-ratio: 4 / 3; }
+  .sc .browser__url { display: none; }
+  .sc .mini-facts li { flex-direction: column; gap: .1rem; }
+  .sc .mini-facts strong { text-align: left; }
+  .sc .site-footer__legal { flex-direction: column; align-items: flex-start; }
+}
+
+
+/* ===========================================================================
+   19. Reduced motion & print
+   ======================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  .sc *, .sc *::before, .sc *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Nothing may depend on a transition to become visible. */
+  .sc.js [data-reveal] {
+    --reveal-x: 0px;
+    --reveal-y: 0px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .sc.js .reveal-image { clip-path: none; }
+  .sc.js .reveal-image img { transform: none; }
+
+  .sc .scroll-cue__dot { animation: none; }
+}
+
+@media print {
+  .sc .site-header, .sc .hero__wash, .sc .scroll-cue, .sc .scroll-progress, .sc .nav-toggle, .sc .lightbox { display: none !important; }
+
+  .sc { background: #fff; }
+  .sc .section { padding-block: 1.5rem; break-inside: avoid; }
+  .sc .section--tint, .sc .section--reflection { background: #fff; }
+  .sc.js .reveal-image { clip-path: none; }
+  .sc.js [data-reveal] { opacity: 1; transform: none; }
+}

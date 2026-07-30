@@ -20,6 +20,7 @@ $router->get('/privacy-policy', [PageController::class, 'privacyPolicy']);
 $router->get('/disclaimer', [PageController::class, 'disclaimer']);
 $router->get('/cookie-policy', [PageController::class, 'cookiePolicy']);
 $router->get('/accessibility', [PageController::class, 'accessibility']);
+$router->get('/student-corner', [PageController::class, 'studentCorner']);
 
 $router->post('/contact', [ContactController::class, 'submit']);
 

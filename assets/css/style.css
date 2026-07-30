@@ -81,7 +81,9 @@ button{font-family:'Sora',sans-serif;}
 .logo-sub{font-size:0.75rem;font-weight:500;color:var(--text-3);letter-spacing:0.04em;}
 .nav-links{display:flex;align-items:center;gap:2px;}
 .nav-link{padding:7px 14px;font-size:0.845rem;font-weight:500;color:var(--text-2);border-radius:8px;transition:all var(--trans);white-space:nowrap;cursor:pointer;}
-.nav-link:hover,.nav-link.active{color:var(--blue-mid);background:var(--blue-pale);}
+/* [aria-current="page"] marks a whole-page nav target (Student Corner); .active
+   is set by the homepage scroll spy. Both render identically. */
+.nav-link:hover,.nav-link.active,.nav-link[aria-current="page"]{color:var(--blue-mid);background:var(--blue-pale);}
 .nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .btn-search{background:none;border:1px solid var(--border);color:var(--text-3);padding:0 12px;height:36px;border-radius:100px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all var(--trans);font-size:0.8rem;font-weight:500;}
 .btn-search span{color:var(--text-3);}

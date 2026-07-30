@@ -1,8 +1,8 @@
 <?php
 /**
  * Master layout for every "full site" page (home, privacy-policy, disclaimer,
- * cookie-policy, accessibility). Wraps the page's $content with the shared
- * header, navbar, footer, cookie banner, search modal, video modal, and DIVA
+ * cookie-policy, accessibility, student-corner). Wraps the page's $content with
+ * the shared header, navbar, footer, cookie banner, video modal, and DIVA
  * widget — the components the task asks to be de-duplicated into single
  * shared includes. Accessibility tooling is provided by the third-party
  * accessibility-widget.js (self-injecting; no markup include needed).
@@ -25,8 +25,6 @@ $isHome = $isHome ?? false;
 
 <?php require __DIR__ . '/../footer.php'; ?>
 
-<?php require __DIR__ . '/../search-modal.php'; ?>
-
 <?php require __DIR__ . '/../video-modal.php'; ?>
 
 <?php require __DIR__ . '/../diva-widget.php'; ?>
@@ -46,5 +44,14 @@ $jsConfig = [
 <script>window.AI_UNIT = <?= json_encode($jsConfig, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?>;</script>
 <script src="<?= e(asset('js/script.js')) ?>"></script>
 <script src="<?= e(asset('js/accessibility-widget.js')) ?>"></script>
+<?php
+/**
+ * Optional per-page scripts (filenames under assets/js/), for pages that ship
+ * behaviour of their own. Deferred so they never block parsing, and loaded
+ * after the shared scripts so the shared ones are already in place.
+ */
+foreach ($pageScripts ?? [] as $pageScript): ?>
+<script src="<?= e(asset('js/' . $pageScript)) ?>" defer></script>
+<?php endforeach; ?>
 
 </body></html>
