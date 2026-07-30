@@ -2,13 +2,14 @@
 $title = '';
 $isHome = true;
 ?>
+<main id="main-content" tabindex="-1">
 <!-- HERO -->
-<section class="hero" id="hero" aria-label="Hero">
+<section class="hero" id="hero">
   <video class="hero-video" id="heroVideo" autoplay muted loop playsinline aria-hidden="true">
     <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_105406_16f4600d-7a92-4292-b96e-b19156c7830a.mp4" type="video/mp4">
   </video>
   <div class="hero-video-overlay" aria-hidden="true"></div>
-  <div class="hero-inner" id="main-content" tabindex="-1">
+  <div class="hero-inner">
     <div class="hero-content">
       <div class="hero-badge" aria-label="Ministry badge">
         <span class="badge-dot" aria-hidden="true"></span>
@@ -481,5 +482,7 @@ $isHome = true;
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
       </form>
+    </div>
   </div>
 </section>
+</main>
