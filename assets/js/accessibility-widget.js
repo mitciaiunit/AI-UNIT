@@ -4,15 +4,33 @@
    Drop this one line into any page:
      <script src="accessibility-widget.js"></script>
    It injects its own fonts, CSS, and markup, and wires itself up -
-   nothing else needs to be added. The trigger button floats fixed
-   in the bottom-right corner.
+   nothing else needs to be added. The trigger button is moved into the
+   page's navbar (.nav-right) if one is found, otherwise it falls back
+   to floating fixed in the bottom-right corner.
    ========================================================== */
 (function () {
   'use strict';
   if (window.__A11Y_WIDGET_LOADED__) return;
   window.__A11Y_WIDGET_LOADED__ = true;
 
+  // Captured synchronously so it's still available once injectAssets() runs
+  // later (on DOMContentLoaded), after document.currentScript has reset.
+  // Resolving the icon relative to this script's own URL (rather than a
+  // hardcoded root-absolute path) keeps it correct whether the site is
+  // served from a domain root or a subfolder (e.g. XAMPP's /AI-UNIT/).
+  var WIDGET_SCRIPT_SRC = document.currentScript ? document.currentScript.src : '';
+
+  function resolveAsset(relativeToScript) {
+    if (!WIDGET_SCRIPT_SRC) return relativeToScript;
+    try {
+      return new URL(relativeToScript, WIDGET_SCRIPT_SRC).href;
+    } catch (err) {
+      return relativeToScript;
+    }
+  }
+
   function injectAssets() {
+    var iconSrc = resolveAsset('../images/accessibility.png');
     var pre = document.createElement('link');
     pre.rel = 'preconnect';
     pre.href = 'https://fonts.googleapis.com';
@@ -78,13 +96,18 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text-1);}
    (--blue, --teal, --radius, --shadow-md, 'Sora' / 'Lora' fonts).
    ========================================================== */
 
-/* ---- TRIGGER BUTTON (lives in navbar .nav-right) ---- */
+/* ---- TRIGGER BUTTON ----
+   Default rule below is a fixed floating fallback for pages with no
+   navbar. a11y-widget.js looks for .nav-right and, when found, moves the
+   trigger there and adds .a11y-trigger-navbar, which overrides it to sit
+   inline alongside the search/hamburger buttons instead of floating. */
 .a11y-trigger-wrap{
   position:fixed;bottom:20px;right:20px;z-index:2001;
   display:flex;align-items:center;gap:8px;
   padding:8px 14px;border-radius:100px;
   cursor:pointer;
   color:var(--text-2);
+  font-family:'Sora',sans-serif;
   font-size:0.84rem;font-weight:600;
   border:1.5px solid var(--border);
   background:var(--surface);
@@ -102,9 +125,15 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text-1);}
   background:var(--blue-pale);
   color:var(--blue);
 }
+.a11y-trigger-wrap.a11y-trigger-navbar{
+  position:static;
+  bottom:auto;right:auto;
+  height:36px;padding:0 12px;
+  box-shadow:none;
+}
 .a11y-trigger-img{width:22px;height:22px;object-fit:contain;flex-shrink:0;}
 .a11y-trigger-wrap span{white-space:nowrap;}
-@media(max-width:900px){.a11y-trigger-wrap span{display:none;}.a11y-trigger-wrap{padding:8px;}}
+@media(max-width:900px){.a11y-trigger-wrap span{display:none;}.a11y-trigger-wrap{padding:8px;}.a11y-trigger-wrap.a11y-trigger-navbar{padding:0 8px;}}
 
 /* ---- PANEL SHELL ---- */
 #a11y-panel{
@@ -119,11 +148,19 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text-1);}
   z-index:2000;
   overflow-y:auto;
   transform:translateX(100%);
-  transition:transform 0.32s cubic-bezier(0.4,0,0.2,1);
+  /* visibility is delayed on the way in (0s 0s) but instant on the way out
+     (0s .3s) so the slide animation still plays, while removing the closed
+     panel from the accessibility tree - see openPanel()/closePanel(), which
+     toggle aria-modal in lockstep with this class. Without this, NVDA (which
+     enforces aria-modal strictly) treats the still-present, merely
+     off-screen panel as the active modal from first page load and hides the
+     entire rest of the document, even though nothing looks wrong visually. */
+  visibility:hidden;
+  transition:transform 0.32s cubic-bezier(0.4,0,0.2,1), visibility 0s 0.32s;
   font-family:'Sora',sans-serif;
   padding-bottom:24px;
 }
-#a11y-panel.open{transform:translateX(0);}
+#a11y-panel.open{transform:translateX(0);visibility:visible;transition:transform 0.32s cubic-bezier(0.4,0,0.2,1), visibility 0s 0s;}
 #a11y-panel::-webkit-scrollbar{width:6px;}
 #a11y-panel::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:4px;}
 
@@ -234,19 +271,6 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text-1);}
   padding:8px 10px;border-radius:8px;
   background:white;border:1px solid var(--blue-light);
 }
-
-.sr-voice-row{margin-top:12px;}
-.sr-voice-select{
-  width:100%;
-  padding:9px 12px;
-  border-radius:8px;
-  border:1.5px solid var(--border);
-  background:white;
-  font-size:0.82rem;
-  color:var(--text-1);
-  font-family:'Sora',sans-serif;
-}
-.sr-voice-select:focus{outline:none;border-color:var(--blue-mid);}
 
 .sr-speed-row{display:flex;align-items:center;gap:10px;margin-top:12px;}
 .sr-speed-label{font-size:0.78rem;font-weight:600;color:var(--text-2);flex-shrink:0;}
@@ -545,19 +569,19 @@ html[style*="--a11y-font-scale"] body{
   </div>
 </div>
 
-<div class="a11y-trigger-wrap" id="a11y-trigger" role="button" tabindex="0" aria-label="Accessibility Tools" aria-haspopup="dialog" aria-expanded="false" aria-controls="a11y-panel">
-  <img src="/image/accessibility.png" alt="" aria-hidden="true" class="a11y-trigger-img"
+<button type="button" class="a11y-trigger-wrap" id="a11y-trigger" aria-label="Accessibility Tools" aria-haspopup="menu" aria-expanded="false" aria-controls="a11y-panel">
+  <img src="${iconSrc}" alt="" aria-hidden="true" class="a11y-trigger-img"
        onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block'" />
   <svg aria-hidden="true" style="display:none;flex-shrink:0;color:var(--blue);" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="5" r="2"/><path d="M12 22v-8"/><path d="M5 9l7-2 7 2"/><path d="M5 9l2 6h10l2-6"/>
   </svg>
   <span data-i18n="accessibility">Accessibility</span>
-</div>
+</button>
 
 <div id="a11y-announcer" aria-live="polite" aria-atomic="true" role="status"></div>
 <div id="a11y-read-guide" aria-hidden="true"></div>
 
-<div id="a11y-panel" role="dialog" aria-modal="true" aria-label="Accessibility options">
+<div id="a11y-panel" role="dialog" aria-label="Accessibility options">
   <div class="a11y-header">
     <div class="a11y-header-left">
       <div class="a11y-header-icon" aria-hidden="true">
@@ -567,7 +591,7 @@ html[style*="--a11y-font-scale"] body{
     </div>
     <div class="a11y-header-right">
       <button class="a11y-reset" id="a11y-reset-btn" aria-label="Reset all settings" data-i18n="a11y_reset">Reset</button>
-      <button class="a11y-close" id="a11y-close-btn" aria-label="Close">&times;</button>
+      <button class="a11y-close" id="a11y-close-btn" aria-label="Close accessibility panel">&times;</button>
     </div>
   </div>
 
@@ -595,14 +619,9 @@ html[style*="--a11y-font-scale"] body{
       </div>
     </div>
     <div class="sr-status" id="sr-status" role="status" aria-live="polite"></div>
-    <div class="sr-voice-row">
-      <select class="sr-voice-select" id="sr-voice-select" aria-label="Choose reading voice">
-        <option value="" data-i18n="a11y_voice_default">Default voice</option>
-      </select>
-    </div>
     <div class="sr-speed-row">
       <span class="sr-speed-label" data-i18n="a11y_speed_label">Speed:</span>
-      <input type="range" class="sr-speed-slider" id="sr-speed" min="0.5" max="2" step="0.1" value="1" aria-label="Reading speed" aria-valuemin="0.5" aria-valuemax="2" aria-valuenow="1">
+      <input type="range" class="sr-speed-slider" id="sr-speed" min="0.5" max="2" step="0.1" value="1" aria-label="Reading speed">
       <span id="sr-speed-display" style="font-size:0.75rem;font-weight:700;color:#1A3A8F;min-width:32px;">1&times;</span>
     </div>
   </div>
@@ -668,6 +687,20 @@ html[style*="--a11y-font-scale"] body{
 
   <div class="a11y-kbd-bar"><span data-i18n="a11y_kbd_open">Open panel:</span> <kbd>Alt</kbd> + <kbd>A</kbd> &middot; <span data-i18n="a11y_kbd_close">Close:</span> <kbd>Esc</kbd></div>
 </div>`);
+
+    // Move the trigger into the navbar next to search/hamburger when one
+    // is present on the page, instead of leaving it floating over content.
+    var a11yTrigger = document.getElementById('a11y-trigger');
+    var navRight = document.querySelector('.nav-right');
+    if (a11yTrigger && navRight) {
+      var hamburgerBtn = navRight.querySelector('.hamburger');
+      if (hamburgerBtn) {
+        navRight.insertBefore(a11yTrigger, hamburgerBtn);
+      } else {
+        navRight.appendChild(a11yTrigger);
+      }
+      a11yTrigger.classList.add('a11y-trigger-navbar');
+    }
   }
 
   function initScreenReader() {
@@ -712,7 +745,6 @@ setTimeout(function () {
 
     const srReadBtn = document.getElementById('sr-read-btn');
     const srStatus = document.getElementById('sr-status');
-    const srVoiceSelect = document.getElementById('sr-voice-select');
     const srSpeedSlider = document.getElementById('sr-speed');
     const srSpeedDisplay = document.getElementById('sr-speed-display');
     const srReadLabelStrong = srReadBtn ? srReadBtn.querySelector('.sr-btn-label strong') : null;
@@ -731,10 +763,11 @@ setTimeout(function () {
     }
 
     // --- Voice Management with robust async loading ---
+    // No user-facing voice picker: exactly one voice is auto-selected per
+    // language (UK English for 'en' - see SR.preferredVoices/langMap above).
     function loadVoices() {
       if (!window.speechSynthesis) return;
       SR.voices = window.speechSynthesis.getVoices() || [];
-      populateVoiceSelect();
       if (!SR.selectedVoice && SR.voices.length > 0) {
         autoSelectPreferredVoice();
       }
@@ -755,7 +788,6 @@ setTimeout(function () {
         const match = SR.voices.find(function (v) { return v.name === prefs[i]; });
         if (match) {
           SR.selectedVoice = match;
-          if (srVoiceSelect) srVoiceSelect.value = match.name;
           return;
         }
       }
@@ -763,40 +795,6 @@ setTimeout(function () {
       const langVoices = getVoicesForLang(effectiveLang);
       if (langVoices.length > 0) {
         SR.selectedVoice = langVoices[0];
-        if (srVoiceSelect) srVoiceSelect.value = langVoices[0].name;
-      }
-    }
-
-    function populateVoiceSelect() {
-      if (!srVoiceSelect) return;
-      const currentVal = srVoiceSelect.value;
-      const defaultText = translations[currentLang] && translations[currentLang]['a11y_voice_default'] ? translations[currentLang]['a11y_voice_default'] : 'Default voice';
-      srVoiceSelect.innerHTML = '<option value="">' + defaultText + '</option>';
-      // For Kreol, show French voices since no Kreol TTS exists
-      const effectiveLang = currentLang === 'km' ? 'fr' : currentLang;
-      const langVoices = getVoicesForLang(effectiveLang);
-      // Sort: preferred voices first, then alphabetically
-      const prefs = SR.preferredVoices[effectiveLang] || [];
-      langVoices.sort(function (a, b) {
-        const aIdx = prefs.indexOf(a.name);
-        const bIdx = prefs.indexOf(b.name);
-        if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
-        if (aIdx !== -1) return -1;
-        if (bIdx !== -1) return 1;
-        return a.name.localeCompare(b.name);
-      });
-      langVoices.forEach(function (v) {
-        const opt = document.createElement('option');
-        opt.value = v.name;
-        var label = v.name;
-        if (prefs.indexOf(v.name) !== -1) label += ' ★';
-        if (currentLang === 'km') label += ' (French - Kreol fallback)';
-        opt.textContent = label + ' (' + v.lang + ')';
-        srVoiceSelect.appendChild(opt);
-      });
-      if (currentVal) {
-        const exists = Array.from(srVoiceSelect.options).some(function (o) { return o.value === currentVal; });
-        if (exists) srVoiceSelect.value = currentVal;
       }
     }
 
@@ -819,18 +817,50 @@ setTimeout(function () {
     }
     initVoices();
 
-    srVoiceSelect && srVoiceSelect.addEventListener('change', function () {
-      const name = srVoiceSelect.value;
-      SR.selectedVoice = name ? SR.voices.find(function (v) { return v.name === name; }) : null;
-      announce(name ? 'Voice changed to ' + name : 'Using default voice');
-    });
-
     srSpeedSlider && srSpeedSlider.addEventListener('input', function () {
       SR.rate = parseFloat(srSpeedSlider.value);
       if (srSpeedDisplay) srSpeedDisplay.textContent = SR.rate + '×';
     });
 
     // --- Text Extraction ---
+    // Widget/UI chrome that should never end up in the read-aloud queue,
+    // regardless of its current visibility state.
+    var A11Y_READER_SKIP_SELECTOR = '.video-modal, .diva-panel, #divaWidget, #a11y-announcer, #a11y-read-guide, #a11y-sr-prompt, #sr-speed-display';
+
+    // getComputedStyle(el) only ever reflects el's own specified/computed
+    // style - display:none (or visibility/opacity/hidden/aria-hidden) on an
+    // ANCESTOR does not cascade into a descendant's own computed values, so
+    // checking only node.parentElement (as this used to) lets fully hidden
+    // content - inactive team-bio tabs (display:none), collapsed framework
+    // accordions (max-height:0 + overflow:hidden, no display/visibility
+    // change at all), the closed mobile nav - pass the filter and get read
+    // aloud anyway, in an order matching nothing on screen. Walk every
+    // ancestor up to <body> instead.
+    function isHiddenOrCollapsed(el) {
+      for (var node = el; node && node !== document.body; node = node.parentElement) {
+        if (node.hidden || node.getAttribute('aria-hidden') === 'true') return true;
+        var style = window.getComputedStyle(node);
+        if (style.display === 'none' || style.visibility === 'hidden') return true;
+        // .reveal is this site's scroll-triggered fade-in (script.js's
+        // IntersectionObserver adds .visible the first time an element
+        // scrolls into view - see assets/js/script.js). It starts every
+        // section at opacity:0 by design, one-way, regardless of whether a
+        // sighted user has scrolled there yet; treating that as "hidden"
+        // here would make the reader silently skip most of the page for
+        // anyone who hits "Read page aloud" without scrolling first, which
+        // is a normal, common pattern for screen-reader users. Real,
+        // permanently-hidden content never carries this class, so it's
+        // excluded from the opacity check rather than the check being
+        // dropped entirely.
+        if (style.opacity === '0' && !node.classList.contains('reveal')) return true;
+        // Collapsed accordion: content is there and would scroll into view,
+        // but overflow:hidden + a collapsed max-height/height clips it to
+        // nothing (dimension-body etc. use max-height:0, not display:none).
+        if (style.overflow === 'hidden' && node.clientHeight === 0 && node.scrollHeight > 0) return true;
+      }
+      return false;
+    }
+
     function getReadableText() {
       const walker = document.createTreeWalker(
         document.body,
@@ -838,11 +868,10 @@ setTimeout(function () {
         function (node) {
           const parent = node.parentElement;
           if (!parent) return NodeFilter.FILTER_REJECT;
-          const style = window.getComputedStyle(parent);
-          if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return NodeFilter.FILTER_REJECT;
           const tag = parent.tagName.toLowerCase();
-          if (['script', 'style', 'noscript', 'iframe', 'canvas'].includes(tag)) return NodeFilter.FILTER_REJECT;
-          if (parent.closest && parent.closest('.video-modal, .diva-panel, #divaWidget, #a11y-announcer, #a11y-read-guide, #a11y-sr-prompt')) return NodeFilter.FILTER_REJECT;
+          if (['script', 'style', 'noscript', 'iframe', 'canvas', 'svg'].includes(tag)) return NodeFilter.FILTER_REJECT;
+          if (parent.closest && parent.closest(A11Y_READER_SKIP_SELECTOR)) return NodeFilter.FILTER_REJECT;
+          if (isHiddenOrCollapsed(parent)) return NodeFilter.FILTER_REJECT;
           const text = node.textContent.trim();
           if (!text) return NodeFilter.FILTER_REJECT;
           return NodeFilter.FILTER_ACCEPT;
@@ -853,20 +882,47 @@ setTimeout(function () {
       let node;
       while (node = walker.nextNode()) {
         const parent = node.parentElement;
-        const tag = parent ? parent.tagName.toLowerCase() : '';
         let text = node.textContent.trim();
-        if (!text) continue;
+        if (!parent || !text) continue;
+
+        // Look past inline wrappers (e.g. a <span> label inside a <button>)
+        // to find the actual interactive/heading/list ancestor, so labels
+        // like "Accessibility" still get announced as "Button." instead of
+        // being missed just because the text itself sits in a <span>.
+        const headingEl = parent.closest('h1, h2, h3');
+        const interactiveEl = parent.closest('button, a, [role="button"], [role="link"]');
+        const toggleLabelEl = parent.closest('label');
+        const toggleInput = toggleLabelEl ? toggleLabelEl.querySelector('input[type="checkbox"]') : null;
+        const listEl = parent.closest('li');
 
         let prefix = '';
-        if (tag === 'h1' || tag === 'h2') prefix = 'Heading. ';
-        else if (tag === 'h3') prefix = 'Subheading. ';
-        else if (tag === 'li') prefix = 'List item. ';
-        else if (tag === 'button') prefix = 'Button. ';
-        else if (tag === 'a') prefix = 'Link. ';
-
-        if (text.length > 0) {
-          chunks.push({ text: prefix + text, element: parent });
+        let suffix = '';
+        if (headingEl) {
+          prefix = headingEl.tagName.toLowerCase() === 'h3' ? 'Subheading. ' : 'Heading. ';
+        } else if (interactiveEl) {
+          const isLink = interactiveEl.tagName.toLowerCase() === 'a' || interactiveEl.getAttribute('role') === 'link';
+          prefix = isLink ? 'Link. ' : 'Button. ';
+          const popup = interactiveEl.getAttribute('aria-haspopup');
+          if (popup && popup !== 'false') {
+            suffix += ', opens a ' + popup + '. ';
+          }
+          const pressed = interactiveEl.getAttribute('aria-pressed');
+          if (pressed === 'true') suffix += ', selected. ';
+          else if (pressed === 'false') suffix += ', not selected. ';
+        } else if (toggleInput) {
+          // Accessibility panel toggle rows: <label><span>Highlight Links</span>...<input type="checkbox"></label>
+          prefix = 'Toggle. ';
+          suffix = ', ' + (toggleInput.checked ? 'on' : 'off') + '. ';
+        } else if (parent.classList.contains('sr-speed-label')) {
+          // "Speed:" label next to the reading-speed <input type="range">.
+          const slider = document.getElementById('sr-speed');
+          prefix = 'Slider. ';
+          suffix = slider ? ' ' + parseFloat(slider.value).toFixed(1) + '×. ' : '';
+        } else if (listEl) {
+          prefix = 'List item. ';
         }
+
+        chunks.push({ text: prefix + text + suffix, element: parent });
       }
       return chunks;
     }
@@ -947,17 +1003,20 @@ setTimeout(function () {
         srReadBtn.classList.remove('paused');
         if (srReadLabelStrong) srReadLabelStrong.textContent = translations[currentLang] && translations[currentLang]['a11y_read_btn_label'] ? translations[currentLang]['a11y_read_btn_label'] : 'Reading…';
         if (srReadLabelSpan) srReadLabelSpan.textContent = 'Press Space to pause';
+        srReadBtn.setAttribute('aria-label', 'Reading page aloud, press Space to pause');
         if (icon) icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
       } else if (state === 'paused') {
         srReadBtn.classList.remove('active');
         srReadBtn.classList.add('paused');
         if (srReadLabelStrong) srReadLabelStrong.textContent = 'Paused';
         if (srReadLabelSpan) srReadLabelSpan.textContent = 'Press Space to resume';
+        srReadBtn.setAttribute('aria-label', 'Paused, press Space to resume reading page aloud');
         if (icon) icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
       } else {
         srReadBtn.classList.remove('active', 'paused');
         if (srReadLabelStrong) srReadLabelStrong.textContent = translations[currentLang] && translations[currentLang]['a11y_read_btn_label'] ? translations[currentLang]['a11y_read_btn_label'] : 'Read page aloud';
         if (srReadLabelSpan) srReadLabelSpan.textContent = translations[currentLang] && translations[currentLang]['a11y_read_btn_hint'] ? translations[currentLang]['a11y_read_btn_hint'] : 'Click to start · Space to pause / resume';
+        srReadBtn.setAttribute('aria-label', 'Start reading page aloud');
         if (icon) icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
       }
     }
@@ -979,7 +1038,6 @@ setTimeout(function () {
         SR.paused = false;
         highlightElement(item.element);
         updateReadButton('playing');
-        updateSRStatus('Reading: ' + item.text.substring(0, 60) + (item.text.length > 60 ? '…' : ''));
       };
 
       u.onend = function () {
@@ -1022,6 +1080,7 @@ setTimeout(function () {
       SR.currentIndex = 0;
       SR.speaking = true;
       SR.paused = false;
+      updateSRStatus('Reading page aloud');
       speakNext();
     }
 
@@ -1094,16 +1153,14 @@ setTimeout(function () {
       }
     });
 
-    // Re-populate voices when language changes
+    // Re-select the voice when language changes
     window.addEventListener('aiunit-lang-changed', function () {
-      populateVoiceSelect();
       autoSelectPreferredVoice();
       // When switching to Kreol, ensure French voice is selected
       if (currentLang === 'km') {
         const frenchVoices = getVoicesForLang('fr');
         if (frenchVoices.length > 0 && !SR.selectedVoice) {
           SR.selectedVoice = frenchVoices[0];
-          if (srVoiceSelect) srVoiceSelect.value = frenchVoices[0].name;
         }
       }
       if (SR.speaking) {
@@ -1392,6 +1449,11 @@ function onPanelKeydown(e) {
 function openPanel() {
   lastFocused = document.activeElement;
   panel.classList.add('open');
+  // aria-modal is only true while the panel is actually open and its focus
+  // trap (onPanelKeydown, below) is active. Left on permanently, screen
+  // readers that enforce it strictly (NVDA) treat the panel as an
+  // always-active modal and hide the rest of the document from first load.
+  panel.setAttribute('aria-modal', 'true');
   backdrop.classList.add('show');
   trigger.setAttribute('aria-expanded', 'true');
   document.addEventListener('keydown', onPanelKeydown);
@@ -1400,6 +1462,7 @@ function openPanel() {
 
 function closePanel() {
   panel.classList.remove('open');
+  panel.removeAttribute('aria-modal');
   backdrop.classList.remove('show');
   trigger.setAttribute('aria-expanded', 'false');
   document.removeEventListener('keydown', onPanelKeydown);
@@ -1412,12 +1475,6 @@ function togglePanel() {
 }
 
 trigger.addEventListener('click', togglePanel);
-trigger.addEventListener('keydown', function (e) {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    togglePanel();
-  }
-});
 closeBtn && closeBtn.addEventListener('click', closePanel);
 backdrop.addEventListener('click', closePanel);
 

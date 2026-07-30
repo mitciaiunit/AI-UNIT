@@ -105,6 +105,10 @@ const translations = {
 };
   
 let currentLang = 'en';
+// mfe = Morisyen (ISO 639-3) - the correct <html lang> value for Kreol
+// Morisien content, so screen readers switch phonetics/voice instead of
+// reading it with English pronunciation rules.
+const HTML_LANG = { en: 'en', fr: 'fr', km: 'mfe' };
 
 function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -122,6 +126,11 @@ function applyTranslations() {
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
   });
+  // Update document lang attribute for screen reader and accessibility.
+  // Lives here (not just the click handler below) so every caller of
+  // applyTranslations() - including restoring a saved language on page
+  // load - keeps <html lang> in sync with the actual content language.
+  document.documentElement.lang = HTML_LANG[currentLang] || 'en';
   // Notify screen reader and other components of language change
   window.dispatchEvent(new CustomEvent('aiunit-lang-changed', { detail: { lang: currentLang } }));
 }
@@ -131,8 +140,6 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
     currentLang = btn.getAttribute('data-lang');
     applyTranslations();
     localStorage.setItem('ai_unit_lang', currentLang);
-    // Update document lang attribute for screen reader and accessibility
-    document.documentElement.lang = currentLang === 'km' ? 'mfe' : currentLang;
   });
 });
 
@@ -354,6 +361,7 @@ function addDivaMessage(text, role) {
     const speakBtn = document.createElement('button');
     speakBtn.className = 'diva-read-aloud';
     speakBtn.title = 'Read aloud';
+    speakBtn.setAttribute('aria-label', 'Read this response aloud');
     speakBtn.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
@@ -368,6 +376,7 @@ function addDivaMessage(text, role) {
     const copyBtn = document.createElement('button');
     copyBtn.className = 'diva-copy-btn';
     copyBtn.title = 'Copy Response';
+    copyBtn.setAttribute('aria-label', 'Copy this response');
     copyBtn.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -399,6 +408,11 @@ async function typeDivaMessage(text, source = null) {
   const div = document.createElement('div');
   div.className = 'diva-msg bot';
   const content = document.createElement('div');
+  // Hidden from the accessibility tree while typing, so the word-by-word
+  // visual effect doesn't fire a separate live-region announcement per
+  // word inside #divaMessages (role="log"). The finished message is
+  // exposed to assistive tech in one step once typing completes below.
+  content.setAttribute('aria-hidden', 'true');
   div.appendChild(content);
   divaMessages.appendChild(div);
   const words = text.split(' ');
@@ -409,6 +423,8 @@ async function typeDivaMessage(text, source = null) {
     await new Promise(resolve => setTimeout(resolve, 25));
   }
 
+  content.removeAttribute('aria-hidden');
+
   // ACTION BUTTONS CONTAINER
   const actions = document.createElement('div');
   actions.className = 'diva-actions';
@@ -417,6 +433,7 @@ async function typeDivaMessage(text, source = null) {
   const speakBtn = document.createElement('button');
   speakBtn.className = 'diva-read-aloud';
   speakBtn.title = 'Read Aloud';
+  speakBtn.setAttribute('aria-label', 'Read this response aloud');
   speakBtn.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
@@ -431,6 +448,7 @@ async function typeDivaMessage(text, source = null) {
   const copyBtn = document.createElement('button');
   copyBtn.className = 'diva-copy-btn';
   copyBtn.title = 'Copy Response';
+  copyBtn.setAttribute('aria-label', 'Copy this response');
   copyBtn.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -1018,13 +1036,17 @@ function resetPlayer(player) {
 }
 
 function setButtonPlay(button) {
-    button.textContent = '▶ Play';
+    const label = button.querySelector('span');
+    if (label) label.textContent = 'Play';
     button.classList.remove('is-playing');
+    button.setAttribute('aria-pressed', 'false');
 }
 
 function setButtonPause(button) {
-    button.textContent = '⏸ Pause';
+    const label = button.querySelector('span');
+    if (label) label.textContent = 'Pause';
     button.classList.add('is-playing');
+    button.setAttribute('aria-pressed', 'true');
 }
 
 function formatTime(seconds) {

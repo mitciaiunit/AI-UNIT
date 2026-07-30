@@ -17,7 +17,6 @@ $pageStyles = $pageStyles ?? [];
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
-<base target="_blank">
 <link rel="stylesheet" href="<?= e(asset('css/style.css')) ?>">
 <?php foreach ($pageStyles as $pageStyle): ?>
 <link rel="stylesheet" href="<?= e(asset('css/' . $pageStyle)) ?>">

@@ -1,4 +1,4 @@
-<main class="main-content" id="main-content">
+<main class="main-content" id="main-content" tabindex="-1">
   <div class="container">
     <div class="page-header">
       <h1 class="page-title">Legal Disclaimer</h1>

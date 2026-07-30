@@ -1,7 +1,7 @@
 <!-- VIDEO MODAL -->
 <div id="videoModal" class="video-modal">
   <div class="modal-content">
-    <button class="close-modal" id="closeModalBtn">&times;</button>
+    <button class="close-modal" id="closeModalBtn" aria-label="Close video">&times;</button>
 
     <video
       id="modalVideo"

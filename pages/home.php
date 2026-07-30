@@ -2,13 +2,14 @@
 $title = '';
 $isHome = true;
 ?>
+<main id="main-content" tabindex="-1">
 <!-- HERO -->
-<section class="hero" id="hero" aria-label="Hero">
+<section class="hero" id="hero">
   <video class="hero-video" id="heroVideo" autoplay muted loop playsinline aria-hidden="true">
     <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_105406_16f4600d-7a92-4292-b96e-b19156c7830a.mp4" type="video/mp4">
   </video>
   <div class="hero-video-overlay" aria-hidden="true"></div>
-  <div class="hero-inner" id="main-content">
+  <div class="hero-inner">
     <div class="hero-content">
       <div class="hero-badge" aria-label="Ministry badge">
         <span class="badge-dot" aria-hidden="true"></span>
@@ -133,19 +134,19 @@ $isHome = true;
         </div>
         <div class="video-list">
           <a class="video-item" href="<?= e(url('video/1')) ?>" target="_blank" rel="noopener">
-            <div class="video-icon">▶</div>
+            <div class="video-icon" aria-hidden="true">▶</div>
             <div><strong data-i18n="video1_title">Video 1</strong> - <span data-i18n="video1_desc">Forms of Digital Violence</span> <span style="color:var(--text-3);">2:37</span></div>
           </a>
           <a class="video-item" href="<?= e(url('video/2')) ?>" target="_blank" rel="noopener">
-            <div class="video-icon">▶</div>
+            <div class="video-icon" aria-hidden="true">▶</div>
             <div><strong data-i18n="video2_title">Video 2</strong> - <span data-i18n="video2_desc">Consequences and Effects</span> <span style="color:var(--text-3);">4:21</span></div>
           </a>
           <a class="video-item" href="<?= e(url('video/3')) ?>" target="_blank" rel="noopener">
-            <div class="video-icon">▶</div>
+            <div class="video-icon" aria-hidden="true">▶</div>
             <div><strong data-i18n="video3_title">Video 3</strong> - <span data-i18n="video3_desc">Children's Rights &amp; Parental Responsibility</span> <span style="color:var(--text-3);">2:37</span></div>
           </a>
           <a class="video-item" href="<?= e(url('video/4')) ?>" target="_blank" rel="noopener">
-            <div class="video-icon">▶</div>
+            <div class="video-icon" aria-hidden="true">▶</div>
             <div><strong data-i18n="video4_title">Video 4</strong> - <span data-i18n="video4_desc">Regaining Control</span> <span style="color:var(--text-3);">4:21</span></div>
           </a>
         </div>
@@ -162,7 +163,7 @@ $isHome = true;
         <p data-i18n="action_card2_desc">Our national booklet designed to make Artificial Intelligence accessible, understandable and beneficial to every citizen.</p>
         <div class="action-description" data-i18n="action_card2_note">Making AI understandable for everyone - available in English and Kreol versions.</div>
         <div class="ai-for-all-box"><strong data-i18n="ai_en_title">🇬🇧 AI For All - English Version</strong><em data-i18n="ai_en_sub">The Future Belongs to Us</em><button class="btn-redesign" id="readEnBooklet" data-i18n="ai_en_btn">Read the Booklet →</button></div>
-        <div class="ai-for-all-box"><strong data-i18n="ai_km_title">🇲🇺 AI Pou Nou Tou - Version Kreol</strong><em data-i18n="ai_km_sub">Lavenir Apartenir A Nou Tou</em><button class="btn-redesign" id="readKmBooklet" data-i18n="ai_km_btn">Lire Livre la →</button></div>
+        <div class="ai-for-all-box"><strong lang="mfe" data-i18n="ai_km_title">🇲🇺 AI Pou Nou Tou - Version Kreol</strong><em lang="mfe" data-i18n="ai_km_sub">Lavenir Apartenir A Nou Tou</em><button class="btn-redesign" id="readKmBooklet" lang="mfe" data-i18n="ai_km_btn">Lire Livre la →</button></div>
       </div>
     </div>
   </div>
@@ -195,9 +196,9 @@ $isHome = true;
         </div>
       </div>
       <div class="marketplace-cards">
-        <div class="mkt-card reveal" onclick="window.open('https://aimarketplace.govmu.org/','_blank','noopener')" style="cursor:pointer;"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h3 data-i18n="marketplace_card1_title">For Startups &amp; Innovators</h3><p data-i18n="marketplace_card1_desc">List your AI product or service and reach government buyers and businesses</p></div></div>
-        <div class="mkt-card reveal" onclick="window.open('https://aimarketplace.govmu.org/','_blank','noopener')" style="cursor:pointer;"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><div><h3 data-i18n="marketplace_card2_title">For Businesses</h3><p data-i18n="marketplace_card2_desc">Discover vetted AI solutions that can transform your operations</p></div></div>
-        <div class="mkt-card reveal" onclick="window.open('https://aimarketplace.govmu.org/','_blank','noopener')" style="cursor:pointer;"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><div><h3 data-i18n="marketplace_card3_title">For Public Institutions</h3><p data-i18n="marketplace_card3_desc">Find trusted AI tools to modernise government services for citizens</p></div></div>
+        <a class="mkt-card reveal" href="https://aimarketplace.govmu.org/" target="_blank" rel="noopener"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><h3 data-i18n="marketplace_card1_title">For Startups &amp; Innovators</h3><p data-i18n="marketplace_card1_desc">List your AI product or service and reach government buyers and businesses</p></div></a>
+        <a class="mkt-card reveal" href="https://aimarketplace.govmu.org/" target="_blank" rel="noopener"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div><div><h3 data-i18n="marketplace_card2_title">For Businesses</h3><p data-i18n="marketplace_card2_desc">Discover vetted AI solutions that can transform your operations</p></div></a>
+        <a class="mkt-card reveal" href="https://aimarketplace.govmu.org/" target="_blank" rel="noopener"><div class="mkt-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><div><h3 data-i18n="marketplace_card3_title">For Public Institutions</h3><p data-i18n="marketplace_card3_desc">Find trusted AI tools to modernise government services for citizens</p></div></a>
       </div>
     </div>
   </div>
@@ -226,20 +227,20 @@ $isHome = true;
             <span class="meta-chip">2025 - 2029</span>
           </div>
           <div class="doc-actions">
-            <a href="<?= e(asset('documents/blueprint.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary" data-i18n="doc_download">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-              <span>Download</span>
+            <a href="<?= e(asset('documents/blueprint.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+              <span data-i18n="doc_download">Download</span>
             </a>
-            <a href="<?= e(url('document/blueprint')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost" data-i18n="doc_view">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-              <span>View Online</span>
+            <a href="<?= e(url('document/blueprint')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span data-i18n="doc_view">View Online</span>
             </a>
-            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Blueprint.mp3')) ?>" data-i18n="doc_play">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
-              <span>Listen</span>
+            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Blueprint.mp3')) ?>" aria-pressed="false">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
+              <span data-i18n="doc_play">Listen</span>
             </button>
           </div>
-          <div class="audio-player-inline" aria-live="polite">
+          <div class="audio-player-inline">
             <div class="audio-time-row">
               <span class="audio-played">0:00 played</span>
               <span class="audio-left">0:00 left</span>
@@ -264,20 +265,20 @@ $isHome = true;
             <span class="meta-chip">2025 - 2029</span>
           </div>
           <div class="doc-actions">
-            <a href="<?= e(asset('documents/aistrategy.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary" data-i18n="doc_download">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-              <span>Download</span>
+            <a href="<?= e(asset('documents/aistrategy.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+              <span data-i18n="doc_download">Download</span>
             </a>
-            <a href="<?= e(url('document/aistrategy')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost" data-i18n="doc_view">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-              <span>View Online</span>
+            <a href="<?= e(url('document/aistrategy')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span data-i18n="doc_view">View Online</span>
             </a>
-            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/AIStrategy.mp3')) ?>" data-i18n="doc_play">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
-              <span>Listen</span>
+            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/AIStrategy.mp3')) ?>" aria-pressed="false">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
+              <span data-i18n="doc_play">Listen</span>
             </button>
           </div>
-          <div class="audio-player-inline" aria-live="polite">
+          <div class="audio-player-inline">
             <div class="audio-time-row">
               <span class="audio-played">0:00 played</span>
               <span class="audio-left">0:00 left</span>
@@ -302,20 +303,20 @@ $isHome = true;
             <span class="meta-chip">2025 - 2029</span>
           </div>
           <div class="doc-actions">
-            <a href="<?= e(asset('documents/fairguidelines.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary" data-i18n="doc_download">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-              <span>Download</span>
+            <a href="<?= e(asset('documents/fairguidelines.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+              <span data-i18n="doc_download">Download</span>
             </a>
-            <a href="<?= e(url('document/fairguidelines')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost" data-i18n="doc_view">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-              <span>View Online</span>
+            <a href="<?= e(url('document/fairguidelines')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span data-i18n="doc_view">View Online</span>
             </a>
-            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Fairguidelines.mp3')) ?>" data-i18n="doc_play">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
-              <span>Listen</span>
+            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Fairguidelines.mp3')) ?>" aria-pressed="false">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
+              <span data-i18n="doc_play">Listen</span>
             </button>
           </div>
-          <div class="audio-player-inline" aria-live="polite">
+          <div class="audio-player-inline">
             <div class="audio-time-row">
               <span class="audio-played">0:00 played</span>
               <span class="audio-left">0:00 left</span>
@@ -340,20 +341,20 @@ $isHome = true;
             <span class="meta-chip">2026 Edition</span>
           </div>
           <div class="doc-actions">
-            <a href="<?= e(asset('documents/playbook.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary" data-i18n="doc_download">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
-              <span>Download</span>
+            <a href="<?= e(asset('documents/playbook.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+              <span data-i18n="doc_download">Download</span>
             </a>
-            <a href="<?= e(url('document/playbook')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost" data-i18n="doc_view">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-              <span>View Online</span>
+            <a href="<?= e(url('document/playbook')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span data-i18n="doc_view">View Online</span>
             </a>
-            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Playbook.mp3')) ?>" data-i18n="doc_play">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
-              <span>Listen</span>
+            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Playbook.mp3')) ?>" aria-pressed="false">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
+              <span data-i18n="doc_play">Listen</span>
             </button>
           </div>
-          <div class="audio-player-inline" aria-live="polite">
+          <div class="audio-player-inline">
             <div class="audio-time-row">
               <span class="audio-played">0:00 played</span>
               <span class="audio-left">0:00 left</span>
@@ -481,5 +482,7 @@ $isHome = true;
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
       </form>
+    </div>
   </div>
 </section>
+</main>
