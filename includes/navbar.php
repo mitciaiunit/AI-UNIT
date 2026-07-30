@@ -8,6 +8,13 @@
 $isHome = $isHome ?? false;
 
 /**
+ * Slug of the standalone page currently being viewed, set by the controller.
+ * Used to mark that page's nav link as current; empty on section-based pages,
+ * where the highlight is driven by the scroll spy in assets/js/script.js.
+ */
+$navCurrent = $navCurrent ?? '';
+
+/**
  * Build an href + optional data-scroll attribute for a nav link that targets
  * homepage section $sectionId.
  */
@@ -33,12 +40,18 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
       <a <?= $navTarget('strategy') ?> class="nav-link" data-i18n="nav_framework">AI Framework</a>
       <a <?= $navTarget('about-combined') ?> class="nav-link" data-i18n="nav_about">About Us</a>
       <a <?= $navTarget('contact') ?> class="nav-link" data-i18n="nav_contact">Contact Us</a>
+      <?php
+      /**
+       * Unlike its neighbours this targets a page rather than a homepage
+       * section, so it carries a plain href and no data-scroll. aria-current is
+       * used for the highlight instead of the .active class: the scroll spy in
+       * script.js reassigns .active across every .nav-link on each scroll event
+       * and would strip a server-rendered one on the first wheel movement.
+       */
+      ?>
+      <a href="<?= e(url('student-corner')) ?>" class="nav-link" data-i18n="nav_student"<?= $navCurrent === 'student-corner' ? ' aria-current="page"' : '' ?>>Student Corner</a>
     </nav>
     <div class="nav-right">
-      <button class="btn-search" aria-label="Search" id="searchBtn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <span data-i18n="search">Search</span>
-      </button>
       <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
