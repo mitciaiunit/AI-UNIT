@@ -105,17 +105,31 @@ let currentLang = 'en';
 // reading it with English pronunciation rules.
 const HTML_LANG = { en: 'en', fr: 'fr', km: 'mfe' };
 
+// Simple language mode: when on, applyTranslations() prefers a `_s` (short)
+// variant of each translation key over the full-length one. Any key without
+// a `_s` variant falls back to the full text - see CLAUDE_CODE_BRIEF_simple.md
+// Task 1. Set by the navbar toggle (Task 2), not here.
+let simpleMode = false;
+
 function applyTranslations() {
+  const T = translations[currentLang] || {};
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (translations[currentLang] && translations[currentLang][key] !== undefined) {
-      if (el.tagName === 'INPUT' && el.placeholder) {
-        el.placeholder = translations[currentLang][key];
-      } else if (el.tagName === 'TEXTAREA' && el.placeholder) {
-        el.placeholder = translations[currentLang][key];
-      } else {
-        el.innerHTML = translations[currentLang][key];
-      }
+    let value;
+
+    if (simpleMode && T[key + '_s'] !== undefined) {
+      value = T[key + '_s'];
+      el.setAttribute('data-simplified', 'true');
+    } else {
+      value = T[key];
+      el.removeAttribute('data-simplified');
+    }
+    if (value === undefined) return;
+
+    if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && el.placeholder) {
+      el.placeholder = value;
+    } else {
+      el.innerHTML = value;
     }
   });
   document.querySelectorAll('.lang-btn').forEach(btn => {
