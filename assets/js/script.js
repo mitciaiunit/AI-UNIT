@@ -110,6 +110,29 @@ const translations = {
     sum_principles: "In short: the values that guide our work - fairness, accountability, inclusion and responsibility.",
     sum_team: "In short: meet the three people leading Mauritius' national AI strategy.",
     sum_contact: "In short: how to reach us by email, phone or post, and our office hours.",
+
+    // ─── SIMPLE LANGUAGE MODE: Tier 1 (site copy) summaries ───
+    // Kate may draft and ship these (CLAUDE_CODE_BRIEF_simple_mode.md section
+    // 5) - drafted here per that section's process, but still needs Kate's
+    // edit before this ships: "No draft ships unedited."
+    hero_subtitle_s: "The AI Unit shows how artificial intelligence makes Mauritius' public services smarter, faster and fairer for every citizen.",
+    about_body1_s: "The AI Unit leads Mauritius' work on artificial intelligence. We are part of the Ministry of ICT. We make sure AI is fair and open for everyone.",
+    about_body2_s: "We help carry out MITCI's <strong>Digital Transformation 2025-2029</strong> plan. It aims to modernise public services and make Mauritius a leading AI nation in Africa.",
+    about_body3_s: "Whether you are curious about AI, exploring solutions for your business, or a student planning your future - the AI Unit is here to help.",
+    about_mission_quote_s: "\"Mauritius wants to be a smart, fair, future-ready nation - where every citizen benefits from responsible AI.\"",
+    vision_text_s: "Mauritius aims to lead the region in trusted, responsible AI - improving the economy, public services and quality of life for every citizen.",
+    mission_text_s: "We lead responsible AI in Mauritius. Every system must be secure, ethical and transparent, and must genuinely benefit citizens and businesses.",
+    diva_desc_s: "DIVA is a prototype assistant. Ask it questions about the Digital Transformation Blueprint, AI Strategy, FAIR Guidelines or AI Playbook.",
+    action_desc_s: "See how AI already helps Mauritians - from protecting children online to making technology accessible for everyone.",
+    action_card1_desc_s: "An educational booklet and four videos to help prevent digital violence against children, and show what to do about it.",
+    action_card2_desc_s: "A national booklet that explains artificial intelligence simply, so every citizen can understand and benefit from it.",
+    marketplace_desc_s: "The Regional AI Marketplace connects AI providers, startups, businesses and government bodies - helping them build and use AI solutions faster across Mauritius and the region.",
+    marketplace_card1_desc_s: "List your AI product or service to reach government and business buyers.",
+    marketplace_card2_desc_s: "Find AI solutions we have checked, and see how they can help your business.",
+    marketplace_card3_desc_s: "Find trusted AI tools to help government services work better for citizens.",
+    principles_desc_s: "Our team is shaping the future of AI in Mauritius. We are guided by strong ethics and put people first.",
+    team_desc_s: "Meet the experts leading Mauritius' AI strategy and digital transformation.",
+    contact_desc_s: "Have a question about AI in Mauritius, or want to partner with us? Get in touch - we welcome every question.",
   }
 };
   
