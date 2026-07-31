@@ -133,6 +133,31 @@ const translations = {
     principles_desc_s: "Our team is shaping the future of AI in Mauritius. We are guided by strong ethics and put people first.",
     team_desc_s: "Meet the experts leading Mauritius' AI strategy and digital transformation.",
     contact_desc_s: "Have a question about AI in Mauritius, or want to partner with us? Get in touch - we welcome every question.",
+
+    // ─── SIMPLE LANGUAGE MODE: Tier 2 (policy-derived) summaries ───
+    // PENDING MINISTRY REVIEW - per CLAUDE_CODE_BRIEF_simple_mode.md section
+    // 5, these restate the Blueprint, National AI Strategy, FAIR Guidelines
+    // or AI Playbook and require Ministry sign-off before publication. Do
+    // NOT merge to production / deploy until that sign-off happens. Left in
+    // this local, unpushed commit only so Kate has drafts to route for
+    // review; the Task 1 fallback means the site works correctly with only
+    // Tier 1 shipped if these are held back.
+    framework_desc_s: "Six pillars guide how Mauritius builds AI, governs it fairly, and shares its benefits with everyone.",
+    dim1_text_s: "We are building the digital backbone Mauritius needs: fast internet, modern data centres, secure cloud, and strong cybersecurity, so AI can reach every part of the country.",
+    dim2_text_s: "We support startups, universities and creative thinkers who want to build AI solutions that solve real problems for Mauritians.",
+    dim3_text_s: "AI4AI makes sure no one is left behind. We run outreach programmes in every district, for people of any age, location or education level.",
+    dim4_text_s: "We set clear, fair rules for AI, including the FAIR Guidelines, to keep AI systems safe and accountable. Our Data Protection Act matches international standards such as GDPR.",
+    dim5_text_s: "AI works best when government, business and citizens work together. We bring them together on shared projects that meet the real needs of Mauritian society.",
+    dim6_text_s: "Mauritius takes an active role in global AI governance. We partner with international bodies, African nations and leading tech countries to bring the best AI knowledge home.",
+    library_desc_s: "Our four core policy documents: the Blueprint, AI Strategy, FAIR Guidelines, and the AI Playbook for government use.",
+    doc1_desc_s: "Our Digital Transformation Blueprint: four strategic pillars and how we govern AI.",
+    doc2_desc_s: "Mauritius' first national AI strategy: how we govern AI, adopt it, and use it across sectors.",
+    doc3_desc_s: "Our guidelines for responsible AI: Fairness, Accountability, Inclusiveness and Responsibility.",
+    doc4_desc_s: "A practical guide to running AI projects in government, from first test to full use.",
+    principle1_text_s: "AI must treat all citizens fairly. We check every system for bias, at every stage, so no community is disadvantaged by it.",
+    principle2_text_s: "AI decisions must be explainable, not a mystery. Oversight bodies must be able to check and trace every decision an AI system makes.",
+    principle3_text_s: "Technology should serve everyone. We design AI tools that work across languages, abilities and locations, and we act with honesty and transparency.",
+    principle4_text_s: "We act with purpose and accountability, moving carefully and learning as we go, always keeping citizens' long-term wellbeing at the centre of our work.",
   }
 };
   
