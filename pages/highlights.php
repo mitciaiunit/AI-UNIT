@@ -180,7 +180,9 @@
       </section>
 
       <!-- =================================================================
-           3. Project one - AI Unit Website Revamp
+           3. Project one - AI Unit Website Redesign
+           (the section id stays "revamp": it is the in-page anchor target,
+           and renaming it would break any link already shared)
            ================================================================= -->
       <section class="section section--tint project" id="revamp" aria-labelledby="revamp-title">
         <div class="shell">
@@ -188,7 +190,7 @@
             <span class="project__index" aria-hidden="true">01</span>
             <div>
               <p class="eyebrow">Project one</p>
-              <h2 class="h2 h2--display" id="revamp-title">AI Unit Website Revamp</h2>
+              <h2 class="h2 h2--display" id="revamp-title">AI Unit Website Redesign</h2>
               <p class="lede lede--wide">
                 aim.govmu.org is the official Mauritian government portal for artificial
                 intelligence, covering news, policies, events and resources.
@@ -616,7 +618,6 @@
             <header class="section__head" data-reveal>
               <p class="eyebrow">Gallery</p>
               <h2 class="h2" id="gallery-title">Moments from our programmes</h2>
-              <p class="lede">Select any image to view it larger.</p>
             </header>
 
             <?php foreach ($categories as $category): ?>
@@ -725,39 +726,6 @@
         </div>
       </section>
 
-      <!-- =================================================================
-           9. Final reflection
-           ================================================================= -->
-      <section class="section section--reflection" aria-labelledby="reflection-title">
-        <div class="shell">
-          <div class="reflection" data-reveal>
-            <p class="eyebrow">In closing</p>
-            <h2 class="h2" id="reflection-title">What the placement left behind</h2>
-
-            <p class="reflection__lead">
-              Ten weeks produced a redesigned, responsive and WCAG-compliant website for
-              aim.govmu.org, a WCAG 2.2 accessibility toolbar, speech
-              synthesis, the DIVA chatbot, video captioning and a PDF-to-audio feature.
-            </p>
-
-            <p>
-              The work covered more ground than a website redevelopment: front-end development,
-              accessibility engineering, API integration, project
-              management and research. Much of it depended on self-directed learning, since WCAG
-              standards, the Web Speech API and Jira all had to be picked up from scratch and then
-              applied to a live national portal.
-            </p>
-
-            <p>
-              The difficulties were as instructive as the deliverables: reworking front-end code
-              once the WCAG requirement arrived, resolving the chatbot's Content Security Policy
-              conflict, aligning speech synthesis voices across browsers that expose different
-              voices, and managing a scope that kept growing while the team expanded from one
-              intern to more.
-            </p>
-          </div>
-        </div>
-      </section>
     </main>
 
   <div class="lightbox" id="lightbox" hidden>

@@ -27,6 +27,16 @@ $router->get('/cookie-policy', [PageController::class, 'cookiePolicy']);
 $router->get('/accessibility', [PageController::class, 'accessibility']);
 $router->get('/highlights', [HighlightsController::class, 'index']);
 
+/*
+ * The page was called Student Corner until this branch. The old URL stays
+ * alive as a permanent redirect so links already shared - or indexed - land
+ * on the renamed page instead of a 404.
+ */
+$router->get('/student-corner', static function (): void {
+    http_response_code(301);
+    header('Location: ' . url('highlights'));
+});
+
 $router->get('/admin', [DashboardController::class, 'index']);
 $router->get('/admin/login', [AuthController::class, 'showLogin']);
 $router->post('/admin/login', [AuthController::class, 'login']);

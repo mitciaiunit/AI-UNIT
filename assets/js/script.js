@@ -68,6 +68,12 @@ const translations = {
     team_tab1: "Mr. Ramakrishna", team_tab2: "Dr. Heman", team_tab3: "Mr. Ruben",
     team_rama_tag: "Alignment & Safety", team_rama_role: "Head - AI Unit", team_rama_quote: "Ramakrishna Mudaliar serves as Head of the AI Unit, where he spearheads the country's people-centric approach to leverage Artificial Intelligence for responsible development and implementation at a national scale. He holds Master's Degrees from the University of Montpellier and the University of Manipal. With more than two decades of experience across both the private technology sector and public service, Ramakrishna brings a well-rounded perspective that bridges innovation with real-world implementation.",
     rama_stat1: "Years Experience", rama_stat2: "Master's Degrees", rama_stat3: "AI Unit Founded",
+    // PLACEHOLDER: copied from the team_rama_* strings above until Mr. Ramdoyal's
+    // own role, biography and statistics are supplied. The role and biography
+    // below still describe Mr. Mudaliar's post and career.
+    team_tab4: "Mr. Yudhaveer",
+    team_yudhaveer_tag: "Alignment & Safety", team_yudhaveer_role: "Head - AI Unit", team_yudhaveer_quote: "Yudhaveer Vaibhav Ramdoyal serves as Head of the AI Unit, where he spearheads the country's people-centric approach to leverage Artificial Intelligence for responsible development and implementation at a national scale. He holds Master's Degrees from the University of Montpellier and the University of Manipal. With more than two decades of experience across both the private technology sector and public service, Yudhaveer brings a well-rounded perspective that bridges innovation with real-world implementation.",
+    yudhaveer_stat1: "Years Experience", yudhaveer_stat2: "Master's Degrees", yudhaveer_stat3: "AI Unit Founded",
     team_heman_tag: "Architecture & Scale", team_heman_role: "AI Expert", team_heman_quote: "Dr. Heman Mohabeer is an AI researcher, strategist, and inventor serving as an AI Expert at the AI Unit of the Government of Mauritius. With a PhD in Artificial Intelligence and Machine Learning, he supports national AI policy development, advises on digital transformation, and promotes resilient, explainable, and locally owned AI systems.",
     heman_stat1: "AI & Machine Learning", heman_stat2: "Years Experience", heman_stat3: "Regional AI Leader",
     team_ruben_tag: "Digital Transformation", team_ruben_role: "AI Expert", team_ruben_quote: "Ruben Ramdhony is a Digital Transformation Executive and former Chief Information Officer with over 20 years of enterprise experience across Australia and Mauritius. He holds an MBA from Macquarie Business School, Australia. He is currently serving in an AI Expert capacity, translating policy into working systems, governance into practice, and strategy into measurable outcomes across Government.",
@@ -109,7 +115,7 @@ const translations = {
     sum_marketplace: "In short: a place to find AI tools, or to list your own.",
     sum_strategy: "In short: our four main documents. You can read, download or listen to each one.",
     sum_principles: "In short: the four values that guide our work.",
-    sum_team: "In short: the three people who lead the AI Unit.",
+    sum_team: "In short: the four people who lead the AI Unit.",
     sum_contact: "In short: how to reach us — address, email, phone, and a message form.",
 
     // ─── SIMPLE LANGUAGE MODE: Tier 1 (site copy) summaries ───

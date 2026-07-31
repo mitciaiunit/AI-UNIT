@@ -407,11 +407,12 @@ $isHome = true;
     <div class="section-eyebrow" style="opacity:0;visibility:hidden;height:0;margin-bottom:0;">-</div>
     <h2 class="section-title" id="team-title"><span data-i18n="team_title1">The People</span> <em data-i18n="team_title2">Behind the Work</em></h2>
     <p class="section-desc" data-i18n="team_desc">Meet the experts driving Mauritius' AI strategy and digital transformation.</p>
-    <p class="section-summary" data-i18n="sum_team" hidden>In short: meet the three people leading Mauritius' national AI strategy.</p>
+    <p class="section-summary" data-i18n="sum_team" hidden>In short: meet the four people leading Mauritius' national AI strategy.</p>
     <div class="team-tabs" role="tablist" aria-label="Team members">
       <button class="team-tab active" role="tab" aria-selected="true" aria-controls="panel-rama" data-member="0" data-i18n="team_tab1">Mr. Mudaliar</button>
       <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-heman" data-member="1" data-i18n="team_tab2">Dr. Mohabeer</button>
       <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-ruben" data-member="2" data-i18n="team_tab3">Mr. Ramdhony</button>
+      <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-yudhaveer" data-member="3" data-i18n="team_tab4">Mr. Ramdoyal</button>
     </div>
     <div class="team-member-panel active reveal" id="panel-rama" role="tabpanel">
       <div class="team-photo-wrap"><img src="<?= e(asset('images/rm.jpg')) ?>" alt="Portrait of Mr. Ramakrishna Mudaliar" class="team-photo-img" /></div>
@@ -441,6 +442,34 @@ $isHome = true;
         <p class="team-role" data-i18n="team_ruben_role">AI Expert</p>
         <blockquote class="team-quote" data-i18n="team_ruben_quote">Ruben Ramdhony is a Digital Transformation Executive and former Chief Information Officer with over 20 years of enterprise experience across Australia and Mauritius. He holds an MBA from Macquarie Business School, Australia. He is currently serving in an AI Expert capacity, translating policy into working systems, governance into practice, and strategy into measurable outcomes across Government.</blockquote>
         <div class="team-stats-strip"><div class="team-stat"><span class="team-stat-value">20+</span><span class="team-stat-label" data-i18n="ruben_stat1">Years Enterprise</span></div><div class="team-stat"><span class="team-stat-value">CIO</span><span class="team-stat-label" data-i18n="ruben_stat2">Former Chief Info. Officer</span></div><div class="team-stat"><span class="team-stat-value">AU + MU</span><span class="team-stat-label" data-i18n="ruben_stat3">Cross-Border Experience</span></div></div>
+      </div>
+    </div>
+    <?php
+    /**
+     * PLACEHOLDER PROFILE - not yet accurate.
+     *
+     * Structure, focus tag, role, biography and statistics are a copy of
+     * Mr. Ramakrishna Mudaliar's panel, pending Mr. Ramdoyal's own details.
+     * The role therefore currently reads "Head - AI Unit", which is Mr.
+     * Mudaliar's post, and the biography describes his career. Replace the
+     * team_yudhaveer_* and yudhaveer_stat* strings in assets/js/script.js
+     * (and the matching fallbacks below) before this section goes public.
+     *
+     * The photo is Mr. Mudaliar's (images/rm.jpg) standing in until the
+     * official portrait is supplied.
+     *
+     * The panel must stay in the same position as its tab: the tab handler in
+     * script.js indexes .team-member-panel by the tab's data-member value.
+     */
+    ?>
+    <div class="team-member-panel reveal" id="panel-yudhaveer" role="tabpanel">
+      <div class="team-photo-wrap"><img src="<?= e(asset('images/yr.jpg')) ?>" alt="Portrait of Mr. Yudhaveer Vaibhav Ramdoyal" class="team-photo-img" /></div>
+      <div class="team-bio">
+        <div class="team-focus-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="team_yudhaveer_tag">Alignment &amp; Safety</span></div>
+        <h3 class="team-name">Mr. Yudhaveer Vaibhav<br>Ramdoyal</h3>
+        <p class="team-role" data-i18n="team_yudhaveer_role">AI Expert</p>
+        <blockquote class="team-quote" data-i18n="team_yudhaveer_quote">Yudhaveer Vaibhav Ramdoyal serves as Head of the AI Unit, where he spearheads the country's people-centric approach to leverage Artificial Intelligence for responsible development and implementation at a national scale. He holds Master's Degrees from the University of Montpellier and the University of Manipal. With more than two decades of experience across both the private technology sector and public service, Yudhaveer brings a well-rounded perspective that bridges innovation with real-world implementation.</blockquote>
+        <div class="team-stats-strip"><div class="team-stat"><span class="team-stat-value">20+</span><span class="team-stat-label" data-i18n="yudhaveer_stat1">Years Experience</span></div><div class="team-stat"><span class="team-stat-value">2x</span><span class="team-stat-label" data-i18n="yudhaveer_stat2">Master's Degrees</span></div><div class="team-stat"><span class="team-stat-value">2024</span><span class="team-stat-label" data-i18n="yudhaveer_stat3">AI Unit Founded</span></div></div>
       </div>
     </div>
   </div>
