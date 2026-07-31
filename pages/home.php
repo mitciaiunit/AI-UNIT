@@ -3,6 +3,31 @@ $title = '';
 $isHome = true;
 ?>
 <main id="main-content" tabindex="-1">
+<!-- HERO -->
+<section class="hero" id="hero" aria-labelledby="hero-title">
+  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline aria-hidden="true">
+    <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_105406_16f4600d-7a92-4292-b96e-b19156c7830a.mp4" type="video/mp4">
+  </video>
+  <div class="hero-video-overlay" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge" aria-label="Ministry badge">
+        <span class="badge-dot" aria-hidden="true"></span>
+        <span data-i18n="hero_badge">Ministry of ICT, Communication &amp; Innovation</span>
+      </div>
+      <h1 class="hero-title" id="hero-title"><span data-i18n="hero_title_prefix">Where</span> <em>Intelligence</em> <span data-i18n="hero_title_suffix">Meets Impact</span></h1>
+      <p class="hero-subtitle" data-i18n="hero_subtitle">Welcome to the AI Unit of Mauritius - your guide to how artificial intelligence is making public services smarter, faster, and fairer for every citizen.</p>
+      <div class="hero-cta">
+        <a href="https://aimarketplace.govmu.org/" class="btn-primary" target="_blank" rel="noopener"><span data-i18n="hero_cta_marketplace">Explore Regional AI Marketplace</span> <span class="cta-arrow" aria-hidden="true">→</span></a>
+        <a href="#about-combined" class="btn-ghost" data-scroll="about-combined" data-i18n="hero_cta_learn">Learn More</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 40 C360 80 1080 0 1440 40 L1440 80 L0 80 Z" fill="#FFFFFF"/></svg>
+  </div>
+</section>
+
 <nav class="page-contents" aria-labelledby="page-contents-title">
   <h2 id="page-contents-title" data-i18n="toc_title">On this page</h2>
   <ol>
@@ -16,30 +41,6 @@ $isHome = true;
     <li><a href="#contact">Contact Us</a></li>
   </ol>
 </nav>
-<!-- HERO -->
-<section class="hero" id="hero">
-  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline aria-hidden="true">
-    <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_105406_16f4600d-7a92-4292-b96e-b19156c7830a.mp4" type="video/mp4">
-  </video>
-  <div class="hero-video-overlay" aria-hidden="true"></div>
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-badge" aria-label="Ministry badge">
-        <span class="badge-dot" aria-hidden="true"></span>
-        <span data-i18n="hero_badge">Ministry of ICT, Communication &amp; Innovation</span>
-      </div>
-      <h1 class="hero-title"><span data-i18n="hero_title_prefix">Where</span> <em>Intelligence</em> <span data-i18n="hero_title_suffix">Meets Impact</span></h1>
-      <p class="hero-subtitle" data-i18n="hero_subtitle">Welcome to the AI Unit of Mauritius - your guide to how artificial intelligence is making public services smarter, faster, and fairer for every citizen.</p>
-      <div class="hero-cta">
-        <a href="https://aimarketplace.govmu.org/" class="btn-primary" target="_blank" rel="noopener"><span data-i18n="hero_cta_marketplace">Explore Regional AI Marketplace</span> <span class="cta-arrow" aria-hidden="true">→</span></a>
-        <a href="#about-combined" class="btn-ghost" data-scroll="about-combined" data-i18n="hero_cta_learn">Learn More</a>
-      </div>
-    </div>
-  </div>
-  <div class="hero-wave" aria-hidden="true">
-    <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0 40 C360 80 1080 0 1440 40 L1440 80 L0 80 Z" fill="#FFFFFF"/></svg>
-  </div>
-</section>
 
 <!-- ABOUT -->
 <section class="section about-section" id="about" aria-labelledby="about-title">
