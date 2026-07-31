@@ -921,11 +921,16 @@ setTimeout(function () {
       );
 
       const chunks = [];
+      const processedContainers = new Set();
       let node;
       while (node = walker.nextNode()) {
         const parent = node.parentElement;
-        let text = node.textContent.trim();
+        let text = node.textContent.replace(/\s+/g, ' ').trim();
         if (!parent || !text) continue;
+
+        const meaningfulContainer = parent.closest('h1, h2, h3, p, li, button, a, label, figcaption, td') || parent;
+        if (processedContainers.has(meaningfulContainer)) continue;
+        processedContainers.add(meaningfulContainer);
 
         // Look past inline wrappers (e.g. a <span> label inside a <button>)
         // to find the actual interactive/heading/list ancestor, so labels
@@ -964,7 +969,7 @@ setTimeout(function () {
           prefix = 'List item. ';
         }
 
-        chunks.push({ text: prefix + text + suffix, element: parent });
+        chunks.push({ text: prefix + text + suffix, element: meaningfulContainer });
       }
       return chunks;
     }
@@ -1123,6 +1128,7 @@ setTimeout(function () {
       SR.speaking = true;
       SR.paused = false;
       updateSRStatus('Reading page aloud');
+      announce('Reading page aloud');
       if (srStopFloating) srStopFloating.classList.add('visible');
       speakNext();
     }
@@ -1133,6 +1139,7 @@ setTimeout(function () {
       SR.paused = true;
       updateReadButton('paused');
       updateSRStatus('Paused. Press Space to resume.');
+      announce('Paused. Press Space to resume.');
     }
 
     function resumeReading() {
@@ -1141,6 +1148,7 @@ setTimeout(function () {
       SR.paused = false;
       updateReadButton('playing');
       updateSRStatus('Resuming…');
+      announce('Resuming reading.');
     }
 
     function stopReading() {
@@ -1153,6 +1161,7 @@ setTimeout(function () {
       removeHighlight();
       updateReadButton('stopped');
       clearSRStatus();
+      announce('Stopped reading.');
       if (srStopFloating) srStopFloating.classList.remove('visible');
     }
 
