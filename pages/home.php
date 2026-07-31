@@ -33,6 +33,7 @@ $isHome = true;
   <div class="container">
     <div class="section-eyebrow" data-i18n="about_eyebrow">Who We Are</div>
     <h2 class="section-title" id="about-title"><span data-i18n="about_title_prefix">Driving Mauritius</span><br><em data-i18n="about_title_suffix">AI Future</em></h2>
+    <p class="section-summary" data-i18n="sum_about" hidden>In short: the AI Unit leads Mauritius' work on artificial intelligence, making sure it is fair and open for everyone.</p>
     <div class="about-grid">
       <div class="about-left">
         <p class="about-mission-text" data-i18n="about_mission_quote">"Mauritius is committed to becoming a smart, inclusive and future-ready nation - where every citizen benefits from responsible AI."</p>
@@ -81,6 +82,7 @@ $isHome = true;
     <div class="section-eyebrow" data-i18n="framework_eyebrow">AI Framework</div>
     <h2 class="section-title" id="framework-title"><span data-i18n="framework_title_prefix">Six Strategic</span><br><em data-i18n="framework_title_suffix">Dimensions</em></h2>
     <p class="section-desc" data-i18n="framework_desc">Our six pillars guide how Mauritius builds, governs, and shares the benefits of artificial intelligence - from the ground up, for everyone.</p>
+    <p class="section-summary" data-i18n="sum_framework" hidden>In short: six areas Mauritius is working on to build AI that everyone can trust.</p>
     <div class="dimensions-list" role="list">
       <div class="dimension-item reveal" role="listitem">
         <button class="dimension-header" aria-expanded="false" aria-controls="dim-body-1"><span class="dim-number">01</span><span class="dim-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span><span class="dim-title" data-i18n="dim1_title">Digital Infrastructure Maturity</span><span class="dim-arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg></span></button>
@@ -116,6 +118,7 @@ $isHome = true;
     <div class="section-eyebrow" data-i18n="action_eyebrow">AI in Action</div>
     <h2 class="section-title" id="action-title"><span data-i18n="action_title_prefix">AI Making a</span> <em data-i18n="action_title_suffix">Difference</em></h2>
     <p class="section-desc" style="margin-bottom:40px;" data-i18n="action_desc">From protecting children online to making technology accessible for every Mauritian - see how AI is already transforming lives across our communities.</p>
+    <p class="section-summary" data-i18n="sum_action" hidden>In short: real examples of AI helping people in Mauritius, from child safety online to accessible technology for all.</p>
     <div class="action-grid">
       <div class="action-card reveal">
         <div class="action-chip chip-blue">
@@ -190,6 +193,7 @@ $isHome = true;
         <div class="section-eyebrow" data-i18n="marketplace_eyebrow">Regional AI Marketplace</div>
         <h2 class="section-title" id="marketplace-title"><span data-i18n="marketplace_title1">Connect. Build.</span><br><em data-i18n="marketplace_title2">Innovate Together.</em></h2>
         <p data-i18n="marketplace_desc">The Regional AI Marketplace connects solution providers, startups, businesses, and public institutions - accelerating the development, adoption, and deployment of AI-driven solutions across Mauritius and the region.</p>
+        <p class="section-summary" data-i18n="sum_marketplace" hidden>In short: an online marketplace connecting AI businesses, startups and government buyers across Mauritius and the region.</p>
         <div style="display:flex;gap:12px;flex-wrap:wrap;">
           <button class="btn-white" id="browseSolutionsBtn"><span data-i18n="marketplace_browse">Browse Solutions</span> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
           <button class="btn-outline-white" id="listSolutionBtn"><span data-i18n="marketplace_list">List Your Solution</span></button>
@@ -210,6 +214,7 @@ $isHome = true;
     <div class="section-eyebrow" data-i18n="library_eyebrow">Framework</div>
     <h2 class="section-title" id="strategy-title"><span data-i18n="library_title1">Framework Library</span><br><em data-i18n="library_title2">And AI Playbook</em></h2>
     <p class="section-desc" data-i18n="library_desc">Our core governance documents: strategic blueprint, AI strategy, FAIR guidelines, and the AI Playbook for public sector implementation.</p>
+    <p class="section-summary" data-i18n="sum_strategy" hidden>In short: our four main policy documents on AI, available to read online or download.</p>
 
     <div class="doc-grid">
       <article class="doc-card reveal">
@@ -372,6 +377,7 @@ $isHome = true;
     <div class="section-eyebrow" data-i18n="principles_eyebrow">About Us</div>
     <h2 class="section-title" id="about-combined-title"><span data-i18n="principles_title1">Our</span> <em data-i18n="principles_title2">Mission And Values</em></h2>
     <p class="section-desc" style="margin-bottom:56px;" data-i18n="principles_desc">We are a dedicated team shaping the future of AI in Mauritius - guided by strong ethics, a people-first mindset, and a commitment to responsible innovation.</p>
+    <p class="section-summary" data-i18n="sum_principles" hidden>In short: the values that guide our work - fairness, accountability, inclusion and responsibility.</p>
     <div class="principles-grid" style="margin-bottom:96px;">
       <div class="principle-card reveal"><div class="principle-card-head"><div class="principle-icon-wrap" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3L4 7v5c0 5.25 3.5 10.15 8 11.35C16.5 22.15 20 17.25 20 12V7l-8-4z"/></svg></div><h3 class="principle-title" data-i18n="principle1_title">Fairness</h3></div><p class="principle-body" data-i18n="principle1_text">AI systems must treat all citizens equitably. We enforce bias auditing and impact assessments throughout every stage of development - ensuring no community is disadvantaged by the technology built in their name.</p></div>
       <div class="principle-card reveal"><div class="principle-card-head"><div class="principle-icon-wrap" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><h3 class="principle-title" data-i18n="principle2_title">Accountability</h3></div><p class="principle-body" data-i18n="principle2_text">Explainability is a requirement, not an option. Every model decision must be interpretable, auditable, and traceable by authorised oversight bodies - building the public trust that responsible AI demands.</p></div>
@@ -387,6 +393,7 @@ $isHome = true;
     <div class="section-eyebrow" style="opacity:0;visibility:hidden;height:0;margin-bottom:0;">-</div>
     <h2 class="section-title" id="team-title"><span data-i18n="team_title1">The People</span> <em data-i18n="team_title2">Behind the Work</em></h2>
     <p class="section-desc" data-i18n="team_desc">Meet the experts driving Mauritius' AI strategy and digital transformation.</p>
+    <p class="section-summary" data-i18n="sum_team" hidden>In short: meet the three people leading Mauritius' national AI strategy.</p>
     <div class="team-tabs" role="tablist" aria-label="Team members">
       <button class="team-tab active" role="tab" aria-selected="true" aria-controls="panel-rama" data-member="0" data-i18n="team_tab1">Mr. Mudaliar</button>
       <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-heman" data-member="1" data-i18n="team_tab2">Dr. Mohabeer</button>
@@ -431,6 +438,7 @@ $isHome = true;
     <div class="section-eyebrow" data-i18n="contact_eyebrow">Get in Touch</div>
     <h2 class="section-title" id="contact-title"><span data-i18n="contact_title1">We're Here</span><br><em data-i18n="contact_title2">for You</em></h2>
     <p class="section-desc" data-i18n="contact_desc">Have questions about AI in Mauritius? Want to partner with us or learn more about our programmes? Reach out - we welcome every question.</p>
+    <p class="section-summary" data-i18n="sum_contact" hidden>In short: how to reach us by email, phone or post, and our office hours.</p>
     <div class="contact-grid">
       <div class="contact-info">
         <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><h3 data-i18n="contact_address_title">Address</h3><p data-i18n="contact_address_text">Cyber Tower 2, Level 6, in the Ebène Cybercity,<br>Mauritius</p></div></div>

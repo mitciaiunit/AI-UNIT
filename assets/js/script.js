@@ -96,6 +96,20 @@ const translations = {
     a11y_reading: "Reading & Focus", a11y_toggle_dyslexia: "Dyslexia-Friendly Font", a11y_toggle_readguide: "Reading Guide Line", a11y_toggle_spacing: "Wider Letter Spacing", a11y_toggle_focus: "Bold Focus Outline",
     a11y_navigation: "Navigation", a11y_toggle_cursor: "Large Mouse Cursor", a11y_toggle_keyboard: "Show Keyboard Shortcuts",
     a11y_kbd_open: "Open panel:", a11y_kbd_close: "Close:",
+
+    // ─── SIMPLE LANGUAGE MODE: UI strings ───
+    simple_toggle: "Simple language", ft_show: "Read the full text", ft_hide: "Hide the full text", listen_page: "Listen to this page",
+    simple_time_announcement: "Reading the full page takes about {full} minutes. Simple language mode reduces this to about {simple} minutes. Press Alt M to switch, or continue.",
+
+    // ─── SIMPLE LANGUAGE MODE: per-section orientation summaries (shown only in simple mode) ───
+    sum_about: "In short: the AI Unit leads Mauritius' work on artificial intelligence, making sure it is fair and open for everyone.",
+    sum_framework: "In short: six areas Mauritius is working on to build AI that everyone can trust.",
+    sum_action: "In short: real examples of AI helping people in Mauritius, from child safety online to accessible technology for all.",
+    sum_marketplace: "In short: an online marketplace connecting AI businesses, startups and government buyers across Mauritius and the region.",
+    sum_strategy: "In short: our four main policy documents on AI, available to read online or download.",
+    sum_principles: "In short: the values that guide our work - fairness, accountability, inclusion and responsibility.",
+    sum_team: "In short: meet the three people leading Mauritius' national AI strategy.",
+    sum_contact: "In short: how to reach us by email, phone or post, and our office hours.",
   }
 };
   
@@ -157,6 +171,210 @@ if (savedLang && (savedLang === 'fr' || savedLang === 'km')) {
   currentLang = savedLang;
   applyTranslations();
 }
+
+/* ─── SIMPLE LANGUAGE MODE ───
+   Replaces long-form copy with short plain-language summaries (the `_s`
+   variant of each translation key - see applyTranslations() above). Offered
+   as a reading preference to every visitor and never switched on
+   automatically - see CLAUDE_CODE_BRIEF_simple_mode.md section 3. Two
+   independent localStorage keys (simple language, listen-to-page) per
+   section 3.4 of that brief. */
+const SIMPLE_MODE_KEY = 'aiunit_simple_mode_v1';
+const LISTEN_PAGE_KEY = 'aiunit_listen_page_v1';
+const simpleToggleBtn = document.getElementById('simple-toggle');
+const listenBtn = document.getElementById('listen-page');
+const simpleAnnouncer = document.getElementById('simple-announcer');
+let announcedTimeSavingsThisSession = false; // module flag, not localStorage - once per session, reappears next visit
+
+function announceSimple(msg) {
+  if (!simpleAnnouncer) return;
+  simpleAnnouncer.textContent = '';
+  requestAnimationFrame(function () { simpleAnnouncer.textContent = msg; });
+}
+
+function countWords(str) {
+  return (String(str).replace(/<[^>]*>/g, ' ').match(/\S+/g) || []).length;
+}
+
+// Starting estimate only - calibrate against a real timed NVDA read of the
+// full page at reading rate 1.0x and set the measured figure. See brief
+// Task 5. Record both measured read times for the IA report.
+const WORDS_PER_MINUTE = 160;
+
+function minutesFor(words) {
+  return Math.max(1, Math.round(words / WORDS_PER_MINUTE));
+}
+
+// Full-page word count and how many words simple mode would save, derived
+// from the translations object rather than the DOM so it is correct
+// regardless of which mode is currently showing.
+function pageWordTotals() {
+  const T = translations[currentLang] || {};
+  let full = 0, saved = 0;
+  document.querySelectorAll('[data-i18n]').forEach(function (el) {
+    const key = el.getAttribute('data-i18n');
+    if (!key || T[key] === undefined) return;
+    const fullWords = countWords(T[key]);
+    full += fullWords;
+    const shortKey = key + '_s';
+    if (T[shortKey] !== undefined) saved += Math.max(0, fullWords - countWords(T[shortKey]));
+  });
+  return { full: full, saved: saved };
+}
+
+// Builds a "Read the full text" disclosure after every element simple mode
+// just replaced, from the translations object - no full text is duplicated
+// in the HTML. Uses the `hidden` attribute (not a CSS class) so collapsed
+// text genuinely leaves the accessibility tree. Idempotent: safe to call
+// repeatedly, e.g. every time the mode is toggled.
+function rebuildDisclosures() {
+  document.querySelectorAll('.full-text-wrap').forEach(function (el) { el.remove(); });
+  if (!simpleMode) return;
+
+  const T = translations[currentLang] || {};
+  document.querySelectorAll('[data-simplified="true"]').forEach(function (el) {
+    const key = el.getAttribute('data-i18n');
+    if (!key || T[key] === undefined) return;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'full-text-wrap';
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'full-text-toggle';
+    btn.setAttribute('aria-expanded', 'false');
+    const panelId = 'ft-' + key;
+    btn.setAttribute('aria-controls', panelId);
+    const btnLabel = document.createElement('span');
+    btnLabel.textContent = T['ft_show'] || 'Read the full text';
+    btn.appendChild(btnLabel);
+
+    const panel = document.createElement('div');
+    panel.className = 'full-text-body';
+    panel.id = panelId;
+    panel.hidden = true;
+    panel.innerHTML = T[key];
+
+    btn.addEventListener('click', function () {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      panel.hidden = expanded;
+      btnLabel.textContent = expanded ? (T['ft_show'] || 'Read the full text') : (T['ft_hide'] || 'Hide the full text');
+    });
+
+    wrap.appendChild(btn);
+    wrap.appendChild(panel);
+    el.insertAdjacentElement('afterend', wrap);
+  });
+}
+
+function setSimpleMode(on, opts) {
+  opts = opts || {};
+  simpleMode = on;
+  applyTranslations();
+  document.querySelectorAll('.section-summary').forEach(function (el) { el.hidden = !on; });
+  rebuildDisclosures();
+  if (simpleToggleBtn) simpleToggleBtn.setAttribute('aria-pressed', String(on));
+  try { localStorage.setItem(SIMPLE_MODE_KEY, on ? '1' : '0'); } catch (e) {}
+  if (!opts.silent) {
+    announceSimple(on
+      ? 'Simple language on. Long sections replaced with short summaries.'
+      : 'Simple language off. Showing the full text.');
+  }
+}
+
+if (simpleToggleBtn) {
+  simpleToggleBtn.addEventListener('click', function () { setSimpleMode(!simpleMode); });
+}
+
+// #sr-read-btn belongs to accessibility-widget.js, which self-injects it on
+// DOMContentLoaded and is kept unmodified (see the widget-swap task earlier
+// in this thread) - so it is looked up by id rather than held as a direct
+// reference, and forwarded a real click rather than driven programmatically.
+function startBuiltInReading() {
+  const btn = document.getElementById('sr-read-btn');
+  if (btn) btn.click();
+}
+
+function isReaderActive() {
+  const btn = document.getElementById('sr-read-btn');
+  return !!btn && (btn.classList.contains('active') || btn.classList.contains('paused'));
+}
+
+function speakAnnouncement(text, onEnd) {
+  if (!window.speechSynthesis) { onEnd(); return; }
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = HTML_LANG[currentLang] || 'en';
+  u.onend = onEnd;
+  u.onerror = onEnd;
+  window.speechSynthesis.speak(u);
+}
+
+// Alt+M: works whether or not the reader is running. If speech is in
+// progress when pressed (either the built-in reader or our own time-saving
+// announcement), cancel it, switch mode, and restart the reader from the
+// top so it picks up the new (simple or full) text.
+function handleAltM() {
+  const wasSpeaking = !!(window.speechSynthesis && window.speechSynthesis.speaking);
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  setSimpleMode(!simpleMode);
+  if (wasSpeaking) setTimeout(startBuiltInReading, 150);
+}
+
+document.addEventListener('keydown', function (e) {
+  if (e.altKey && e.key.toLowerCase() === 'm') {
+    e.preventDefault();
+    handleAltM();
+  }
+});
+
+// Mirror #sr-read-btn's active/paused class onto our own "Listen to this
+// page" button, since the real reading state lives inside
+// accessibility-widget.js. Polls briefly for the button to exist, since
+// this script tag loads before accessibility-widget.js does.
+(function watchReaderButton() {
+  const btn = document.getElementById('sr-read-btn');
+  if (!btn) { setTimeout(watchReaderButton, 300); return; }
+  function sync() { if (listenBtn) listenBtn.setAttribute('aria-pressed', String(isReaderActive())); }
+  new MutationObserver(sync).observe(btn, { attributes: true, attributeFilter: ['class'] });
+  sync();
+  if (localStorage.getItem(LISTEN_PAGE_KEY) === '1' && !isReaderActive()) btn.click();
+})();
+
+if (listenBtn) {
+  listenBtn.addEventListener('click', function () {
+    try { localStorage.setItem(LISTEN_PAGE_KEY, '1'); } catch (e) {}
+
+    if (isReaderActive()) {
+      startBuiltInReading(); // forwards the click; the widget's own button owns play/pause/stop
+      return;
+    }
+
+    const totals = pageWordTotals();
+    const shouldAnnounce = !simpleMode
+      && !announcedTimeSavingsThisSession
+      && totals.full > 0
+      && (totals.saved / totals.full) >= 0.20;
+
+    if (!shouldAnnounce) { startBuiltInReading(); return; }
+
+    announcedTimeSavingsThisSession = true;
+    const fullMinutes = minutesFor(totals.full);
+    const simpleMinutes = minutesFor(totals.full - totals.saved);
+    const T = translations[currentLang] || {};
+    const template = T['simple_time_announcement'] ||
+      'Reading the full page takes about {full} minutes. Simple language mode reduces this to about {simple} minutes. Press Alt M to switch, or continue.';
+    speakAnnouncement(template.replace('{full}', fullMinutes).replace('{simple}', simpleMinutes), startBuiltInReading);
+  });
+}
+
+// Restore saved preference and apply as early as this script runs (it loads
+// before accessibility-widget.js, at the end of <body> - see Task 2; true
+// before-first-paint would require moving script loading into <head>, which
+// was out of scope here).
+try {
+  if (localStorage.getItem(SIMPLE_MODE_KEY) === '1') setSimpleMode(true, { silent: true });
+} catch (e) {}
 
 /* ─── HERO BACKGROUND VIDEO ───
    The hero sits on a CSS gradient with the video layered over it. If the video
