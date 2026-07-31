@@ -119,11 +119,11 @@ button{font-family:'Sora',sans-serif;}
 .btn-search span{color:var(--text-3);}
 .btn-search:hover{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-pale);}
 .btn-search:hover span{color:var(--blue-mid);}
-.simple-toggle{background:none;border:1px solid var(--border);color:var(--text-3);padding:0 12px;height:36px;border-radius:100px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all var(--trans);font-size:0.8rem;font-weight:500;font-family:'Sora',sans-serif;}
-.simple-toggle span{color:var(--text-3);}
-.simple-toggle:hover{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-pale);}
-.simple-toggle:hover span{color:var(--blue-mid);}
-.simple-toggle[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:white;}
+.simple-toggle{background:var(--surface);border:1px solid var(--blue-light);color:var(--blue);padding:0 14px;min-height:40px;border-radius:100px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all var(--trans);font-size:0.82rem;font-weight:700;font-family:'Sora',sans-serif;box-shadow:var(--shadow-sm);}
+.simple-toggle svg{flex-shrink:0;}
+.simple-toggle span{color:inherit;display:inline;}
+.simple-toggle:hover{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-pale);transform:translateY(-1px);box-shadow:var(--shadow-md);}
+.simple-toggle[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:white;box-shadow:0 8px 20px rgba(26,58,143,0.24);}
 .simple-toggle[aria-pressed="true"] span{color:white;}
 .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;}
 .hamburger span{display:block;width:22px;height:2px;background:var(--text-1);border-radius:2px;transition:all var(--trans);}
@@ -831,8 +831,8 @@ button{font-family:'Sora',sans-serif;}
     .nav-right{gap:6px;}
     .btn-search span{display:none;}
     .btn-search{padding:0 10px;}
-    .simple-toggle span{display:none;}
-    .simple-toggle{padding:0 10px;}
+    .simple-toggle span{display:inline;}
+    .simple-toggle{padding:0 12px;min-height:38px;}
     /* DIVA panel: fixed width+right-offset clips off the left edge on narrow phones */
     .diva-panel{left:16px;right:16px;width:auto;}
 }

@@ -19,7 +19,7 @@
       <div class="tool-list" role="list">
         <div class="tool-row" role="listitem">
           <div class="tool-name">Read the page aloud</div>
-          <div class="tool-desc">On your first visit we ask whether you'd like to use our built-in screen reader or keep using your own (NVDA, JAWS, VoiceOver, etc.) - this avoids two voices reading at once. You can start it any time from the panel with "Read page aloud". Pause with Space, stop with S, change speed with the slider, and pick a voice from the dropdown.</div>
+          <div class="tool-desc">Use the built-in screen reader from the Accessibility panel or the "Listen to this page" button. Pause with Space, stop with S, change speed with the slider, and pick a voice from the dropdown. If you already use your own assistive technology, you can keep using that instead.</div>
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Make text bigger or smaller</div>
@@ -31,7 +31,7 @@
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Simplify the page</div>
-          <div class="tool-desc">"Remove All Styling" strips the page back to plain text and links, with no colour or layout - useful if the design itself is what's getting in your way.</div>
+          <div class="tool-desc">Use the Simple language toggle in the navbar to switch to short summaries and clearer section headings. The full text remains available whenever you want it.</div>
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Dyslexia-friendly font and reading line</div>

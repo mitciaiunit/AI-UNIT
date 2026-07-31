@@ -1498,70 +1498,9 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-// --- First-visit screen reader choice prompt ---
-const SR_PROMPT_KEY = 'a11y-sr-prompt-choice';
-const srPrompt = document.getElementById('a11y-sr-prompt');
-const srPromptCloseBtn = document.getElementById('a11y-sr-prompt-close');
-const srPromptUseBtn = document.getElementById('a11y-sr-prompt-use');
-const srPromptOwnBtn = document.getElementById('a11y-sr-prompt-own');
-
-function dismissSRPrompt(choice) {
-  if (!srPrompt) return;
-  srPrompt.remove();
-  document.removeEventListener('keydown', onSRPromptKeydown);
-  try { localStorage.setItem(SR_PROMPT_KEY, choice); } catch (err) {}
-}
-
-function onSRPromptKeydown(e) {
-  if (e.key === 'Escape') {
-    e.preventDefault();
-    dismissSRPrompt('own');
-    return;
-  }
-  if (e.key !== 'Tab') return;
-  const focusable = [srPromptCloseBtn, srPromptUseBtn, srPromptOwnBtn].filter(Boolean);
-  if (!focusable.length) return;
-  const first = focusable[0];
-  const last = focusable[focusable.length - 1];
-  if (e.shiftKey && document.activeElement === first) {
-    e.preventDefault();
-    last.focus();
-  } else if (!e.shiftKey && document.activeElement === last) {
-    e.preventDefault();
-    first.focus();
-  }
-}
-
-if (srPrompt) {
-  let priorChoice = null;
-  try { priorChoice = localStorage.getItem(SR_PROMPT_KEY); } catch (err) {}
-  if (!priorChoice) {
-    srPrompt.hidden = false;
-    document.addEventListener('keydown', onSRPromptKeydown);
-    if (srPromptUseBtn) srPromptUseBtn.focus();
-  } else {
-    // Already answered on a prior visit - remove it outright so it can
-    // never end up in the screen reader's read-aloud queue.
-    srPrompt.remove();
-  }
-  srPromptUseBtn && srPromptUseBtn.addEventListener('click', function () {
-    dismissSRPrompt('builtin');
-    openPanel();
-    // accessibility-screen-reader.js wires its own click listener inside a
-    // setTimeout(..., 100) after DOMContentLoaded, so wait past that
-    // before simulating the click, or it fires before anything is listening.
-    setTimeout(function () {
-      const readBtn = document.getElementById('sr-read-btn');
-      if (readBtn) readBtn.click();
-    }, 200);
-  });
-  srPromptOwnBtn && srPromptOwnBtn.addEventListener('click', function () {
-    dismissSRPrompt('own');
-  });
-  srPromptCloseBtn && srPromptCloseBtn.addEventListener('click', function () {
-    dismissSRPrompt('own');
-  });
-}
+// The first-visit choice prompt has been removed in favour of explicit,
+// user-controlled controls: the navbar toggle for simple language and the
+// built-in reader controls in the Accessibility panel.
   }
 
   function boot() {
