@@ -102,62 +102,73 @@ const translations = {
     simple_time_announcement: "Reading the full page takes about {full} minutes. Simple language mode reduces this to about {simple} minutes. Press Alt M to switch, or continue.",
 
     // ─── SIMPLE LANGUAGE MODE: per-section orientation summaries (shown only in simple mode) ───
-    sum_about: "In short: the AI Unit leads Mauritius' work on artificial intelligence, making sure it is fair and open for everyone.",
-    sum_framework: "In short: six areas Mauritius is working on to build AI that everyone can trust.",
-    sum_action: "In short: real examples of AI helping people in Mauritius, from child safety online to accessible technology for all.",
-    sum_marketplace: "In short: an online marketplace connecting AI businesses, startups and government buyers across Mauritius and the region.",
-    sum_strategy: "In short: our four main policy documents on AI, available to read online or download.",
-    sum_principles: "In short: the values that guide our work - fairness, accountability, inclusion and responsibility.",
-    sum_team: "In short: meet the three people leading Mauritius' national AI strategy.",
-    sum_contact: "In short: how to reach us by email, phone or post, and our office hours.",
+    // Final strings from Kate (simple-summaries-en.js), pasted verbatim.
+    sum_about: "In short: who we are, and what the AI Unit does.",
+    sum_framework: "In short: six areas Mauritius is working on to build AI that people can trust.",
+    sum_action: "In short: two projects already running — online safety for children, and a plain guide to AI.",
+    sum_marketplace: "In short: a place to find AI tools, or to list your own.",
+    sum_strategy: "In short: our four main documents. You can read, download or listen to each one.",
+    sum_principles: "In short: the four values that guide our work.",
+    sum_team: "In short: the three people who lead the AI Unit.",
+    sum_contact: "In short: how to reach us — address, email, phone, and a message form.",
 
     // ─── SIMPLE LANGUAGE MODE: Tier 1 (site copy) summaries ───
-    // Kate may draft and ship these (CLAUDE_CODE_BRIEF_simple_mode.md section
-    // 5) - drafted here per that section's process, but still needs Kate's
-    // edit before this ships: "No draft ships unedited."
-    hero_subtitle_s: "The AI Unit shows how artificial intelligence makes Mauritius' public services smarter, faster and fairer for every citizen.",
-    about_body1_s: "The AI Unit leads Mauritius' work on artificial intelligence. We are part of the Ministry of ICT. We make sure AI is fair and open for everyone.",
-    about_body2_s: "We help carry out MITCI's <strong>Digital Transformation 2025-2029</strong> plan. It aims to modernise public services and make Mauritius a leading AI nation in Africa.",
-    about_body3_s: "Whether you are curious about AI, exploring solutions for your business, or a student planning your future - the AI Unit is here to help.",
-    about_mission_quote_s: "\"Mauritius wants to be a smart, fair, future-ready nation - where every citizen benefits from responsible AI.\"",
-    vision_text_s: "Mauritius aims to lead the region in trusted, responsible AI - improving the economy, public services and quality of life for every citizen.",
-    mission_text_s: "We lead responsible AI in Mauritius. Every system must be secure, ethical and transparent, and must genuinely benefit citizens and businesses.",
-    diva_desc_s: "DIVA is a prototype assistant. Ask it questions about the Digital Transformation Blueprint, AI Strategy, FAIR Guidelines or AI Playbook.",
-    action_desc_s: "See how AI already helps Mauritians - from protecting children online to making technology accessible for everyone.",
-    action_card1_desc_s: "An educational booklet and four videos to help prevent digital violence against children, and show what to do about it.",
-    action_card2_desc_s: "A national booklet that explains artificial intelligence simply, so every citizen can understand and benefit from it.",
-    marketplace_desc_s: "The Regional AI Marketplace connects AI providers, startups, businesses and government bodies - helping them build and use AI solutions faster across Mauritius and the region.",
-    marketplace_card1_desc_s: "List your AI product or service to reach government and business buyers.",
-    marketplace_card2_desc_s: "Find AI solutions we have checked, and see how they can help your business.",
-    marketplace_card3_desc_s: "Find trusted AI tools to help government services work better for citizens.",
-    principles_desc_s: "Our team is shaping the future of AI in Mauritius. We are guided by strong ethics and put people first.",
-    team_desc_s: "Meet the experts leading Mauritius' AI strategy and digital transformation.",
-    contact_desc_s: "Have a question about AI in Mauritius, or want to partner with us? Get in touch - we welcome every question.",
+    // Final strings from Kate (simple-summaries-en.js), pasted verbatim -
+    // not Claude drafts. Ready to review and ship as-is. Word counts are
+    // Kate's own, shown as (full → simple).
+    hero_subtitle_s: "Welcome to the AI Unit of Mauritius. We explain how AI is making public services better for everyone.", // (24 → 19)
+    about_mission_quote_s: "\"Mauritius wants to be a smart and fair country, where AI helps every citizen.\"", // (19 → 15)
+    about_body1_s: "The AI Unit leads Mauritius' work on artificial intelligence. We are part of the Ministry of ICT. We make sure AI is fair and open for everyone.", // (68 → 27)
+    about_body2_s: "We carry out the Ministry's <strong>Digital Transformation plan for 2025 to 2029</strong>. The goal is better public services and a strong AI sector.", // (29 → 25)
+    about_body3_s: "The AI Unit is here for everyone: citizens, businesses and students.", // (26 → 11)
+    vision_text_s: "We want Mauritius to lead the region in safe, trusted AI that improves the economy, public services and daily life.", // (25 → 20)
+    mission_text_s: "We lead how AI is built and managed in Mauritius. Every system must be safe, fair and open, and must help people and businesses.", // (29 → 24)
+    diva_desc_s: "DIVA is a test assistant. It answers questions using our four main documents.", // (23 → 13)
+    action_desc_s: "See how AI is already helping people in Mauritius, from keeping children safe online to making technology easier to use.", // (22 → 20)
+    action_card1_desc_s: "A booklet and four videos about online violence against children: how to spot it, how to stop it, and where to get help.", // (18 → 19)
+    action_card2_desc_s: "A booklet that explains what AI is and how it can help you. Written for everyone.", // (15 → 16)
+    marketplace_desc_s: "The Regional AI Marketplace connects people who build AI with people who need it, in Mauritius and nearby countries.", // (27 → 19)
+    marketplace_card1_desc_s: "Add your AI product so government and businesses can find it.", // (12 → 10)
+    marketplace_card2_desc_s: "Find checked AI tools for your business.", // (9 → 7)
+    marketplace_card3_desc_s: "Find trusted AI tools to improve public services.", // (10 → 8)
+    principles_desc_s: "We are a small team working on AI for Mauritius. We put people first and work in an honest, careful way.", // (25 → 22)
+    team_desc_s: "Meet the people who lead AI work in Mauritius.", // (10 → 8)
+    contact_desc_s: "Have a question, or want to work with us? Get in touch. We welcome every question.", // (23 → 16)
 
     // ─── SIMPLE LANGUAGE MODE: Tier 2 (policy-derived) summaries ───
-    // PENDING MINISTRY REVIEW - per CLAUDE_CODE_BRIEF_simple_mode.md section
-    // 5, these restate the Blueprint, National AI Strategy, FAIR Guidelines
-    // or AI Playbook and require Ministry sign-off before publication. Do
-    // NOT merge to production / deploy until that sign-off happens. Left in
-    // this local, unpushed commit only so Kate has drafts to route for
-    // review; the Task 1 fallback means the site works correctly with only
-    // Tier 1 shipped if these are held back.
-    framework_desc_s: "Six pillars guide how Mauritius builds AI, governs it fairly, and shares its benefits with everyone.",
-    dim1_text_s: "We are building the digital backbone Mauritius needs: fast internet, modern data centres, secure cloud, and strong cybersecurity, so AI can reach every part of the country.",
-    dim2_text_s: "We support startups, universities and creative thinkers who want to build AI solutions that solve real problems for Mauritians.",
-    dim3_text_s: "AI4AI makes sure no one is left behind. We run outreach programmes in every district, for people of any age, location or education level.",
-    dim4_text_s: "We set clear, fair rules for AI, including the FAIR Guidelines, to keep AI systems safe and accountable. Our Data Protection Act matches international standards such as GDPR.",
-    dim5_text_s: "AI works best when government, business and citizens work together. We bring them together on shared projects that meet the real needs of Mauritian society.",
-    dim6_text_s: "Mauritius takes an active role in global AI governance. We partner with international bodies, African nations and leading tech countries to bring the best AI knowledge home.",
-    library_desc_s: "Our four core policy documents: the Blueprint, AI Strategy, FAIR Guidelines, and the AI Playbook for government use.",
-    doc1_desc_s: "Our Digital Transformation Blueprint: four strategic pillars and how we govern AI.",
-    doc2_desc_s: "Mauritius' first national AI strategy: how we govern AI, adopt it, and use it across sectors.",
-    doc3_desc_s: "Our guidelines for responsible AI: Fairness, Accountability, Inclusiveness and Responsibility.",
-    doc4_desc_s: "A practical guide to running AI projects in government, from first test to full use.",
-    principle1_text_s: "AI must treat all citizens fairly. We check every system for bias, at every stage, so no community is disadvantaged by it.",
-    principle2_text_s: "AI decisions must be explainable, not a mystery. Oversight bodies must be able to check and trace every decision an AI system makes.",
-    principle3_text_s: "Technology should serve everyone. We design AI tools that work across languages, abilities and locations, and we act with honesty and transparency.",
-    principle4_text_s: "We act with purpose and accountability, moving carefully and learning as we go, always keeping citizens' long-term wellbeing at the centre of our work.",
+    // *** PENDING MINISTRY REVIEW — DO NOT PUBLISH ***
+    // Final drafts from Kate (simple-summaries-en.js), pasted verbatim - not
+    // Claude drafts. Every factual claim, commitment, date and figure is
+    // stated (by Kate) to have been preserved; still requires Ministry
+    // sign-off before publication per CLAUDE.md section 5 - a plain-language
+    // version of national policy that shifts meaning is a substantive
+    // problem, not a style question. Do not merge to production until that
+    // sign-off happens. The Task 14 fallback means the site works correctly
+    // with only Tier 1 shipped if these are held back.
+    framework_desc_s: "Six areas guide how Mauritius builds and manages AI, so everyone shares the benefits.", // (22 → 14)
+    // FLAG FOR MINISTRY REVIEW: this summary says outreach runs "in English,
+    // French and Kreol Morisien," but the current full-text dim3_text on
+    // this site says only "available in English" (French/Kreol are not
+    // currently live - see the site's own accessibility statement, which
+    // says language switching "is still being completed"). Pasted verbatim
+    // per instruction, not silently corrected - flagging so this specific
+    // claim gets checked against reality before sign-off, not just against
+    // the source document.
+    dim1_text_s: "Mauritius needs fast internet, modern data centres, safe cloud services and strong cybersecurity. This lets AI reach every part of the country.", // (30 → 23)
+    dim2_text_s: "We support startups, universities and new ideas, so people can build AI that solves real problems here.", // (27 → 18)
+    dim3_text_s: "AI should reach every Mauritian, whatever their age, home district, language or schooling. We run programmes in every district, in English, French and Kreol Morisien.", // (52 → 30)
+    dim4_text_s: "Clear rules keep AI safe and fair. The FAIR Guidelines set the standard. Our Data Protection Act follows international practice, including GDPR.", // (44 → 24)
+    dim5_text_s: "Government, business and citizens work together on shared projects, so AI matches what people in Mauritius actually need.", // (40 → 22)
+    dim6_text_s: "We work with international bodies, African countries and leading technology nations, and bring what we learn back to Mauritius.", // (36 → 21)
+    library_desc_s: "Our four main documents: the Blueprint, the AI Strategy, the FAIR Guidelines and the AI Playbook.", // (19 → 17)
+    doc1_desc_s: "The national plan for digital government services. Four main areas, and how they are managed.", // (9 → 14)
+    doc2_desc_s: "Mauritius' first national AI plan: how AI is managed, taken up, and used in different sectors.", // (11 → 16)
+    doc3_desc_s: "Guidelines for responsible AI, built on four ideas: fairness, accountability, inclusion and responsibility.", // (13 → 15)
+    doc4_desc_s: "A step-by-step guide for AI projects in government, from the first small test to full use.", // (12 → 17)
+    principle1_text_s: "AI must treat all citizens equally. We check systems for bias at every stage, so no community is put at a disadvantage.", // (33 → 24)
+    principle2_text_s: "Every AI decision must be explainable and open to checking by official bodies. This is a requirement, not an option.", // (31 → 22)
+    principle3_text_s: "Technology should serve everyone. We build AI that works across languages, abilities and locations, and we work openly and honestly.", // (40 → 22)
+    principle4_text_s: "We work carefully and take responsibility. We learn as we go, and keep the long-term wellbeing of citizens at the centre.", // (34 → 22)
   }
 };
   
