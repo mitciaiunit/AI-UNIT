@@ -867,7 +867,7 @@ setTimeout(function () {
     // --- Text Extraction ---
     // Widget/UI chrome that should never end up in the read-aloud queue,
     // regardless of its current visibility state.
-    var A11Y_READER_SKIP_SELECTOR = '.video-modal, .diva-panel, #divaWidget, #a11y-announcer, #a11y-read-guide, #a11y-sr-prompt, #sr-speed-display, #sr-stop-floating';
+    var A11Y_READER_SKIP_SELECTOR = '.video-modal, .diva-panel, #divaWidget, #a11y-announcer, #a11y-read-guide, #a11y-sr-prompt, #sr-speed-display, .simple-toggle, .listen-offer, .page-contents';
 
     // getComputedStyle(el) only ever reflects el's own specified/computed
     // style - display:none (or visibility/opacity/hidden/aria-hidden) on an
