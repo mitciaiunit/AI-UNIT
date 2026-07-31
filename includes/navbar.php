@@ -52,6 +52,14 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
       <a href="<?= e(url('student-corner')) ?>" class="nav-link" data-i18n="nav_student"<?= $navCurrent === 'student-corner' ? ' aria-current="page"' : '' ?>>Student Corner</a>
     </nav>
     <div class="nav-right">
+      <button type="button" class="simple-toggle" id="simple-toggle" aria-pressed="false">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="7" x2="20" y2="7"/>
+          <line x1="4" y1="12" x2="14" y2="12"/>
+          <line x1="4" y1="17" x2="10" y2="17"/>
+        </svg>
+        <span data-i18n="simple_toggle">Simple language</span>
+      </button>
       <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>

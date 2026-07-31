@@ -96,6 +96,79 @@ const translations = {
     a11y_reading: "Reading & Focus", a11y_toggle_dyslexia: "Dyslexia-Friendly Font", a11y_toggle_readguide: "Reading Guide Line", a11y_toggle_spacing: "Wider Letter Spacing", a11y_toggle_focus: "Bold Focus Outline",
     a11y_navigation: "Navigation", a11y_toggle_cursor: "Large Mouse Cursor", a11y_toggle_keyboard: "Show Keyboard Shortcuts",
     a11y_kbd_open: "Open panel:", a11y_kbd_close: "Close:",
+
+    // ─── SIMPLE LANGUAGE MODE: UI strings ───
+    simple_toggle: "Simple language", ft_show: "Read the full text", ft_hide: "Hide the full text", listen_page: "Listen to this page", toc_title: "On this page",
+    simple_time_announcement: "Reading the full page takes about {full} minutes. Simple language mode reduces this to about {simple} minutes. Press Alt M to switch, or continue.",
+
+    // ─── SIMPLE LANGUAGE MODE: per-section orientation summaries (shown only in simple mode) ───
+    // Final strings from Kate (simple-summaries-en.js), pasted verbatim.
+    sum_about: "In short: who we are, and what the AI Unit does.",
+    sum_framework: "In short: six areas Mauritius is working on to build AI that people can trust.",
+    sum_action: "In short: two projects already running — online safety for children, and a plain guide to AI.",
+    sum_marketplace: "In short: a place to find AI tools, or to list your own.",
+    sum_strategy: "In short: our four main documents. You can read, download or listen to each one.",
+    sum_principles: "In short: the four values that guide our work.",
+    sum_team: "In short: the three people who lead the AI Unit.",
+    sum_contact: "In short: how to reach us — address, email, phone, and a message form.",
+
+    // ─── SIMPLE LANGUAGE MODE: Tier 1 (site copy) summaries ───
+    // Final strings from Kate (simple-summaries-en.js), pasted verbatim -
+    // not Claude drafts. Ready to review and ship as-is. Word counts are
+    // Kate's own, shown as (full → simple).
+    hero_subtitle_s: "Welcome to the AI Unit of Mauritius. We explain how AI is making public services better for everyone.", // (24 → 19)
+    about_mission_quote_s: "\"Mauritius wants to be a smart and fair country, where AI helps every citizen.\"", // (19 → 15)
+    about_body1_s: "The AI Unit leads Mauritius' work on artificial intelligence. We are part of the Ministry of ICT. We make sure AI is fair and open for everyone.", // (68 → 27)
+    about_body2_s: "We carry out the Ministry's <strong>Digital Transformation plan for 2025 to 2029</strong>. The goal is better public services and a strong AI sector.", // (29 → 25)
+    about_body3_s: "The AI Unit is here for everyone: citizens, businesses and students.", // (26 → 11)
+    vision_text_s: "We want Mauritius to lead the region in safe, trusted AI that improves the economy, public services and daily life.", // (25 → 20)
+    mission_text_s: "We lead how AI is built and managed in Mauritius. Every system must be safe, fair and open, and must help people and businesses.", // (29 → 24)
+    diva_desc_s: "DIVA is a test assistant. It answers questions using our four main documents.", // (23 → 13)
+    action_desc_s: "See how AI is already helping people in Mauritius, from keeping children safe online to making technology easier to use.", // (22 → 20)
+    action_card1_desc_s: "A booklet and four videos about online violence against children: how to spot it, how to stop it, and where to get help.", // (18 → 19)
+    action_card2_desc_s: "A booklet that explains what AI is and how it can help you. Written for everyone.", // (15 → 16)
+    marketplace_desc_s: "The Regional AI Marketplace connects people who build AI with people who need it, in Mauritius and nearby countries.", // (27 → 19)
+    marketplace_card1_desc_s: "Add your AI product so government and businesses can find it.", // (12 → 10)
+    marketplace_card2_desc_s: "Find checked AI tools for your business.", // (9 → 7)
+    marketplace_card3_desc_s: "Find trusted AI tools to improve public services.", // (10 → 8)
+    principles_desc_s: "We are a small team working on AI for Mauritius. We put people first and work in an honest, careful way.", // (25 → 22)
+    team_desc_s: "Meet the people who lead AI work in Mauritius.", // (10 → 8)
+    contact_desc_s: "Have a question, or want to work with us? Get in touch. We welcome every question.", // (23 → 16)
+
+    // ─── SIMPLE LANGUAGE MODE: Tier 2 (policy-derived) summaries ───
+    // *** PENDING MINISTRY REVIEW — DO NOT PUBLISH ***
+    // Final drafts from Kate (simple-summaries-en.js), pasted verbatim - not
+    // Claude drafts. Every factual claim, commitment, date and figure is
+    // stated (by Kate) to have been preserved; still requires Ministry
+    // sign-off before publication per CLAUDE.md section 5 - a plain-language
+    // version of national policy that shifts meaning is a substantive
+    // problem, not a style question. Do not merge to production until that
+    // sign-off happens. The Task 14 fallback means the site works correctly
+    // with only Tier 1 shipped if these are held back.
+    framework_desc_s: "Six areas guide how Mauritius builds and manages AI, so everyone shares the benefits.", // (22 → 14)
+    // FLAG FOR MINISTRY REVIEW: this summary says outreach runs "in English,
+    // French and Kreol Morisien," but the current full-text dim3_text on
+    // this site says only "available in English" (French/Kreol are not
+    // currently live - see the site's own accessibility statement, which
+    // says language switching "is still being completed"). Pasted verbatim
+    // per instruction, not silently corrected - flagging so this specific
+    // claim gets checked against reality before sign-off, not just against
+    // the source document.
+    dim1_text_s: "Mauritius needs fast internet, modern data centres, safe cloud services and strong cybersecurity. This lets AI reach every part of the country.", // (30 → 23)
+    dim2_text_s: "We support startups, universities and new ideas, so people can build AI that solves real problems here.", // (27 → 18)
+    dim3_text_s: "AI should reach every Mauritian, whatever their age, home district, language or schooling. We run programmes in every district, in English, French and Kreol Morisien.", // (52 → 30)
+    dim4_text_s: "Clear rules keep AI safe and fair. The FAIR Guidelines set the standard. Our Data Protection Act follows international practice, including GDPR.", // (44 → 24)
+    dim5_text_s: "Government, business and citizens work together on shared projects, so AI matches what people in Mauritius actually need.", // (40 → 22)
+    dim6_text_s: "We work with international bodies, African countries and leading technology nations, and bring what we learn back to Mauritius.", // (36 → 21)
+    library_desc_s: "Our four main documents: the Blueprint, the AI Strategy, the FAIR Guidelines and the AI Playbook.", // (19 → 17)
+    doc1_desc_s: "The national plan for digital government services. Four main areas, and how they are managed.", // (9 → 14)
+    doc2_desc_s: "Mauritius' first national AI plan: how AI is managed, taken up, and used in different sectors.", // (11 → 16)
+    doc3_desc_s: "Guidelines for responsible AI, built on four ideas: fairness, accountability, inclusion and responsibility.", // (13 → 15)
+    doc4_desc_s: "A step-by-step guide for AI projects in government, from the first small test to full use.", // (12 → 17)
+    principle1_text_s: "AI must treat all citizens equally. We check systems for bias at every stage, so no community is put at a disadvantage.", // (33 → 24)
+    principle2_text_s: "Every AI decision must be explainable and open to checking by official bodies. This is a requirement, not an option.", // (31 → 22)
+    principle3_text_s: "Technology should serve everyone. We build AI that works across languages, abilities and locations, and we work openly and honestly.", // (40 → 22)
+    principle4_text_s: "We work carefully and take responsibility. We learn as we go, and keep the long-term wellbeing of citizens at the centre.", // (34 → 22)
   }
 };
   
@@ -105,17 +178,31 @@ let currentLang = 'en';
 // reading it with English pronunciation rules.
 const HTML_LANG = { en: 'en', fr: 'fr', km: 'mfe' };
 
+// Simple language mode: when on, applyTranslations() prefers a `_s` (short)
+// variant of each translation key over the full-length one. Any key without
+// a `_s` variant falls back to the full text - see CLAUDE_CODE_BRIEF_simple.md
+// Task 1. Set by the navbar toggle (Task 2), not here.
+let simpleMode = false;
+
 function applyTranslations() {
+  const T = translations[currentLang] || {};
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (translations[currentLang] && translations[currentLang][key] !== undefined) {
-      if (el.tagName === 'INPUT' && el.placeholder) {
-        el.placeholder = translations[currentLang][key];
-      } else if (el.tagName === 'TEXTAREA' && el.placeholder) {
-        el.placeholder = translations[currentLang][key];
-      } else {
-        el.innerHTML = translations[currentLang][key];
-      }
+    let value;
+
+    if (simpleMode && T[key + '_s'] !== undefined) {
+      value = T[key + '_s'];
+      el.setAttribute('data-simplified', 'true');
+    } else {
+      value = T[key];
+      el.removeAttribute('data-simplified');
+    }
+    if (value === undefined) return;
+
+    if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && el.placeholder) {
+      el.placeholder = value;
+    } else {
+      el.innerHTML = value;
     }
   });
   document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -143,6 +230,235 @@ if (savedLang && (savedLang === 'fr' || savedLang === 'km')) {
   currentLang = savedLang;
   applyTranslations();
 }
+
+/* ─── SIMPLE LANGUAGE MODE ───
+   Replaces long-form copy with short plain-language summaries (the `_s`
+   variant of each translation key - see applyTranslations() above). Offered
+   as a reading preference to every visitor and never switched on
+   automatically - see CLAUDE_CODE_BRIEF_simple_mode.md section 3. Two
+   independent localStorage keys (simple language, listen-to-page) per
+   section 3.4 of that brief. */
+const SIMPLE_MODE_KEY = 'aiunit_simple_mode_v1';
+const LISTEN_PAGE_KEY = 'aiunit_listen_page_v1';
+const simpleToggleBtn = document.getElementById('simple-toggle');
+const listenBtn = document.getElementById('listen-page');
+const simpleAnnouncer = document.getElementById('simple-announcer');
+let announcedTimeSavingsThisSession = false; // module flag, not localStorage - once per session, reappears next visit
+
+function announceSimple(msg) {
+  if (!simpleAnnouncer) return;
+  simpleAnnouncer.textContent = '';
+  requestAnimationFrame(function () { simpleAnnouncer.textContent = msg; });
+}
+
+function countWords(str) {
+  return (String(str).replace(/<[^>]*>/g, ' ').match(/\S+/g) || []).length;
+}
+
+// Starting estimate only - calibrate against a real timed NVDA read of the
+// full page at reading rate 1.0x and set the measured figure. See brief
+// Task 5. Record both measured read times for the IA report.
+const WORDS_PER_MINUTE = 160;
+
+function minutesFor(words) {
+  return Math.max(1, Math.round(words / WORDS_PER_MINUTE));
+}
+
+// Full-page word count and how many words simple mode would save, derived
+// from the translations object rather than the DOM so it is correct
+// regardless of which mode is currently showing.
+function pageWordTotals() {
+  const T = translations[currentLang] || {};
+  let full = 0, saved = 0;
+  document.querySelectorAll('[data-i18n]').forEach(function (el) {
+    const key = el.getAttribute('data-i18n');
+    if (!key || T[key] === undefined) return;
+    const fullWords = countWords(T[key]);
+    full += fullWords;
+    const shortKey = key + '_s';
+    if (T[shortKey] !== undefined) saved += Math.max(0, fullWords - countWords(T[shortKey]));
+  });
+  return { full: full, saved: saved };
+}
+
+// Builds a "Read the full text" disclosure after every element simple mode
+// just replaced, from the translations object - no full text is duplicated
+// in the HTML. Uses the `hidden` attribute (not a CSS class) so collapsed
+// text genuinely leaves the accessibility tree. Idempotent: safe to call
+// repeatedly, e.g. every time the mode is toggled.
+function rebuildDisclosures() {
+  document.querySelectorAll('.full-text-wrap').forEach(function (el) { el.remove(); });
+  if (!simpleMode) return;
+
+  const T = translations[currentLang] || {};
+  document.querySelectorAll('[data-simplified="true"]').forEach(function (el) {
+    const key = el.getAttribute('data-i18n');
+    if (!key || T[key] === undefined) return;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'full-text-wrap';
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'full-text-toggle';
+    btn.setAttribute('aria-expanded', 'false');
+    const panelId = 'ft-' + key;
+    btn.setAttribute('aria-controls', panelId);
+    const btnLabel = document.createElement('span');
+    btnLabel.textContent = T['ft_show'] || 'Read the full text';
+    btn.appendChild(btnLabel);
+
+    const panel = document.createElement('div');
+    panel.className = 'full-text-body';
+    panel.id = panelId;
+    panel.hidden = true;
+    panel.innerHTML = T[key];
+
+    btn.addEventListener('click', function () {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      panel.hidden = expanded;
+      btnLabel.textContent = expanded ? (T['ft_show'] || 'Read the full text') : (T['ft_hide'] || 'Hide the full text');
+    });
+
+    wrap.appendChild(btn);
+    wrap.appendChild(panel);
+    el.insertAdjacentElement('afterend', wrap);
+  });
+}
+
+function setSimpleMode(on, opts) {
+  opts = opts || {};
+  simpleMode = on;
+  applyTranslations();
+  document.querySelectorAll('.section-summary').forEach(function (el) { el.hidden = !on; });
+  rebuildDisclosures();
+  if (simpleToggleBtn) simpleToggleBtn.setAttribute('aria-pressed', String(on));
+  try { localStorage.setItem(SIMPLE_MODE_KEY, on ? '1' : '0'); } catch (e) {}
+  if (!opts.silent) {
+    announceSimple(on
+      ? 'Simple language on. Long sections replaced with short summaries.'
+      : 'Simple language off. Showing the full text.');
+  }
+}
+
+if (simpleToggleBtn) {
+  simpleToggleBtn.addEventListener('click', function () { setSimpleMode(!simpleMode); });
+}
+
+// #sr-read-btn belongs to accessibility-widget.js, which self-injects it on
+// DOMContentLoaded and is kept unmodified (see the widget-swap task earlier
+// in this thread) - so it is looked up by id rather than held as a direct
+// reference, and forwarded a real click rather than driven programmatically.
+function startBuiltInReading() {
+  const btn = document.getElementById('sr-read-btn');
+  if (btn) btn.click();
+}
+
+function isReaderActive() {
+  const btn = document.getElementById('sr-read-btn');
+  return !!btn && (btn.classList.contains('active') || btn.classList.contains('paused'));
+}
+
+function speakAnnouncement(text, onEnd) {
+  if (!window.speechSynthesis) { onEnd(); return; }
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = HTML_LANG[currentLang] || 'en';
+  u.onend = onEnd;
+  u.onerror = onEnd;
+  window.speechSynthesis.speak(u);
+}
+
+// Alt+M: works whether or not the reader is running. If speech is in
+// progress when pressed (either the built-in reader or our own time-saving
+// announcement), cancel it, switch mode, and restart the reader from the
+// top so it picks up the new (simple or full) text.
+function handleAltM() {
+  const wasSpeaking = !!(window.speechSynthesis && window.speechSynthesis.speaking);
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  setSimpleMode(!simpleMode);
+  if (wasSpeaking) setTimeout(startBuiltInReading, 150);
+}
+
+document.addEventListener('keydown', function (e) {
+  if (e.altKey && e.key.toLowerCase() === 'm') {
+    e.preventDefault();
+    handleAltM();
+  }
+});
+
+// Mirror #sr-read-btn's active/paused class onto our own "Listen to this
+// page" button, since the real reading state lives inside
+// accessibility-widget.js. Polls briefly for the button to exist, since
+// this script tag loads before accessibility-widget.js does.
+(function watchReaderButton() {
+  const btn = document.getElementById('sr-read-btn');
+  if (!btn) { setTimeout(watchReaderButton, 300); return; }
+  function sync() { if (listenBtn) listenBtn.setAttribute('aria-pressed', String(isReaderActive())); }
+  new MutationObserver(sync).observe(btn, { attributes: true, attributeFilter: ['class'] });
+  sync();
+  if (localStorage.getItem(LISTEN_PAGE_KEY) === '1' && !isReaderActive()) btn.click();
+})();
+
+if (listenBtn) {
+  listenBtn.addEventListener('click', function () {
+    try { localStorage.setItem(LISTEN_PAGE_KEY, '1'); } catch (e) {}
+    // Always just forwards to #sr-read-btn - the widget's own button owns
+    // play/pause/stop, and the document-level click interceptor below
+    // handles the time-comparison announcement uniformly for this button
+    // and the widget's own panel button.
+    startBuiltInReading();
+  });
+}
+
+// Recalibrated from the brief's 20%: that figure assumed a ~9,000-word,
+// ~55-minute homepage. The real page is ~1,500 words (~9 minutes), where
+// even the current ~10% reduction from the 34 drafted summaries is worth
+// surfacing. Revisit this once more of the page has _s summaries, or if
+// Kate wants the original 20% bar restored.
+const TIME_SAVINGS_THRESHOLD = 0.10;
+
+// Speaks the read-time comparison, once per session, immediately before the
+// FIRST "start reading" click of that session - whichever button triggers
+// it. Registered on `document` in the capture phase so it runs before the
+// widget's own bubble-phase click handler on #sr-read-btn (DOM capture
+// completes, root-to-target, before any bubble-phase listener on the target
+// fires) - this lets the announcement run ahead of the widget's own reading
+// without ever calling speechSynthesis.cancel() on speech the widget
+// started, and without modifying accessibility-widget.js. Covers both entry
+// points: our own "Listen to this page" button (which just forwards a real
+// click to #sr-read-btn) and the widget's own panel button directly.
+document.addEventListener('click', function (e) {
+  const btn = e.target && e.target.closest && e.target.closest('#sr-read-btn');
+  if (!btn || isReaderActive()) return; // not our button, or already reading/paused (pause/stop click - let it through)
+
+  const totals = pageWordTotals();
+  const shouldAnnounce = !simpleMode
+    && !announcedTimeSavingsThisSession
+    && totals.full > 0
+    && (totals.saved / totals.full) >= TIME_SAVINGS_THRESHOLD;
+  if (!shouldAnnounce) return; // let the real click proceed normally
+
+  e.preventDefault();
+  e.stopImmediatePropagation(); // block the widget's own handler for THIS click only
+  announcedTimeSavingsThisSession = true;
+  const fullMinutes = minutesFor(totals.full);
+  const simpleMinutes = minutesFor(totals.full - totals.saved);
+  const T = translations[currentLang] || {};
+  const template = T['simple_time_announcement'] ||
+    'Reading the full page takes about {full} minutes. Simple language mode reduces this to about {simple} minutes. Press Alt M to switch, or continue.';
+  speakAnnouncement(template.replace('{full}', fullMinutes).replace('{simple}', simpleMinutes), function () {
+    btn.click(); // replay for real - announcedTimeSavingsThisSession is now true, so this pass falls through above
+  });
+}, true);
+
+// Restore saved preference and apply as early as this script runs (it loads
+// before accessibility-widget.js, at the end of <body> - see Task 2; true
+// before-first-paint would require moving script loading into <head>, which
+// was out of scope here).
+try {
+  if (localStorage.getItem(SIMPLE_MODE_KEY) === '1') setSimpleMode(true, { silent: true });
+} catch (e) {}
 
 /* ─── HERO BACKGROUND VIDEO ───
    The hero sits on a CSS gradient with the video layered over it. If the video

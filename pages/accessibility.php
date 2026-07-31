@@ -66,6 +66,11 @@
       <p>Please note that the language switching feature is still being completed - some sections may not yet be available in all three languages. We are working on this.</p>
     </div>
 
+    <div class="block">
+      <h2>Simple language mode</h2>
+      <p>This website offers a simple language mode that replaces longer passages with short plain-language summaries. Summaries are written and reviewed by the AI Unit. They are a guide, not the authoritative text. The full text of every passage is available from the "Read the full text" control beside each summary, and the official policy documents remain available in full from the Framework Library. Simple language mode is never switched on automatically - it is always the visitor's choice.</p>
+    </div>
+
     <hr />
 
     <div class="block">
