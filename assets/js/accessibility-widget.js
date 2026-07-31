@@ -262,6 +262,28 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text-1);}
   box-shadow:0 1px 0 var(--border-2);
 }
 
+/* Persistent stop control for the built-in reader (Task 11b). Fixed near the
+   top of the viewport rather than placed early in DOM order, since this
+   widget only ever injects at the end of <body> (see boot()) - reordering
+   that is out of scope ("do not refactor"). Only shown while SR.speaking, so
+   it never competes for attention outside a reading session. Real visible
+   text, not icon-only, per the same rule as every other control here. */
+.sr-stop-floating{
+  display:none;
+  position:fixed;top:14px;left:50%;transform:translateX(-50%);
+  z-index:100000;
+  align-items:center;gap:8px;
+  padding:10px 18px;
+  background:var(--blue);color:white;
+  border:none;border-radius:100px;
+  font-family:'Sora',sans-serif;font-size:0.85rem;font-weight:700;
+  cursor:pointer;
+  box-shadow:0 6px 20px rgba(0,0,0,0.25);
+}
+.sr-stop-floating.visible{display:flex;}
+.sr-stop-floating:hover{background:var(--blue-mid);}
+.sr-stop-floating:focus-visible{outline:3px solid white;outline-offset:2px;}
+
 .sr-status{
   min-height:0;
   font-size:0.76rem;color:var(--blue);font-weight:600;
@@ -591,6 +613,11 @@ html[style*="--a11y-font-scale"] body{
   <span data-i18n="accessibility">Accessibility</span>
 </button>
 
+<button type="button" id="sr-stop-floating" class="sr-stop-floating" aria-label="Stop reading aloud">
+  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="1.5"/></svg>
+  <span data-i18n="sr_stop_floating">Stop reading aloud (Alt+S)</span>
+</button>
+
 <div id="a11y-announcer" aria-live="polite" aria-atomic="true" role="status"></div>
 <div id="a11y-read-guide" aria-hidden="true"></div>
 
@@ -625,6 +652,7 @@ html[style*="--a11y-font-scale"] body{
     <div class="sr-kbd-hints" aria-label="Keyboard shortcuts for screen reader">
       <p data-i18n="a11y_kbd_hint">Keyboard shortcuts (while reading)</p>
       <div class="sr-kbd-grid">
+        <div class="sr-kbd-item"><kbd>Alt</kbd>+<kbd>S</kbd> <span data-i18n="a11y_kbd_stop_alt">Stop (works with a screen reader running)</span></div>
         <div class="sr-kbd-item"><kbd>Space</kbd> <span data-i18n="a11y_kbd_playpause">Play / Pause</span></div>
         <div class="sr-kbd-item"><kbd>S</kbd> <span data-i18n="a11y_kbd_stop">Stop</span></div>
         <div class="sr-kbd-item"><kbd>&#8592;</kbd> <span data-i18n="a11y_kbd_slower">Slower</span></div>
@@ -757,6 +785,7 @@ setTimeout(function () {
     };
 
     const srReadBtn = document.getElementById('sr-read-btn');
+    const srStopFloating = document.getElementById('sr-stop-floating');
     const srStatus = document.getElementById('sr-status');
     const srSpeedSlider = document.getElementById('sr-speed');
     const srSpeedDisplay = document.getElementById('sr-speed-display');
@@ -1094,6 +1123,7 @@ setTimeout(function () {
       SR.speaking = true;
       SR.paused = false;
       updateSRStatus('Reading page aloud');
+      if (srStopFloating) srStopFloating.classList.add('visible');
       speakNext();
     }
 
@@ -1123,6 +1153,7 @@ setTimeout(function () {
       removeHighlight();
       updateReadButton('stopped');
       clearSRStatus();
+      if (srStopFloating) srStopFloating.classList.remove('visible');
     }
 
     function toggleReading() {
@@ -1136,9 +1167,27 @@ setTimeout(function () {
     }
 
     srReadBtn && srReadBtn.addEventListener('click', toggleReading);
+    srStopFloating && srStopFloating.addEventListener('click', stopReading);
 
     // Global keyboard shortcuts for screen reader
     document.addEventListener('keydown', function (e) {
+      // Alt+S and Escape are handled before the input-field guard below:
+      // they're the only way to stop the built-in reader that survives
+      // NVDA/JAWS browse mode (see Task 11 - bare keys like the 's' below
+      // are swallowed by those screen readers' own quick-navigation keys,
+      // so a blind user running their own AT had no way to silence this
+      // reader once started). Alt-modified keys pass through browse mode,
+      // same reasoning as the existing Alt+A panel shortcut.
+      if (e.altKey && (e.key === 's' || e.key === 'S') && SR.speaking) {
+        e.preventDefault();
+        stopReading();
+        return;
+      }
+      if (e.key === 'Escape' && SR.speaking) {
+        e.preventDefault();
+        stopReading();
+        return;
+      }
       if (!SR.speaking && e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT' || e.target.isContentEditable)) return;
       if (e.code === 'Space' && SR.speaking) {
         e.preventDefault();
