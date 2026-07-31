@@ -98,7 +98,7 @@ const translations = {
     a11y_kbd_open: "Open panel:", a11y_kbd_close: "Close:",
 
     // ─── SIMPLE LANGUAGE MODE: UI strings ───
-    simple_toggle: "Simple language", ft_show: "Read the full text", ft_hide: "Hide the full text", listen_page: "Listen to this page",
+    simple_toggle: "Simple language", ft_show: "Read the full text", ft_hide: "Hide the full text", listen_page: "Listen to this page", toc_title: "On this page",
     simple_time_announcement: "Reading the full page takes about {full} minutes. Simple language mode reduces this to about {simple} minutes. Press Alt M to switch, or continue.",
 
     // ─── SIMPLE LANGUAGE MODE: per-section orientation summaries (shown only in simple mode) ───

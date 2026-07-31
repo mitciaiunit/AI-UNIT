@@ -3,6 +3,19 @@ $title = '';
 $isHome = true;
 ?>
 <main id="main-content" tabindex="-1">
+<nav class="page-contents" aria-labelledby="page-contents-title">
+  <h2 id="page-contents-title" data-i18n="toc_title">On this page</h2>
+  <ol>
+    <li><a href="#about">About the AI Unit</a></li>
+    <li><a href="#framework">Six Strategic Dimensions</a></li>
+    <li><a href="#action">AI in Action</a></li>
+    <li><a href="#marketplace">Regional AI Marketplace</a></li>
+    <li><a href="#strategy">Framework Library</a></li>
+    <li><a href="#about-combined">Mission and Values</a></li>
+    <li><a href="#team">The Team</a></li>
+    <li><a href="#contact">Contact Us</a></li>
+  </ol>
+</nav>
 <!-- HERO -->
 <section class="hero" id="hero">
   <video class="hero-video" id="heroVideo" autoplay muted loop playsinline aria-hidden="true">

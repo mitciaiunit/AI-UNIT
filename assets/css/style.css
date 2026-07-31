@@ -80,6 +80,17 @@ button{font-family:'Sora',sans-serif;}
 /* ─── SIMPLE LANGUAGE: SECTION ORIENTATION SUMMARY ─── */
 .section-summary{font-style:italic;color:var(--text-2);border-left:3px solid var(--blue-mid);padding:10px 16px;margin-bottom:20px;background:var(--blue-pale);border-radius:0 var(--radius-sm) var(--radius-sm) 0;}
 
+/* ─── "ON THIS PAGE" NAVIGATION ─── */
+/* De-emphasised for sighted users (small, muted, collapsible-looking) but
+   NEVER display:none - screen reader users get real value from this being
+   the first landmark after <main>, and losing it would lose that. */
+.page-contents{max-width:1180px;margin:20px auto 0;padding:16px 28px;}
+.page-contents-title,#page-contents-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);margin-bottom:8px;}
+.page-contents ol{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px 10px;}
+.page-contents li{margin:0;}
+.page-contents a{display:inline-block;padding:4px 12px;border-radius:100px;border:1px solid var(--border);color:var(--text-2);font-size:0.78rem;text-decoration:none;transition:all var(--trans);}
+.page-contents a:hover,.page-contents a:focus-visible{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-pale);}
+
 /* ─── LANGUAGE BAR ─── */
 .lang-bar{background:var(--blue);color:rgba(255,255,255,0.85);font-size:0.75rem;padding:6px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
 .lang-bar-left{display:flex;align-items:center;gap:10px;}
