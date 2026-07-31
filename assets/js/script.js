@@ -244,6 +244,7 @@ const simpleToggleBtn = document.getElementById('simple-toggle');
 const listenBtn = document.getElementById('listen-page');
 const simpleAnnouncer = document.getElementById('simple-announcer');
 let announcedTimeSavingsThisSession = false; // module flag, not localStorage - once per session, reappears next visit
+let pendingReadStart = null;
 
 function announceSimple(msg) {
   if (!simpleAnnouncer) return;
@@ -441,6 +442,7 @@ document.addEventListener('click', function (e) {
 
   e.preventDefault();
   e.stopImmediatePropagation(); // block the widget's own handler for THIS click only
+  pendingReadStart = btn;
   announcedTimeSavingsThisSession = true;
   const fullMinutes = minutesFor(totals.full);
   const simpleMinutes = minutesFor(totals.full - totals.saved);
@@ -448,7 +450,10 @@ document.addEventListener('click', function (e) {
   const template = T['simple_time_announcement'] ||
     'Reading the full page takes about {full} minutes. Simple language mode reduces this to about {simple} minutes. Press Alt M to switch, or continue.';
   speakAnnouncement(template.replace('{full}', fullMinutes).replace('{simple}', simpleMinutes), function () {
-    btn.click(); // replay for real - announcedTimeSavingsThisSession is now true, so this pass falls through above
+    if (pendingReadStart === btn && !isReaderActive()) {
+      btn.click();
+    }
+    pendingReadStart = null;
   });
 }, true);
 
