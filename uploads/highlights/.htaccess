@@ -1,0 +1,17 @@
+# Uploaded content: served, never executed.
+php_flag engine off
+
+<IfModule mod_rewrite.c>
+    RewriteEngine Off
+</IfModule>
+
+<FilesMatch "\.(php|php[0-9]|phtml|phar|pht|shtml|cgi|pl|py|asp|aspx|jsp|htaccess)$">
+    Require all denied
+</FilesMatch>
+
+RemoveHandler .php .phtml .phar .cgi .pl .py
+RemoveType .php .phtml .phar
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>

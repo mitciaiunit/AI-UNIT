@@ -1,4 +1,4 @@
-/* Loaded only by pages/student-corner.php (see includes/layouts/app.php's
+/* Loaded only by pages/highlights.php (see includes/layouts/app.php's
    $pageScripts). Ported unchanged from the supplied standalone page.
 
    Two of its five modules intentionally no-op here: `initNav` and the scroll-spy

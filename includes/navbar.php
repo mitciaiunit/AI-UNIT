@@ -49,7 +49,7 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
        * and would strip a server-rendered one on the first wheel movement.
        */
       ?>
-      <a href="<?= e(url('student-corner')) ?>" class="nav-link" data-i18n="nav_student"<?= $navCurrent === 'student-corner' ? ' aria-current="page"' : '' ?>>Student Corner</a>
+      <a href="<?= e(url('highlights')) ?>" class="nav-link" data-i18n="nav_highlights"<?= $navCurrent === 'highlights' ? ' aria-current="page"' : '' ?>>Highlights</a>
     </nav>
     <div class="nav-right">
       <button type="button" class="simple-toggle" id="simple-toggle" aria-pressed="false">

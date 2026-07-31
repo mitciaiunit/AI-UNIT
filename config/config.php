@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 // e.g. "/AI-UNIT/public" when the whole repo sits under htdocs and is
 // reached via http://localhost/AI-UNIT/public/ (the front controller's URL).
-$scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/public/index.php'));
+$scriptDir = PHP_SAPI === 'cli-server'
+    ? ''
+    : str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/public/index.php'));
 
 // The repo root's own URL, one level above public/ - this is where the
 // sibling assets/ directory is actually served from by Apache.
 $repoRootUrl = rtrim((string) preg_replace('#/public$#', '', $scriptDir), '/');
+$defaultBaseUrl = PHP_SAPI === 'cli-server' ? $repoRootUrl : $repoRootUrl . '/public';
 
 return [
     'site' => [
@@ -25,7 +28,7 @@ return [
         'full_name' => 'AI Unit - Ministry of ICT, Mauritius',
         'tagline' => 'Ministry of Information Technology, Communication and Innovation - Republic of Mauritius',
         // Routes are served through public/index.php, so route links need the "/public" segment.
-        'base_url' => env('APP_BASE_URL', $repoRootUrl . '/public'),
+        'base_url' => env('APP_BASE_URL', $defaultBaseUrl),
         // Assets sit next to public/, not inside it, so asset links must NOT include "/public".
         'root_url' => env('APP_ROOT_URL', $repoRootUrl),
         'asset_path' => '/assets',
@@ -59,6 +62,34 @@ return [
             'password' => env('SMTP_PASSWORD', ''),
             'encryption' => env('SMTP_ENCRYPTION', 'tls'),
         ],
+    ],
+
+    // Highlights CMS (App\Services\ImageUploadService, App\Services\AuthService).
+    'highlights' => [
+        // Where uploaded gallery images are written. Kept out of assets/ on
+        // purpose: assets/ is version-controlled editorial content that page
+        // templates reference directly, and an admin deleting a gallery item
+        // must never be able to remove a file the page itself depends on.
+        'upload_dir' => dirname(__DIR__) . '/uploads/highlights',
+        'upload_url' => $repoRootUrl . '/uploads/highlights',
+        'max_upload_bytes' => (int) env('HIGHLIGHTS_MAX_UPLOAD_BYTES', 5 * 1024 * 1024),
+        // Allow-list, not a block-list: anything not named here is rejected.
+        // Keys are the MIME types detected from the file's own contents by
+        // finfo - never the browser-supplied Content-Type, which is trivially
+        // forged - and the values are the extension each one is saved with.
+        'allowed_image_types' => [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp',
+            'image/gif' => 'gif',
+        ],
+    ],
+
+    'admin' => [
+        // Sign-in is dropped after this long without a request.
+        'session_idle_timeout' => (int) env('ADMIN_SESSION_IDLE_TIMEOUT', 1800),
+        'login_max_attempts' => (int) env('ADMIN_LOGIN_MAX_ATTEMPTS', 5),
+        'login_lockout_seconds' => (int) env('ADMIN_LOGIN_LOCKOUT_SECONDS', 900),
     ],
 
     // Contact form spam/abuse guards (App\Services\SpamGuard).

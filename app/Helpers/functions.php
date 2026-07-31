@@ -99,7 +99,10 @@ function page_title(string $title = ''): string
  */
 function redirect(string $path): never
 {
-    header('Location: ' . url($path));
+    $location = preg_match('#^https?://#i', $path) === 1 || str_starts_with($path, '/')
+        ? $path
+        : url($path);
+    header('Location: ' . $location);
     exit;
 }
 
