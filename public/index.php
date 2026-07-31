@@ -13,6 +13,12 @@ $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $requestPath = parse_url($requestUri, PHP_URL_PATH) ?: '/';
 $scriptName = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '/public/index.php');
 
+if (PHP_SAPI === 'cli-server') {
+    $router->dispatch($_SERVER['REQUEST_METHOD'] ?? 'GET', $requestUri, '');
+
+    return;
+}
+
 /*
  * The front controller is reachable two ways, and each leaves a different
  * prefix in front of the route:

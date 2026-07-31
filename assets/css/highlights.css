@@ -1123,11 +1123,34 @@ body.is-locked { overflow: hidden; }
    12. Gallery
    ======================================================================== */
 
+/* One group per category from the database. The gallery used to be a single
+   grid; a group wraps each grid with its category heading. When only one
+   category is published this renders identically to the original section,
+   because the heading sits in the same place the old grid started. */
+.sc .gallery-group + .gallery-group { margin-top: clamp(2.25rem, 4vw, 3.25rem); }
+
+.sc .gallery-group__title {
+  font-size: clamp(1.1875rem, 1.1rem + .5vw, 1.4375rem);
+  margin-bottom: .5rem;
+}
+
+.sc .gallery-group__intro {
+  max-width: 44rem;
+  margin-bottom: 1.25rem;
+  font-size: .9375rem;
+  color: var(--ink-muted);
+}
+
 .sc .gallery {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(1rem, 2vw, 1.5rem);
 }
+
+/* Uploaded images have no intrinsic width/height attributes in the markup (the
+   admin cannot know them ahead of time), so the aspect ratio is pinned here to
+   keep the grid from reflowing as each one loads. */
+.sc .gallery__trigger img { aspect-ratio: 4 / 3; }
 
 .sc .gallery__item { margin: 0; }
 

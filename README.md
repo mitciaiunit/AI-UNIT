@@ -14,7 +14,8 @@ public/             Web root - the ONLY folder your web server should point at
 pages/               PHP view templates - one (or one shared) template per route
   home.php             Homepage content (hero, about, framework, team, contact, …)
   privacy-policy.php, disclaimer.php, cookie-policy.php, accessibility.php
-  student-corner.php     Internship case study; ships its own CSS/JS (see below)
+  highlights.php     Internship case study; ships its own CSS/JS (see below)
+  admin/                Highlights admin templates
   document.php          PDF viewer chrome (used by every /document/{slug} route)
   video.php              Video player template (used by every /video/{id} route)
   booklet.php            pdf.js booklet reader (used by every /booklet/{slug} route)
@@ -24,13 +25,15 @@ includes/            Shared, reusable HTML partials (no duplicated layout code)
   header.php, navbar.php, footer.php
   cookie-banner.php, a11y-panel.php, diva-widget.php, video-modal.php
   layouts/app.php       Wraps a page's content with the partials above
+  layouts/admin.php     Signed-in Highlights admin layout
+  layouts/admin-blank.php Sign-in layout
 
 config/
   config.php            Site settings: name, base URL, asset path, DIVA API URL, contact email
   database.php           Database connection settings (PDO)
 
 database/
-  schema.sql             Table definitions (site_settings, documents, videos, contact_messages)
+  schema.sql             Table definitions and Highlights seed data
 
 app/
   Core/                  Router, Controller base class, View renderer, Database (PDO) singleton
@@ -49,7 +52,7 @@ api/                 (empty - reserved for future endpoints, e.g. a contact form
 assets/              Static files served directly by the web server
   css/style.css, js/script.js, images/, video/, captions/, documents/, audio/
 
-uploads/             (empty - reserved for future admin-uploaded content)
+uploads/             Runtime admin-uploaded content; seeded Highlights images live in uploads/highlights
 storage/             (empty - reserved for logs/cache; not web-accessible)
 ```
 
@@ -131,11 +134,30 @@ A few things worth knowing about how this fits together:
 
 ## Database Configuration
 
-The database backs the live contact form (`contact_messages`); `site_settings`, `documents`, and `videos` remain scaffolding for future work. To set it up:
+The database backs the live contact form (`contact_messages`) and the Highlights gallery/admin area. `site_settings`, `documents`, and `videos` remain scaffolding for future work. To set it up:
 
-1. In phpMyAdmin (or the MySQL CLI), import `database/schema.sql`. It creates the `ai_unit` database and four tables: `site_settings`, `documents`, `videos`, `contact_messages`.
+1. In phpMyAdmin (or the MySQL CLI), import `database/schema.sql`. It creates the `ai_unit` database, the contact table, scaffolding tables for future document/video CMS work, and the live Highlights admin tables. It also seeds the current Highlights categories and gallery images.
 2. Set `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_NAME`, `DATABASE_USERNAME`, `DATABASE_PASSWORD` in `.env` to match (see [Environment Configuration](#environment-configuration-env) above). Left unset, `config/database.php` falls back to `root` with no password on `127.0.0.1:3306/ai_unit` - the standard XAMPP/EasyPHP MySQL defaults. (The older `DB_HOST`/`DB_PORT`/`DB_NAME`/`DB_USER`/`DB_PASS` names are still read as a fallback if you already had those set somewhere.)
 3. Get a connection anywhere in the app via `App\Core\Database::connection()`, which returns a configured `PDO` instance (exceptions on error, prepared-statement-friendly).
+
+## Highlights Admin
+
+The renamed `/highlights` page is database-driven for its gallery section. The Framework Library documents are intentionally not managed here; their tables remain future scaffolding only.
+
+Admin routes:
+
+- `/admin/login` - sign in
+- `/admin` - dashboard
+- `/admin/categories` - add, edit, hide/show, delete and reorder categories
+- `/admin/images` - upload, replace, edit, hide/show, delete, move between categories and reorder gallery images
+
+Create the first administrator after importing `database/schema.sql`:
+
+```
+php tools/create-admin.php <username> <password> [display-name]
+```
+
+Passwords are stored with `password_hash()` and checked with `password_verify()`. Admin requests use session authentication, CSRF tokens, idle timeout enforcement and prepared statements. Uploaded images are saved under `uploads/highlights`, validated server-side by file size, MIME type and image dimensions, and protected by an `.htaccess` file that prevents executable content from running there.
 
 ## Contact Form
 
@@ -200,14 +222,14 @@ under `assets/css/` and `assets/js/`, loaded after the shared assets (scripts
 are deferred), and only on that page:
 
 ```php
-$this->view('student-corner', [
-    'title' => 'Student Corner',
-    'pageStyles' => ['student-corner.css'],
-    'pageScripts' => ['student-corner.js'],
+$this->view('highlights', [
+    'title' => 'Highlights',
+    'pageStyles' => ['highlights.css'],
+    'pageScripts' => ['highlights.js'],
 ]);
 ```
 
-**Scope such a stylesheet under a single root class.** `student-corner.css`
+**Scope such a stylesheet under a single root class.** `highlights.css`
 brings its own design system (Inter, its own token ramp, its own element
 resets), so every rule in it is nested under `.sc`, the class on the page's
 outermost wrapper. Without that, its `body`, `img`, `h1–h4` and `:root` rules

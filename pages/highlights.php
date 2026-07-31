@@ -1,10 +1,10 @@
 <?php
 /**
- * Student Corner - a case study of the AI Unit internship: the aim.govmu.org
+ * Highlights - a case study of the AI Unit internship: the aim.govmu.org
  * revamp, the DIVA assistant and the WCAG 2.2 accessibility toolbar.
  *
  * Everything is wrapped in `.sc`, which is the scoping root for
- * assets/css/student-corner.css. That stylesheet carries its own design
+ * assets/css/highlights.css. That stylesheet carries its own design
  * system (Inter, a blue/ink token ramp, its own element resets); confining it
  * to this subtree is what stops it restyling the shared navbar, footer and
  * DIVA widget that the same layout renders around it.
@@ -102,7 +102,7 @@
         <div class="shell shell--wide">
           <figure class="hero__figure" data-reveal data-reveal-delay="180">
             <div class="reveal-image">
-              <img src="<?= e(asset('images/student-corner/team.jpg')) ?>" width="1280" height="720"
+              <img src="<?= e(asset('images/highlights/team.jpg')) ?>" width="1280" height="720"
                    alt="The internship cohort of eight students standing together in the AI Unit office."
                    loading="eager" decoding="async" fetchpriority="high">
             </div>
@@ -126,7 +126,7 @@
             <div class="duo__media" data-reveal>
               <figure class="framed">
                 <div class="reveal-image">
-                  <img src="<?= e(asset('images/student-corner/team2.jpg')) ?>" width="1280" height="960"
+                  <img src="<?= e(asset('images/highlights/team2.jpg')) ?>" width="1280" height="960"
                        alt="An intern presenting a diagram titled The Big Picture to colleagues seated around a meeting-room table."
                        loading="lazy" decoding="async">
                 </div>
@@ -204,7 +204,7 @@
                 <span class="browser__url">aim.govmu.org / framework-library</span>
               </div>
               <div class="reveal-image">
-                <img src="<?= e(asset('images/student-corner/framework.png')) ?>" width="745" height="701"
+                <img src="<?= e(asset('images/highlights/framework.png')) ?>" width="745" height="701"
                      alt="The rebuilt Framework Library page, showing cards for the Digital Transformation Blueprint and Mauritius' First National AI Strategy, each with download, view online and listen options."
                      loading="lazy" decoding="async">
               </div>
@@ -261,7 +261,7 @@
             <div class="duo__media" data-reveal>
               <figure class="framed">
                 <div class="reveal-image">
-                  <img src="<?= e(asset('images/student-corner/kanban.jpg')) ?>" width="1280" height="664"
+                  <img src="<?= e(asset('images/highlights/kanban.jpg')) ?>" width="1280" height="664"
                        alt="A physical Kanban whiteboard with columns for Backlog, In Progress, Test, Blocked and Done, filled with printed task cards."
                        loading="lazy" decoding="async">
                 </div>
@@ -327,7 +327,7 @@
             <div class="duo__media" data-reveal>
               <figure class="framed framed--pad">
                 <div class="reveal-image">
-                  <img src="<?= e(asset('images/student-corner/DIVA1.png')) ?>" width="693" height="253"
+                  <img src="<?= e(asset('images/highlights/DIVA1.png')) ?>" width="693" height="253"
                        alt="The Meet DIVA introduction card, describing the assistant as answering questions based on four key documents, with a Chat with DIVA button."
                        loading="lazy" decoding="async">
                 </div>
@@ -355,7 +355,7 @@
             <div class="duo__media" data-reveal>
               <figure class="framed framed--pad">
                 <div class="reveal-image">
-                  <img src="<?= e(asset('images/student-corner/DIVA2.png')) ?>" width="827" height="747"
+                  <img src="<?= e(asset('images/highlights/DIVA2.png')) ?>" width="827" height="747"
                        alt="The DIVA chat window showing a detailed answer about the Digital Transformation Blueprint, with read-aloud and copy controls and a question box offering typed or spoken input."
                        loading="lazy" decoding="async">
                 </div>
@@ -403,7 +403,7 @@
           <div class="panels">
             <figure class="panel" data-reveal>
               <div class="reveal-image">
-                <img src="<?= e(asset('images/student-corner/Accessibility1.png')) ?>" width="535" height="797"
+                <img src="<?= e(asset('images/highlights/Accessibility1.png')) ?>" width="535" height="797"
                      alt="The accessibility panel's screen reader section, offering read page aloud with play, pause and speed keyboard shortcuts, a voice selector, and quick profiles for low vision, motor, dyslexia, cognitive and senior needs."
                      loading="lazy" decoding="async">
               </div>
@@ -415,7 +415,7 @@
 
             <figure class="panel" data-reveal data-reveal-delay="80">
               <div class="reveal-image">
-                <img src="<?= e(asset('images/student-corner/Accessibility2.png')) ?>" width="530" height="642"
+                <img src="<?= e(asset('images/highlights/Accessibility2.png')) ?>" width="530" height="642"
                      alt="The accessibility panel's text size control and colour and display options, including normal, high contrast, dark, greyscale and negative modes, with toggles for highlight links, hide images and stop animations."
                      loading="lazy" decoding="async">
               </div>
@@ -427,7 +427,7 @@
 
             <figure class="panel" data-reveal data-reveal-delay="160">
               <div class="reveal-image">
-                <img src="<?= e(asset('images/student-corner/Accessibility3.png')) ?>" width="537" height="797"
+                <img src="<?= e(asset('images/highlights/Accessibility3.png')) ?>" width="537" height="797"
                      alt="The accessibility panel's reading and focus options - dyslexia-friendly font, reading guide line, wider letter spacing and bold focus outline - plus navigation aids and the Alt plus A keyboard shortcut to open the panel."
                      loading="lazy" decoding="async">
               </div>
@@ -510,7 +510,7 @@
                 <span class="browser__url">aim.govmu.org / child-safety / video-1</span>
               </div>
               <div class="reveal-image">
-                <img src="<?= e(asset('images/student-corner/VIDEO1.png')) ?>" width="1896" height="900"
+                <img src="<?= e(asset('images/highlights/VIDEO1.png')) ?>" width="1896" height="900"
                      alt="The Child Safety Series video player showing an animated film with French captions, an English and French language switch, and a captions toggle with a language selector."
                      loading="lazy" decoding="async">
               </div>
@@ -577,7 +577,7 @@
 
           <figure class="closing-figure" data-reveal>
             <div class="reveal-image">
-              <img src="<?= e(asset('images/student-corner/Mitci.jpg')) ?>" width="1280" height="960"
+              <img src="<?= e(asset('images/highlights/Mitci.jpg')) ?>" width="1280" height="960"
                    alt="Interns and a member of the unit standing in the Ministry of Information Technology, Communication and Innovation reception, beside a plaque reading Transform Mauritius into a thriving, smart and inclusive digital society."
                    loading="lazy" decoding="async">
             </div>
@@ -592,65 +592,68 @@
       <!-- =================================================================
            7. Gallery
            ================================================================= -->
-      <section class="section section--tint" id="gallery" aria-labelledby="gallery-title">
-        <div class="shell">
-          <header class="section__head" data-reveal>
-            <p class="eyebrow">Gallery</p>
-            <h2 class="h2" id="gallery-title">Moments from the placement</h2>
-            <p class="lede">Select any image to view it larger.</p>
-          </header>
+      <?php
+      /**
+       * Gallery - the database-driven part of this page.
+       *
+       * One block per visible category, in the order staff set. Nothing about
+       * the categories is hardcoded, so adding "Workshops" or "Outreach" in
+       * the admin area publishes it here with no code change; the markup below
+       * is the same figure/button/overlay structure the three original
+       * hardcoded items used, so the styling and lightbox are untouched.
+       *
+       * $categories and $highlightService come from HighlightsController.
+       *
+       * The reveal delay repeats every third item because the CSS staggers a
+       * row of three; carrying it on past the first row would leave later rows
+       * waiting almost a second before appearing.
+       */
+      $categories = $categories ?? [];
+      ?>
+      <?php if ($categories !== []): ?>
+        <section class="section section--tint" id="gallery" aria-labelledby="gallery-title">
+          <div class="shell">
+            <header class="section__head" data-reveal>
+              <p class="eyebrow">Gallery</p>
+              <h2 class="h2" id="gallery-title">Moments from our programmes</h2>
+              <p class="lede">Select any image to view it larger.</p>
+            </header>
 
-          <div class="gallery">
-            <figure class="gallery__item" data-reveal>
-              <button class="gallery__trigger" type="button" data-lightbox="0">
-                <img src="<?= e(asset('images/student-corner/team.jpg')) ?>" width="1280" height="720"
-                     alt="The internship cohort of eight students standing together in the AI Unit office."
-                     loading="lazy" decoding="async">
-                <span class="gallery__overlay">
-                  <span class="gallery__caption">
-                    <strong>The intern team</strong>
-                    <span>The team of interns at the AI Unit, METC</span>
-                  </span>
-                  <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-expand"></use></svg></span>
-                </span>
-                <span class="sr-only">View larger: the cohort</span>
-              </button>
-            </figure>
+            <?php foreach ($categories as $category): ?>
+              <div class="gallery-group">
+                <h3 class="gallery-group__title" id="gallery-cat-<?= e((string) $category->id) ?>" data-reveal>
+                  <?= e($category->name) ?>
+                </h3>
+                <?php if ($category->description !== null && $category->description !== ''): ?>
+                  <p class="gallery-group__intro" data-reveal><?= e($category->description) ?></p>
+                <?php endif; ?>
 
-            <figure class="gallery__item" data-reveal data-reveal-delay="80">
-              <button class="gallery__trigger" type="button" data-lightbox="1">
-                <img src="<?= e(asset('images/student-corner/team2.jpg')) ?>" width="1280" height="960"
-                     alt="An intern presenting a diagram titled The Big Picture to colleagues seated around a meeting-room table."
-                     loading="lazy" decoding="async">
-                <span class="gallery__overlay">
-                  <span class="gallery__caption">
-                    <strong>Knowledge sharing</strong>
-                    <span>Walking the team through the project's technical stack</span>
-                  </span>
-                  <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-expand"></use></svg></span>
-                </span>
-                <span class="sr-only">View larger: knowledge sharing</span>
-              </button>
-            </figure>
-
-            <figure class="gallery__item" data-reveal data-reveal-delay="160">
-              <button class="gallery__trigger" type="button" data-lightbox="2">
-                <img src="<?= e(asset('images/student-corner/team3.jpg')) ?>" width="1280" height="960"
-                     alt="Interns seated around a meeting-room table taking notes during a technical session."
-                     loading="lazy" decoding="async">
-                <span class="gallery__overlay">
-                  <span class="gallery__caption">
-                    <strong>Working session</strong>
-                    <span>Onboarding new interns onto the project and its workflow</span>
-                  </span>
-                  <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-expand"></use></svg></span>
-                </span>
-                <span class="sr-only">View larger: working session</span>
-              </button>
-            </figure>
+                <div class="gallery" role="group" aria-labelledby="gallery-cat-<?= e((string) $category->id) ?>">
+                  <?php foreach ($category->images as $index => $image): ?>
+                    <figure class="gallery__item" data-reveal<?= $index % 3 !== 0 ? ' data-reveal-delay="' . (($index % 3) * 80) . '"' : '' ?>>
+                      <button class="gallery__trigger" type="button" data-lightbox="<?= e((string) $image->id) ?>">
+                        <img src="<?= e($highlightService->imageUrl($image->fileName)) ?>"
+                             alt="<?= e($image->altText) ?>"
+                             loading="lazy" decoding="async">
+                        <span class="gallery__overlay">
+                          <span class="gallery__caption">
+                            <strong><?= e($image->title) ?></strong>
+                            <?php if ($image->caption !== null && $image->caption !== ''): ?>
+                              <span><?= e($image->caption) ?></span>
+                            <?php endif; ?>
+                          </span>
+                          <span class="gallery__zoom" aria-hidden="true"><svg class="icon"><use href="#i-expand"></use></svg></span>
+                        </span>
+                        <span class="sr-only">View larger: <?= e($image->title) ?></span>
+                      </button>
+                    </figure>
+                  <?php endforeach; ?>
+                </div>
+              </div>
+            <?php endforeach; ?>
           </div>
-        </div>
-      </section>
+        </section>
+      <?php endif; ?>
 
       <!-- =================================================================
            8. Skills & technologies
