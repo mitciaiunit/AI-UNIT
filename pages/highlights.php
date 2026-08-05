@@ -69,7 +69,7 @@
       <symbol id="i-layout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.8" y="4.4" width="18.4" height="15.2" rx="2.2"/><path d="M2.8 9.4h18.4M9.2 9.4v10.2"/></symbol>
     </svg>
 
-  <main id="main-content">
+  <main id="main-content" tabindex="-1">
 
       <!-- =================================================================
            1. Hero

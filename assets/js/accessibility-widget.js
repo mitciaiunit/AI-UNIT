@@ -781,7 +781,20 @@ setTimeout(function () {
         km: ['Google Français', 'Microsoft Julie - French (France)', 'Microsoft Hortense - French (France)', 'Thomas']
       },
       currentUtterance: null,
-      highlightEl: null
+      highlightEl: null,
+      // A reader "session" outlives any one say-all pass. Tabbing away from
+      // continuous reading ends the say-all (speaking:false) but keeps the
+      // session alive, so focus announcements carry on - the same way NVDA's
+      // "read all" stops at the first Tab yet the reader stays on.
+      sessionActive: false,
+      // True only while a focus announcement is being spoken, so the say-all
+      // queue's own onend handler doesn't treat the cancelled utterance as
+      // "finished, speak the next chunk" and talk over it.
+      announcingFocus: false,
+      // Bumped every time a new focus announcement (or a new say-all) starts.
+      // A pending announcement whose token is stale is dropped, so holding
+      // Tab doesn't queue up one utterance per element passed through.
+      focusToken: 0
     };
 
     const srReadBtn = document.getElementById('sr-read-btn');
@@ -903,9 +916,11 @@ setTimeout(function () {
       return false;
     }
 
-    function getReadableText() {
+    // `root` limits extraction to one subtree (the skip link's target, say)
+    // instead of the whole page. Defaults to <body> for a normal say-all.
+    function getReadableText(root) {
       const walker = document.createTreeWalker(
-        document.body,
+        root || document.body,
         NodeFilter.SHOW_TEXT,
         function (node) {
           const parent = node.parentElement;
@@ -1078,6 +1093,9 @@ setTimeout(function () {
       }
       const item = SR.queue[SR.currentIndex];
       const u = createUtterance(item.text);
+      // Snapshot the session token so this chunk's handlers can tell whether
+      // a focus announcement has superseded them.
+      const token = SR.focusToken;
       SR.currentUtterance = u;
 
       u.onstart = function () {
@@ -1088,6 +1106,10 @@ setTimeout(function () {
       };
 
       u.onend = function () {
+        // A focus announcement interrupted us: cancel() fires this handler,
+        // and advancing/continuing here is exactly what made the old reader
+        // talk over the announcement and resume from its previous position.
+        if (SR.announcingFocus || token !== SR.focusToken) return;
         SR.currentIndex++;
         if (SR.speaking && !SR.paused) {
           speakNext();
@@ -1096,6 +1118,7 @@ setTimeout(function () {
 
       u.onerror = function (e) {
         if (e.error === 'canceled' || e.error === 'interrupted') return;
+        if (SR.announcingFocus || token !== SR.focusToken) return;
         console.warn('Speech error:', e.error);
         SR.currentIndex++;
         if (SR.speaking) speakNext();
@@ -1104,15 +1127,20 @@ setTimeout(function () {
       window.speechSynthesis.speak(u);
     }
 
-    function startReading() {
+    function startReading(root) {
       if (!window.speechSynthesis) {
         announce('Speech synthesis is not supported in your browser');
         return;
       }
       window.speechSynthesis.cancel();
+      // Invalidate any in-flight focus announcement so its onend can't
+      // restart the queue we're about to build.
+      SR.focusToken++;
+      SR.announcingFocus = false;
+      SR.sessionActive = true;
       removeHighlight();
       SR.queue = [];
-      const chunks = getReadableText();
+      const chunks = getReadableText(root);
       chunks.forEach(function (c) {
         const subChunks = chunkText(c.text, 200);
         subChunks.forEach(function (sc) {
@@ -1156,6 +1184,13 @@ setTimeout(function () {
       window.speechSynthesis.cancel();
       SR.speaking = false;
       SR.paused = false;
+      // An explicit stop (Alt+S, Escape, the floating Stop button) is the
+      // user asking for silence altogether - end the session so focus
+      // announcements stop too, rather than leaving the reader chattering
+      // at every Tab after they thought they'd switched it off.
+      SR.sessionActive = false;
+      SR.focusToken++;
+      SR.announcingFocus = false;
       SR.currentIndex = 0;
       SR.currentUtterance = null;
       removeHighlight();
@@ -1178,6 +1213,217 @@ setTimeout(function () {
     srReadBtn && srReadBtn.addEventListener('click', toggleReading);
     srStopFloating && srStopFloating.addEventListener('click', stopReading);
 
+    // --- Focus announcements -------------------------------------------
+    // Without this the reader only ever did a say-all: once started it read
+    // the page top-to-bottom and ignored the keyboard entirely, so tabbing
+    // through the navbar produced no announcement of the focused control
+    // (the reported "keeps reading continuously instead of announcing the
+    // content that receives focus"). A real screen reader interrupts itself
+    // and announces whatever just took focus; that's what this does.
+
+    // The accessible name of a focused element, preferring the same sources
+    // an AT would consult, in the same order.
+    function accessibleName(el) {
+      if (!el || el === document.body) return '';
+      var labelledby = el.getAttribute('aria-labelledby');
+      if (labelledby) {
+        var named = labelledby.split(/\s+/).map(function (id) {
+          var ref = document.getElementById(id);
+          return ref ? ref.textContent.replace(/\s+/g, ' ').trim() : '';
+        }).filter(Boolean).join(' ');
+        if (named) return named;
+      }
+      var label = el.getAttribute('aria-label');
+      if (label && label.trim()) return label.trim();
+      if (el.id) {
+        var forLabel = document.querySelector('label[for="' + el.id + '"]');
+        if (forLabel) {
+          var forText = forLabel.textContent.replace(/\s+/g, ' ').trim();
+          if (forText) return forText;
+        }
+      }
+      var wrapping = el.closest && el.closest('label');
+      if (wrapping) {
+        var wrapText = wrapping.textContent.replace(/\s+/g, ' ').trim();
+        if (wrapText) return wrapText;
+      }
+      var text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      if (text) return text;
+      // Image-only controls: fall back to the inner <img>'s alt text.
+      var img = el.querySelector && el.querySelector('img[alt]');
+      if (img && img.alt.trim()) return img.alt.trim();
+      return el.getAttribute('title') || el.getAttribute('placeholder') || '';
+    }
+
+    // Role + state, phrased the way the say-all path already phrases them so
+    // the two sound like one reader rather than two.
+    function focusDescription(el) {
+      var tag = el.tagName ? el.tagName.toLowerCase() : '';
+      var role = el.getAttribute('role');
+      var name = accessibleName(el);
+      var prefix = '';
+      var suffix = '';
+
+      if (tag === 'a' || role === 'link') prefix = 'Link. ';
+      else if (tag === 'button' || role === 'button') prefix = 'Button. ';
+      else if (tag === 'select') prefix = 'Combo box. ';
+      else if (tag === 'textarea') prefix = 'Edit box. ';
+      else if (tag === 'input') {
+        var type = (el.getAttribute('type') || 'text').toLowerCase();
+        if (type === 'checkbox') {
+          prefix = 'Check box. ';
+          suffix = ', ' + (el.checked ? 'checked' : 'not checked') + '. ';
+        } else if (type === 'radio') {
+          prefix = 'Radio button. ';
+          suffix = ', ' + (el.checked ? 'selected' : 'not selected') + '. ';
+        } else if (type === 'range') {
+          prefix = 'Slider. ';
+          suffix = ', ' + el.value + '. ';
+        } else if (type === 'submit' || type === 'button') {
+          prefix = 'Button. ';
+        } else {
+          prefix = 'Edit box. ';
+          if (el.value) suffix = ', contains ' + el.value + '. ';
+        }
+      } else if (/^h[1-6]$/.test(tag)) {
+        prefix = tag === 'h3' ? 'Subheading. ' : 'Heading. ';
+      } else if (tag === 'main' || role === 'main') {
+        // The skip link's landing spot. Announce the landmark, then let the
+        // caller read the content itself.
+        prefix = 'Main content. ';
+      }
+
+      var popup = el.getAttribute('aria-haspopup');
+      if (popup && popup !== 'false') suffix += ', opens a ' + popup + '. ';
+      var expanded = el.getAttribute('aria-expanded');
+      if (expanded === 'true') suffix += ', expanded. ';
+      else if (expanded === 'false') suffix += ', collapsed. ';
+      var pressed = el.getAttribute('aria-pressed');
+      if (pressed === 'true') suffix += ', selected. ';
+      else if (pressed === 'false') suffix += ', not selected. ';
+      if (el.disabled || el.getAttribute('aria-disabled') === 'true') suffix += ', unavailable. ';
+
+      var described = el.getAttribute('aria-describedby');
+      if (described) {
+        var desc = described.split(/\s+/).map(function (id) {
+          var ref = document.getElementById(id);
+          return ref ? ref.textContent.replace(/\s+/g, ' ').trim() : '';
+        }).filter(Boolean).join(' ');
+        if (desc) suffix += ' ' + desc + '. ';
+      }
+
+      return (prefix + name + suffix).trim();
+    }
+
+    // Speak a focus announcement immediately, interrupting whatever is being
+    // said. Deliberately does NOT go through SR.queue: the queue is the
+    // say-all, and mixing the two is what made the old reader carry on from
+    // its previous position instead of following the user.
+    function speakFocus(text, opts) {
+      if (!window.speechSynthesis || !text) return;
+      opts = opts || {};
+      var token = ++SR.focusToken;
+      // Cancelling fires onend/onerror for the current utterance; the token
+      // check in those handlers is what keeps this from being mistaken for
+      // "chunk finished, carry on".
+      SR.announcingFocus = true;
+      // Tabbing away ends the say-all pass (a real screen reader's "read all"
+      // stops at the first keystroke), so the button must not keep claiming
+      // it's reading - and the stale highlight has to come off the element
+      // the say-all had reached.
+      var wasReading = SR.speaking;
+      SR.speaking = false;
+      SR.paused = false;
+      window.speechSynthesis.cancel();
+      if (wasReading && !opts.thenReadRoot) {
+        removeHighlight();
+        updateReadButton('stopped');
+        clearSRStatus();
+        if (srStopFloating) srStopFloating.classList.remove('visible');
+      }
+
+      var u = createUtterance(text);
+      u.onend = function () {
+        if (token !== SR.focusToken) return;
+        SR.announcingFocus = false;
+        // After announcing the landmark the skip link jumped to, continue
+        // reading that region so activating the skip link actually starts
+        // reading from the main content.
+        if (opts.thenReadRoot) startReading(opts.thenReadRoot);
+      };
+      u.onerror = function () {
+        if (token !== SR.focusToken) return;
+        SR.announcingFocus = false;
+      };
+      SR.currentUtterance = u;
+      window.speechSynthesis.speak(u);
+    }
+
+    // Only announce focus while a reader session is running - otherwise the
+    // page would start talking at a sighted keyboard user who never asked
+    // for speech.
+    document.addEventListener('focusin', function (e) {
+      if (!SR.sessionActive) return;
+      var el = e.target;
+      if (!el || el === document.body) return;
+      // The reader's own controls are excluded from the say-all; keep them
+      // out of focus announcements too, so operating Stop/Pause/speed
+      // doesn't make the reader narrate itself.
+      if (el.closest && el.closest(A11Y_READER_SKIP_SELECTOR)) return;
+      // The skip link handler below owns this case; it needs to read the
+      // whole region, not just announce the landmark.
+      if (el.dataset && el.dataset.a11ySkipTarget === 'pending') return;
+      var text = focusDescription(el);
+      if (text) speakFocus(text);
+    });
+
+    // --- Skip link ------------------------------------------------------
+    // A bare href="#main-content" moves the visual viewport (and, with the
+    // tabindex="-1" the templates already carry, DOM focus), but the built-in
+    // reader was not listening, so a say-all in progress carried on from
+    // wherever it had reached - the reported bug. Move focus explicitly and
+    // restart reading from the target.
+    function focusSkipTarget(target) {
+      if (!target) return;
+      // Programmatic focus needs a focusable target. pages/highlights.php's
+      // <main> has no tabindex, so add one rather than depend on every
+      // template remembering it.
+      if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+      target.dataset.a11ySkipTarget = 'pending';
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      delete target.dataset.a11ySkipTarget;
+
+      if (SR.sessionActive) {
+        // Announce the landmark, then read on from here.
+        var name = focusDescription(target) || 'Main content.';
+        speakFocus(name.split('.')[0] + '.', { thenReadRoot: target });
+      }
+    }
+
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest && e.target.closest('a.skip-link[href^="#"]');
+      if (!link) return;
+      var id = link.getAttribute('href').slice(1);
+      var target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      focusSkipTarget(target);
+    });
+
+    // Keyboard activation of a link fires click in every current browser, but
+    // Enter on an <a> is the path screen-reader users actually take - keep an
+    // explicit handler so the behaviour doesn't depend on that equivalence.
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter') return;
+      var link = e.target.closest && e.target.closest('a.skip-link[href^="#"]');
+      if (!link) return;
+      var target = document.getElementById(link.getAttribute('href').slice(1));
+      if (!target) return;
+      e.preventDefault();
+      focusSkipTarget(target);
+    });
+
     // Global keyboard shortcuts for screen reader
     document.addEventListener('keydown', function (e) {
       // Alt+S and Escape are handled before the input-field guard below:
@@ -1187,12 +1433,18 @@ setTimeout(function () {
       // so a blind user running their own AT had no way to silence this
       // reader once started). Alt-modified keys pass through browse mode,
       // same reasoning as the existing Alt+A panel shortcut.
-      if (e.altKey && (e.key === 's' || e.key === 'S') && SR.speaking) {
+      // Gated on sessionActive, not SR.speaking: once focus announcements
+      // exist, tabbing away ends the say-all pass (speaking:false) while the
+      // reader is still on and still talking at every focus change. Keyed on
+      // `speaking` alone, Alt+S and Escape would go dead in exactly that
+      // state - leaving no way to silence it, which is the situation these
+      // two shortcuts exist to prevent.
+      if (e.altKey && (e.key === 's' || e.key === 'S') && (SR.speaking || SR.sessionActive)) {
         e.preventDefault();
         stopReading();
         return;
       }
-      if (e.key === 'Escape' && SR.speaking) {
+      if (e.key === 'Escape' && (SR.speaking || SR.sessionActive)) {
         e.preventDefault();
         stopReading();
         return;
