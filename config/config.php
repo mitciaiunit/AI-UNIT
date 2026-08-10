@@ -42,6 +42,25 @@ return [
         'api_url' => env('DIVA_API_URL', 'http://127.0.0.1:8000/api/chat'),
     ],
 
+    // AI Lab. Booking is handled entirely by Calendly - the site stores no
+    // booking data and has no booking tables.
+    'ai_lab' => [
+        /*
+         * The unit's public Calendly scheduling link, e.g.
+         *   https://calendly.com/ai-unit-mauritius/ai-lab-session
+         *
+         * Deliberately empty by default rather than carrying an invented URL:
+         * an empty value makes the page render a clearly-marked "not yet
+         * available" state, whereas a plausible-looking wrong URL would send
+         * the public to somebody else's calendar. Set CALENDLY_AI_LAB_URL in
+         * .env once the real link exists - no code change is needed.
+         *
+         * This is a public scheduling link, safe to appear in page source. No
+         * Calendly API key or token belongs here or anywhere in the frontend.
+         */
+        'calendly_url' => env('CALENDLY_AI_LAB_URL', ''),
+    ],
+
     'app' => [
         'env' => env('APP_ENV', 'local'),
         'debug' => filter_var(env('APP_DEBUG', 'true'), FILTER_VALIDATE_BOOLEAN),
