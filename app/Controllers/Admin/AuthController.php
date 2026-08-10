@@ -12,6 +12,15 @@ final class AuthController extends AdminController
 {
     public function showLogin(): void
     {
+        /*
+         * Checked here too. Without a database the credentials cannot be
+         * verified, so offering the form would invite someone to type a
+         * password into something that can only fail.
+         */
+        if (!$this->requireDatabase()) {
+            return;
+        }
+
         if ($this->auth->check()) {
             redirect(url('admin'));
 
@@ -28,6 +37,15 @@ final class AuthController extends AdminController
 
     public function login(): void
     {
+        /*
+         * Before guardCsrf(), because attempt() below reads admin_users. This
+         * was the one place a database outage produced an uncaught
+         * PDOException instead of a message.
+         */
+        if (!$this->requireDatabase()) {
+            return;
+        }
+
         if (!$this->guardCsrf()) {
             return;
         }
@@ -52,7 +70,18 @@ final class AuthController extends AdminController
             return;
         }
 
-        if (!$this->auth->attempt($username, $password)) {
+        try {
+            $signedIn = $this->auth->attempt($username, $password);
+        } catch (\Throwable $e) {
+            // The database went away between the check above and this query.
+            \App\Core\Logger::error('Sign-in failed - database error', ['error' => $e->getMessage()]);
+            $this->flash('error', 'Sign-in is temporarily unavailable. Please try again shortly.');
+            redirect(url('admin/login'));
+
+            return;
+        }
+
+        if (!$signedIn) {
             /*
              * One message for every failure mode - unknown username, wrong
              * password, deactivated account. Saying which would tell an

@@ -23,11 +23,17 @@ final class HighlightsController extends Controller
 
     public function index(): void
     {
+        $highlights = $this->highlights->published();
+
         $this->view('highlights', [
             'title' => 'Highlights',
             'isHome' => false,
             'navCurrent' => 'highlights',
-            'categories' => $this->highlights->publishedCategories(),
+            // $categories keeps the view's existing loop unchanged; $highlights
+            // carries why the list looks the way it does, so the page can tell
+            // "nothing published" apart from "database unreachable".
+            'categories' => $highlights->categories,
+            'highlights' => $highlights,
             'highlightService' => $this->highlights,
             // This page carries its own design system; see the scoping note in
             // assets/css/highlights.css.

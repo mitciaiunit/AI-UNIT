@@ -6,6 +6,8 @@ namespace App\Controllers\Admin;
 
 use App\Core\Controller;
 use App\Core\Csrf;
+use App\Core\Database;
+use App\Core\Logger;
 use App\Models\AdminUser;
 use App\Services\AuthService;
 
@@ -33,6 +35,17 @@ abstract class AdminController extends Controller
      */
     protected function guard(): ?AdminUser
     {
+        /*
+         * Checked before the session, because every admin screen both reads
+         * and writes content. Letting one render without a database would show
+         * an editor empty lists and forms whose Save button cannot work - an
+         * interface that looks functional and silently is not. Better to say
+         * so plainly and let them come back.
+         */
+        if (!$this->requireDatabase()) {
+            return null;
+        }
+
         $user = $this->auth->user();
 
         if ($user === null) {
@@ -45,6 +58,36 @@ abstract class AdminController extends Controller
         }
 
         return $user;
+    }
+
+    /**
+     * Requires a reachable database. Returns false after having already
+     * rendered the outage page - callers must `return` immediately.
+     *
+     * Responds 503 with Retry-After so this reads as a temporary condition to
+     * crawlers and monitoring rather than a broken or missing page.
+     */
+    protected function requireDatabase(): bool
+    {
+        if (Database::isAvailable()) {
+            return true;
+        }
+
+        // The reason goes to the log; the screen gets a plain explanation.
+        Logger::error('Admin area unavailable - database unreachable', [
+            'error' => Database::failureReason(),
+            'path' => $_SERVER['REQUEST_URI'] ?? '',
+        ]);
+
+        http_response_code(503);
+        header('Retry-After: 300');
+
+        $this->view('admin/database-unavailable', [
+            'title' => 'Temporarily unavailable',
+            'flash' => null,
+        ], 'admin-blank');
+
+        return false;
     }
 
     /**

@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Core\Logger;
 use App\Models\HighlightCategory;
+use App\Models\HighlightsResult;
 use App\Repositories\HighlightCategoryRepository;
 use App\Repositories\HighlightImageRepository;
 use Throwable;
@@ -23,20 +24,23 @@ final class HighlightService
         private readonly HighlightCategoryRepository $categories = new HighlightCategoryRepository(),
         private readonly HighlightImageRepository $images = new HighlightImageRepository(),
         private readonly ImageUploadService $uploads = new ImageUploadService(),
+        private readonly HighlightsCache $cache = new HighlightsCache(),
     ) {
     }
 
     /**
-     * Visible categories with their visible images attached. Categories with
-     * no images are dropped - an empty heading is worse than no heading.
+     * The published galleries, together with how they were obtained.
      *
-     * A database failure returns an empty list rather than propagating: the
-     * gallery is one section of a long editorial page, and the rest of it
-     * should still render if the database is unreachable.
+     * Order of preference:
+     *   1. the database - the source of truth whenever it answers;
+     *   2. the last known-good copy, if the database cannot be reached;
+     *   3. nothing, with a status the page can explain to a visitor.
      *
-     * @return list<HighlightCategory>
+     * The exception is never allowed to escape. The gallery is one section of
+     * a long editorial page, and an outage should cost the visitor that
+     * section - not the whole page, and not a stack trace.
      */
-    public function publishedCategories(): array
+    public function published(): HighlightsResult
     {
         try {
             $categories = $this->categories->allVisible();
@@ -44,11 +48,20 @@ final class HighlightService
         } catch (Throwable $e) {
             Logger::error('Failed to load highlights', ['error' => $e->getMessage()]);
 
-            return [];
+            $cached = $this->cache->load();
+            if ($cached !== null) {
+                Logger::info('Serving highlights from cache', ['categories' => count($cached)]);
+
+                return HighlightsResult::stale($cached);
+            }
+
+            return HighlightsResult::unavailable();
         }
 
         $result = [];
         foreach ($categories as $category) {
+            // Categories with no visible images are dropped - an empty heading
+            // is worse than no heading.
             $images = $imagesByCategory[(int) $category->id] ?? [];
             if ($images === []) {
                 continue;
@@ -58,7 +71,26 @@ final class HighlightService
             $result[] = $category;
         }
 
-        return $result;
+        /*
+         * Refresh the mirror on every successful read, including when the
+         * result is legitimately empty of *some* category - what is written is
+         * always exactly what was just published.
+         */
+        $this->cache->store($result);
+
+        return HighlightsResult::ok($result);
+    }
+
+    /**
+     * @deprecated Use published(), which distinguishes "nothing published"
+     *             from "the database is unreachable". Kept so any other
+     *             caller keeps working.
+     *
+     * @return list<HighlightCategory>
+     */
+    public function publishedCategories(): array
+    {
+        return $this->published()->categories;
     }
 
     /** Public URL for a gallery image. */
