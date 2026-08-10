@@ -1123,6 +1123,19 @@ body.is-locked { overflow: hidden; }
    12. Gallery
    ======================================================================== */
 
+/* Shown only when the galleries cannot be loaded, so the section explains
+   itself instead of disappearing. Styled as a quiet notice, not an error: a
+   visitor is not at fault and cannot act on it. */
+.sc .gallery-notice {
+  margin: 0;
+  padding: 1.15rem 1.35rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  color: var(--ink-muted);
+  font-size: .9375rem;
+}
+
 /* One group per category from the database. The gallery used to be a single
    grid; a group wraps each grid with its category heading. When only one
    category is published this renders identically to the original section,

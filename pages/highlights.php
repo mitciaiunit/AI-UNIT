@@ -604,21 +604,43 @@
        * is the same figure/button/overlay structure the three original
        * hardcoded items used, so the styling and lightbox are untouched.
        *
-       * $categories and $highlightService come from HighlightsController.
+       * $categories, $highlights and $highlightService come from
+       * HighlightsController.
+       *
+       * $highlights->isUnavailable() is what stops a database outage from
+       * silently deleting this whole section: an empty $categories used to mean
+       * both "nothing is published" and "the database is down", and the section
+       * simply vanished. Now the two are told apart - nothing published still
+       * renders nothing (correct: there is genuinely no gallery), while an
+       * outage keeps the section and explains itself.
        *
        * The reveal delay repeats every third item because the CSS staggers a
        * row of three; carrying it on past the first row would leave later rows
        * waiting almost a second before appearing.
        */
       $categories = $categories ?? [];
+      $highlightsUnavailable = isset($highlights) && $highlights->isUnavailable();
       ?>
-      <?php if ($categories !== []): ?>
+      <?php if ($categories !== [] || $highlightsUnavailable): ?>
         <section class="section section--tint" id="gallery" aria-labelledby="gallery-title">
           <div class="shell">
             <header class="section__head" data-reveal>
               <p class="eyebrow">Gallery</p>
               <h2 class="h2" id="gallery-title">Moments from our programmes</h2>
             </header>
+
+            <?php if ($highlightsUnavailable): ?>
+              <?php
+              /*
+               * role="status" rather than "alert": this is information, not an
+               * emergency, and it is present on first paint - alert would make
+               * a screen reader interrupt whatever it was doing to say so.
+               */
+              ?>
+              <p class="gallery-notice" role="status">
+                Our programme photographs are temporarily unavailable. Please check back shortly.
+              </p>
+            <?php endif; ?>
 
             <?php foreach ($categories as $category): ?>
               <div class="gallery-group">

@@ -89,8 +89,23 @@ final class AuthService
             return null;
         }
 
-        // The account may have been deactivated since sign-in.
-        $user = $this->users->findActiveById($id);
+        /*
+         * The account may have been deactivated since sign-in.
+         *
+         * A database failure here must not sign the user out: their session is
+         * still valid, the database is simply unreachable, and destroying it
+         * would mean they could not sign back in either. Report "not signed
+         * in" for this request and let the caller's requireDatabase() explain
+         * the real problem.
+         */
+        try {
+            $user = $this->users->findActiveById($id);
+        } catch (\Throwable $e) {
+            Logger::error('Could not verify the signed-in admin', ['error' => $e->getMessage()]);
+
+            return null;
+        }
+
         if ($user === null) {
             $this->logout();
 
