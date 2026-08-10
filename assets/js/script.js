@@ -13,9 +13,14 @@ const ASSET_BASE = AI_UNIT_CONFIG.assetBase || '/assets';
 // Translation Data - English only
 const translations = {
   en: {
-    nav_action: "AI in Action", nav_framework: "Framework", nav_about: "About Us", nav_contact: "Contact Us", nav_highlights: "Highlights", accessibility: "Accessibility",
+    nav_action: "AI in Action", nav_framework: "Framework", nav_about: "About Us", nav_contact: "Contact Us", nav_ailab: "AI Lab", nav_highlights: "Highlights", accessibility: "Accessibility",
     hero_badge: "Ministry of ICT, Communication & Innovation", hero_title_prefix: "Where", hero_title_suffix: "Meets Impact", hero_subtitle: "Welcome to the AI Unit of Mauritius - your guide to how artificial intelligence is making public services smarter, faster, and fairer for every citizen.",
     hero_cta_marketplace: "Explore Regional AI Marketplace", hero_cta_learn: "Learn More", badge_fair: "FAIR Guidelines", badge_ai4all: "AI4ALL Inclusion", badge_marketplace: "AI Marketplace", badge_smart: "Smart Services", badge_ppp: "PPP Adoption", badge_privacy: "Data Privacy",
+    ailab_eyebrow: "AI Unit Facility", ailab_title1: "Explore the", ailab_title2: "AI Lab",
+    ailab_desc: "A space at the AI Unit for learning, exploring and working with artificial intelligence - available primarily to students from colleges and universities, researchers, educators and members of the public.",
+    ailab_tag1: "College & university students", ailab_tag2: "Researchers", ailab_tag3: "Educators", ailab_tag4: "Members of the public",
+    ailab_cta: "Explore the AI Lab", ailab_note: "Sessions can be booked online.",
+    sum_ailab: "In short: the AI Lab is a space at the AI Unit where you can learn about and try out AI. You can book a session.",
     about_eyebrow: "Who We Are", about_title_prefix: "Driving Mauritius", about_title_suffix: "AI Future", about_mission_quote: "\"Mauritius is committed to becoming a smart, inclusive and future-ready nation - where every citizen benefits from responsible AI.\"",
     about_body1: "The AI Unit is the dedicated body established under the Ministry of Information Technology, Communication and Innovation (MITCI) to lead Mauritius' artificial intelligence journey. We coordinate AI governance, promote innovation, and ensure that technology serves all Mauritians - fairly and transparently.",
     about_body2: "We are the strategic vehicle for MITCI's <strong>Digital Transformation 2025-2029</strong> blueprint - a bold roadmap to modernise public services and position Mauritius as a leading AI nation in Africa.",

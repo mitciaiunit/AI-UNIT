@@ -90,6 +90,55 @@ $isHome = true;
   </div>
 </section>
 
+<?php
+/**
+ * AI LAB - compact promotional section.
+ *
+ * A short introduction only; the full information and the Calendly booking
+ * interface live on the dedicated /ai-lab page, and the CTA below is the way
+ * there. Nothing here is duplicated from that page beyond a one-line summary,
+ * so the two cannot drift apart on detail.
+ *
+ * Placed between About and Framework, and its background bridges the two:
+ * .about-section ends on --amber-pale and .framework-section opens on --bg, so
+ * this gradient runs from one to the other rather than cutting a hard edge
+ * between them. Padding is 56px against the usual 96px to keep it small.
+ *
+ * Deliberately makes no claim about facilities, equipment, opening hours,
+ * prices or rules - none of that has been confirmed by the AI Unit.
+ */
+?>
+<!-- AI LAB -->
+<section class="section ailab-section" id="ai-lab-intro" aria-labelledby="ailab-home-title">
+  <div class="container">
+    <div class="ailab-promo reveal">
+      <div class="ailab-promo-main">
+        <div class="section-eyebrow" data-i18n="ailab_eyebrow">AI Unit Facility</div>
+        <h2 class="section-title ailab-promo-title" id="ailab-home-title">
+          <span data-i18n="ailab_title1">Explore the</span> <em data-i18n="ailab_title2">AI Lab</em>
+        </h2>
+        <p class="section-summary" data-i18n="sum_ailab" hidden>In short: the AI Lab is a space at the AI Unit where you can learn about and try out AI. You can book a session.</p>
+        <p class="ailab-promo-desc" data-i18n="ailab_desc">A space at the AI Unit for learning, exploring and working with artificial intelligence - available primarily to students from colleges and universities, researchers, educators and members of the public.</p>
+        <ul class="ailab-promo-tags" aria-label="Who the AI Lab is for">
+          <li data-i18n="ailab_tag1">College &amp; university students</li>
+          <li data-i18n="ailab_tag2">Researchers</li>
+          <li data-i18n="ailab_tag3">Educators</li>
+          <li data-i18n="ailab_tag4">Members of the public</li>
+        </ul>
+      </div>
+      <div class="ailab-promo-action">
+        <?php /* Link text stands on its own out of context, for anyone tabbing
+                 or listening through the page's links. */ ?>
+        <a href="<?= e(url('ai-lab')) ?>" class="btn-primary">
+          <span data-i18n="ailab_cta">Explore the AI Lab</span>
+          <span class="cta-arrow" aria-hidden="true">→</span>
+        </a>
+        <p class="ailab-promo-note" data-i18n="ailab_note">Sessions can be booked online.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FRAMEWORK -->
 <section class="section framework-section" id="framework" aria-labelledby="framework-title">
   <div class="container">

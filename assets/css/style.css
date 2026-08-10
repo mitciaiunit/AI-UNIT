@@ -321,6 +321,35 @@ button{font-family:'Sora',sans-serif;}
 
 /* ─── ABOUT ─── */
 .about-section{background:linear-gradient(180deg,var(--surface) 0%,var(--amber-pale) 100%);}
+
+/* ─── AI LAB (compact homepage promo) ───
+   Bridges About (ends on --amber-pale) and Framework (opens on --bg), so the
+   three read as one continuous run rather than three stacked bands. Padding is
+   deliberately 56px against the section default of 96px: this is a short
+   pointer to /ai-lab, not a full section. */
+.ailab-section{padding:56px 0;background:linear-gradient(180deg,var(--amber-pale) 0%,var(--bg) 100%);}
+.ailab-promo{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:36px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 36px;box-shadow:var(--shadow-sm);transition:box-shadow var(--trans),border-color var(--trans);}
+.ailab-promo:hover{border-color:var(--blue-light);box-shadow:var(--shadow-md);}
+/* Smaller than a full .section-title - this heading sits inside a card. */
+.ailab-promo-title{font-size:clamp(1.5rem,3vw,2rem);margin-bottom:12px;}
+.ailab-promo-desc{font-size:0.96rem;color:var(--text-2);line-height:1.75;margin-bottom:16px;max-width:56ch;}
+.ailab-promo-tags{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0;}
+.ailab-promo-tags li{padding:4px 12px;background:var(--blue-pale);border:1px solid var(--blue-light);border-radius:100px;font-size:0.74rem;font-weight:600;color:var(--blue);}
+.ailab-promo-action{display:flex;flex-direction:column;align-items:flex-start;gap:10px;flex-shrink:0;}
+.ailab-promo-note{font-size:0.78rem;color:var(--text-3);margin:0;}
+
+@media(max-width:900px){
+    /* Stack before the button column gets squeezed narrower than its label. */
+    .ailab-promo{grid-template-columns:1fr;gap:24px;padding:28px 24px;}
+    .ailab-promo-action{align-items:stretch;}
+    .ailab-promo-action .btn-primary{justify-content:center;}
+    .ailab-promo-note{text-align:center;}
+}
+
+@media(max-width:480px){
+    .ailab-section{padding:44px 0;}
+    .ailab-promo{padding:24px 18px;}
+}
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;}
 .about-right{display:flex;flex-direction:column;gap:20px;}
 .card{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;position:relative;overflow:hidden;transition:all var(--trans);box-shadow:var(--shadow-sm);}
