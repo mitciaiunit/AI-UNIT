@@ -77,37 +77,93 @@
       <section class="hero" id="top" aria-labelledby="hero-title">
         <div class="hero__wash" aria-hidden="true"></div>
 
-        <div class="shell">
-          <div class="hero__head">
-            <p class="kicker" data-reveal>
-              <span class="kicker__dot" aria-hidden="true"></span>
-              AI Unit &middot; Ministry of ICT
-            </p>
-
-            <h1 class="hero__title" id="hero-title" data-reveal data-reveal-delay="60">
-              Students &amp; Internships
-            </h1>
-
-            <p class="hero__lead" data-reveal data-reveal-delay="120">
-              Over a ten-week industrial attachment at the AI Unit, hosted at the Mauritius
-              Emerging Technologies Council in Ebene, a team of university interns redesigned and
-              rebuilt aim.govmu.org, the official government portal for artificial intelligence in
-              Mauritius. The work spanned front-end development, WCAG accessibility, speech synthesis and the integration of the DIVA chatbot. This page is a
-              record of what was built.
-            </p>
-          </div>
-        </div>
-
-        <!-- Main hero image -->
+        <?php
+        /*
+         * Editorial two-column hero: wording left, photograph right, both in
+         * one grid so they read as a single composition rather than a text
+         * block sitting on top of a banner.
+         *
+         * The previous layout stacked a centred text block ABOVE a full-width
+         * 16:9 image plus a scroll cue, which is what made the hero so tall.
+         * Side by side, the same content occupies roughly the height of the
+         * photograph alone.
+         *
+         * DOM order is head then figure, which is also the order the brief
+         * asks for on mobile - so the single-column stack needs no CSS
+         * reordering and the reading order matches the visual order for screen
+         * readers and keyboard users alike.
+         */
+        ?>
+        <?php /* shell--wide (1320px vs 1120px) so the photograph has more room
+                 to grow without squeezing the text column. */ ?>
         <div class="shell shell--wide">
-          <figure class="hero__figure" data-reveal data-reveal-delay="180">
-            <div class="reveal-image">
-              <img src="<?= e(asset('images/highlights/team.jpg')) ?>" width="1280" height="720"
-                   alt="The internship cohort of eight students standing together in the AI Unit office."
-                   loading="eager" decoding="async" fetchpriority="high">
+          <?php
+          /*
+           * Sits above the hero grid, aligned right across the full width, so
+           * it reads as page-level navigation rather than part of the text
+           * column - and matches where the AI Lab page puts the same control.
+           *
+           * Kept before the grid in the DOM so it is the first thing a keyboard
+           * user reaches on the page, which is where a "back" control is most
+           * useful.
+           *
+           * target="_self" because includes/header.php sets
+           * <base target="_blank">, which would otherwise open the homepage in
+           * a new tab.
+           *
+           * The arrow is aria-hidden and the label is real text, so the
+           * accessible name is "Back to Homepage" - never an icon alone.
+           */
+          ?>
+          <p class="hero__back">
+            <a class="btn-back" href="<?= e(url('/')) ?>" target="_self">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
+              <span>Back to Homepage</span>
+            </a>
+          </p>
+
+          <div class="hero__grid">
+            <div class="hero__head">
+              <p class="kicker" data-reveal>
+                <span class="kicker__dot" aria-hidden="true"></span>
+                Highlights
+              </p>
+
+              <h1 class="hero__title" id="hero-title" data-reveal data-reveal-delay="60">
+                Students &amp; Internships
+              </h1>
+
+              <p class="hero__lead" data-reveal data-reveal-delay="120">
+                Over a ten-week industrial attachment at the AI Unit, hosted at the Mauritius
+                Emerging Technologies Council in Ebene, a team of university interns redesigned and
+                rebuilt aim.govmu.org, the official government portal for artificial intelligence in
+                Mauritius. The work spanned front-end development, WCAG accessibility, speech synthesis and the integration of the DIVA chatbot. This page is a
+                record of what was built.
+              </p>
             </div>
-            <figcaption>The intern team at the AI Unit, METC, during the May to July 2026 attachment</figcaption>
-          </figure>
+
+            <?php
+            /*
+             * The existing group photograph, unchanged and uncropped.
+             *
+             * The file is natively 1280x720, and the CSS pins that same 16:9
+             * ratio, so object-fit never removes anything: all eight people
+             * stay fully in frame at every width. A portrait crop would have
+             * matched the reference composition more closely, but on a
+             * landscape group shot it would cut the people standing at each
+             * end - so the photograph keeps its own shape and gains presence
+             * from the width of its column instead.
+             */
+            ?>
+            <figure class="hero__figure" data-reveal data-reveal-delay="180">
+              <div class="reveal-image">
+                <img src="<?= e(asset('images/highlights/team.jpg')) ?>" width="1280" height="720"
+                     alt="The internship cohort of eight students standing together in the AI Unit office."
+                     loading="eager" decoding="async" fetchpriority="high">
+              </div>
+              <figcaption>The intern team at the AI Unit, METC, during the May to July 2026 attachment</figcaption>
+            </figure>
+          </div>
         </div>
 
         <a class="scroll-cue" href="#overview" target="_self" data-reveal data-reveal-delay="240">
