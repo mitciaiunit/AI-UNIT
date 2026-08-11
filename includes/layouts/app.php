@@ -21,12 +21,6 @@ $isHome = $isHome ?? false;
 
 <div id="simple-announcer" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
 
-<div class="listen-offer" role="region" aria-label="Listen to this page">
-  <button type="button" class="listen-offer-btn" id="listen-page" aria-pressed="false">
-    <span data-i18n="listen_page">Listen to this page</span>
-  </button>
-</div>
-
 <?php require __DIR__ . '/../navbar.php'; ?>
 
 <?= $content ?>

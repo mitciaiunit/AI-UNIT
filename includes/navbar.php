@@ -63,6 +63,7 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
           <line x1="4" y1="17" x2="10" y2="17"/>
         </svg>
         <span data-i18n="simple_toggle">Simple language</span>
+        <span class="simple-savings-note visually-hidden" id="simple-savings-note" hidden></span>
       </button>
       <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
