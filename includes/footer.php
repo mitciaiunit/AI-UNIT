@@ -42,7 +42,7 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
       </ul></div>
     </div>
     <div class="footer-disclaimer">
-      <p data-i18n="footer_disclaimer_text">The Regional AI Marketplace is a facilitation tool. Listing a company or solution does not constitute an official government endorsement, certification, or guarantee of quality by the Ministry of Information Technology, Communication and Innovation or the Government of Mauritius. Users are encouraged to conduct their own due diligence before entering into technical or financial agreements.</p>
+      <p data-i18n="footer_disclaimer_text" tabindex="0">The Regional AI Marketplace is a facilitation tool. Listing a company or solution does not constitute an official government endorsement, certification, or guarantee of quality by the Ministry of Information Technology, Communication and Innovation or the Government of Mauritius. Users are encouraged to conduct their own due diligence before entering into technical or financial agreements.</p>
     </div>
     <div class="footer-bottom">
       <p data-i18n="footer_copyright">© 2026 Artificial Intelligence Unit, Republic of Mauritius. Developed and Hosted by Government Online Centre.</p>

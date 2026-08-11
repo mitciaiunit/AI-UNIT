@@ -20,7 +20,6 @@ const translations = {
     ailab_desc: "A space at the AI Unit for learning, exploring and working with artificial intelligence - available primarily to students from colleges and universities, researchers, educators and members of the public.",
     ailab_tag1: "College & university students", ailab_tag2: "Researchers", ailab_tag3: "Educators", ailab_tag4: "Members of the public",
     ailab_cta: "Explore the AI Lab", ailab_note: "Sessions can be booked online.",
-    sum_ailab: "In short: the AI Lab is a space at the AI Unit where you can learn about and try out AI. You can book a session.",
     about_eyebrow: "Who We Are", about_title_prefix: "Driving Mauritius", about_title_suffix: "AI Future", about_mission_quote: "\"Mauritius is committed to becoming a smart, inclusive and future-ready nation - where every citizen benefits from responsible AI.\"",
     about_body1: "The AI Unit is the dedicated body established under the Ministry of Information Technology, Communication and Innovation (MITCI) to lead Mauritius' artificial intelligence journey. We coordinate AI governance, promote innovation, and ensure that technology serves all Mauritians - fairly and transparently.",
     about_body2: "We are the strategic vehicle for MITCI's <strong>Digital Transformation 2025-2029</strong> blueprint - a bold roadmap to modernise public services and position Mauritius as a leading AI nation in Africa.",
@@ -109,19 +108,8 @@ const translations = {
     a11y_kbd_open: "Open panel:", a11y_kbd_close: "Close:",
 
     // ─── SIMPLE LANGUAGE MODE: UI strings ───
-    simple_toggle: "Simple language", ft_show: "Read the full text", ft_hide: "Hide the full text", listen_page: "Listen to this page", toc_title: "On this page",
-    simple_time_announcement: "Reading the full page takes about {full} minutes. Simple language mode reduces this to about {simple} minutes. Press Alt M to switch, or continue.",
-
-    // ─── SIMPLE LANGUAGE MODE: per-section orientation summaries (shown only in simple mode) ───
-    // Final strings from Kate (simple-summaries-en.js), pasted verbatim.
-    sum_about: "In short: who we are, and what the AI Unit does.",
-    sum_framework: "In short: six areas Mauritius is working on to build AI that people can trust.",
-    sum_action: "In short: two projects already running — online safety for children, and a plain guide to AI.",
-    sum_marketplace: "In short: a place to find AI tools, or to list your own.",
-    sum_strategy: "In short: our four main documents. You can read, download or listen to each one.",
-    sum_principles: "In short: the four values that guide our work.",
-    sum_team: "In short: the four people who lead the AI Unit.",
-    sum_contact: "In short: how to reach us — address, email, phone, and a message form.",
+    simple_toggle: "Simple language",
+    simple_savings_note: "Saves about {n} min of reading",
 
     // ─── SIMPLE LANGUAGE MODE: Tier 1 (site copy) summaries ───
     // Final strings from Kate (simple-summaries-en.js), pasted verbatim -
@@ -180,6 +168,36 @@ const translations = {
     principle2_text_s: "Every AI decision must be explainable and open to checking by official bodies. This is a requirement, not an option.", // (31 → 22)
     principle3_text_s: "Technology should serve everyone. We build AI that works across languages, abilities and locations, and we work openly and honestly.", // (40 → 22)
     principle4_text_s: "We work carefully and take responsibility. We learn as we go, and keep the long-term wellbeing of citizens at the centre.", // (34 → 22)
+
+    // ─── SIMPLE LANGUAGE MODE: AI Lab page (pages/ai-lab.php) ───
+    // Claude drafts, not yet reviewed by Kate/the Ministry - unlike the Tier
+    // 1/2 strings above. Every fact from the full text is preserved (Government
+    // approval, Ministry of ICT, the STEMpower Inc. partnership, who the lab is
+    // for, and how booking works); only the wording is shortened. Flag for
+    // review before treating as final.
+    ailab_page_subtitle_s: "A place where students and innovators can learn and try out AI.", // (18 → 12)
+    ailab_page_about1_s: "The Government approved the AI Lab as an Innovation Lab. The Ministry of ICT set it up. Here, you build, test and try AI yourself, instead of just reading about it.", // (42 → 29)
+    ailab_page_about2_s: "The Ministry is partnering with <strong>STEMpower Inc.</strong>, a US non-profit. STEMpower supplies the lab's equipment and helps set it up.", // (27 → 20)
+    ailab_page_who_s: "The AI Lab is open to secondary and university students, technopreneurs and innovators, to learn and experiment with AI.", // (23 → 19)
+    ailab_page_book_intro_s: "Pick a date and time below, then fill in your details to book. Calendly handles booking and emails you a confirmation.", // (27 → 19)
+
+    // ─── SIMPLE LANGUAGE MODE: Highlights page (pages/highlights.php) ───
+    // Claude drafts, not yet reviewed - same caveat as the AI Lab strings
+    // above. Covers only the substantial narrative paragraphs (hero lead,
+    // section ledes, project descriptions); short list items, card blurbs
+    // and figure captions were left as-is, matching how the homepage never
+    // simplified its own tags/chips/short list text either.
+    hl_hero_lead_s: "University interns spent ten weeks at the AI Unit, hosted by the Mauritius Emerging Technologies Council in Ebene. They rebuilt aim.govmu.org, the government's AI portal. The work covered front-end development, accessibility, speech synthesis and the DIVA chatbot. This page shows what they built.", // (62 → 44)
+    hl_overview_lede_s: "The AI Unit had no permanent developers, so interns carried the work forward. It began with one intern reviewing the portal and setting up the project. By the later weeks, several interns from different universities were working together in one shared codebase.", // (58 → 43)
+    hl_revamp_lede_s: "aim.govmu.org is the government's AI portal for Mauritius, with news, policies, events and resources.", // (17 → 16)
+    hl_revamp_analysis_s: "The team began by reviewing the existing portal, guided by the AI Unit's goals for it. That review shaped a detailed wireframe covering the home page, navigation, key content and features like the accessibility tool and chatbot. Once the mentor approved the wireframe, front-end development began.", // (65 → 48)
+    hl_revamp_kanban_s: "The team managed the project with a Kanban workflow, introduced in Week 2 on the mentor's advice. It started as a physical board, then moved to a digital Jira board as the team grew. Tasks were grouped into Epics and Sub-Epics matching the portal's features.", // (65 → 46)
+    hl_revamp_github_s: "GitHub was the team's version control platform. A shared repository let all the interns work on different features at the same time without conflicts.", // (29 → 25)
+    hl_diva_lede_s: "DIVA is an AI assistant built into the portal. It answers questions about AI in Mauritius, the portal's content, and government AI resources. It is a prototype, based on four key documents: the Digital Transformation Blueprint, the AI Strategy, the FAIR Guidelines and the AI Playbook.", // (50 → 45)
+    hl_diva_entry_s: "Users can reach DIVA in two ways. A section of the portal introduces DIVA with a Chat with DIVA button. A floating chatbot widget also stays on screen everywhere, so you can start or continue a chat from any page.", // (52 → 40)
+    hl_diva_speech_s: "The team added the Web Speech Synthesis API, a browser feature that turns text into speech with no extra software. One button press reads DIVA's answer aloud.", // (35 → 27)
+    hl_a11y_lede_s: "In Week 3, the mentor set a new goal: the portal had to meet WCAG 2.2, the international guidelines for making websites usable by people with visual, hearing, physical, cognitive and other disabilities. The interns also built an accessibility toolbar into the portal, so every visitor can choose how they want to use the site.", // (65 → 53)
+    hl_a11y_standards_s: "Meeting WCAG 2.2 meant researching the A, AA and AAA conformance levels, testing the portal with browser accessibility tools, and reworking code that was already written. It taught the team that building accessibility in from the start is easier than adding it later.", // (47 → 42)
   }
 };
   
@@ -199,15 +217,7 @@ function applyTranslations() {
   const T = translations[currentLang] || {};
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    let value;
-
-    if (simpleMode && T[key + '_s'] !== undefined) {
-      value = T[key + '_s'];
-      el.setAttribute('data-simplified', 'true');
-    } else {
-      value = T[key];
-      el.removeAttribute('data-simplified');
-    }
+    const value = (simpleMode && T[key + '_s'] !== undefined) ? T[key + '_s'] : T[key];
     if (value === undefined) return;
 
     if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && el.placeholder) {
@@ -232,6 +242,7 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     currentLang = btn.getAttribute('data-lang');
     applyTranslations();
+    updateSimpleSavingsNote(); // word totals are per-language, so recompute after switching
     localStorage.setItem('ai_unit_lang', currentLang);
   });
 });
@@ -246,16 +257,11 @@ if (savedLang && (savedLang === 'fr' || savedLang === 'km')) {
    Replaces long-form copy with short plain-language summaries (the `_s`
    variant of each translation key - see applyTranslations() above). Offered
    as a reading preference to every visitor and never switched on
-   automatically - see CLAUDE_CODE_BRIEF_simple_mode.md section 3. Two
-   independent localStorage keys (simple language, listen-to-page) per
-   section 3.4 of that brief. */
+   automatically - see CLAUDE_CODE_BRIEF_simple_mode.md section 3. */
 const SIMPLE_MODE_KEY = 'aiunit_simple_mode_v1';
-const LISTEN_PAGE_KEY = 'aiunit_listen_page_v1';
 const simpleToggleBtn = document.getElementById('simple-toggle');
-const listenBtn = document.getElementById('listen-page');
 const simpleAnnouncer = document.getElementById('simple-announcer');
-let announcedTimeSavingsThisSession = false; // module flag, not localStorage - once per session, reappears next visit
-let pendingReadStart = null;
+const simpleSavingsNote = document.getElementById('simple-savings-note');
 
 function announceSimple(msg) {
   if (!simpleAnnouncer) return;
@@ -293,63 +299,47 @@ function pageWordTotals() {
   return { full: full, saved: saved };
 }
 
-// Builds a "Read the full text" disclosure after every element simple mode
-// just replaced, from the translations object - no full text is duplicated
-// in the HTML. Uses the `hidden` attribute (not a CSS class) so collapsed
-// text genuinely leaves the accessibility tree. Idempotent: safe to call
-// repeatedly, e.g. every time the mode is toggled.
-function rebuildDisclosures() {
-  document.querySelectorAll('.full-text-wrap').forEach(function (el) { el.remove(); });
-  if (!simpleMode) return;
+// Recalibrated from the brief's original 20%: that figure assumed a
+// ~9,000-word, ~55-minute homepage. The real page is ~1,500 words
+// (~9 minutes), where even a ~10% reduction is worth surfacing.
+const TIME_SAVINGS_THRESHOLD = 0.10;
 
+// Updates the small "Saves about N min of reading" note next to the Simple
+// Language toggle - a static, visible replacement for what used to be a
+// spoken-only announcement. Hidden while simple mode is already on (the
+// saving no longer applies) or when the page's saving is too small to be
+// worth mentioning.
+function updateSimpleSavingsNote() {
+  if (!simpleSavingsNote) return;
+  if (simpleMode) { simpleSavingsNote.hidden = true; simpleSavingsNote.textContent = ''; return; }
+  const totals = pageWordTotals();
+  if (totals.full <= 0 || (totals.saved / totals.full) < TIME_SAVINGS_THRESHOLD) {
+    simpleSavingsNote.hidden = true;
+    simpleSavingsNote.textContent = '';
+    return;
+  }
+  const savedMinutes = minutesFor(totals.full) - minutesFor(totals.full - totals.saved);
+  if (savedMinutes < 1) {
+    simpleSavingsNote.hidden = true;
+    simpleSavingsNote.textContent = '';
+    return;
+  }
   const T = translations[currentLang] || {};
-  document.querySelectorAll('[data-simplified="true"]').forEach(function (el) {
-    const key = el.getAttribute('data-i18n');
-    if (!key || T[key] === undefined) return;
-
-    const wrap = document.createElement('div');
-    wrap.className = 'full-text-wrap';
-
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'full-text-toggle';
-    btn.setAttribute('aria-expanded', 'false');
-    const panelId = 'ft-' + key;
-    btn.setAttribute('aria-controls', panelId);
-    const btnLabel = document.createElement('span');
-    btnLabel.textContent = T['ft_show'] || 'Read the full text';
-    btn.appendChild(btnLabel);
-
-    const panel = document.createElement('div');
-    panel.className = 'full-text-body';
-    panel.id = panelId;
-    panel.hidden = true;
-    panel.innerHTML = T[key];
-
-    btn.addEventListener('click', function () {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!expanded));
-      panel.hidden = expanded;
-      btnLabel.textContent = expanded ? (T['ft_show'] || 'Read the full text') : (T['ft_hide'] || 'Hide the full text');
-    });
-
-    wrap.appendChild(btn);
-    wrap.appendChild(panel);
-    el.insertAdjacentElement('afterend', wrap);
-  });
+  const template = T['simple_savings_note'] || 'Saves about {n} min of reading';
+  simpleSavingsNote.hidden = false;
+  simpleSavingsNote.textContent = template.replace('{n}', savedMinutes);
 }
 
 function setSimpleMode(on, opts) {
   opts = opts || {};
   simpleMode = on;
   applyTranslations();
-  document.querySelectorAll('.section-summary').forEach(function (el) { el.hidden = !on; });
-  rebuildDisclosures();
+  updateSimpleSavingsNote();
   if (simpleToggleBtn) simpleToggleBtn.setAttribute('aria-pressed', String(on));
   try { localStorage.setItem(SIMPLE_MODE_KEY, on ? '1' : '0'); } catch (e) {}
   if (!opts.silent) {
     announceSimple(on
-      ? 'Simple language on. Long sections replaced with short summaries.'
+      ? 'Simple language on. Text is now simplified.'
       : 'Simple language off. Showing the full text.');
   }
 }
@@ -358,38 +348,11 @@ if (simpleToggleBtn) {
   simpleToggleBtn.addEventListener('click', function () { setSimpleMode(!simpleMode); });
 }
 
-// #sr-read-btn belongs to accessibility-widget.js, which self-injects it on
-// DOMContentLoaded and is kept unmodified (see the widget-swap task earlier
-// in this thread) - so it is looked up by id rather than held as a direct
-// reference, and forwarded a real click rather than driven programmatically.
-function startBuiltInReading() {
-  const btn = document.getElementById('sr-read-btn');
-  if (btn) btn.click();
-}
-
-function isReaderActive() {
-  const btn = document.getElementById('sr-read-btn');
-  return !!btn && (btn.classList.contains('active') || btn.classList.contains('paused'));
-}
-
-function speakAnnouncement(text, onEnd) {
-  if (!window.speechSynthesis) { onEnd(); return; }
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = HTML_LANG[currentLang] || 'en';
-  u.onend = onEnd;
-  u.onerror = onEnd;
-  window.speechSynthesis.speak(u);
-}
-
-// Alt+M: works whether or not the reader is running. If speech is in
-// progress when pressed (either the built-in reader or our own time-saving
-// announcement), cancel it, switch mode, and restart the reader from the
-// top so it picks up the new (simple or full) text.
+// Alt+M: quick keyboard toggle for simple language from anywhere on the
+// page. Never touches the built-in screen reader - reading only ever starts
+// from an explicit click on the reader's own controls.
 function handleAltM() {
-  const wasSpeaking = !!(window.speechSynthesis && window.speechSynthesis.speaking);
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
   setSimpleMode(!simpleMode);
-  if (wasSpeaking) setTimeout(startBuiltInReading, 150);
 }
 
 document.addEventListener('keydown', function (e) {
@@ -399,75 +362,6 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-// Mirror #sr-read-btn's active/paused class onto our own "Listen to this
-// page" button, since the real reading state lives inside
-// accessibility-widget.js. Polls briefly for the button to exist, since
-// this script tag loads before accessibility-widget.js does.
-(function watchReaderButton() {
-  const btn = document.getElementById('sr-read-btn');
-  if (!btn) { setTimeout(watchReaderButton, 300); return; }
-  function sync() { if (listenBtn) listenBtn.setAttribute('aria-pressed', String(isReaderActive())); }
-  new MutationObserver(sync).observe(btn, { attributes: true, attributeFilter: ['class'] });
-  sync();
-  if (localStorage.getItem(LISTEN_PAGE_KEY) === '1' && !isReaderActive()) btn.click();
-})();
-
-if (listenBtn) {
-  listenBtn.addEventListener('click', function () {
-    try { localStorage.setItem(LISTEN_PAGE_KEY, '1'); } catch (e) {}
-    // Always just forwards to #sr-read-btn - the widget's own button owns
-    // play/pause/stop, and the document-level click interceptor below
-    // handles the time-comparison announcement uniformly for this button
-    // and the widget's own panel button.
-    startBuiltInReading();
-  });
-}
-
-// Recalibrated from the brief's 20%: that figure assumed a ~9,000-word,
-// ~55-minute homepage. The real page is ~1,500 words (~9 minutes), where
-// even the current ~10% reduction from the 34 drafted summaries is worth
-// surfacing. Revisit this once more of the page has _s summaries, or if
-// Kate wants the original 20% bar restored.
-const TIME_SAVINGS_THRESHOLD = 0.10;
-
-// Speaks the read-time comparison, once per session, immediately before the
-// FIRST "start reading" click of that session - whichever button triggers
-// it. Registered on `document` in the capture phase so it runs before the
-// widget's own bubble-phase click handler on #sr-read-btn (DOM capture
-// completes, root-to-target, before any bubble-phase listener on the target
-// fires) - this lets the announcement run ahead of the widget's own reading
-// without ever calling speechSynthesis.cancel() on speech the widget
-// started, and without modifying accessibility-widget.js. Covers both entry
-// points: our own "Listen to this page" button (which just forwards a real
-// click to #sr-read-btn) and the widget's own panel button directly.
-document.addEventListener('click', function (e) {
-  const btn = e.target && e.target.closest && e.target.closest('#sr-read-btn');
-  if (!btn || isReaderActive()) return; // not our button, or already reading/paused (pause/stop click - let it through)
-
-  const totals = pageWordTotals();
-  const shouldAnnounce = !simpleMode
-    && !announcedTimeSavingsThisSession
-    && totals.full > 0
-    && (totals.saved / totals.full) >= TIME_SAVINGS_THRESHOLD;
-  if (!shouldAnnounce) return; // let the real click proceed normally
-
-  e.preventDefault();
-  e.stopImmediatePropagation(); // block the widget's own handler for THIS click only
-  pendingReadStart = btn;
-  announcedTimeSavingsThisSession = true;
-  const fullMinutes = minutesFor(totals.full);
-  const simpleMinutes = minutesFor(totals.full - totals.saved);
-  const T = translations[currentLang] || {};
-  const template = T['simple_time_announcement'] ||
-    'Reading the full page takes about {full} minutes. Simple language mode reduces this to about {simple} minutes. Press Alt M to switch, or continue.';
-  speakAnnouncement(template.replace('{full}', fullMinutes).replace('{simple}', simpleMinutes), function () {
-    if (pendingReadStart === btn && !isReaderActive()) {
-      btn.click();
-    }
-    pendingReadStart = null;
-  });
-}, true);
-
 // Restore saved preference and apply as early as this script runs (it loads
 // before accessibility-widget.js, at the end of <body> - see Task 2; true
 // before-first-paint would require moving script loading into <head>, which
@@ -475,6 +369,7 @@ document.addEventListener('click', function (e) {
 try {
   if (localStorage.getItem(SIMPLE_MODE_KEY) === '1') setSimpleMode(true, { silent: true });
 } catch (e) {}
+updateSimpleSavingsNote();
 
 /* ─── HERO BACKGROUND VIDEO ───
    The hero sits on a CSS gradient with the video layered over it. If the video
@@ -520,16 +415,6 @@ hamburger.addEventListener('click',()=>{
   const open=hamburger.classList.toggle('open');
   navLinksDiv.classList.toggle('mobile-open');
   hamburger.setAttribute('aria-expanded',open.toString());
-});
-
-document.querySelectorAll('.dimension-header').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const item=btn.closest('.dimension-item');
-    const body=item.querySelector('.dimension-body');
-    const isOpen=item.classList.contains('open');
-    document.querySelectorAll('.dimension-item').forEach(di=>{di.classList.remove('open');di.querySelector('.dimension-header').setAttribute('aria-expanded','false');di.querySelector('.dimension-body').style.maxHeight='0';});
-    if(!isOpen){item.classList.add('open');btn.setAttribute('aria-expanded','true');body.style.maxHeight=body.scrollHeight+200+'px';}
-  });
 });
 
 document.querySelectorAll('.team-tab').forEach(tab=>{
