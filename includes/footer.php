@@ -28,10 +28,10 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
         <li><a <?= $navTarget('strategy') ?> data-i18n="footer_framework">AI Framework</a></li>
       </ul></div>
       <div class="footer-col"><h4 data-i18n="footer_resources">Resources</h4><ul>
-        <li><a href="<?= e(url('document/aistrategy')) ?>" target="_blank" rel="noopener" data-i18n="footer_strategy">National AI Strategy</a></li>
-        <li><a href="<?= e(url('document/fairguidelines')) ?>" target="_blank" rel="noopener" data-i18n="footer_fair">FAIR Guidelines</a></li>
-        <li><a href="<?= e(url('document/blueprint')) ?>" target="_blank" rel="noopener" data-i18n="footer_blueprint">Digital Blueprint</a></li>
-        <li><a href="<?= e(url('document/playbook')) ?>" target="_blank" rel="noopener" data-i18n="footer_playbook">AI Playbook</a></li>
+        <li><a href="<?= e(url('document/aistrategy')) ?>" data-i18n="footer_strategy">National AI Strategy</a></li>
+        <li><a href="<?= e(url('document/fairguidelines')) ?>" data-i18n="footer_fair">FAIR Guidelines</a></li>
+        <li><a href="<?= e(url('document/blueprint')) ?>" data-i18n="footer_blueprint">Digital Blueprint</a></li>
+        <li><a href="<?= e(url('document/playbook')) ?>" data-i18n="footer_playbook">AI Playbook</a></li>
       </ul></div>
       <div class="footer-col"><h4 data-i18n="footer_info">Information</h4><ul>
         <li><a href="<?= e(url('privacy-policy')) ?>" data-i18n="footer_privacy">Privacy Policy</a></li>

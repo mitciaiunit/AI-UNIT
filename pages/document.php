@@ -253,7 +253,7 @@
   </div>
 
   <div class="topbar-right">
-    <a href="<?= e(url('/')) ?>" class="back-btn" aria-label="Back to homepage">
+    <a href="<?= e(url('/')) ?>" class="back-btn" id="backBtnTop" aria-label="Back to homepage">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
         <path d="M19 12H5M12 5l-7 7 7 7"/>
       </svg>
@@ -315,12 +315,27 @@
 <footer class="footer-bar" role="contentinfo">
   <span>AI Unit · Ministry of ICT, Mauritius</span>
   <span class="footer-dot" aria-hidden="true"></span>
-  <a href="<?= e(url('/')) ?>">Back to Homepage</a>
+  <a href="<?= e(url('/')) ?>" id="backBtnFooter">Back to Homepage</a>
   <span class="footer-dot" aria-hidden="true"></span>
   <span id="footerDocName"><?= e($title) ?></span>
 </footer>
 
 <script>
+(function () {
+  // Use real browser back navigation so the homepage restores scroll
+  // position instead of reloading fresh. Falls back to the href (plain
+  // navigation to "/") when there's no same-origin page to return to,
+  // e.g. the document link was opened directly or shared.
+  function goBack(e) {
+    const cameFromSite = document.referrer && new URL(document.referrer).origin === window.location.origin;
+    if (cameFromSite && window.history.length > 1) {
+      e.preventDefault();
+      window.history.back();
+    }
+  }
+  document.getElementById('backBtnTop').addEventListener('click', goBack);
+  document.getElementById('backBtnFooter').addEventListener('click', goBack);
+})();
 (function () {
   const embed = document.getElementById('pdfEmbed');
   let loaded = false;

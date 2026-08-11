@@ -690,7 +690,7 @@ $i18n = [
 <!-- TOP BAR -->
 <header class="topbar">
   <div class="topbar-left">
-    <a href="<?= e(url('/')) ?>" class="back-btn">
+    <a href="<?= e(url('/')) ?>" class="back-btn" id="backBtn">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
       Back
     </a>
@@ -898,6 +898,19 @@ let captionInterval = null;
 if (document.pictureInPictureEnabled) {
   btnPip.style.display = 'flex';
 }
+
+// ─── BACK BUTTON ─────────────────────────────────────────────
+// Use real browser back navigation so the homepage restores scroll
+// position instead of reloading fresh. Falls back to the href (plain
+// navigation to "/") when there's no same-origin page to return to,
+// e.g. the video link was opened directly or shared.
+document.getElementById('backBtn').addEventListener('click', (e) => {
+  const cameFromSite = document.referrer && new URL(document.referrer).origin === window.location.origin;
+  if (cameFromSite && window.history.length > 1) {
+    e.preventDefault();
+    window.history.back();
+  }
+});
 
 // ─── CAPTIONS ENGINE ─────────────────────────────────────────
 function setCaptionTrackMode() {
