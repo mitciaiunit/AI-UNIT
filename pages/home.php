@@ -58,7 +58,7 @@ $isHome = true;
           <div class="diva-icon" aria-hidden="true"><img src="<?= e(asset('images/DIVA.png')) ?>" alt="DIVA"></div>
           <div>
             <h3 data-i18n="diva_title">Meet DIVA - Digital Interactive Virtual Assistant</h3>
-            <p data-i18n="diva_desc">DIVA is a prototype assistant that answers questions based on four key documents: the Digital Transformation Blueprint, AI Strategy, FAIR Guidelines, and AI Playbook.</p>
+            <p data-i18n="diva_desc">DIVA is a prototype assistant that answers questions based on three key documents: the Digital Transformation Blueprint, AI Strategyand and the FAIR Guidelines.</p>
             <button class="btn-sm" id="openDiva"><span data-i18n="diva_chat">Chat with DIVA</span> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
           </div>
         </div>
@@ -199,19 +199,19 @@ $isHome = true;
           <a href="<?= e(url('booklet/livret')) ?>" class="btn-booklet" data-i18n="action_booklet_btn">Read the booklet</a>
         </div>
         <div class="video-list">
-          <a class="video-item" href="<?= e(url('video/1')) ?>" target="_blank" rel="noopener">
+          <a class="video-item" href="<?= e(url('video/1')) ?>">
             <div class="video-icon" aria-hidden="true">▶</div>
             <div><strong data-i18n="video1_title">Video 1</strong> - <span data-i18n="video1_desc">Forms of Digital Violence</span> <span style="color:var(--text-3);">2:37</span></div>
           </a>
-          <a class="video-item" href="<?= e(url('video/2')) ?>" target="_blank" rel="noopener">
+          <a class="video-item" href="<?= e(url('video/2')) ?>">
             <div class="video-icon" aria-hidden="true">▶</div>
             <div><strong data-i18n="video2_title">Video 2</strong> - <span data-i18n="video2_desc">Consequences and Effects</span> <span style="color:var(--text-3);">4:21</span></div>
           </a>
-          <a class="video-item" href="<?= e(url('video/3')) ?>" target="_blank" rel="noopener">
+          <a class="video-item" href="<?= e(url('video/3')) ?>">
             <div class="video-icon" aria-hidden="true">▶</div>
             <div><strong data-i18n="video3_title">Video 3</strong> - <span data-i18n="video3_desc">Children's Rights &amp; Parental Responsibility</span> <span style="color:var(--text-3);">2:37</span></div>
           </a>
-          <a class="video-item" href="<?= e(url('video/4')) ?>" target="_blank" rel="noopener">
+          <a class="video-item" href="<?= e(url('video/4')) ?>">
             <div class="video-icon" aria-hidden="true">▶</div>
             <div><strong data-i18n="video4_title">Video 4</strong> - <span data-i18n="video4_desc">Regaining Control</span> <span style="color:var(--text-3);">4:21</span></div>
           </a>
@@ -299,7 +299,7 @@ $isHome = true;
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
               <span data-i18n="doc_download">Download</span>
             </a>
-            <a href="<?= e(url('document/blueprint')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost">
+            <a href="<?= e(url('document/blueprint')) ?>" class="btn-view-doc doc-btn doc-btn-ghost">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
               <span data-i18n="doc_view">View Online</span>
             </a>
@@ -337,7 +337,7 @@ $isHome = true;
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
               <span data-i18n="doc_download">Download</span>
             </a>
-            <a href="<?= e(url('document/aistrategy')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost">
+            <a href="<?= e(url('document/aistrategy')) ?>" class="btn-view-doc doc-btn doc-btn-ghost">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
               <span data-i18n="doc_view">View Online</span>
             </a>
@@ -375,7 +375,7 @@ $isHome = true;
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
               <span data-i18n="doc_download">Download</span>
             </a>
-            <a href="<?= e(url('document/fairguidelines')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost">
+            <a href="<?= e(url('document/fairguidelines')) ?>" class="btn-view-doc doc-btn doc-btn-ghost">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
               <span data-i18n="doc_view">View Online</span>
             </a>
@@ -413,7 +413,7 @@ $isHome = true;
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
               <span data-i18n="doc_download">Download</span>
             </a>
-            <a href="<?= e(url('document/playbook')) ?>" target="_blank" rel="noopener" class="btn-view-doc doc-btn doc-btn-ghost">
+            <a href="<?= e(url('document/playbook')) ?>" class="btn-view-doc doc-btn doc-btn-ghost">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
               <span data-i18n="doc_view">View Online</span>
             </a>

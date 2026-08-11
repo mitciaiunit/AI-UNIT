@@ -359,7 +359,7 @@
   <!-- TOP BAR -->
   <header class="topbar" role="banner">
     <div class="topbar-left">
-      <a href="<?= e(url('/')) ?>" class="back-btn">
+      <a href="<?= e(url('/')) ?>" class="back-btn" id="backBtn">
         <i class="ti ti-arrow-left" style="font-size:14px;" aria-hidden="true"></i>
         <?= e($s['backBtn']) ?>
       </a>
@@ -497,6 +497,19 @@
 </div>
 
 <script>
+(function () {
+  // Use real browser back navigation so the homepage restores scroll
+  // position instead of reloading fresh. Falls back to the href (plain
+  // navigation to "/") when there's no same-origin page to return to,
+  // e.g. the booklet link was opened directly or shared.
+  document.getElementById('backBtn').addEventListener('click', (e) => {
+    const cameFromSite = document.referrer && new URL(document.referrer).origin === window.location.origin;
+    if (cameFromSite && window.history.length > 1) {
+      e.preventDefault();
+      window.history.back();
+    }
+  });
+})();
 (function () {
   pdfjsLib.GlobalWorkerOptions.workerSrc =
     'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';

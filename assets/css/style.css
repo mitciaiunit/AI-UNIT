@@ -578,7 +578,7 @@ button{font-family:'Sora',sans-serif;}
 .team-focus-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:var(--blue-pale);border:1px solid var(--blue-light);border-radius:100px;font-size:0.72rem;font-weight:700;color:var(--blue);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;}
 .team-name{font-family:'Lora',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--text-1);line-height:1.1;margin-bottom:6px;}
 .team-role{font-size:0.9rem;font-weight:600;color:var(--blue-mid);margin-bottom:32px;}
-.team-quote{font-family:'Lora',serif;font-size:1.08rem;font-style:italic;color:var(--text-2);line-height:1.85;padding-left:22px;border-left:3px solid var(--blue-mid);margin-bottom:36px;}
+.team-quote{font-family:'Lora',serif;font-size:1.08rem;font-style:italic;color:var(--text-2);line-height:1.85;padding-left:22px;border-left:3px solid var(--blue-mid);margin-bottom:36px;text-align:justify;}
 .team-stats-strip{display:flex;gap:0;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;background:var(--surface);}
 .team-stat{flex:1;padding:18px 20px;display:flex;flex-direction:column;gap:3px;border-right:1px solid var(--border);}
 .team-stat:last-child{border-right:none;}
@@ -623,7 +623,7 @@ button{font-family:'Sora',sans-serif;}
 .footer-bottom{border-top:1px solid var(--border);padding-top:22px;display:flex;justify-content:center;align-items:center;text-align:center;gap:16px;flex-wrap:wrap;}
 .footer-bottom p{font-size:0.78rem;color:var(--text-3);}
 .footer-disclaimer{border-top:1px solid var(--border);padding:22px 0;margin-bottom:0;}
-.footer-disclaimer p{font-size:0.78rem;color:var(--text-3);line-height:1.7;text-align:center;max-width:900px;margin:0 auto;}
+.footer-disclaimer p{font-size:0.78rem;color:var(--text-3);line-height:1.7;text-align:justify;max-width:900px;margin:0 auto;}
 
 /* ─── SEARCH MODAL ─── */
 .search-modal{position:fixed;inset:0;z-index:2000;display:flex;align-items:flex-start;justify-content:center;padding-top:100px;opacity:0;pointer-events:none;transition:opacity var(--trans);}
