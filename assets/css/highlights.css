@@ -70,17 +70,25 @@
 
   /* Geometry */
   --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 22px;
-  --radius-xl: 30px;
+  /* Tightened from 16/22/30px. The larger radii read as consumer-app
+     "bubbles"; these keep the corners soft without the page looking like a
+     product landing page, which suits an institutional site better. */
+  --radius-md: 12px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
   --radius-pill: 999px;
 
   /* Rhythm - spacious but compact enough to keep content on screen. */
   --shell: 1120px;
   --shell-wide: 1320px;
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
-  --section-y: clamp(3.75rem, 7.5vw, 6.5rem);
-  --block-gap: clamp(2.75rem, 5.5vw, 4.75rem);
+  /* The single biggest lever on this page's length: --section-y is applied to
+     the top AND bottom of all eight sections, so every 1rem removed here takes
+     16rem off the page. Reduced from 3.75-6.5rem to 2.75-4.5rem, which still
+     leaves a clear gap between sections but stops the page feeling padded out.
+     --block-gap (between blocks inside a section) is trimmed to match. */
+  --section-y: clamp(2.75rem, 5vw, 4.5rem);
+  --block-gap: clamp(2rem, 3.6vw, 3.25rem);
 
   /* Type */
   --font-sans: "Inter", "Segoe UI Variable", "Segoe UI", -apple-system,
@@ -92,8 +100,11 @@
   --ease-spring: cubic-bezier(.34, 1.4, .64, 1);
   --dur-fast: 160ms;
   --dur: 300ms;
-  --dur-slow: 700ms;
-  --dur-reveal: 900ms;
+  --dur-slow: 520ms;
+  /* 900ms made the page feel like it was catching up with the scroll. 560ms
+     still reads as a deliberate fade rather than a snap, but content is
+     settled by the time the eye reaches it. */
+  --dur-reveal: 560ms;
 
   color-scheme: light;
 }
@@ -182,14 +193,17 @@ body.is-locked { overflow: hidden; }
 
 .sc p { text-wrap: pretty; }
 
+/* Ceilings lowered (3rem -> 2.375rem) so headings still lead the page without
+   dominating it. The lower bound is barely touched, so small screens - where
+   the type was already correctly sized - are unaffected. */
 .sc .h2 {
-  font-size: clamp(1.875rem, 1.25rem + 2.6vw, 3rem);
-  margin-bottom: 1rem;
+  font-size: clamp(1.8125rem, 1.25rem + 1.9vw, 2.375rem);
+  margin-bottom: .85rem;
 }
 
 /* Larger display size for the three project titles. */
 .sc .h2--display {
-  font-size: clamp(2.125rem, 1.35rem + 3.4vw, 3.75rem);
+  font-size: clamp(2rem, 1.35rem + 2.4vw, 2.75rem);
   letter-spacing: -.032em;
 }
 
@@ -294,7 +308,7 @@ body.is-locked { overflow: hidden; }
 
 .sc .section__head {
   max-width: 44rem;
-  margin-bottom: clamp(2rem, 4vw, 3rem);
+  margin-bottom: clamp(1.5rem, 2.4vw, 2.125rem);
 }
 
 .sc .section__head--center {
@@ -463,17 +477,58 @@ body.is-locked { overflow: hidden; }
     linear-gradient(180deg, var(--blue-50) 0%, rgba(255, 255, 255, 0) 88%);
 }
 
-.sc .hero__head {
-  max-width: 52rem;
-  margin-bottom: clamp(2rem, 4vw, 3rem);
+/* ─── Editorial hero composition ───
+   Wording and photograph as two columns of one grid.
+
+   The image column is given slightly more width (1.06fr) than the text: the
+   photograph is the element that carries the page, and a dead-even split reads
+   as two unrelated panels rather than one composition.
+
+   align-items:center rather than stretch, because stretching the figure would
+   force the photograph to fill the row height and crop the people at each end.
+   Centred, it keeps its own proportions and the two columns balance optically. */
+.sc .hero__grid {
+  display: grid;
+  /* Image column widened from 1.06fr to 1.28fr and the shell from 1120px to
+     1320px, which together take the photograph from roughly 505px to 665px
+     wide - about a third larger - while the text column still gains a little
+     room rather than being squeezed. Nothing is cropped: the picture keeps its
+     16:9 ratio, so it simply scales. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.28fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
 }
+
+.sc .hero__head {
+  max-width: 36rem;
+  margin-bottom: 0;
+}
+
+/* Right-aligned above the hero grid: away from the heading it must not compete
+   with, and on the side a visitor's eye returns to after the navbar. */
+.sc .hero__back {
+  margin: 0 0 1.25rem;
+  text-align: right;
+}
+
+/* .sc a { color: inherit } would otherwise override the shared .btn-back
+   colour on this page, since it is the more specific selector. Re-asserted so
+   the two pages' back buttons stay identical. */
+.sc .btn-back { color: var(--ink-muted); text-decoration: none; }
+.sc .btn-back:hover { color: var(--blue-600); }
 
 .sc .kicker {
   display: inline-flex;
   align-items: center;
   gap: .6rem;
   padding: .45rem 1.05rem .45rem .75rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.15rem;
+  /* Reads as a label rather than a sentence, matching the eyebrow treatment
+     used elsewhere on the site. */
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .72rem;
+  font-weight: 650;
   border: 1px solid var(--line);
   border-radius: var(--radius-pill);
   background: rgba(255, 255, 255, .8);
@@ -491,35 +546,51 @@ body.is-locked { overflow: hidden; }
   background: var(--blue-600);
 }
 
+/* 5.75rem (92px) was close to a magazine cover; 3.875rem (62px) still opens
+   the page decisively but leaves room for the lead paragraph to be read as
+   part of the same unit rather than an afterthought. */
 .sc .hero__title {
-  font-size: clamp(2.75rem, 1.5rem + 5.4vw, 5.75rem);
+  font-size: clamp(2.5rem, 1.5rem + 3.4vw, 3.875rem);
   font-weight: 700;
   letter-spacing: -.04em;
-  line-height: 1.02;
-  margin-bottom: 1.25rem;
+  line-height: 1.05;
+  margin-bottom: 1rem;
   color: var(--navy);
 }
 
 .sc .hero__lead {
-  max-width: 44rem;
-  font-size: clamp(1rem, .94rem + .4vw, 1.1875rem);
+  /* Held to a comfortable measure inside its column rather than the old 44rem
+     full-width line, which is what makes the paragraph read as editorial
+     body copy set against the photograph. */
+  max-width: 32rem;
+  font-size: clamp(.9688rem, .93rem + .3vw, 1.0625rem);
+  line-height: 1.7;
   color: var(--ink-muted);
 }
 
 .sc .hero__figure { margin: 0; }
 
 .sc .hero__figure .reveal-image {
-  border-radius: clamp(var(--radius-lg), 2.5vw, var(--radius-xl));
+  border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--line);
   box-shadow: var(--shadow-lg);
 }
 
+/* 16:9 is the file's own ratio (1280x720), so object-fit removes nothing and
+   every person stays in frame. It is stated rather than left implicit so the
+   grid reserves the right space before the photograph loads, and so a
+   differently-shaped replacement would letterbox predictably instead of
+   silently cropping the group. */
 .sc .hero__figure img {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  object-position: center 32%;
+  object-position: center;
+}
+
+.sc .hero__figure figcaption {
+  font-size: .78rem;
 }
 
 .sc figcaption {
@@ -798,7 +869,7 @@ body.is-locked { overflow: hidden; }
   transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
 }
 
-.sc .spec:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.sc .spec:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 
 .sc .spec__icon {
   display: grid;
@@ -895,14 +966,16 @@ body.is-locked { overflow: hidden; }
 .sc .project__head {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: clamp(1.25rem, 3vw, 2.5rem);
+  gap: clamp(1rem, 2.2vw, 1.75rem);
   align-items: start;
-  margin-bottom: clamp(2rem, 4vw, 3rem);
+  margin-bottom: clamp(1.5rem, 2.4vw, 2.125rem);
 }
 
-/* Oversized outlined index number. */
+/* Outlined index number. Reduced from a 5.5rem ceiling: at that size it
+   competed with the project title beside it for attention, when its job is
+   only to number the section. */
 .sc .project__index {
-  font-size: clamp(3rem, 2rem + 4vw, 5.5rem);
+  font-size: clamp(2.25rem, 1.8rem + 2.2vw, 3.5rem);
   font-weight: 750;
   line-height: .85;
   letter-spacing: -.05em;
@@ -924,7 +997,7 @@ body.is-locked { overflow: hidden; }
 
 .sc .panel {
   margin: 0;
-  padding: clamp(1rem, 2vw, 1.35rem);
+  padding: clamp(.85rem, 1.5vw, 1.1rem);
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
@@ -932,7 +1005,10 @@ body.is-locked { overflow: hidden; }
   transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
 }
 
-.sc .panel:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+/* Lift settled to a consistent 2px across every hoverable card on the page,
+   with a medium shadow. Previously these ranged from 3px to 6px with mixed
+   shadows, which read as several different components rather than one system. */
+.sc .panel:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 
 .sc .panel .reveal-image {
   border-radius: var(--radius-md);
@@ -995,7 +1071,7 @@ body.is-locked { overflow: hidden; }
 }
 
 .sc .principle:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   border-color: var(--blue-200);
   box-shadow: var(--shadow-md);
 }
@@ -1056,8 +1132,9 @@ body.is-locked { overflow: hidden; }
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 0 2.5rem;
-  padding-block: clamp(.65rem, 1.4vw, 1rem);
+  gap: 0 2rem;
+  /* Six stages, so every rem here is multiplied six times down the page. */
+  padding-block: clamp(.45rem, 1vw, .7rem);
 }
 
 .sc .timeline__item:nth-child(odd) .timeline__card { grid-column: 1; text-align: right; }
@@ -1140,29 +1217,40 @@ body.is-locked { overflow: hidden; }
    grid; a group wraps each grid with its category heading. When only one
    category is published this renders identically to the original section,
    because the heading sits in the same place the old grid started. */
-.sc .gallery-group + .gallery-group { margin-top: clamp(2.25rem, 4vw, 3.25rem); }
+.sc .gallery-group + .gallery-group { margin-top: clamp(1.75rem, 3vw, 2.5rem); }
 
+/* Category title, its optional intro, then the images: three steps of
+   decreasing weight, so the grouping is legible without wrapping each
+   category in a card of its own. The rule below the title does that job with
+   one hairline instead. */
 .sc .gallery-group__title {
-  font-size: clamp(1.1875rem, 1.1rem + .5vw, 1.4375rem);
-  margin-bottom: .5rem;
+  font-size: clamp(1.125rem, 1.05rem + .45vw, 1.3125rem);
+  margin-bottom: .4rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--line);
 }
 
 .sc .gallery-group__intro {
-  max-width: 44rem;
-  margin-bottom: 1.25rem;
-  font-size: .9375rem;
+  max-width: 46rem;
+  margin-bottom: 1rem;
+  font-size: .9063rem;
+  line-height: 1.65;
   color: var(--ink-muted);
 }
 
 .sc .gallery {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1rem, 2vw, 1.5rem);
+  /* Tighter than the old 1-1.5rem: a smaller gutter reads as a deliberate
+     grid rather than loose tiles, and reclaims vertical space on every row. */
+  gap: clamp(.75rem, 1.3vw, 1.05rem);
 }
 
 /* Uploaded images have no intrinsic width/height attributes in the markup (the
    admin cannot know them ahead of time), so the aspect ratio is pinned here to
-   keep the grid from reflowing as each one loads. */
+   keep the grid from reflowing as each one loads. 4:3 with object-fit:cover
+   means every tile is identical whatever the admin uploads, and nothing is
+   ever stretched. */
 .sc .gallery__trigger img { aspect-ratio: 4 / 3; }
 
 .sc .gallery__item { margin: 0; }
@@ -1180,9 +1268,18 @@ body.is-locked { overflow: hidden; }
   transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
 }
 
+/* Softened from -6px/shadow-lg. A large lift plus a heavy shadow made tiles
+   look like they were popping off the page; a 2px rise with a medium shadow
+   still confirms the tile is interactive without the theatrics. */
 .sc .gallery__trigger:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Keyboard users get the same affordance as the mouse. */
+.sc .gallery__trigger:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .sc .gallery__trigger img {
@@ -1192,8 +1289,9 @@ body.is-locked { overflow: hidden; }
   transition: transform var(--dur-slow) var(--ease-out);
 }
 
-/* Images enlarge within their frame on hover. */
-.sc .gallery__trigger:hover img, .sc .gallery__trigger:focus-visible img { transform: scale(1.07); }
+/* Images enlarge within their frame on hover - 1.03 rather than 1.07, which
+   was enough movement to be distracting across a grid of ten. */
+.sc .gallery__trigger:hover img, .sc .gallery__trigger:focus-visible img { transform: scale(1.03); }
 
 /* Light caption scrim rather than a dark one. */
 .sc .gallery__overlay {
@@ -1243,15 +1341,17 @@ body.is-locked { overflow: hidden; }
 
 .sc .tech-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
-  gap: clamp(.85rem, 1.6vw, 1.15rem);
+  /* 12.5rem rather than 14rem fits an extra column at common laptop widths,
+     so the same thirteen items occupy fewer rows. */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 12.5rem), 1fr));
+  gap: clamp(.7rem, 1.2vw, .9rem);
   margin: 0;
   padding: 0;
 }
 
 .sc .tech {
   position: relative;
-  padding: 1.35rem 1.25rem;
+  padding: 1.05rem 1.1rem;
   background: var(--white);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
@@ -1273,7 +1373,7 @@ body.is-locked { overflow: hidden; }
 }
 
 .sc .tech:hover {
-  transform: translateY(-5px);
+  transform: translateY(-2px);
   border-color: var(--blue-200);
   box-shadow: var(--shadow-md);
 }
@@ -1512,7 +1612,9 @@ body.is-locked { overflow: hidden; }
    directional selectors below need to be. */
 .sc.js [data-reveal] {
   --reveal-x: 0px;
-  --reveal-y: 26px;
+  /* A shorter travel than the original 26px: enough to register as movement,
+     small enough that it never looks like the layout is settling into place. */
+  --reveal-y: 16px;
 
   opacity: 0;
   transform: translate(var(--reveal-x), var(--reveal-y));
@@ -1526,6 +1628,13 @@ body.is-locked { overflow: hidden; }
    slides in from the side it sits on. */
 .sc.js .duo--reverse > .duo__media[data-reveal] { --reveal-x: 28px; --reveal-y: 0px; }
 .sc.js .duo:not(.duo--reverse) > .duo__media[data-reveal] { --reveal-x: -28px; --reveal-y: 0px; }
+
+/* The hero photograph settles in from the side it occupies, a beat after the
+   wording, so the two columns arrive as one composition rather than two blocks
+   fading up in parallel. 18px - just enough to notice, not enough to read as
+   movement for its own sake. It pairs with the clip-path wipe that
+   .reveal-image already applies to the photograph itself. */
+.sc.js .hero__figure[data-reveal] { --reveal-x: 18px; --reveal-y: 0px; }
 
 .sc.js [data-reveal].is-revealed {
   opacity: 1;
@@ -1591,13 +1700,21 @@ body.is-locked { overflow: hidden; }
   .sc .site-nav__link.is-active::after { display: none; }
   .sc .site-nav__link.is-active { background: var(--blue-50); }
 
+  /* Hero stacks into the order the DOM already uses: label, heading,
+     description, photograph. The text column's max-width is released so the
+     paragraph uses the full measure once it is no longer beside the image. */
+  .sc .hero__grid { grid-template-columns: 1fr; gap: clamp(1.75rem, 4vw, 2.25rem); }
+  .sc .hero__head { max-width: 40rem; }
+  .sc .hero__lead { max-width: 40rem; }
+
   /* Two-column blocks stack; media always leads. */
   .sc .duo { grid-template-columns: 1fr; }
   .sc .duo--reverse .duo__media { order: 0; }
   .sc .duo__media { max-width: 40rem; }
 
   /* Once stacked, media blocks fade up like everything else. */
-  .sc.js .duo__media[data-reveal] { --reveal-x: 0px; --reveal-y: 26px; }
+  .sc.js .duo__media[data-reveal] { --reveal-x: 0px; --reveal-y: 16px; }
+  .sc.js .hero__figure[data-reveal] { --reveal-x: 0px; --reveal-y: 16px; }
 
   .sc .spec-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
@@ -1638,7 +1755,10 @@ body.is-locked { overflow: hidden; }
 
 /* --- Phone ---------------------------------------------------------------- */
 @media (max-width: 520px) {
-  .sc .hero__figure img { aspect-ratio: 4 / 3; }
+  /* Was 4/3, which cropped a quarter of the width off a 16:9 group photograph
+     and cut the people standing at each end - exactly where a phone most needs
+     the whole group visible. The native ratio is kept at every size. */
+  .sc .hero__figure img { aspect-ratio: 16 / 9; }
   .sc .browser__url { display: none; }
   .sc .mini-facts li { flex-direction: column; gap: .1rem; }
   .sc .mini-facts strong { text-align: left; }
@@ -1672,6 +1792,32 @@ body.is-locked { overflow: hidden; }
   .sc.js .reveal-image img { transform: none; }
 
   .sc .scroll-cue__dot { animation: none; }
+
+  /*
+   * Removing the movement itself, not just its duration.
+   *
+   * The blanket transition-duration override above only makes a hover
+   * transform instant - the element still jumps. For someone who asked for
+   * reduced motion, an instantaneous jump is worse than a slow slide, so the
+   * transforms are cancelled outright. Hover still responds through the
+   * shadow and border, so nothing loses its affordance.
+   */
+  .sc .gallery__trigger:hover,
+  .sc .gallery__trigger:focus-visible,
+  .sc .gallery__trigger:hover img,
+  .sc .gallery__trigger:focus-visible img,
+  .sc .panel:hover,
+  .sc .tech:hover,
+  .sc .principle:hover,
+  .sc .timeline__item:hover .timeline__card,
+  .sc .timeline__item:hover .timeline__marker,
+  .sc .steps li:hover,
+  .sc .spec:hover,
+  .sc .chips li:hover,
+  .sc .feature-rows li:hover > span,
+  .sc .ticks li:hover .ticks__icon {
+    transform: none;
+  }
 }
 
 @media print {
