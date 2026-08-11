@@ -16,9 +16,13 @@
  * with #main-content and tabindex="-1" so the site's skip link and the
  * accessibility reader's focusSkipTarget() can move focus here.
  *
- * Content deliberately avoids claiming facilities, equipment, opening hours or
- * eligibility rules that the AI Unit has not stated. Anything still to be
- * confirmed is marked with .lab-tbc so it is easy to find and replace.
+ * Kept deliberately short - four headings and one image. The reading order is
+ * what is it -> why it exists -> who it is for -> how to book, so a visitor
+ * reaches the booking calendar without scrolling through an article.
+ *
+ * Content is drawn only from what the AI Unit has supplied. Facilities,
+ * equipment lists, opening hours and booking rules are NOT stated because they
+ * have not been confirmed; the one outstanding item is marked with .lab-tbc.
  */
 $calendlyUrl = $calendlyUrl ?? null;
 ?>
@@ -29,9 +33,8 @@ $calendlyUrl = $calendlyUrl ?? null;
       <div class="page-eyebrow">AI Unit Facility</div>
       <h1 class="page-title">AI Lab</h1>
       <p class="page-subtitle">
-        A space at the AI Unit for learning, experimenting with and exploring
-        artificial intelligence - open to students, researchers, educators and
-        members of the public.
+        A practical space where students, technopreneurs and innovators can
+        learn, experiment and explore artificial intelligence.
       </p>
       <p class="lab-hero-actions">
         <?php /* target="_self" because includes/header.php sets <base target="_blank">,
@@ -43,6 +46,30 @@ $calendlyUrl = $calendlyUrl ?? null;
       </p>
     </div>
 
+    <?php
+    /*
+     * Feature image, immediately under the introduction so the space is
+     * understandable before any body text is read.
+     *
+     * width/height are the file's real pixel dimensions (1536x1024, 3:2). With
+     * `height:auto` in CSS the browser uses them to reserve the right space
+     * before the file arrives, so the text below does not jump - and because
+     * the ratio is the image's own, nothing is stretched or cropped.
+     *
+     * eager/high priority: it sits at the top of the page, so lazy-loading it
+     * would only delay the one thing that explains the page at a glance.
+     */
+    ?>
+    <figure class="lab-figure">
+      <img src="<?= e(asset('images/ai-lab.jpg')) ?>"
+           width="1536" height="1024"
+           alt="Artist's impression of the AI Lab: computer workstations showing code, a small robotics kit on a worktable, a round meeting table, and a whiteboard headed AI Project Workflow."
+           loading="eager" decoding="async" fetchpriority="high">
+      <?php /* Stated plainly: the lab is not yet photographed, and a government
+               page should not imply this is a picture of the finished room. */ ?>
+      <figcaption>Artist's impression of the AI Lab.</figcaption>
+    </figure>
+
     <p class="section-summary" data-i18n="sum_ai_lab" hidden>
       In short: the AI Lab is a space at the AI Unit for learning about and trying out AI. Book a session using the calendar on this page.
     </p>
@@ -50,72 +77,51 @@ $calendlyUrl = $calendlyUrl ?? null;
     <section class="lab-block" aria-labelledby="lab-about-title">
       <h2 id="lab-about-title">About the AI Lab</h2>
       <p>
-        The AI Lab is a dedicated space at the AI Unit, created to support
-        practical engagement with artificial intelligence. It is intended for
-        learning, experimentation and exploration - somewhere to move beyond
-        reading about AI and work with it directly.
+        The AI Lab is an Innovation Lab approved by the Government and
+        established by the Ministry of Information Technology, Communication and
+        Innovation. It is a space for working with artificial intelligence
+        directly - building, testing and exploring, rather than reading about it.
       </p>
       <p>
-        The lab is primarily available for public use, with a particular focus
-        on students from colleges, universities and other educational
-        institutions. Sessions are arranged in advance through the booking
-        calendar further down this page.
+        The Ministry is entering into an agreement with
+        <strong>STEMpower Inc.</strong>, a US-based non-profit organisation,
+        which is supplying the laboratory's equipment and the expertise to
+        install it.
       </p>
+    </section>
+
+    <section class="lab-block" aria-labelledby="lab-partnership-title">
+      <h2 id="lab-partnership-title">What the partnership provides</h2>
+      <ul class="lab-facts" role="list">
+        <li role="listitem">Laboratory equipment, provided free of charge</li>
+        <li role="listitem">Technical expertise for its installation</li>
+        <li role="listitem">Training for the staff who will operate the centre</li>
+        <li role="listitem">US$7,000 over two years towards consumables, furniture and additional equipment</li>
+        <li role="listitem">Support for STEM education through STEMpower's international network</li>
+      </ul>
     </section>
 
     <section class="lab-block" aria-labelledby="lab-who-title">
-      <h2 id="lab-who-title">Who can use the lab</h2>
-      <p>The AI Lab is open to:</p>
-      <ul class="lab-list" role="list">
-        <li role="listitem">
-          <h3>College students</h3>
-          <p>Groups and individuals looking to build early familiarity with AI.</p>
-        </li>
-        <li role="listitem">
-          <h3>University students</h3>
-          <p>Undergraduate and postgraduate students working on AI-related study or coursework.</p>
-        </li>
-        <li role="listitem">
-          <h3>Researchers</h3>
-          <p>Those exploring AI methods, applications or their implications.</p>
-        </li>
-        <li role="listitem">
-          <h3>Educators</h3>
-          <p>Teachers and lecturers preparing or delivering AI-related teaching.</p>
-        </li>
-        <li role="listitem">
-          <h3>Members of the public</h3>
-          <p>Anyone with an interest in artificial intelligence and how it is used.</p>
-        </li>
-      </ul>
-    </section>
-
-    <section class="lab-block" aria-labelledby="lab-uses-title">
-      <h2 id="lab-uses-title">What the lab is for</h2>
+      <h2 id="lab-who-title">Who the lab is for</h2>
       <p>
-        The lab is intended to support a range of AI-related activity, including:
+        The AI Lab is open to secondary and higher education students, and to
+        technopreneurs and innovators - for practical learning, experimentation,
+        innovation and exploration.
       </p>
       <ul class="lab-tags" role="list">
-        <li role="listitem">AI learning</li>
-        <li role="listitem">Practical experimentation</li>
-        <li role="listitem">Demonstrations</li>
-        <li role="listitem">Research and exploration</li>
-        <li role="listitem">Educational activities</li>
-        <li role="listitem">AI-related projects</li>
+        <li role="listitem">Secondary students</li>
+        <li role="listitem">Higher education students</li>
+        <li role="listitem">Technopreneurs</li>
+        <li role="listitem">Innovators</li>
       </ul>
-      <p class="lab-tbc">
-        <strong>To be confirmed:</strong> details of the facilities, equipment
-        and software available in the lab will be published here once confirmed
-        by the AI Unit.
-      </p>
     </section>
 
     <section class="lab-block lab-booking" id="book" aria-labelledby="lab-book-title">
       <h2 id="lab-book-title">Book the AI Lab</h2>
       <p>
-        Choose an available date and time in the booking calendar below, then
-        enter the details requested to confirm your session. Bookings are
-        handled by Calendly, an external scheduling service.
+        Choose an available date and time below, then enter the details
+        requested to confirm your session. Booking is handled by Calendly, which
+        sends your confirmation by email.
       </p>
 
       <?php if ($calendlyUrl !== null): ?>
@@ -169,28 +175,11 @@ $calendlyUrl = $calendlyUrl ?? null;
           to enquire about a session.
         </p>
       <?php endif; ?>
-    </section>
 
-    <section class="lab-block" aria-labelledby="lab-expect-title">
-      <h2 id="lab-expect-title">What to expect when booking</h2>
-      <ol class="lab-steps" role="list">
-        <li role="listitem">
-          <h3>Choose a slot</h3>
-          <p>Pick a date and time from the calendar. Only available slots are shown.</p>
-        </li>
-        <li role="listitem">
-          <h3>Enter your details</h3>
-          <p>Calendly will ask for the information needed to confirm your session, such as your name and email address.</p>
-        </li>
-        <li role="listitem">
-          <h3>Receive confirmation</h3>
-          <p>Calendly sends your confirmation by email, along with any details the AI Unit has added to the booking.</p>
-        </li>
-      </ol>
       <p class="lab-tbc">
         <strong>To be confirmed:</strong> session lengths, group sizes, opening
-        hours, and anything you should bring or prepare will be added here once
-        the AI Unit has confirmed them.
+        hours and anything to bring will be added here once the AI Unit has
+        confirmed them.
       </p>
       <p class="lab-privacy">
         Booking details you enter are submitted to Calendly and handled under
