@@ -262,6 +262,31 @@
 
 .ai-lab .lab-fallback { margin-top: 22px; }
 
+/* ─── Back to homepage ───
+   A plain, quiet link tucked in the corner rather than a second CTA button -
+   the page already has its one button (Book an AI Lab session) and this is
+   just an exit, not something to compete for attention. */
+.ai-lab .lab-back-home {
+  max-width: 820px;
+  margin: 40px auto 0;
+  text-align: left;
+}
+
+.ai-lab .lab-back-home a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-3);
+  text-decoration: none;
+}
+
+.ai-lab .lab-back-home a:hover {
+  color: var(--blue-mid);
+  text-decoration: underline;
+}
+
 /* ─── Responsive ─── */
 @media (max-width: 900px) {
   .ai-lab .lab-calendly { height: 760px; }

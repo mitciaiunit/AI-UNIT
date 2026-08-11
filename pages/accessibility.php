@@ -19,7 +19,7 @@
       <div class="tool-list" role="list">
         <div class="tool-row" role="listitem">
           <div class="tool-name">Read the page aloud</div>
-          <div class="tool-desc">Use the built-in screen reader from the Accessibility panel or the "Listen to this page" button. Pause with Space, stop with S, change speed with the slider, and pick a voice from the dropdown. If you already use your own assistive technology, you can keep using that instead.</div>
+          <div class="tool-desc">Use the built-in screen reader from the Accessibility panel. Pause with Space, stop with S, change speed with the slider, and pick a voice from the dropdown. If you already use your own assistive technology, you can keep using that instead.</div>
         </div>
         <div class="tool-row" role="listitem">
           <div class="tool-name">Make text bigger or smaller</div>

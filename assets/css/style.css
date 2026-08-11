@@ -17,10 +17,16 @@
   --emerald-light: #D1FAE5;
   --violet: #5B21B6;
   --violet-light: #EDE9FE;
-  --amber: #D97706;
+  /* Darkened from the original #D97706 - at that value, .icon-blue's amber
+     icon on --amber-light measured 2.86:1, under the 3:1 WCAG 2.2 AA minimum
+     for graphical objects. */
+  --amber: #A05A0A;
   --amber-light: #FEF3C7;
   --amber-pale: #FFFBEB;
-  --sage: #059669;
+  /* Darkened from the original #059669 - at that value, .dim-tags text on
+     --sage-pale measured 3.58:1, under the 4.5:1 WCAG 2.2 AA minimum for
+     text. */
+  --sage: #046C5A;
   --sage-light: #D1FAE5;
   --sage-pale: #ECFDF5;
   --coral: #92400E;
@@ -41,6 +47,56 @@
   --shadow-md: 0 4px 18px rgba(13,27,62,0.09);
   --shadow-lg: 0 12px 40px rgba(13,27,62,0.12);
   --shadow-xl: 0 24px 64px rgba(13,27,62,0.14);
+}
+/* ─── DARK MODE (Accessibility panel "Dark" option) ───
+   accessibility-widget.js toggles html.a11y-mode-dark and sets a base
+   background and colour on body and .section, .card, .doc-card, .action-card,
+   but every component in this file reads its actual text colour from the
+   text and accent tokens above, not from inherited body colour. Without
+   redefining those tokens here, every heading and paragraph kept rendering
+   its light-mode near-black colour on the new dark background - effectively
+   unreadable (verified: --text-1 on the widget's dark background measured
+   about 1.07:1, --text-2 about 1.61:1, both far under the WCAG 2.2 AA 4.5:1
+   minimum for text). Redefining the tokens here means every existing rule
+   that already uses var(--text-1) etc. picks up a compliant dark-mode value
+   automatically, with no per-component changes needed. All pairs below are
+   verified at 4.5:1 or higher for text, 3:1 or higher for icons and other
+   graphical objects, against both --bg and --surface. */
+html.a11y-mode-dark{
+  --bg:#12161F;
+  --surface:#1B212E;
+  --surface-2:#232A3A;
+  --surface-3:#2B3244;
+  --text-1:#F4F6FB;
+  --text-2:#D3D9E8;
+  --text-3:#A9B3C7;
+  --text-4:#838EA6;
+  --border:#333C50;
+  --border-2:#454F66;
+  --blue:#9DB8F5;
+  --blue-mid:#7DA2FF;
+  --blue-light:#1E2C4D;
+  --blue-pale:#171F35;
+  --teal:#6FD6E8;
+  --teal-light:#123138;
+  --teal-pale:#0F272C;
+  --gold:#F0B429;
+  --gold-light:#3A2C0E;
+  --emerald:#34D399;
+  --emerald-light:#0F3D2C;
+  --violet:#B4A6F5;
+  --violet-light:#241D45;
+  --amber:#F0B429;
+  --amber-light:#3A2C0E;
+  --amber-pale:#241C09;
+  --sage:#4ADE94;
+  --sage-light:#0F3324;
+  --sage-pale:#0C2A1D;
+  --coral:#FDBA74;
+  --coral-light:#3D2712;
+  --coral-pale:#291A0C;
+  --warm-gray:#AEB7CC;
+  --warm-gray-light:#232A3A;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;font-size:16px;}
@@ -69,33 +125,11 @@ button{font-family:'Sora',sans-serif;}
 
 .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;}
 
-/* ─── LISTEN TO THIS PAGE ─── */
-.listen-offer{background:var(--blue);padding:8px 28px;display:flex;justify-content:center;}
-.listen-offer-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.3);color:white;padding:6px 16px;border-radius:100px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif;transition:background var(--trans);}
-.listen-offer-btn:hover{background:rgba(255,255,255,0.24);}
-.listen-offer-btn[aria-pressed="true"]{background:white;color:var(--blue);}
+/* ─── SIMPLE LANGUAGE: TIME-SAVINGS NOTE ───
+   Visually hidden (see .visually-hidden) - present for screen readers only,
+   not shown next to the toggle on screen. */
 
-/* ─── SIMPLE LANGUAGE: "READ THE FULL TEXT" DISCLOSURE ─── */
-.full-text-wrap{margin-top:10px;}
-.full-text-toggle{background:none;border:1px dashed var(--border-2);color:var(--blue-mid);padding:6px 14px;border-radius:100px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'Sora',sans-serif;transition:all var(--trans);}
-.full-text-toggle:hover{background:var(--blue-pale);border-color:var(--blue-mid);}
-.full-text-toggle[aria-expanded="true"]{border-style:solid;}
-.full-text-body{margin-top:10px;padding:14px 18px;border-left:3px solid var(--blue-light);background:var(--bg);border-radius:0 var(--radius-sm) var(--radius-sm) 0;}
-.full-text-body p{margin:0;}
 
-/* ─── SIMPLE LANGUAGE: SECTION ORIENTATION SUMMARY ─── */
-.section-summary{font-style:italic;color:var(--text-2);border-left:3px solid var(--blue-mid);padding:10px 16px;margin-bottom:20px;background:var(--blue-pale);border-radius:0 var(--radius-sm) var(--radius-sm) 0;}
-
-/* ─── "ON THIS PAGE" NAVIGATION ─── */
-/* De-emphasised for sighted users (small, muted, collapsible-looking) but
-   NEVER display:none - screen reader users get real value from this being
-   the first landmark after <main>, and losing it would lose that. */
-.page-contents{max-width:1180px;margin:20px auto 0;padding:16px 28px;}
-.page-contents-title,#page-contents-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);margin-bottom:8px;}
-.page-contents ol{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px 10px;}
-.page-contents li{margin:0;}
-.page-contents a{display:inline-block;padding:4px 12px;border-radius:100px;border:1px solid var(--border);color:var(--text-2);font-size:0.78rem;text-decoration:none;transition:all var(--trans);}
-.page-contents a:hover,.page-contents a:focus-visible{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-pale);}
 
 /* ─── LANGUAGE BAR ─── */
 .lang-bar{background:var(--blue);color:rgba(255,255,255,0.85);font-size:0.75rem;padding:6px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
@@ -379,21 +413,15 @@ button{font-family:'Sora',sans-serif;}
 
 /* ─── FRAMEWORK ─── */
 .framework-section{background:linear-gradient(180deg,var(--bg) 0%,var(--sage-pale) 100%);}
-.dimensions-list{display:flex;flex-direction:column;gap:12px;margin-bottom:56px;}
-.dimension-item{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color var(--trans),box-shadow var(--trans);box-shadow:var(--shadow-sm);}
-.dimension-item.open{border-color:var(--blue-mid);box-shadow:var(--shadow-md);}
-.dimension-header{width:100%;background:none;border:none;cursor:pointer;padding:20px 24px;display:flex;align-items:center;gap:16px;text-align:left;transition:background var(--trans);}
-.dimension-header:hover{background:var(--blue-pale);}
-.dim-number{font-family:'Lora',serif;font-size:1.1rem;font-weight:700;color:var(--blue-mid);flex-shrink:0;min-width:28px;}
-.dim-icon{color:var(--text-3);flex-shrink:0;}
-.dim-title{font-size:1rem;font-weight:600;color:var(--text-1);flex:1;}
-.dim-arrow{color:var(--text-3);flex-shrink:0;transition:transform var(--trans);}
-.dimension-item.open .dim-arrow{transform:rotate(180deg);color:var(--blue-mid);}
-.dimension-body{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);}
-.dimension-body-inner{padding:0 24px 24px 24px;}
-.dimension-body-inner p{font-size:0.93rem;color:var(--text-2);line-height:1.75;margin-bottom:14px;}
+.dimensions-list{display:flex;flex-direction:column;gap:28px;margin-bottom:56px;}
+.dimension-item{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:28px 28px 32px;}
+.dimension-grid{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:start;}
+.dim-index{font-family:'Lora',serif;font-size:clamp(2.4rem,1.9rem + 2vw,3.6rem);font-weight:700;line-height:0.85;letter-spacing:-0.02em;color:transparent;-webkit-text-stroke:1.5px var(--blue-mid);user-select:none;}
+.dim-title{font-family:'Lora',serif;font-size:1.3rem;font-weight:700;color:var(--text-1);line-height:1.3;margin-bottom:12px;}
+.dimension-content p{font-size:0.93rem;color:var(--text-2);line-height:1.75;margin-bottom:14px;}
 .dim-tags{display:flex;flex-wrap:wrap;gap:8px;}
 .dim-tags span{padding:4px 12px;background:var(--sage-pale);border:1px solid var(--sage-light);border-radius:100px;font-size:0.75rem;font-weight:600;color:var(--sage);}
+@media(max-width:640px){.dimension-grid{grid-template-columns:1fr;gap:6px;}.dim-index{font-size:2.2rem;}}
 
 /* ─── AI IN ACTION ─── */
 .action-section{background:linear-gradient(180deg,var(--surface) 0%,#FFF8F0 100%);}
@@ -821,7 +849,10 @@ button{font-family:'Sora',sans-serif;}
   background:#f8f9fd;
   text-align:center;
   font-size:0.68rem;
-  color:var(--text-4);
+  /* --text-4 is reserved for placeholder text, which WCAG 2.2 AA exempts
+     from contrast requirements. This is real content, so it needs a token
+     that actually meets 4.5:1 - --text-4 on white only measures 4.16:1. */
+  color:var(--text-3);
   flex-shrink:0;
 }
 .diva-footer span{color:var(--blue);font-weight:600;}

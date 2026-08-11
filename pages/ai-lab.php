@@ -32,7 +32,7 @@ $calendlyUrl = $calendlyUrl ?? null;
     <div class="page-header">
       <div class="page-eyebrow">AI Unit Facility</div>
       <h1 class="page-title">AI Lab</h1>
-      <p class="page-subtitle">
+      <p class="page-subtitle" data-i18n="ailab_page_subtitle" tabindex="0">
         A practical space where students, technopreneurs and innovators can
         learn, experiment and explore artificial intelligence.
       </p>
@@ -70,19 +70,15 @@ $calendlyUrl = $calendlyUrl ?? null;
       <figcaption>Artist's impression of the AI Lab.</figcaption>
     </figure>
 
-    <p class="section-summary" data-i18n="sum_ai_lab" hidden>
-      In short: the AI Lab is a space at the AI Unit for learning about and trying out AI. Book a session using the calendar on this page.
-    </p>
-
     <section class="lab-block" aria-labelledby="lab-about-title">
       <h2 id="lab-about-title">About the AI Lab</h2>
-      <p>
+      <p data-i18n="ailab_page_about1" tabindex="0">
         The AI Lab is an Innovation Lab approved by the Government and
         established by the Ministry of Information Technology, Communication and
         Innovation. It is a space for working with artificial intelligence
         directly - building, testing and exploring, rather than reading about it.
       </p>
-      <p>
+      <p data-i18n="ailab_page_about2" tabindex="0">
         The Ministry is entering into an agreement with
         <strong>STEMpower Inc.</strong>, a US-based non-profit organisation,
         which is supplying the laboratory's equipment and the expertise to
@@ -103,7 +99,7 @@ $calendlyUrl = $calendlyUrl ?? null;
 
     <section class="lab-block" aria-labelledby="lab-who-title">
       <h2 id="lab-who-title">Who the lab is for</h2>
-      <p>
+      <p data-i18n="ailab_page_who" tabindex="0">
         The AI Lab is open to secondary and higher education students, and to
         technopreneurs and innovators - for practical learning, experimentation,
         innovation and exploration.
@@ -118,7 +114,7 @@ $calendlyUrl = $calendlyUrl ?? null;
 
     <section class="lab-block lab-booking" id="book" aria-labelledby="lab-book-title">
       <h2 id="lab-book-title">Book the AI Lab</h2>
-      <p>
+      <p data-i18n="ailab_page_book_intro" tabindex="0">
         Choose an available date and time below, then enter the details
         requested to confirm your session. Booking is handled by Calendly, which
         sends your confirmation by email.
@@ -188,6 +184,12 @@ $calendlyUrl = $calendlyUrl ?? null;
         AI Unit handles information it receives.
       </p>
     </section>
+
+    <p class="lab-back-home">
+      <a href="<?= e(url('/')) ?>">
+        <span aria-hidden="true">←</span> Back to Homepage
+      </a>
+    </p>
 
   </div>
 </main>

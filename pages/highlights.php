@@ -88,7 +88,7 @@
               Students &amp; Internships
             </h1>
 
-            <p class="hero__lead" data-reveal data-reveal-delay="120">
+            <p class="hero__lead" data-reveal data-reveal-delay="120" data-i18n="hl_hero_lead" tabindex="0">
               Over a ten-week industrial attachment at the AI Unit, hosted at the Mauritius
               Emerging Technologies Council in Ebene, a team of university interns redesigned and
               rebuilt aim.govmu.org, the official government portal for artificial intelligence in
@@ -137,7 +137,7 @@
             <div class="duo__body" data-reveal data-reveal-delay="100">
               <p class="eyebrow">The internship</p>
               <h2 class="h2" id="overview-title">A live national portal, built by interns</h2>
-              <p class="lede">
+              <p class="lede" data-i18n="hl_overview_lede" tabindex="0">
                 The AI Unit had no permanent development staff, so its active projects were carried
                 forward by the intern team. The placement began with a single intern analysing the
                 existing portal and setting up the project; by the later weeks it had grown into a
@@ -191,7 +191,7 @@
             <div>
               <p class="eyebrow">Project one</p>
               <h2 class="h2 h2--display" id="revamp-title">AI Unit Website Redesign</h2>
-              <p class="lede lede--wide">
+              <p class="lede lede--wide" data-i18n="hl_revamp_lede" tabindex="0">
                 aim.govmu.org is the official Mauritian government portal for artificial
                 intelligence, covering news, policies, events and resources.
               </p>
@@ -221,11 +221,11 @@
           <div class="duo duo--reverse duo--tight">
             <div class="duo__body" data-reveal>
               <h3 class="h3">From analysis to wireframe to build</h3>
-              <p>
+              <p data-i18n="hl_revamp_analysis" tabindex="0">
                 The work began with a full review of the existing portal, guided by the AI Unit's
                 aspirations for its redevelopment. That analysis fed a detailed wireframe covering
                 the home page, the navigation structure, the key content sections and the placement
-                of interactive features such as the accessibility tool, and the chatbot. Once the 
+                of interactive features such as the accessibility tool, and the chatbot. Once the
   			  wireframe was reviewed and approved by the mentor, front-end development began.
               </p>
 
@@ -273,14 +273,14 @@
 
             <div class="duo__body" data-reveal data-reveal-delay="100">
               <h3 class="h3">Kanban, Jira and a shared repository</h3>
-              <p>
+              <p data-i18n="hl_revamp_kanban" tabindex="0">
                 Project management for the portal team was run on a Kanban workflow, introduced in
                 Week 2 after guidance from the mentor on Agile practice. It began as a physical
                 board at the workplace and, at the mentor's recommendation, moved to a digital Jira
                 board that the whole intern team adopted as it grew. Tasks were grouped into Epics
                 and Sub-Epics matching the portal's features.
               </p>
-              <p>
+              <p data-i18n="hl_revamp_github" tabindex="0">
                 GitHub served as the team's version control platform, with a shared repository that
                 let all the interns work concurrently on different features without conflicts in
                 the code.
@@ -314,7 +314,7 @@
             <div>
               <p class="eyebrow">Project two</p>
               <h2 class="h2 h2--display" id="diva-title">DIVA - Digital Interactive Virtual Assistant</h2>
-              <p class="lede lede--wide">
+              <p class="lede lede--wide" data-i18n="hl_diva_lede" tabindex="0">
                 DIVA is an AI-powered assistant integrated into the portal to answer questions
                 about artificial intelligence in Mauritius, the content of the portal and
                 government AI resources. It is a prototype, grounded in four key documents: the
@@ -339,7 +339,7 @@
 
             <div class="duo__body" data-reveal data-reveal-delay="100">
               <h3 class="h3">Two ways into the conversation</h3>
-              <p>
+              <p data-i18n="hl_diva_entry" tabindex="0">
                 Users reach DIVA through two entry points. A dedicated section of the portal
                 introduces the assistant and opens it with a Chat with DIVA button, and a floating
                 chatbot widget stays available across the portal, so a conversation can be started
@@ -367,7 +367,7 @@
 
             <div class="duo__body" data-reveal data-reveal-delay="100">
               <h3 class="h3">Speech synthesis: a portal that reads aloud</h3>
-              <p>
+              <p data-i18n="hl_diva_speech" tabindex="0">
                 The Web Speech Synthesis API, a native browser API that turns text into speech
                 without any third-party software, was integrated into the portal. Activated with a single control, it reads the content of DIVA's response aloud.
               </p>
@@ -391,7 +391,7 @@
             <div>
               <p class="eyebrow">Project three</p>
               <h2 class="h2 h2--display" id="a11y-title">Accessibility</h2>
-              <p class="lede lede--wide">
+              <p class="lede lede--wide" data-i18n="hl_a11y_lede" tabindex="0">
                 In Week 3 the mentor raised the bar: the portal had to meet WCAG 2.2, the
                 international guidelines for making web content usable by people with visual,
                 hearing, physical, cognitive and other disabilities. Beyond meeting the guidelines,
@@ -444,7 +444,7 @@
           <div class="a11y-principles">
             <div class="a11y-principles__intro" data-reveal>
               <h3 class="h3">The standards behind the switches</h3>
-              <p>
+              <p data-i18n="hl_a11y_standards" tabindex="0">
                 Meeting WCAG 2.2 meant independent research into the A, AA and AAA conformance
                 levels, testing the portal with browser-based accessibility evaluation tools, and
                 reworking front-end code that had already been written. It was a practical lesson
