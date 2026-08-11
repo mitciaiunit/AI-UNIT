@@ -20,6 +20,36 @@
   justify-content: center;
 }
 
+/* ─── Feature image ───
+   Slightly wider than the text column so it reads as a feature rather than an
+   inline illustration, but still narrower than the container so it never
+   becomes a full-bleed banner.
+
+   height:auto against the width/height attributes in the markup means the
+   image keeps its own 3:2 ratio at every width - it can never be stretched or
+   squashed - while the browser still reserves the correct space up front. No
+   object-fit and no fixed height, so nothing is cropped either. */
+.ai-lab .lab-figure {
+  max-width: 960px;
+  margin: 0 auto 56px;
+}
+
+.ai-lab .lab-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+
+.ai-lab .lab-figure figcaption {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-3);
+}
+
 /* Matches the rhythm of the other standalone content pages. */
 .ai-lab .lab-block {
   max-width: 820px;
@@ -115,6 +145,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* ─── Partnership facts ───
+   A plain marked list rather than five cards: the items are one line each, and
+   giving every one a card would take four times the height to say the same
+   thing on a page whose whole point is to stay short. */
+.ai-lab .lab-facts {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.ai-lab .lab-facts > li {
+  position: relative;
+  padding-left: 26px;
+  font-size: 0.95rem;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+
+/* Decorative marker only - the list semantics carry the meaning. */
+.ai-lab .lab-facts > li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--blue-mid);
 }
 
 /* ─── Activity tags ─── */
