@@ -334,6 +334,48 @@ button{font-family:'Sora',sans-serif;}
     color:#fff;
 }
 
+/* ─── Back to homepage ───
+   A quiet, light-surface counterpart to .btn-ghost (which is white-on-dark for
+   the homepage's video hero and unreadable on a white page).
+
+   Defined here in the shared stylesheet rather than in each page's own CSS so
+   the Highlights and AI Lab pages cannot drift into two different back
+   buttons - both load style.css, so both get this one definition.
+
+   Sized below .btn-primary deliberately: it is a way back, not the page's
+   call to action, and must not compete with the main heading. */
+.btn-back{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 16px 8px 13px;
+    background:var(--surface);
+    color:var(--text-2);
+    border:1px solid var(--border);
+    border-radius:100px;
+    font-family:'Sora',sans-serif;
+    font-size:0.82rem;
+    font-weight:600;
+    text-decoration:none;
+    cursor:pointer;
+    transition:all var(--trans);
+}
+
+.btn-back:hover{
+    border-color:var(--blue-mid);
+    color:var(--blue-mid);
+    background:var(--blue-pale);
+}
+
+/* Nudges toward the arrow's direction on hover - a small confirmation of where
+   the link goes, and it stays still under prefers-reduced-motion below. */
+.btn-back svg{flex-shrink:0;transition:transform var(--trans);}
+.btn-back:hover svg{transform:translateX(-2px);}
+
+@media(prefers-reduced-motion:reduce){
+    .btn-back:hover svg{transform:none;}
+}
+
 .hero-wave{
     position:absolute;
     bottom:-1px;
