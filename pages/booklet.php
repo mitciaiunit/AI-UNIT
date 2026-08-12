@@ -13,7 +13,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?= e($title) ?></title>
-  <link rel="icon" type="image/x-icon" href="<?= e(asset('images/logo.gif')) ?>">
+  <link rel="icon" type="image/png" href="<?= e(asset('images/favicon.png')) ?>">
+  <?php require __DIR__ . '/../includes/meta.php'; ?>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -94,6 +95,10 @@
       font-size: 0.8rem; color: var(--text3);
       overflow: hidden; white-space: nowrap;
     }
+    /* Standalone page - style.css is not loaded here, so the visually-hidden
+       utility it defines has to be repeated for the page h1. */
+    .visually-hidden { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0,0,0,0) !important; white-space: nowrap !important; border: 0 !important; }
+
     .breadcrumb strong { color: var(--text1); font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
     .breadcrumb i { font-size: 12px; flex-shrink: 0; }
 
@@ -377,6 +382,20 @@
       </a>
     </div>
   </header>
+
+  <?php
+  /*
+   * The booklet's title appears on screen only inside the breadcrumb, and a
+   * breadcrumb item is not a heading - nor is it always present, since
+   * .breadcrumb is display:none on narrow screens. A visually-hidden h1
+   * carries the real title (the same string the breadcrumb shows) so the page
+   * has one meaningful heading at every width, without altering the top bar.
+   *
+   * Clipped rather than display:none, which would remove it from the
+   * accessibility tree - the opposite of the point.
+   */
+  ?>
+  <h1 class="visually-hidden"><?= e($s['breadcrumbTitle']) ?></h1>
 
   <!-- MAIN AREA -->
   <div class="main-area">

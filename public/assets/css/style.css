@@ -184,7 +184,56 @@ button{font-family:'Sora',sans-serif;}
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--blue-mid);border-radius:3px;}
+/* ─── KEYBOARD FOCUS ───────────────────────────────────────────────────────
+   The site-wide default: a 3px ring held 2px clear of the control, so it reads
+   as a ring around the component rather than as part of its border. Both
+   exceed the 2px minimum.
+
+   --blue-mid measures 6.24:1 on the page background, 6.62:1 on white and
+   5.92:1 on the tinted surfaces - comfortably past the 3:1 that WCAG 1.4.11
+   asks of a non-text indicator, so the existing token is used everywhere the
+   control sits on a light surface. The one place it does not work is the DIVA
+   panel header, handled separately below.
+
+   :focus-visible, not :focus, so a ring appears for keyboard and programmatic
+   focus without framing every button the moment it is clicked. */
 :focus-visible{outline:3px solid var(--blue-mid);outline-offset:2px;border-radius:4px;}
+
+/* The rule above is a bare pseudo-class, so ANY component rule that also sets
+   outline overrides it simply by being more specific or later in the file -
+   which is exactly how the DIVA trigger lost its ring to `all:unset` plus an
+   `outline:none !important`. Naming these controls explicitly puts them out of
+   reach of that: each selector here carries a class, so it outranks the
+   component rule it belongs to and cannot be silently undone again. */
+.diva-trigger:focus-visible,
+.diva-close:focus-visible,
+.diva-clear:focus-visible,
+.diva-suggestion-btn:focus-visible,
+.diva-input-row input:focus-visible,
+.diva-mic:focus-visible,
+.diva-send:focus-visible,
+.diva-speak:focus-visible,
+.diva-read-aloud:focus-visible,
+.hamburger:focus-visible,
+.nav-right .a11y-trigger-wrap:focus-visible,
+.simple-toggle:focus-visible,
+.nav-link:focus-visible,
+.team-tab:focus-visible,
+.doc-btn:focus-visible,
+.btn-booklet:focus-visible,
+.btn-sm:focus-visible{
+  outline:3px solid var(--blue-mid);
+  outline-offset:2px;
+}
+
+/* Close and Clear sit on the panel's blue-to-teal header, where the blue token
+   drops to 1.55:1 against the gradient's light end and 1.19:1 against its dark
+   end - invisible. White measures 10.27:1 and 5.59:1 across the same gradient,
+   so the ring inverts here rather than disappearing. */
+.diva-close:focus-visible,
+.diva-clear:focus-visible{
+  outline-color:#fff;
+}
 
 /* ─── SKIP LINK ─── */
 .skip-link{position:absolute;top:-40px;left:16px;background:var(--blue);color:white;padding:8px 16px;border-radius:8px;font-size:0.875rem;font-weight:600;z-index:9999;transition:top 0.2s;}
@@ -226,12 +275,26 @@ button{font-family:'Sora',sans-serif;}
 .btn-search span{color:var(--text-3);}
 .btn-search:hover{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-pale);}
 .btn-search:hover span{color:var(--blue-mid);}
-.simple-toggle{background:var(--surface);border:1px solid var(--blue-light);color:var(--blue);padding:0 14px;min-height:40px;border-radius:100px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all var(--trans);font-size:0.82rem;font-weight:700;font-family:'Sora',sans-serif;box-shadow:var(--shadow-sm);}
+.simple-toggle{background:var(--surface);border:1px solid var(--blue-light);color:var(--blue);padding:0 14px;min-height:44px;border-radius:100px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all var(--trans);font-size:0.82rem;font-weight:700;font-family:'Sora',sans-serif;box-shadow:var(--shadow-sm);}
 .simple-toggle svg{flex-shrink:0;}
 .simple-toggle span{color:inherit;display:inline;}
 .simple-toggle:hover{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-pale);transform:translateY(-1px);box-shadow:var(--shadow-md);}
 .simple-toggle[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:white;box-shadow:0 8px 20px rgba(26,58,143,0.24);}
 .simple-toggle[aria-pressed="true"] span{color:white;}
+/* The accessibility trigger is injected into .nav-right by
+   accessibility-widget.js, which also injects its own stylesheet - and that
+   arrives after this file, so an equally specific rule here would lose. The
+   widget sizes it at height:36px, and 38px wide once the label is dropped
+   below 900px; both are under the 44x44 target.
+   .nav-right + two classes outranks the widget's two-class rule, so the size
+   is corrected from here without editing the widget itself. */
+.nav-right .a11y-trigger-wrap.a11y-trigger-navbar{
+  height:auto;
+  min-height:44px;
+  min-width:44px;
+  justify-content:center;
+}
+
 /* 44x44 rather than the 34x28 the 6px padding used to give it. The three bars
    are still 22px wide and 5px apart - only the hit area grew, so the icon looks
    identical while becoming a comfortable touch target. The rotate transforms
@@ -445,8 +508,79 @@ button{font-family:'Sora',sans-serif;}
 .btn-back svg{flex-shrink:0;transition:transform var(--trans);}
 .btn-back:hover svg{transform:translateX(-2px);}
 
+/* ─── REDUCED MOTION ────────────────────────────────────────────────────────
+   Written against the motion this site actually contains, not as a blanket
+   kill-switch: seven @keyframes, the .reveal scroll-in, two smooth-scroll
+   declarations, and the transform-based hover lifts. Each is dealt with by
+   name below so it is clear what is being stopped and what the user is left
+   looking at.
+
+   The governing rule throughout: reduced motion means the FINAL state
+   immediately, never missing content. Nothing here hides anything.
+
+   Two motion sources cannot be reached from CSS at all and are handled in
+   assets/js/script.js instead - the marketplace ticker, which is an SVG SMIL
+   <animate> element, and DIVA's word-by-word message typing, which is a
+   JavaScript timer. Both are noted where they live. */
 @media(prefers-reduced-motion:reduce){
     .btn-back:hover svg{transform:none;}
+
+    /* 1. Smooth scrolling - both declarations, the page and the DIVA log. */
+    html,
+    .diva-messages{scroll-behavior:auto;}
+
+    /* 2. Continuous decorative animation. The elements stay exactly where
+       they are and keep their colour and size; only the looping stops. The
+       status dots remain visible as dots, the listening/speaking states keep
+       their border and colour change, and the typing indicator still shows
+       three dots - it simply no longer bounces. */
+    .badge-dot,
+    .diva-online-dot,
+    .diva-mic.listening,
+    .diva-typing-dots span,
+    .diva-speak.speaking,
+    .diva-read-aloud.speaking{animation:none;}
+
+    /* 3. One-shot entrance animation. All of these use `both`, so their end
+       state is the normal rendered state - removing the animation shows that
+       state at once rather than sliding into it. The hero text, the team
+       panel and the DIVA panel are all fully visible without them. */
+    .hero-title,
+    .hero-subtitle,
+    .hero-cta,
+    .team-member-panel,
+    .diva-panel{animation:none;}
+
+    /* 4. The scroll-triggered reveal. Forced to its finished state so the
+       content does not depend on an IntersectionObserver callback, or on a
+       transition completing, to become readable. */
+    .reveal{opacity:1;transform:none;transition:none;}
+
+    /* 5. Movement. Rather than switching every transition off - which would
+       also remove the colour and shadow feedback that tells a user a control
+       is interactive - the transition PROPERTY list is narrowed to the
+       non-moving properties. Hover and focus still respond; nothing travels.
+       The paired transform declarations below stop the movement itself. */
+    *,*::before,*::after{
+        transition-property:color,background-color,border-color,box-shadow,opacity,outline-color,fill,stroke;
+    }
+    .btn-primary:hover,
+    .diva-clear:hover,
+    .simple-toggle:hover,
+    .card:hover,
+    .action-card:hover,
+    .btn-redesign:hover,
+    .mkt-card:hover,
+    .btn-white:hover,
+    .doc-card:hover,
+    .doc-btn-primary:hover,
+    .doc-btn-ghost:hover,
+    .doc-btn-audio:hover,
+    .principle-card:hover,
+    .close-modal:hover,
+    .diva-trigger:hover,
+    .btn-booklet:hover,
+    .diva-send:hover:not(:disabled){transform:none;}
 }
 
 .hero-wave{
@@ -523,7 +657,7 @@ button{font-family:'Sora',sans-serif;}
 .diva-icon img{width:100%;height:100%;object-fit:contain;}
 .diva-callout h3{font-size:0.95rem;font-weight:700;color:var(--blue);margin-bottom:4px;font-family:'Sora',sans-serif;}
 .diva-callout p{font-size:0.84rem;color:var(--text-2);line-height:1.65;}
-.diva-callout .btn-sm{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;background:var(--blue);color:white;border-radius:100px;font-size:0.78rem;font-weight:600;cursor:pointer;border:none;margin-top:10px;transition:all var(--trans);}
+.diva-callout .btn-sm{display:inline-flex;align-items:center;min-height:44px;gap:5px;padding:6px 14px;background:var(--blue);color:white;border-radius:100px;font-size:0.78rem;font-weight:600;cursor:pointer;border:none;margin-top:10px;transition:all var(--trans);}
 .diva-callout .btn-sm:hover{background:var(--blue-mid);}
 
 /* ─── FRAMEWORK ─── */
@@ -713,7 +847,7 @@ button{font-family:'Sora',sans-serif;}
 .team-section{background:linear-gradient(180deg,var(--surface) 0%,var(--blue-pale) 100%);padding:96px 0;position:relative;overflow:hidden;}
 .team-section::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 20% 50%,rgba(26,58,143,0.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(11,114,133,0.04) 0%,transparent 60%);pointer-events:none;}
 .team-tabs{display:flex;gap:8px;margin-bottom:48px;flex-wrap:wrap;}
-.team-tab{padding:10px 24px;border-radius:100px;font-size:0.875rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;border:1.5px solid var(--border);background:var(--bg);color:var(--text-3);transition:all var(--trans);}
+.team-tab{min-height:44px;display:inline-flex;align-items:center;padding:10px 24px;border-radius:100px;font-size:0.875rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;border:1.5px solid var(--border);background:var(--bg);color:var(--text-3);transition:all var(--trans);}
 .team-tab:hover{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-pale);}
 .team-tab.active{background:var(--blue);color:white;border-color:var(--blue);box-shadow:0 4px 16px rgba(26,58,143,0.25);}
 .team-member-panel{display:none;grid-template-columns:340px 1fr;gap:56px;align-items:center;animation:fadeUp 0.4s ease both;}
@@ -751,7 +885,11 @@ button{font-family:'Sora',sans-serif;}
 .form-group label{font-size:0.84rem;font-weight:600;color:var(--text-2);}
 .form-group input,.form-group select,.form-group textarea{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:11px 15px;color:var(--text-1);font-size:0.9rem;font-family:'Sora',sans-serif;transition:all var(--trans);resize:none;appearance:none;}
 .form-group input::placeholder,.form-group textarea::placeholder{color:var(--text-4);}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--blue-mid);background:white;box-shadow:0 0 0 3px rgba(37,84,199,0.1);}
+/* :focus:not(:focus-visible) so the soft tinted ring stays for pointer focus
+   while KEYBOARD focus keeps the real outline. Previously this suppressed the
+   outline for both, leaving only a 10%-opacity ring. */
+.form-group input:focus:not(:focus-visible),.form-group select:focus:not(:focus-visible),.form-group textarea:focus:not(:focus-visible){outline:none;border-color:var(--blue-mid);background:white;box-shadow:0 0 0 3px rgba(37,84,199,0.1);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue-mid);background:white;}
 .btn-full{width:100%;justify-content:center;border-radius:10px;}
 
 /* ─── FOOTER ─── */
@@ -759,7 +897,7 @@ button{font-family:'Sora',sans-serif;}
 .footer-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px;}
 .footer-logo{display:flex;align-items:center;gap:10px;font-family:'Lora',serif;font-size:1.1rem;font-weight:700;color:var(--text-1);margin-bottom:12px;}
 .footer-brand p{font-size:0.84rem;color:var(--text-3);line-height:1.65;margin-bottom:18px;}
-.footer-col h4{font-size:0.74rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;font-family:'Sora',sans-serif;}
+.footer-col .footer-col-title{font-size:0.74rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;font-family:'Sora',sans-serif;}
 .footer-col ul{display:flex;flex-direction:column;gap:9px;}
 .footer-col ul li a{font-size:0.875rem;color:var(--text-2);transition:color var(--trans);}
 .footer-col ul li a:hover{color:var(--blue-mid);}
@@ -792,7 +930,11 @@ button{font-family:'Sora',sans-serif;}
 
 /* ─── DIVA CHATBOT WIDGET ─── */
 .diva-widget{position:fixed;bottom:28px;right:28px;z-index:1500;}
-.diva-trigger{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform var(--trans);position:relative;background:none !important;border:none !important;padding:0 !important;margin:0 !important;box-shadow:none !important;outline:none !important;-webkit-appearance:none !important;appearance:none !important;border-radius:0 !important;}
+/* outline:none !important removed - it suppressed the keyboard focus ring on
+   the one control that opens DIVA, and !important meant nothing could restore
+   it. `all:unset` still resets outline to none, so the focus ring is put back
+   explicitly in the focus block near the top of this file. */
+.diva-trigger{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform var(--trans);position:relative;background:none !important;border:none !important;padding:0 !important;margin:0 !important;box-shadow:none !important;-webkit-appearance:none !important;appearance:none !important;border-radius:0 !important;}
 .diva-trigger:hover{transform:scale(1.1);}
 
 /* ---- DIVA unavailable (DIVA_API_URL unset or unusable) ----
@@ -894,7 +1036,7 @@ button{font-family:'Sora',sans-serif;}
   border:1px solid rgba(255,255,255,0.25);
   color:white;
   cursor:pointer;
-  width:34px;height:34px;
+  width:44px;height:44px;
   border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   font-size:1.1rem;
@@ -969,6 +1111,7 @@ button{font-family:'Sora',sans-serif;}
   max-width:88%;
 }
 .diva-suggestion-btn{
+  min-height:44px;
   background:var(--surface);
   border:1.5px solid var(--blue-light);
   color:var(--blue);
@@ -1000,7 +1143,9 @@ button{font-family:'Sora',sans-serif;}
   border-radius:100px;
   padding:13px 20px;
   font-size:1rem;
-  outline:none;
+  /* outline:none removed - it stripped the keyboard focus ring from the one
+     field a DIVA conversation is typed into. The border colour change below is
+     a supplement, not a substitute. */
   font-family:'Sora',sans-serif;
   color:var(--text-1);
   background:var(--surface-2);
@@ -1014,7 +1159,7 @@ button{font-family:'Sora',sans-serif;}
   background:var(--surface);
   border:1.5px solid var(--border);
   color:var(--text-3);
-  width:42px;height:42px;
+  width:44px;height:44px;
   border-radius:50%;
   cursor:pointer;
   display:flex;align-items:center;justify-content:center;
@@ -1029,7 +1174,7 @@ button{font-family:'Sora',sans-serif;}
   background:linear-gradient(135deg,var(--blue),var(--blue-mid));
   border:none;
   color:white;
-  width:42px;height:42px;
+  width:44px;height:44px;
   border-radius:50%;
   cursor:pointer;
   display:flex;align-items:center;justify-content:center;
@@ -1072,7 +1217,7 @@ button{font-family:'Sora',sans-serif;}
 .booklet-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;margin:18px 0 20px;transition:all var(--trans);}
 .booklet-row:hover{border-color:var(--blue-light);box-shadow:var(--shadow-sm);}
 .booklet-label{font-size:0.88rem;font-weight:500;color:var(--text-2);}
-.btn-booklet{display:inline-flex;align-items:center;gap:8px;padding:9px 20px;background:var(--blue);color:white;border-radius:100px;font-size:0.84rem;font-weight:600;font-family:'Sora',sans-serif;text-decoration:none;transition:all var(--trans);box-shadow:0 2px 10px rgba(26,58,143,0.22);border:none;cursor:pointer;}
+.btn-booklet{min-height:44px;display:inline-flex;align-items:center;display:inline-flex;align-items:center;gap:8px;padding:9px 20px;background:var(--blue);color:white;border-radius:100px;font-size:0.84rem;font-weight:600;font-family:'Sora',sans-serif;text-decoration:none;transition:all var(--trans);box-shadow:0 2px 10px rgba(26,58,143,0.22);border:none;cursor:pointer;}
 .btn-booklet:hover{background:var(--blue-mid);transform:translateY(-2px);box-shadow:0 6px 20px rgba(26,58,143,0.32);}
 
 /* ─── ANIMATIONS ─── */
@@ -1280,8 +1425,8 @@ button{font-family:'Sora',sans-serif;}
 
 /* Microphone */
 .diva-mic{
-  width:36px;
-  height:36px;
+  width:44px;
+  height:44px;
   border:none;
   background:transparent;
   cursor:pointer;
@@ -1408,6 +1553,9 @@ button{font-family:'Sora',sans-serif;}
 
 /* Clear Chat */
 .diva-clear{
+  display:inline-flex;
+  align-items:center;
+  min-height:44px;
   border:none;
   background:rgba(255,255,255,0.12);
   border:1px solid rgba(255,255,255,0.2);

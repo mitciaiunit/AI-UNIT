@@ -27,6 +27,7 @@ final class HighlightsController extends Controller
 
         $this->view('highlights', [
             'title' => 'Highlights',
+            'description' => 'A record of the ten-week industrial attachment at the AI Unit: rebuilding the aim.govmu.org portal, WCAG accessibility work, speech synthesis and the DIVA assistant, with galleries from the internship and the Rodrigues and Imperial programme.',
             'isHome' => false,
             'navCurrent' => 'highlights',
             // $categories keeps the view's existing loop unchanged; $highlights

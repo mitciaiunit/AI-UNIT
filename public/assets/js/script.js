@@ -574,10 +574,116 @@ document.querySelectorAll('.team-tab').forEach(tab=>{
   });
 });
 
+/**
+ * Whether the visitor has asked for reduced motion. Read on each call rather
+ * than cached - the preference can change mid-session, and matchMedia reflects
+ * that immediately. Mirrors the helper assets/js/highlights.js already uses.
+ */
+function prefersReducedMotion() {
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+/*
+ * The marketplace ticker is an SVG SMIL <animate> element (pages/home.php).
+ * SMIL is not CSS, so no prefers-reduced-motion rule can touch it - this is
+ * the one continuous animation on the site that genuinely needs JavaScript to
+ * stop. pauseAnimations() freezes the SVG's own timeline, leaving the wave and
+ * its "Regional AI Marketplace" text on screen and readable; only the scroll
+ * stops. The listener keeps that true if the preference is changed later.
+ */
+(function () {
+  if (!window.matchMedia) return;
+  const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const applyTickerPreference = () => {
+    document.querySelectorAll('.marketplace-wave-top svg').forEach(svg => {
+      if (typeof svg.pauseAnimations !== 'function') return;
+      if (query.matches) svg.pauseAnimations();
+      else svg.unpauseAnimations();
+    });
+  };
+  applyTickerPreference();
+  if (typeof query.addEventListener === 'function') {
+    query.addEventListener('change', applyTickerPreference);
+  }
+})();
+
 const revealObs=new IntersectionObserver(entries=>{
   entries.forEach((entry,i)=>{if(entry.isIntersecting)setTimeout(()=>entry.target.classList.add('visible'),(i%4)*80);});
 },{threshold:0.08,rootMargin:'0px 0px -32px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+
+/* ─── CONTACT FORM ───
+ *
+ * Field order used for both clearing and focus. It matches the order of the
+ * client checks below AND the order ContactValidator applies on the server, so
+ * "the first invalid field" means the same thing whichever side produced the
+ * errors. subject is included because the server can return a "Topic is too
+ * long." error for it even though nothing here validates it.
+ */
+const CONTACT_FIELDS = ['name', 'email', 'subject', 'message'];
+
+/**
+ * Marks a field invalid: the class for styling, aria-invalid for assistive
+ * technology, and the message into the span the field's aria-describedby
+ * already points at. Both client-side checks and server-returned errors call
+ * this, so the two can never drift apart in what they announce.
+ */
+function setContactFieldError(fieldId, msg) {
+  const field = document.getElementById(fieldId);
+  const errorEl = document.getElementById(fieldId + '-error');
+  if (field) {
+    field.classList.add('invalid');
+    field.setAttribute('aria-invalid', 'true');
+  }
+  if (errorEl) {
+    errorEl.textContent = msg;
+    errorEl.classList.add('show');
+  }
+}
+
+/** Undoes the above completely - no stale aria-invalid, no stale message. */
+function clearContactFieldError(fieldId) {
+  const field = document.getElementById(fieldId);
+  const errorEl = document.getElementById(fieldId + '-error');
+  if (field) {
+    field.classList.remove('invalid');
+    field.removeAttribute('aria-invalid');
+  }
+  if (errorEl) {
+    errorEl.textContent = '';
+    errorEl.classList.remove('show');
+  }
+}
+
+/**
+ * Moves focus to the first field still marked invalid, in CONTACT_FIELDS
+ * order. aria-invalid is the single source of truth for "is this field bad",
+ * so this works identically after a client check and after a server response.
+ */
+function focusFirstInvalidContactField() {
+  const first = CONTACT_FIELDS
+    .map(id => document.getElementById(id))
+    .find(f => f && f.getAttribute('aria-invalid') === 'true');
+  if (first) first.focus();
+  return Boolean(first);
+}
+
+/*
+ * Correcting a field clears its error as you type.
+ *
+ * Registered once, at load. This used to be attached at the END of the submit
+ * handler with { once: true }, which meant it did not exist until after a
+ * first failed submit, fired a single time, and was skipped entirely on the
+ * success path - so a corrected field kept its aria-invalid and its stale
+ * message. Binding once here also stops a listener being added per submit.
+ */
+CONTACT_FIELDS.forEach(id => {
+  const field = document.getElementById(id);
+  if (!field) return;
+  field.addEventListener(field.tagName === 'SELECT' ? 'change' : 'input', () => {
+    if (field.getAttribute('aria-invalid') === 'true') clearContactFieldError(id);
+  });
+});
 
 document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -588,19 +694,10 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
   const status = document.getElementById('formStatus');
   const btn = form.querySelector('[type="submit"]');
 
-  function showFieldError(fieldId, msg) {
-    const field = document.getElementById(fieldId);
-    const errorEl = document.getElementById(fieldId + '-error');
-    if (field) field.classList.add('invalid');
-    if (errorEl) {
-      errorEl.textContent = msg;
-      errorEl.classList.add('show');
-    }
-  }
+  const showFieldError = setContactFieldError;
 
   function clearErrors() {
-    [name, email, message].forEach(field => field.classList.remove('invalid'));
-    document.querySelectorAll('.field-error').forEach(el => { el.textContent = ''; el.classList.remove('show'); });
+    CONTACT_FIELDS.forEach(clearContactFieldError);
     status.classList.remove('show', 'success', 'error');
   }
 
@@ -630,8 +727,14 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
   }
 
   if (!valid) {
+    // The polite summary says how many/that there are problems; focus then
+    // takes the user to the first one, where its own message is read out as
+    // the field's description. Two different pieces of information, announced
+    // once each - which is why the per-field spans no longer carry
+    // role="alert" (that would repeat the same text a third time).
     status.textContent = 'Please correct the errors above.';
     status.classList.add('show', 'error');
+    focusFirstInvalidContactField();
     return;
   }
 
@@ -662,12 +765,20 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
       return;
     }
 
-    // Field-specific validation errors from the server
+    /*
+     * Field-specific validation errors from the server. The server remains the
+     * authority - the checks above are a convenience that saves a round trip,
+     * and anything they miss (length limits, stricter email rules) still comes
+     * back from ContactValidator and is rendered here through exactly the same
+     * function, so a server error is indistinguishable from a client one in
+     * aria-invalid, aria-describedby, message and focus behaviour.
+     */
     if (data.errors) {
       Object.keys(data.errors).forEach(field => showFieldError(field, data.errors[field]));
     }
     status.textContent = data.message || 'Please correct the errors above.';
     status.classList.add('show', 'error');
+    focusFirstInvalidContactField();
   } catch (err) {
     status.textContent = 'Something went wrong. Please check your connection and try again.';
     status.classList.add('show', 'error');
@@ -675,15 +786,8 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
     btn.disabled = false;
     if (btn.innerHTML === 'Sending…') btn.innerHTML = originalBtnHtml;
   }
-
-  // Clear error on input
-  [name, email, message].forEach(field => {
-    field.addEventListener('input', function() {
-      field.classList.remove('invalid');
-      const errorEl = document.getElementById(field.id + '-error');
-      if (errorEl) errorEl.classList.remove('show');
-    }, { once: true });
-  });
+  // The "clear error on input" listeners that used to be registered here on
+  // every submit now live at the top of this block, bound once at load.
 });
 
 // DIVA's backend URL comes from server config (config('diva.api_url'), settable
@@ -781,12 +885,21 @@ async function typeDivaMessage(text, source = null) {
   content.setAttribute('aria-hidden', 'true');
   div.appendChild(content);
   divaMessages.appendChild(div);
-  const words = text.split(' ');
 
-  for (const word of words) {
-    content.textContent += word + ' ';
+  if (prefersReducedMotion()) {
+    // The reply arrives complete instead of a word at a time. This is the
+    // final state of the loop below, not a reduced one - the same text, the
+    // same element, the same action buttons appended afterwards; only the
+    // 25ms-per-word reveal is skipped.
+    content.textContent = text;
     divaMessages.scrollTop = divaMessages.scrollHeight;
-    await new Promise(resolve => setTimeout(resolve, 25));
+  } else {
+    const words = text.split(' ');
+    for (const word of words) {
+      content.textContent += word + ' ';
+      divaMessages.scrollTop = divaMessages.scrollHeight;
+      await new Promise(resolve => setTimeout(resolve, 25));
+    }
   }
 
   content.removeAttribute('aria-hidden');
@@ -858,6 +971,13 @@ function clearDivaChat() {
 divaClear?.addEventListener('click', () => {
   if (confirm('Start a new conversation?')) {
     clearDivaChat();
+    // clearDivaChat() replaces the whole message list, so anything focused in
+    // there - a suggestion chip, a speak button - is destroyed and focus falls
+    // to the document. Only step in when that has actually happened; if focus
+    // is still on Clear itself it is already where the user left it.
+    if (divaPanel && !divaPanel.contains(document.activeElement)) {
+      divaDeferFocus(divaInitialFocusTarget());
+    }
   }
 });
 
@@ -1087,34 +1207,192 @@ async function sendDivaMessage() {
   }
 }
 
-/* ─── DIVA PANEL TOGGLE ─── */
+/* ─── DIVA PANEL: MODAL DIALOG BEHAVIOUR ───
+ *
+ * Modelled on the accessibility panel in accessibility-widget.js, which is this
+ * project's established modal: role="dialog", aria-modal toggled in lockstep
+ * with the open class, a Tab trap, and a keydown listener attached only while
+ * the dialog is open. Following the same shape keeps the two dialogs behaving
+ * alike and means the Escape handler cannot fire when DIVA is closed - there is
+ * nothing listening then, so no guard, no stopPropagation, and no interference
+ * with the video modal, the mobile menu or the accessibility panel.
+ */
+
+const divaWidget = document.getElementById('divaWidget');
+
+/** The control that opened the dialog, so focus can be handed back to it. */
+let divaLastFocused = null;
+
+/** Body children we switched to inert, so only our own state is undone. */
+let divaInertedNodes = [];
+
+/**
+ * Focusable controls inside the panel, in DOM order.
+ *
+ * Queried live rather than kept in a list: the suggestion chips delete
+ * themselves when used, Clear rebuilds them, and replies can add speak buttons.
+ * offsetParent is null for anything display:none, which is how the closed panel
+ * and any hidden control drop out; disabled controls are excluded by the
+ * selector. Same filter the accessibility panel uses.
+ */
+function divaFocusable() {
+  if (!divaPanel) return [];
+  const sel = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  return Array.from(divaPanel.querySelectorAll(sel))
+    .filter(el => el.offsetParent !== null && !el.hasAttribute('hidden') && el.getAttribute('aria-hidden') !== 'true');
+}
+
+/**
+ * Everything except the widget is made inert while the dialog is open, so the
+ * page behind it cannot be reached by Tab, click or assistive technology.
+ *
+ * The widget itself is skipped - it holds both the panel and its trigger, and
+ * making an ancestor inert would take the dialog down with the page. Each node
+ * is tagged so that closing only clears inertness this code applied, never
+ * something another component set.
+ *
+ * The focus trap below is the real guarantee; this is belt and braces for
+ * browsers that support it, which is why an older browser simply skips it.
+ */
+function divaSetBackgroundInert(on) {
+  if (!('inert' in HTMLElement.prototype) || !divaWidget) return;
+
+  if (on) {
+    divaInertedNodes = Array.from(document.body.children)
+      .filter(el => el !== divaWidget && !el.contains(divaWidget) && !el.inert);
+    divaInertedNodes.forEach(el => { el.inert = true; });
+    return;
+  }
+
+  divaInertedNodes.forEach(el => { el.inert = false; });
+  divaInertedNodes = [];
+}
+
+/**
+ * Focus is moved on the next frame rather than immediately: the panel's display
+ * only changes when the "open" class is applied, and focus() does nothing to an
+ * element that is still display:none. The same applies on the way out, where
+ * below 480px the trigger is itself hidden until the class is removed (WO-06).
+ */
+function divaDeferFocus(el) {
+  if (!el || typeof el.focus !== 'function') return;
+  if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => el.focus());
+  else el.focus();
+}
+
+/** The input if it is usable, otherwise the first focusable control. */
+function divaInitialFocusTarget() {
+  if (divaInput && !divaInput.disabled && divaInput.offsetParent !== null) return divaInput;
+  return divaFocusable()[0] || null;
+}
+
+function onDivaKeydown(e) {
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    closeDivaPanel();
+    return;
+  }
+  if (e.key !== 'Tab') return;
+
+  const focusable = divaFocusable();
+  // A dialog with nothing to focus is not a trap worth enforcing; letting Tab
+  // through is better than throwing on focusable[0].
+  if (!focusable.length) return;
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  // Focus somehow outside the dialog while it is open - pull it back rather
+  // than letting Tab walk away into the (inert) page.
+  if (!divaPanel.contains(document.activeElement)) {
+    e.preventDefault();
+    (e.shiftKey ? last : first).focus();
+    return;
+  }
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
+function openDivaPanel(opener) {
+  if (!divaPanel || divaPanel.classList.contains('open')) return;
+
+  // The trigger is the usual opener, but the homepage "Chat with DIVA" button
+  // (#openDiva) opens it too, and focus has to go back to whichever was used.
+  divaLastFocused = (opener && typeof opener.focus === 'function') ? opener : divaTrigger;
+
+  divaPanel.classList.add('open');
+  divaPanel.setAttribute('aria-modal', 'true');
+  divaTrigger.setAttribute('aria-expanded', 'true');
+  divaSetBackgroundInert(true);
+  document.addEventListener('keydown', onDivaKeydown);
+  divaDeferFocus(divaInitialFocusTarget());
+}
+
+function closeDivaPanel() {
+  if (!divaPanel || !divaPanel.classList.contains('open')) return;
+
+  /*
+   * Focus is handed back only when it is currently inside the dialog, or
+   * nowhere at all - those are the cases where closing would otherwise strand
+   * it on a hidden element or drop it to the top of the document.
+   *
+   * When it is elsewhere the user has already moved it deliberately: they
+   * clicked the trigger, or clicked something else on the page and the
+   * outside-click handler closed the dialog behind them. Pulling focus back
+   * there would take it away from whatever they just chose.
+   */
+  const active = document.activeElement;
+  const shouldRestore = !active || active === document.body || divaPanel.contains(active);
+
+  divaPanel.classList.remove('open');
+  divaPanel.removeAttribute('aria-modal');
+  divaTrigger.setAttribute('aria-expanded', 'false');
+  divaSetBackgroundInert(false);
+  document.removeEventListener('keydown', onDivaKeydown);
+
+  if (shouldRestore) {
+    // The opener may have been removed or hidden while the dialog was open, so
+    // fall back to the trigger, and to nothing at all if that is unusable
+    // (DIVA unavailable, WO-09) rather than focusing a dead element.
+    const opener = divaLastFocused;
+    const usable = el => el && document.contains(el) && !el.disabled && typeof el.focus === 'function';
+    divaDeferFocus(usable(opener) ? opener : (usable(divaTrigger) ? divaTrigger : null));
+  }
+
+  divaLastFocused = null;
+}
+
 divaTrigger.addEventListener('click', () => {
-  const open = divaPanel.classList.toggle('open');
-  divaTrigger.setAttribute('aria-expanded', open.toString());
-  if (open && divaInput) setTimeout(() => divaInput.focus(), 100);
+  if (divaPanel.classList.contains('open')) closeDivaPanel();
+  else openDivaPanel(divaTrigger);
 });
 
-divaClose.addEventListener('click', () => {
-  divaPanel.classList.remove('open');
-  divaTrigger.setAttribute('aria-expanded', 'false');
-});
+divaClose.addEventListener('click', closeDivaPanel);
 
 divaSend.addEventListener('click', sendDivaMessage);
 divaInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendDivaMessage(); });
 
+// The homepage's "Chat with DIVA" button is the second way in. It passes
+// itself as the opener so focus returns here, not to the floating trigger.
+// stopPropagation is kept: without it this same click reaches the
+// outside-click handler below and closes the dialog it just opened.
 openDiva?.addEventListener('click', (e) => {
   e.stopPropagation();
-  divaPanel.classList.add('open');
-  divaTrigger.setAttribute('aria-expanded', 'true');
-  if (divaInput) setTimeout(() => divaInput.focus(), 150);
+  openDivaPanel(openDiva);
   divaMessages.scrollTop = divaMessages.scrollHeight;
 });
 
+// Pre-existing outside-click close, now routed through closeDivaPanel so it
+// clears aria-modal, background inertness and the keydown listener like every
+// other close path. It does not steal focus - see the note in closeDivaPanel.
 document.addEventListener('click', function (e) {
-  const divaWidget = document.getElementById('divaWidget');
   if (divaPanel && divaPanel.classList.contains('open') && divaWidget && !divaWidget.contains(e.target)) {
-    divaPanel.classList.remove('open');
-    divaTrigger.setAttribute('aria-expanded', 'false');
+    closeDivaPanel();
   }
 });
 

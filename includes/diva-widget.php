@@ -16,11 +16,24 @@ $divaAvailable = diva_api_url() !== '';
 ?>
 <!-- DIVA CHATBOT -->
 <div class="diva-widget<?= $divaAvailable ? '' : ' diva-widget--unavailable' ?>" aria-label="DIVA Chat Assistant" id="divaWidget">
-  <div class="diva-panel" id="divaPanel" role="dialog" aria-label="Chat with DIVA">
+  <?php
+  /*
+   * aria-labelledby rather than aria-label: the accessible name is taken from
+   * the heading the user can actually see, so the two cannot drift apart, and
+   * it stays correct if the heading is ever translated.
+   *
+   * aria-modal is NOT set here. It is added by assets/js/script.js only while
+   * the panel is open and its focus trap is active - the same discipline the
+   * accessibility panel already follows. Left on permanently, screen readers
+   * that enforce it strictly (NVDA) treat the panel as an always-active modal
+   * and hide the rest of the page from first load.
+   */
+  ?>
+  <div class="diva-panel" id="divaPanel" role="dialog" aria-labelledby="divaPanelTitle">
     <div class="diva-panel-header">
       <img src="<?= e(asset('images/DIVA.png')) ?>" alt="DIVA">
       <div class="diva-panel-header-text">
-        <h4>DIVA</h4>
+        <h4 id="divaPanelTitle">DIVA</h4>
         <p>Digital Interactive Virtual Assistant</p>
         <div class="diva-online"><span class="diva-online-dot"></span><span data-i18n="diva_online">Online &amp; ready to help</span></div>
       </div>

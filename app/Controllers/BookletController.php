@@ -16,6 +16,7 @@ final class BookletController extends Controller
     /** @var array<string, array<string, mixed>> */
     private const BOOKLETS = [
         'aie' => [
+            'description' => 'Read "AI For All - The Future Belongs to Us", the AI Unit national booklet explaining artificial intelligence in plain English for every citizen of Mauritius.',
             'lang' => 'en',
             'pageTitle' => "AI For All - English Version · AI Unit, Mauritius",
             'file' => 'documents/Booklet_English.pdf',
@@ -62,6 +63,7 @@ final class BookletController extends Controller
             ],
         ],
         'aim' => [
+            'description' => 'Lir "AI Pou Nou Tou - Lavenir Apartenir A Nou Tou", livre nasional Linite LIA ki explik lintelizans artifisiel an Kreol Morisien pou tou sitwayen.',
             'lang' => 'mfe',
             'pageTitle' => "AI Pou Nou Tou - Version Kreol · Linite L'IA, Moris",
             'file' => 'documents/Booklet_Kreol.pdf',
@@ -108,6 +110,7 @@ final class BookletController extends Controller
             ],
         ],
         'livret' => [
+            'description' => 'Read the educational booklet on digital violence against children: how to recognise it, how to prevent it, and where to find help in Mauritius.',
             'lang' => 'fr',
             'pageTitle' => 'Violence Numérique Contre Les Enfants - Livret Pédagogique',
             'file' => 'documents/violence.pdf',
@@ -167,6 +170,8 @@ final class BookletController extends Controller
 
         $this->view('booklet', [
             'title' => $booklet['pageTitle'],
+            'description' => $booklet['description'],
+            'ogType' => 'article',
             'lang' => $booklet['lang'],
             'pdfUrl' => asset($booklet['file']),
             'downloadName' => $booklet['downloadName'],

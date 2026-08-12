@@ -9,7 +9,7 @@
 ?>
 <section class="adm-auth__card" aria-labelledby="adm-unavailable-title">
   <div class="adm-auth__head">
-    <img src="<?= e(asset('images/logo.gif')) ?>" alt="">
+    <img src="<?= e(asset('images/favicon.png')) ?>" alt="" width="64" height="64" decoding="async">
     <h1 id="adm-unavailable-title">Content management is temporarily unavailable</h1>
   </div>
 

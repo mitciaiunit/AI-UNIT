@@ -13,8 +13,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= e(($title ?? 'Sign in') . ' · Highlights admin · AI Unit') ?></title>
-<meta name="robots" content="noindex, nofollow">
-<link rel="icon" type="image/x-icon" href="<?= e(asset('images/logo.gif')) ?>">
+<?php $noindex = true; require __DIR__ . '/../meta.php'; ?>
+<link rel="icon" type="image/png" href="<?= e(asset('images/favicon.png')) ?>">
 <link rel="stylesheet" href="<?= e(asset('css/admin.css')) ?>">
 </head>
 <body class="adm-body--centred">

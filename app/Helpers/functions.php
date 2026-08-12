@@ -115,6 +115,76 @@ function url(string $path = ''): string
 }
 
 /**
+ * The site's absolute origin - "https://host[:port]", no trailing slash.
+ *
+ * Derived from the request unless APP_CANONICAL_ORIGIN is set. No production
+ * domain is hardcoded: none is recorded anywhere in this repository, and
+ * guessing one would put a wrong hostname into every canonical and og:url.
+ *
+ * Deriving it from the request is correct for a site reached at one hostname,
+ * which is the case here. Set APP_CANONICAL_ORIGIN when that stops being true
+ * - several hostnames pointing at the same site, or a TLS-terminating proxy
+ * that changes the scheme - because then the request is no longer a reliable
+ * witness to the canonical address.
+ */
+function site_origin(): string
+{
+    $configured = trim((string) config('site.canonical_origin', ''));
+    if ($configured !== '') {
+        return rtrim($configured, '/');
+    }
+
+    $host = (string) ($_SERVER['HTTP_HOST'] ?? '');
+    if ($host === '') {
+        return '';
+    }
+
+    return (request_is_https() ? 'https://' : 'http://') . $host;
+}
+
+/**
+ * Absolute URL for a route, for <link rel="canonical"> and og:url.
+ *
+ * Built on url(), so it inherits that helper's base path and is correct both
+ * at the document root and under a subdirectory - and cannot double the prefix,
+ * because the prefix is applied exactly once, by url().
+ *
+ * Passing null uses the current request path with any query string removed:
+ * tracking parameters and pagination noise must not appear in a canonical.
+ */
+function canonical_url(?string $path = null): string
+{
+    if ($path === null) {
+        $requestPath = (string) parse_url((string) ($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH);
+
+        return site_origin() . ($requestPath === '' ? '/' : $requestPath);
+    }
+
+    $url = url($path);
+
+    /*
+     * The homepage needs its trailing slash. url('/') returns the bare base -
+     * "" at the document root, "/AI-UNIT" under a subdirectory - and a server
+     * redirects that to the same address with a slash. A canonical that points
+     * at a redirect is a canonical pointing at the wrong URL.
+     */
+    if ($path === '/' || $path === '') {
+        $url = rtrim($url, '/') . '/';
+    }
+
+    return site_origin() . $url;
+}
+
+/**
+ * Absolute URL for a file under assets/, for og:image - social scrapers do not
+ * resolve relative paths.
+ */
+function asset_url(string $path): string
+{
+    return site_origin() . asset($path);
+}
+
+/**
  * Compose a <title> value consistent with the original pages' convention:
  * "{Page Title} - AI Unit, Ministry of ICT, Mauritius".
  */

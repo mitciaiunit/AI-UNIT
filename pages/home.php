@@ -313,7 +313,7 @@ $isHome = true;
       <article class="doc-card reveal">
         <div class="doc-cover">
           <div class="doc-cover-frame">
-            <img src="<?= e(asset('images/blueprint.webp')) ?>" alt="Digital Transformation Blueprint" loading="lazy">
+            <img src="<?= e(asset('images/blueprint.webp')) ?>" alt="Digital Transformation Blueprint" width="1191" height="1684" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="doc-body">
@@ -351,7 +351,7 @@ $isHome = true;
       <article class="doc-card reveal">
         <div class="doc-cover">
           <div class="doc-cover-frame">
-            <img src="<?= e(asset('images/AI strategy.png')) ?>" alt="National AI Strategy" loading="lazy">
+            <img src="<?= e(asset('images/AI strategy.png')) ?>" alt="National AI Strategy" width="413" height="603" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="doc-body">
@@ -389,7 +389,7 @@ $isHome = true;
       <article class="doc-card reveal">
         <div class="doc-cover">
           <div class="doc-cover-frame">
-            <img src="<?= e(asset('images/Fair guideline.png')) ?>" alt="FAIR Guidelines" loading="lazy">
+            <img src="<?= e(asset('images/Fair guideline.png')) ?>" alt="FAIR Guidelines" width="429" height="599" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="doc-body">
@@ -427,7 +427,7 @@ $isHome = true;
       <article class="doc-card reveal">
         <div class="doc-cover">
           <div class="doc-cover-frame">
-            <img src="<?= e(asset('images/AI playbook.png')) ?>" alt="AI Playbook" loading="lazy">
+            <img src="<?= e(asset('images/AI playbook.png')) ?>" alt="AI Playbook" width="437" height="605" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="doc-body">
@@ -497,13 +497,13 @@ $isHome = true;
        * said it would.
        */
       ?>
-      <button class="team-tab active" role="tab" aria-selected="true" aria-controls="panel-rama" data-member="0" data-i18n="team_tab1">Mr. Ramakrishna</button>
-      <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-heman" data-member="1" data-i18n="team_tab2">Dr. Mohabeer</button>
-      <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-ruben" data-member="2" data-i18n="team_tab3">Mr. Ramdhony</button>
-      <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-yudhaveer" data-member="3" data-i18n="team_tab4">Mr. Ramdoyal</button>
+      <button class="team-tab active" role="tab" aria-selected="true" id="tab-rama" aria-controls="panel-rama" data-member="0" data-i18n="team_tab1">Mr. Ramakrishna</button>
+      <button class="team-tab" role="tab" aria-selected="false" id="tab-heman" aria-controls="panel-heman" data-member="1" data-i18n="team_tab2">Dr. Mohabeer</button>
+      <button class="team-tab" role="tab" aria-selected="false" id="tab-ruben" aria-controls="panel-ruben" data-member="2" data-i18n="team_tab3">Mr. Ramdhony</button>
+      <button class="team-tab" role="tab" aria-selected="false" id="tab-yudhaveer" aria-controls="panel-yudhaveer" data-member="3" data-i18n="team_tab4">Mr. Ramdoyal</button>
     </div>
-    <div class="team-member-panel active reveal" id="panel-rama" role="tabpanel">
-      <div class="team-photo-wrap"><img src="<?= e(asset('images/rm.jpg')) ?>" alt="Portrait of Mr. Ramakrishna Mudaliar" class="team-photo-img" /></div>
+    <div class="team-member-panel active reveal" id="panel-rama" role="tabpanel" aria-labelledby="tab-rama">
+      <div class="team-photo-wrap"><img src="<?= e(asset('images/rm.jpg')) ?>" alt="Portrait of Mr. Ramakrishna Mudaliar" class="team-photo-img" width="1024" height="1024" loading="lazy" decoding="async" /></div>
       <div class="team-bio">
         <div class="team-focus-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="team_rama_tag">Alignment &amp; Safety</span></div>
         <h3 class="team-name">Mr. Ramakrishna<br>Mudaliar</h3>
@@ -512,8 +512,8 @@ $isHome = true;
         <div class="team-stats-strip"><div class="team-stat"><span class="team-stat-value">20+</span><span class="team-stat-label" data-i18n="rama_stat1">Years Experience</span></div><div class="team-stat"><span class="team-stat-value">2x</span><span class="team-stat-label" data-i18n="rama_stat2">Master's Degrees</span></div><div class="team-stat"><span class="team-stat-value">2024</span><span class="team-stat-label" data-i18n="rama_stat3">AI Unit Founded</span></div></div>
       </div>
     </div>
-    <div class="team-member-panel reveal" id="panel-heman" role="tabpanel">
-      <div class="team-photo-wrap"><img src="<?= e(asset('images/hm.jpg')) ?>" alt="Portrait of Dr. Heman Mohabeer" class="team-photo-img" /></div>
+    <div class="team-member-panel reveal" id="panel-heman" role="tabpanel" aria-labelledby="tab-heman">
+      <div class="team-photo-wrap"><img src="<?= e(asset('images/hm.jpg')) ?>" alt="Portrait of Dr. Heman Mohabeer" class="team-photo-img" width="1084" height="1084" loading="lazy" decoding="async" /></div>
       <div class="team-bio">
         <div class="team-focus-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><span data-i18n="team_heman_tag">Architecture &amp; Scale</span></div>
         <h3 class="team-name">Dr. Heman<br>Mohabeer</h3>
@@ -522,8 +522,8 @@ $isHome = true;
         <div class="team-stats-strip"><div class="team-stat"><span class="team-stat-value">PhD</span><span class="team-stat-label" data-i18n="heman_stat1">AI &amp; Machine Learning</span></div><div class="team-stat"><span class="team-stat-value">15+</span><span class="team-stat-label" data-i18n="heman_stat2">Years Experience</span></div><div class="team-stat"><span class="team-stat-value">Africa</span><span class="team-stat-label" data-i18n="heman_stat3">Regional AI Leader</span></div></div>
       </div>
     </div>
-    <div class="team-member-panel reveal" id="panel-ruben" role="tabpanel">
-      <div class="team-photo-wrap"><img src="<?= e(asset('images/rr.jpg')) ?>" alt="Portrait of Mr. Ruben Ramdhony" class="team-photo-img" /></div>
+    <div class="team-member-panel reveal" id="panel-ruben" role="tabpanel" aria-labelledby="tab-ruben">
+      <div class="team-photo-wrap"><img src="<?= e(asset('images/rr.jpg')) ?>" alt="Portrait of Mr. Ruben Ramdhony" class="team-photo-img" width="800" height="800" loading="lazy" decoding="async" /></div>
       <div class="team-bio">
         <div class="team-focus-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg><span data-i18n="team_ruben_tag">Digital Transformation</span></div>
         <h3 class="team-name">Mr. Ruben<br>Ramdhony</h3>
@@ -550,8 +550,8 @@ $isHome = true;
      * script.js indexes .team-member-panel by the tab's data-member value.
      */
     ?>
-    <div class="team-member-panel reveal" id="panel-yudhaveer" role="tabpanel">
-      <div class="team-photo-wrap"><img src="<?= e(asset('images/yr.jpg')) ?>" alt="Portrait of Mr. Yudhaveer Vaibhav Ramdoyal" class="team-photo-img" /></div>
+    <div class="team-member-panel reveal" id="panel-yudhaveer" role="tabpanel" aria-labelledby="tab-yudhaveer">
+      <div class="team-photo-wrap"><img src="<?= e(asset('images/yr.jpg')) ?>" alt="Portrait of Mr. Yudhaveer Vaibhav Ramdoyal" class="team-photo-img" loading="lazy" decoding="async" /></div>
       <div class="team-bio">
         <div class="team-focus-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="team_yudhaveer_tag">Alignment &amp; Safety</span></div>
         <h3 class="team-name">Mr. Yudhaveer Vaibhav<br>Ramdoyal</h3>
@@ -586,18 +586,18 @@ $isHome = true;
         <div class="form-row">
           <div class="form-group">
             <label for="name" data-i18n="form_name">Your Name <span aria-hidden="true" style="color:red;">*</span></label>
-            <input type="text" id="name" name="name" placeholder="e.g. Jean-Marie Dupont" required autocomplete="name" />
-            <span class="field-error" id="name-error" role="alert"></span>
+            <input type="text" id="name" name="name" placeholder="e.g. Jean-Marie Dupont" required autocomplete="name" aria-describedby="name-error" />
+            <span class="field-error" id="name-error"></span>
           </div>
           <div class="form-group">
             <label for="email" data-i18n="form_email">Email Address <span aria-hidden="true" style="color:red;">*</span></label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
-            <span class="field-error" id="email-error" role="alert"></span>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" aria-describedby="email-error" />
+            <span class="field-error" id="email-error"></span>
           </div>
         </div>
         <div class="form-group">
           <label for="subject" data-i18n="form_topic">Topic</label>
-          <select id="subject" name="subject">
+          <select id="subject" name="subject" aria-describedby="subject-error">
             <option value="" data-i18n="form_topic_placeholder">Select a topic</option>
             <option data-i18n="form_topic1">AI Strategy Enquiry</option>
             <option data-i18n="form_topic2">Partnership Proposal</option>
@@ -607,12 +607,12 @@ $isHome = true;
             <option data-i18n="form_topic6">Media &amp; Press</option>
             <option data-i18n="form_topic7">Other</option>
           </select>
-          <span class="field-error" id="subject-error" role="alert"></span>
+          <span class="field-error" id="subject-error"></span>
         </div>
         <div class="form-group">
           <label for="message" data-i18n="form_message">Your Message <span aria-hidden="true" style="color:red;">*</span></label>
-          <textarea id="message" name="message" rows="5" placeholder="Tell us what's on your mind..." required></textarea>
-          <span class="field-error" id="message-error" role="alert"></span>
+          <textarea id="message" name="message" rows="5" placeholder="Tell us what's on your mind..." required aria-describedby="message-error"></textarea>
+          <span class="field-error" id="message-error"></span>
         </div>
         <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
         <button type="submit" class="btn-primary btn-full">

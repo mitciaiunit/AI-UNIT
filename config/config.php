@@ -52,6 +52,21 @@ return [
          * from .env.example with it.
          */
         'base_url' => env('APP_BASE_URL', $publicUrl),
+        /*
+         * Absolute origin ("https://example.govmu.org") used for canonical and
+         * Open Graph URLs, which have to be absolute.
+         *
+         * Blank means "work it out from the request", which is right while the
+         * site answers on one hostname. Set it once the production hostname is
+         * fixed, or if the site is reachable at more than one - a canonical is
+         * only useful if it names ONE address, and a request cannot know which
+         * of several is the preferred one.
+         *
+         * Deliberately empty rather than carrying a plausible government
+         * domain: no approved hostname is recorded anywhere in this repository,
+         * and a guessed one would be published in every page's metadata.
+         */
+        'canonical_origin' => env('APP_CANONICAL_ORIGIN', ''),
         'asset_path' => '/assets',
         'contact_email' => env('CONTACT_EMAIL', 'aiunit@govmu.org'),
         'contact_phone' => '(+230) 650 3000',
