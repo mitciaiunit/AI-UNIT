@@ -161,7 +161,7 @@
                      alt="The internship cohort of eight students standing together in the AI Unit office."
                      loading="eager" decoding="async" fetchpriority="high">
               </div>
-              <figcaption>The intern team at the AI Unit, METC, during the May to July 2026 attachment</figcaption>
+              <figcaption data-i18n="hl_hero_photo_caption" tabindex="0">The intern team at the AI Unit, METC, during the May to July 2026 attachment</figcaption>
             </figure>
           </div>
         </div>
@@ -205,28 +205,28 @@
                   <span class="ticks__icon" aria-hidden="true"><svg class="icon"><use href="#i-users"></use></svg></span>
                   <div>
                     <h3>Collaboration</h3>
-                    <p>A flat, collaborative structure with the mentor as the single source of technical guidance, and work coordinated through a shared Kanban board.</p>
+                    <p data-i18n="hl_ov_tick1" tabindex="0">A flat, collaborative structure with the mentor as the single source of technical guidance, and work coordinated through a shared Kanban board.</p>
                   </div>
                 </li>
                 <li>
                   <span class="ticks__icon" aria-hidden="true"><svg class="icon"><use href="#i-layers"></use></svg></span>
                   <div>
                     <h3>Teamwork</h3>
-                    <p>New interns were onboarded onto the existing code and workflow, features were divided across the team, and pieces like the PDF-to-audio converter were built and integrated by different interns working together.</p>
+                    <p data-i18n="hl_ov_tick2" tabindex="0">New interns were onboarded onto the existing code and workflow, features were divided across the team, and pieces like the PDF-to-audio converter were built and integrated by different interns working together.</p>
                   </div>
                 </li>
                 <li>
                   <span class="ticks__icon" aria-hidden="true"><svg class="icon"><use href="#i-code"></use></svg></span>
                   <div>
                     <h3>Learning by doing</h3>
-                    <p>WCAG standards, the Web Speech API and Jira were all learned through self-directed research and then applied directly to the portal, with the mentor guiding rather than handing over solutions.</p>
+                    <p data-i18n="hl_ov_tick3" tabindex="0">WCAG standards, the Web Speech API and Jira were all learned through self-directed research and then applied directly to the portal, with the mentor guiding rather than handing over solutions.</p>
                   </div>
                 </li>
                 <li>
                   <span class="ticks__icon" aria-hidden="true"><svg class="icon"><use href="#i-building"></use></svg></span>
                   <div>
                     <h3>Government digital projects</h3>
-                    <p>The portal serves a national audience, and the work was presented to the Ministry of Technology and to the Electoral Commission of Mauritius during the attachment.</p>
+                    <p data-i18n="hl_ov_tick4" tabindex="0">The portal serves a national audience, and the work was presented to the Ministry of Technology and to the Electoral Commission of Mauritius during the attachment.</p>
                   </div>
                 </li>
               </ul>
@@ -267,7 +267,7 @@
                      loading="lazy" decoding="async">
               </div>
             </div>
-            <figcaption>
+            <figcaption data-i18n="hl_revamp_screenshot_caption" tabindex="0">
               The rebuilt Framework Library. The Listen buttons are the PDF-to-audio feature: the
               AI Strategy, FAIR Guidelines, Digital Blueprint and AI Playbook can be read aloud.
             </figcaption>
@@ -286,10 +286,10 @@
               </p>
 
               <ol class="steps" role="list">
-                <li data-reveal data-reveal-delay="40"><span>01</span><div><h4>Analysing the existing site</h4><p>Review of aim.govmu.org: styling, mobile-friendliness, accessibility gaps and missing features.</p></div></li>
-                <li data-reveal data-reveal-delay="80"><span>02</span><div><h4>Wireframing</h4><p>A detailed wireframe of the home page, navigation and feature placement, approved before any code.</p></div></li>
-                <li data-reveal data-reveal-delay="120"><span>03</span><div><h4>Modern UI/UX</h4><p>A consistent design language built on typography, colour schemes and spacing.</p></div></li>
-                <li data-reveal data-reveal-delay="160"><span>04</span><div><h4>Responsive development</h4><p>A fully responsive layout built with CSS Flexbox and Grid.</p></div></li>
+                <li data-reveal data-reveal-delay="40"><span>01</span><div><h4>Analysing the existing site</h4><p data-i18n="hl_revamp_step1" tabindex="0">Review of aim.govmu.org: styling, mobile-friendliness, accessibility gaps and missing features.</p></div></li>
+                <li data-reveal data-reveal-delay="80"><span>02</span><div><h4>Wireframing</h4><p data-i18n="hl_revamp_step2" tabindex="0">A detailed wireframe of the home page, navigation and feature placement, approved before any code.</p></div></li>
+                <li data-reveal data-reveal-delay="120"><span>03</span><div><h4>Modern UI/UX</h4><p data-i18n="hl_revamp_step3" tabindex="0">A consistent design language built on typography, colour schemes and spacing.</p></div></li>
+                <li data-reveal data-reveal-delay="160"><span>04</span><div><h4>Responsive development</h4><p data-i18n="hl_revamp_step4" tabindex="0">A fully responsive layout built with CSS Flexbox and Grid.</p></div></li>
               </ol>
             </div>
 
@@ -298,17 +298,17 @@
                 <article class="spec">
                   <span class="spec__icon" aria-hidden="true"><svg class="icon"><use href="#i-layout"></use></svg></span>
                   <h4>Frontend</h4>
-                  <p>Built with HTML5, CSS3 and JavaScript (ES6+) without any front-end framework, so the codebase stays easy to maintain for future developers.</p>
+                  <p data-i18n="hl_revamp_spec_frontend" tabindex="0">Built with HTML5, CSS3 and JavaScript (ES6+) without any front-end framework, so the codebase stays easy to maintain for future developers.</p>
                 </article>
                 <article class="spec">
                   <span class="spec__icon" aria-hidden="true"><svg class="icon"><use href="#i-server"></use></svg></span>
                   <h4>Back-end planning</h4>
-                  <p>Python with FastAPI and PostgreSQL was agreed as the back-end stack, with API design patterns and database schema research under way at the end of the attachment.</p>
+                  <p data-i18n="hl_revamp_spec_backend" tabindex="0">Python with FastAPI and PostgreSQL was agreed as the back-end stack, with API design patterns and database schema research under way at the end of the attachment.</p>
                 </article>
                 <article class="spec">
                   <span class="spec__icon" aria-hidden="true"><svg class="icon"><use href="#i-devices"></use></svg></span>
                   <h4>Responsive design</h4>
-                  <p>A fully responsive layout using CSS Flexbox and Grid, with a consistent scheme of typography, colour and spacing.</p>
+                  <p data-i18n="hl_revamp_spec_responsive" tabindex="0">A fully responsive layout using CSS Flexbox and Grid, with a consistent scheme of typography, colour and spacing.</p>
                 </article>
               </div>
             </div>
@@ -323,7 +323,7 @@
                        alt="A physical Kanban whiteboard with columns for Backlog, In Progress, Test, Blocked and Done, filled with printed task cards."
                        loading="lazy" decoding="async">
                 </div>
-                <figcaption>The physical Kanban board that came first, before the workflow moved to Jira</figcaption>
+                <figcaption data-i18n="hl_revamp_kanban_caption" tabindex="0">The physical Kanban board that came first, before the workflow moved to Jira</figcaption>
               </figure>
             </div>
 
@@ -389,7 +389,7 @@
                        alt="The Meet DIVA introduction card, describing the assistant as answering questions based on four key documents, with a Chat with DIVA button."
                        loading="lazy" decoding="async">
                 </div>
-                <figcaption>The invitation to start a conversation, placed alongside the documents themselves</figcaption>
+                <figcaption data-i18n="hl_diva_entry_caption" tabindex="0">The invitation to start a conversation, placed alongside the documents themselves</figcaption>
               </figure>
             </div>
 
@@ -402,8 +402,8 @@
                 or continued from any page without leaving the current content.
               </p>
               <ul class="feature-rows" role="list">
-                <li><span aria-hidden="true"><svg class="icon"><use href="#i-chip"></use></svg></span><div><h4>AI assistant</h4><p>Answers questions on AI in Mauritius, the portal's content and government AI resources, drawing on the four published documents.</p></div></li>
-                <li><span aria-hidden="true"><svg class="icon"><use href="#i-code"></use></svg></span><div><h4>Integration work</h4><p>The first integration attempt failed against the portal's Content Security Policy. The conflict was diagnosed through browser developer tools and resolved with a CSP configuration that permits the required cross-origin calls while keeping the portal secure.</p></div></li>
+                <li><span aria-hidden="true"><svg class="icon"><use href="#i-chip"></use></svg></span><div><h4>AI assistant</h4><p data-i18n="hl_diva_feature_assistant" tabindex="0">Answers questions on AI in Mauritius, the portal's content and government AI resources, drawing on the four published documents.</p></div></li>
+                <li><span aria-hidden="true"><svg class="icon"><use href="#i-code"></use></svg></span><div><h4>Integration work</h4><p data-i18n="hl_diva_feature_integration" tabindex="0">The first integration attempt failed against the portal's Content Security Policy. The conflict was diagnosed through browser developer tools and resolved with a CSP configuration that permits the required cross-origin calls while keeping the portal secure.</p></div></li>
               </ul>
             </div>
           </div>
@@ -417,7 +417,7 @@
                        alt="The DIVA chat window showing a detailed answer about the Digital Transformation Blueprint, with read-aloud and copy controls and a question box offering typed or spoken input."
                        loading="lazy" decoding="async">
                 </div>
-                <figcaption>The conversation view, with read-aloud, copy and voice input</figcaption>
+                <figcaption data-i18n="hl_diva_speech_caption" tabindex="0">The conversation view, with read-aloud, copy and voice input</figcaption>
               </figure>
             </div>
 
@@ -429,8 +429,8 @@
               </p>
 
               <ul class="feature-rows" role="list">
-                <li><span aria-hidden="true"><svg class="icon"><use href="#i-chat"></use></svg></span><div><h4>Conversational interface</h4><p>Questions can be typed or spoken, answers can be read aloud or copied, and the conversation can be cleared and restarted at any point.</p></div></li>
-                <li><span aria-hidden="true"><svg class="icon"><use href="#i-mic"></use></svg></span><div><h4>Accessibility</h4><p>Reading page content aloud supports users with visual impairments and lower literacy levels, in keeping with the WCAG principles behind the portal.</p></div></li>
+                <li><span aria-hidden="true"><svg class="icon"><use href="#i-chat"></use></svg></span><div><h4>Conversational interface</h4><p data-i18n="hl_diva_feature_conversation" tabindex="0">Questions can be typed or spoken, answers can be read aloud or copied, and the conversation can be cleared and restarted at any point.</p></div></li>
+                <li><span aria-hidden="true"><svg class="icon"><use href="#i-mic"></use></svg></span><div><h4>Accessibility</h4><p data-i18n="hl_diva_feature_accessibility" tabindex="0">Reading page content aloud supports users with visual impairments and lower literacy levels, in keeping with the WCAG principles behind the portal.</p></div></li>
               </ul>
             </div>
           </div>
@@ -467,7 +467,7 @@
               </div>
               <figcaption>
                 <h3>Screen reader &amp; quick profiles</h3>
-                <p>A built-in screen reader reads the page in natural segments while highlighting the current element and scrolling it into view. Space pauses, S stops, arrow keys change the speed, and a slider and voice list give finer control. Five quick profiles, for low vision, motor, dyslexia, cognitive and senior needs, apply a set of adjustments in one click.</p>
+                <p data-i18n="hl_a11y_panel1_caption" tabindex="0">A built-in screen reader reads the page in natural segments while highlighting the current element and scrolling it into view. Space pauses, S stops, arrow keys change the speed, and a slider and voice list give finer control. Five quick profiles, for low vision, motor, dyslexia, cognitive and senior needs, apply a set of adjustments in one click.</p>
               </figcaption>
             </figure>
 
@@ -479,7 +479,7 @@
               </div>
               <figcaption>
                 <h3>Text size &amp; colour</h3>
-                <p>Base text size scales between 80% and 150% without breaking the page layout. Five display modes, Normal, High Contrast, Dark, Greyscale and Negative, cover different contrast needs, alongside toggles to highlight links, hide images and stop animations.</p>
+                <p data-i18n="hl_a11y_panel2_caption" tabindex="0">Base text size scales between 80% and 150% without breaking the page layout. Five display modes, Normal, High Contrast, Dark, Greyscale and Negative, cover different contrast needs, alongside toggles to highlight links, hide images and stop animations.</p>
               </figcaption>
             </figure>
 
@@ -491,7 +491,7 @@
               </div>
               <figcaption>
                 <h3>Reading, focus &amp; navigation</h3>
-                <p>A dyslexia-friendly font toggle, a reading guide that follows the cursor, wider letter spacing and a bold focus outline for keyboard navigation, plus a large mouse pointer for users with motor difficulties and a keyboard shortcut guide. The panel itself opens with <kbd>Alt</kbd> + <kbd>A</kbd>.</p>
+                <p data-i18n="hl_a11y_panel3_caption" tabindex="0">A dyslexia-friendly font toggle, a reading guide that follows the cursor, wider letter spacing and a bold focus outline for keyboard navigation, plus a large mouse pointer for users with motor difficulties and a keyboard shortcut guide. The panel itself opens with <kbd>Alt</kbd> + <kbd>A</kbd>.</p>
               </figcaption>
             </figure>
           </div>
@@ -512,32 +512,32 @@
               <li class="principle" data-reveal>
                 <span class="principle__icon" aria-hidden="true"><svg class="icon"><use href="#i-check-circle"></use></svg></span>
                 <h4>WCAG 2.2</h4>
-                <p>The portal was tested against the guidelines with browser-based evaluation tools, and the required adjustments were identified and applied across the front-end code.</p>
+                <p data-i18n="hl_a11y_principle_wcag" tabindex="0">The portal was tested against the guidelines with browser-based evaluation tools, and the required adjustments were identified and applied across the front-end code.</p>
               </li>
               <li class="principle" data-reveal data-reveal-delay="60">
                 <span class="principle__icon" aria-hidden="true"><svg class="icon"><use href="#i-contrast"></use></svg></span>
                 <h4>Colour contrast</h4>
-                <p>Contrast ratios in the existing front end were reviewed and improved to meet the guidelines, with a High Contrast display mode available for users who need more.</p>
+                <p data-i18n="hl_a11y_principle_contrast" tabindex="0">Contrast ratios in the existing front end were reviewed and improved to meet the guidelines, with a High Contrast display mode available for users who need more.</p>
               </li>
               <li class="principle" data-reveal data-reveal-delay="120">
                 <span class="principle__icon" aria-hidden="true"><svg class="icon"><use href="#i-keyboard"></use></svg></span>
                 <h4>Keyboard navigation</h4>
-                <p>Keyboard navigation support across the portal, a bold focus outline to keep the current position visible, and a shortcut guide for fully mouseless use.</p>
+                <p data-i18n="hl_a11y_principle_keyboard" tabindex="0">Keyboard navigation support across the portal, a bold focus outline to keep the current position visible, and a shortcut guide for fully mouseless use.</p>
               </li>
               <li class="principle" data-reveal>
                 <span class="principle__icon" aria-hidden="true"><svg class="icon"><use href="#i-volume"></use></svg></span>
                 <h4>Screen readers</h4>
-                <p>The toolbar announces its state changes through an ARIA live region, keeping external screen readers such as NVDA and JAWS in step with what is on screen.</p>
+                <p data-i18n="hl_a11y_principle_screenreaders" tabindex="0">The toolbar announces its state changes through an ARIA live region, keeping external screen readers such as NVDA and JAWS in step with what is on screen.</p>
               </li>
               <li class="principle" data-reveal data-reveal-delay="60">
                 <span class="principle__icon" aria-hidden="true"><svg class="icon"><use href="#i-tag"></use></svg></span>
                 <h4>ARIA labels</h4>
-                <p>ARIA labels and text alternatives for non-text content were added throughout the front end so that assistive technology can name and describe every control.</p>
+                <p data-i18n="hl_a11y_principle_aria" tabindex="0">ARIA labels and text alternatives for non-text content were added throughout the front end so that assistive technology can name and describe every control.</p>
               </li>
               <li class="principle" data-reveal data-reveal-delay="120">
                 <span class="principle__icon" aria-hidden="true"><svg class="icon"><use href="#i-a11y"></use></svg></span>
                 <h4>Saved preferences</h4>
-                <p>Every setting is stored in the browser's local storage, so a returning visitor's preferences are restored automatically with no account needed.</p>
+                <p data-i18n="hl_a11y_principle_saved" tabindex="0">Every setting is stored in the browser's local storage, so a returning visitor's preferences are restored automatically with no account needed.</p>
               </li>
             </ul>
           </div>
@@ -552,7 +552,7 @@
           <header class="section__head section__head--center" data-reveal>
             <p class="eyebrow">The process</p>
             <h2 class="h2" id="journey-title">Development journey</h2>
-            <p class="lede">
+            <p class="lede" data-i18n="hl_journey_lede" tabindex="0">
               The same six stages carried every piece of work from an open question to something
               ready to hand over.
             </p>
@@ -573,7 +573,7 @@
                      loading="lazy" decoding="async">
               </div>
             </div>
-            <figcaption>
+            <figcaption data-i18n="hl_journey_video_caption" tabindex="0">
               The video captioning feature: audio transcribed by hand into timed WebVTT files,
               surfaced through the HTML5 track element, with captions available in English and
               French. The interface presenting the videos and captions was also built by the interns.
@@ -588,7 +588,7 @@
               <div class="timeline__card">
                 <p class="timeline__step">Stage 01</p>
                 <h3>Research</h3>
-                <p>Analysis of the existing aim.govmu.org site, plus self-directed research into WCAG 2.2, the Web Speech API and open data.</p>
+                <p data-i18n="hl_journey_stage1" tabindex="0">Analysis of the existing aim.govmu.org site, plus self-directed research into WCAG 2.2, the Web Speech API and open data.</p>
               </div>
             </li>
             <li class="timeline__item" data-reveal>
@@ -596,7 +596,7 @@
               <div class="timeline__card">
                 <p class="timeline__step">Stage 02</p>
                 <h3>Planning</h3>
-                <p>A wireframe of the home page, navigation and feature placement, approved by the mentor, alongside the Kanban board that would organise the work.</p>
+                <p data-i18n="hl_journey_stage2" tabindex="0">A wireframe of the home page, navigation and feature placement, approved by the mentor, alongside the Kanban board that would organise the work.</p>
               </div>
             </li>
             <li class="timeline__item" data-reveal>
@@ -604,7 +604,7 @@
               <div class="timeline__card">
                 <p class="timeline__step">Stage 03</p>
                 <h3>Development</h3>
-                <p>Front-end build in HTML5, CSS3 and JavaScript, followed by the accessibility toolbar, speech synthesis, DIVA, video captions and PDF-to-audio.</p>
+                <p data-i18n="hl_journey_stage3" tabindex="0">Front-end build in HTML5, CSS3 and JavaScript, followed by the accessibility toolbar, speech synthesis, DIVA, video captions and PDF-to-audio.</p>
               </div>
             </li>
             <li class="timeline__item" data-reveal>
@@ -612,7 +612,7 @@
               <div class="timeline__card">
                 <p class="timeline__step">Stage 04</p>
                 <h3>Testing</h3>
-                <p>The portal was checked against WCAG 2.2 with browser-based evaluation tools, and integration problems, like the chatbot's CSP conflict, were diagnosed through browser developer tools.</p>
+                <p data-i18n="hl_journey_stage4" tabindex="0">The portal was checked against WCAG 2.2 with browser-based evaluation tools, and integration problems, like the chatbot's CSP conflict, were diagnosed through browser developer tools.</p>
               </div>
             </li>
             <li class="timeline__item" data-reveal>
@@ -620,7 +620,7 @@
               <div class="timeline__card">
                 <p class="timeline__step">Stage 05</p>
                 <h3>Refinement</h3>
-                <p>Early front-end code was reworked to meet the WCAG requirement, and the speech engine gained a voice selection algorithm to align voices with the chosen language.</p>
+                <p data-i18n="hl_journey_stage5" tabindex="0">Early front-end code was reworked to meet the WCAG requirement, and the speech engine gained a voice selection algorithm to align voices with the chosen language.</p>
               </div>
             </li>
             <li class="timeline__item" data-reveal>
@@ -628,7 +628,7 @@
               <div class="timeline__card">
                 <p class="timeline__step">Stage 06</p>
                 <h3>Deployment preparation</h3>
-                <p>The portal was presented to the Ministry of Technology, back-end planning began, and the code structure was documented so incoming interns could continue the work.</p>
+                <p data-i18n="hl_journey_stage6" tabindex="0">The portal was presented to the Ministry of Technology, back-end planning began, and the code structure was documented so incoming interns could continue the work.</p>
               </div>
             </li>
           </ol>
@@ -639,7 +639,7 @@
                    alt="Interns and a member of the unit standing in the Ministry of Information Technology, Communication and Innovation reception, beside a plaque reading Transform Mauritius into a thriving, smart and inclusive digital society."
                    loading="lazy" decoding="async">
             </div>
-            <figcaption>
+            <figcaption data-i18n="hl_journey_closing_caption" tabindex="0">
               At the Ministry of Information Technology, Communication and Innovation, where the
               portal was presented.
             </figcaption>
@@ -742,7 +742,7 @@
           <header class="section__head section__head--center" data-reveal>
             <p class="eyebrow">Capability</p>
             <h2 class="h2" id="skills-title">Skills &amp; technologies</h2>
-            <p class="lede">
+            <p class="lede" data-i18n="hl_skills_lede" tabindex="0">
               The technologies used across the portal, and the tools the team worked with.
             </p>
           </header>
@@ -750,55 +750,55 @@
           <ul class="tech-grid" role="list">
             <li class="tech" data-reveal>
               <span class="tech__icon" aria-hidden="true"><svg class="icon"><use href="#i-brackets"></use></svg></span>
-              <h3>HTML5</h3><p>Semantic markup, ARIA labels and the track element for captions</p>
+              <h3>HTML5</h3><p data-i18n="hl_skills_html" tabindex="0">Semantic markup, ARIA labels and the track element for captions</p>
             </li>
             <li class="tech" data-reveal data-reveal-delay="40">
               <span class="tech__icon" aria-hidden="true"><svg class="icon"><use href="#i-brush"></use></svg></span>
-              <h3>CSS3</h3><p>Responsive layouts with Flexbox and Grid, and a consistent design language</p>
+              <h3>CSS3</h3><p data-i18n="hl_skills_css" tabindex="0">Responsive layouts with Flexbox and Grid, and a consistent design language</p>
             </li>
             <li class="tech" data-reveal data-reveal-delay="80">
               <span class="tech__icon" aria-hidden="true"><svg class="icon"><use href="#i-braces"></use></svg></span>
-              <h3>JavaScript (ES6+)</h3><p>All portal interactivity, written without a front-end framework</p>
+              <h3>JavaScript (ES6+)</h3><p data-i18n="hl_skills_js" tabindex="0">All portal interactivity, written without a front-end framework</p>
             </li>
             <li class="tech" data-reveal data-reveal-delay="120">
               <span class="tech__icon" aria-hidden="true"><svg class="icon"><use href="#i-layout"></use></svg></span>
-              <h3>Frontend Development</h3><p>Wireframing, interface build and usability improvements</p>
+              <h3>Frontend Development</h3><p data-i18n="hl_skills_frontend" tabindex="0">Wireframing, interface build and usability improvements</p>
             </li>
             <li class="tech" data-reveal>
               <span class="tech__icon" aria-hidden="true"><svg class="icon"><use href="#i-devices"></use></svg></span>
-              <h3>Responsive Design</h3><p>A layout that holds from a small phone to a wide desktop</p>
+              <h3>Responsive Design</h3><p data-i18n="hl_skills_responsive" tabindex="0">A layout that holds from a small phone to a wide desktop</p>
             </li>
             <li class="tech" data-reveal data-reveal-delay="40">
               <span class="tech__icon" aria-hidden="true"><svg class="icon"><use href="#i-a11y"></use></svg></span>
-              <h3>Accessibility</h3><p>WCAG 2.2, ARIA labels, keyboard navigation and contrast</p>
+              <h3>Accessibility</h3><p data-i18n="hl_skills_a11y" tabindex="0">WCAG 2.2, ARIA labels, keyboard navigation and contrast</p>
             </li>
             <li class="tech" data-reveal data-reveal-delay="80">
               <span class="tech__icon" aria-hidden="true"><svg class="icon"><use href="#i-volume"></use></svg></span>
-              <h3>Web Speech API</h3><p>Speech synthesis for the screen reader and PDF-to-audio</p>
+              <h3>Web Speech API</h3><p data-i18n="hl_skills_speech" tabindex="0">Speech synthesis for the screen reader and PDF-to-audio</p>
             </li>
             <li class="tech" data-reveal data-reveal-delay="120">
               <span class="tech__icon" aria-hidden="true"><svg class="icon"><use href="#i-chip"></use></svg></span>
-              <h3>AI Chatbot</h3><p>Integration of the DIVA assistant into the portal</p>
+              <h3>AI Chatbot</h3><p data-i18n="hl_skills_chatbot" tabindex="0">Integration of the DIVA assistant into the portal</p>
             </li>
             <li class="tech" data-reveal>
               <span class="tech__icon" aria-hidden="true"><svg class="icon"><use href="#i-terminal"></use></svg></span>
-              <h3>Python</h3><p>Selected for the back end, researched during the attachment</p>
+              <h3>Python</h3><p data-i18n="hl_skills_python" tabindex="0">Selected for the back end, researched during the attachment</p>
             </li>
             <li class="tech" data-reveal data-reveal-delay="40">
               <span class="tech__icon" aria-hidden="true"><svg class="icon"><use href="#i-server"></use></svg></span>
-              <h3>FastAPI</h3><p>The agreed back-end framework, with API design patterns explored</p>
+              <h3>FastAPI</h3><p data-i18n="hl_skills_fastapi" tabindex="0">The agreed back-end framework, with API design patterns explored</p>
             </li>
             <li class="tech" data-reveal data-reveal-delay="80">
               <span class="tech__icon" aria-hidden="true"><svg class="icon"><use href="#i-database"></use></svg></span>
-              <h3>PostgreSQL</h3><p>The chosen relational database, with schema planning under way</p>
+              <h3>PostgreSQL</h3><p data-i18n="hl_skills_postgresql" tabindex="0">The chosen relational database, with schema planning under way</p>
             </li>
             <li class="tech" data-reveal data-reveal-delay="120">
               <span class="tech__icon" aria-hidden="true"><svg class="icon"><use href="#i-repo"></use></svg></span>
-              <h3>Git &amp; GitHub</h3><p>A shared repository for concurrent work across the intern team</p>
+              <h3>Git &amp; GitHub</h3><p data-i18n="hl_skills_git" tabindex="0">A shared repository for concurrent work across the intern team</p>
             </li>
             <li class="tech" data-reveal>
               <span class="tech__icon" aria-hidden="true"><svg class="icon"><use href="#i-board"></use></svg></span>
-              <h3>Jira</h3><p>Kanban board with tasks organised into Epics and Sub-Epics</p>
+              <h3>Jira</h3><p data-i18n="hl_skills_jira" tabindex="0">Kanban board with tasks organised into Epics and Sub-Epics</p>
             </li>
           </ul>
         </div>
