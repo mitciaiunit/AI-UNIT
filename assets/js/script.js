@@ -58,6 +58,7 @@ const translations = {
     marketplace_card2_title: "For Businesses", marketplace_card2_desc: "Discover vetted AI solutions that can transform your operations",
     marketplace_card3_title: "For Public Institutions", marketplace_card3_desc: "Find trusted AI tools to modernise government services for citizens",
     library_eyebrow: "Framework", library_title1: "Framework Library", library_title2: "And AI Playbook", library_desc: "Our core governance documents: strategic blueprint, AI strategy, FAIR guidelines, and the AI Playbook for public sector implementation.",
+    library_instructions: "Each document offers Download, View Online and Listen. Press a Listen button to have that document read aloud; press the same button again to pause. The progress bar below it shows how much has played.",
     doc1_title: "BLUEPRINT", doc1_desc: "Digital Transformation Blueprint: 4 strategic pillars and governance framework.", doc1_pages: "54 Pages",
     doc2_title: "AI STRATEGY", doc2_desc: "Mauritius' first national AI strategy - governance, adoption framework, sectoral applications.", doc2_pages: "74 Pages",
     doc3_title: "FAIR GUIDELINES", doc3_desc: "Principles-based responsible AI guidelines for Fairness, Accountability, Inclusiveness & Responsibility.", doc3_pages: "38 Pages",
@@ -83,7 +84,7 @@ const translations = {
     team_ruben_tag: "Digital Transformation", team_ruben_role: "AI Expert", team_ruben_quote: "Ruben Ramdhony is a Digital Transformation Executive and former Chief Information Officer with over 20 years of enterprise experience across Australia and Mauritius. He holds an MBA from Macquarie Business School, Australia. He is currently serving in an AI Expert capacity, translating policy into working systems, governance into practice, and strategy into measurable outcomes across Government.",
     ruben_stat1: "Years Enterprise", ruben_stat2: "Former Chief Info. Officer", ruben_stat3: "Cross-Border Experience",
     contact_eyebrow: "Get in Touch", contact_title1: "We're Here", contact_title2: "for You", contact_desc: "Have questions about AI in Mauritius? Want to partner with us or learn more about our programmes? Reach out - we welcome every question.",
-    contact_address_title: "Address", contact_address_text: "Ministry of Information Technology,\nCommunication and Innovation\nLevel 5, SIT Building, Ebène\nMauritius",
+    contact_address_title: "Address", contact_address_text: "Cyber Tower 2, Level 6,\nEbene Cyber City,\nMauritius",
     contact_email_title: "Email", contact_phone_title: "Phone", contact_hours_title: "Office Hours", contact_hours_text: "Monday - Friday: 9:00 AM - 4:00 PM\nClosed on Public Holidays",
     form_name: "Your Name", form_email: "Email Address", form_topic: "Topic", form_topic_placeholder: "Select a topic",
     form_topic1: "AI Strategy Enquiry", form_topic2: "Partnership Proposal", form_topic3: "Public Services Feedback", form_topic4: "DIVA / Digital Services", form_topic5: "AI Marketplace", form_topic6: "Media & Press", form_topic7: "Other",
@@ -525,15 +526,45 @@ hamburger.addEventListener('click',()=>{
   hamburger.setAttribute('aria-expanded',open.toString());
 });
 
-document.querySelectorAll('.team-tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    const idx=tab.dataset.member;
-    document.querySelectorAll('.team-tab').forEach(t=>{t.classList.remove('active');t.setAttribute('aria-selected','false');});
-    tab.classList.add('active');tab.setAttribute('aria-selected','true');
-    document.querySelectorAll('.team-member-panel').forEach(p=>p.classList.remove('active'));
-    const panels=document.querySelectorAll('.team-member-panel');
-    if(panels[idx])panels[idx].classList.add('active');
+const teamTabs = Array.from(document.querySelectorAll('.team-tab'));
+
+// Shared by click and arrow-key switching, so both stay in sync: sets the
+// clicked/arrowed-to tab active (and, per the roving-tabindex pattern below,
+// the only one left in the Tab order), and swaps in its panel.
+function activateTeamTab(tab) {
+  const idx = tab.dataset.member;
+  teamTabs.forEach(t => {
+    const isTarget = t === tab;
+    t.classList.toggle('active', isTarget);
+    t.setAttribute('aria-selected', String(isTarget));
+    t.setAttribute('tabindex', isTarget ? '0' : '-1');
   });
+  document.querySelectorAll('.team-member-panel').forEach(p => p.classList.remove('active'));
+  const panels = document.querySelectorAll('.team-member-panel');
+  if (panels[idx]) panels[idx].classList.add('active');
+}
+
+teamTabs.forEach(tab => {
+  tab.addEventListener('click', () => activateTeamTab(tab));
+});
+
+// Roving-tabindex arrow key support, per the WAI-ARIA tabs pattern: Left/Right
+// (and Up/Down) move between tabs and activate them, Home/End jump to the
+// first/last. Without this, each tab was still individually reachable with
+// Tab, but arrow-key switching - what screen reader users expect once
+// they're inside a tablist - never worked.
+document.querySelector('.team-tabs')?.addEventListener('keydown', function (e) {
+  const current = teamTabs.indexOf(document.activeElement);
+  if (current === -1) return;
+  let next;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (current + 1) % teamTabs.length;
+  else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (current - 1 + teamTabs.length) % teamTabs.length;
+  else if (e.key === 'Home') next = 0;
+  else if (e.key === 'End') next = teamTabs.length - 1;
+  else return;
+  e.preventDefault();
+  activateTeamTab(teamTabs[next]);
+  teamTabs[next].focus();
 });
 
 const revealObs=new IntersectionObserver(entries=>{
@@ -1360,6 +1391,12 @@ function setButtonPlay(button) {
     if (label) label.textContent = 'Play';
     button.classList.remove('is-playing');
     button.setAttribute('aria-pressed', 'false');
+    // The visible label alone is ambiguous with four identical "Listen"
+    // buttons on the page - aria-label names which document this one is,
+    // so a screen reader announces "Listen to <title>" / "Pause <title>"
+    // instead of four indistinguishable "Listen" buttons.
+    const title = button.dataset.docTitle;
+    if (title) button.setAttribute('aria-label', 'Listen to ' + title);
 }
 
 function setButtonPause(button) {
@@ -1367,6 +1404,8 @@ function setButtonPause(button) {
     if (label) label.textContent = 'Pause';
     button.classList.add('is-playing');
     button.setAttribute('aria-pressed', 'true');
+    const title = button.dataset.docTitle;
+    if (title) button.setAttribute('aria-label', 'Pause ' + title);
 }
 
 function formatTime(seconds) {
