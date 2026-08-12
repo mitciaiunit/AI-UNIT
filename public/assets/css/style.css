@@ -140,7 +140,35 @@ html.a11y-mode-dark .audio-progress-bar{background:rgba(43,50,68,.9);border-colo
 html{scroll-behavior:smooth;font-size:16px;}
 body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text-1);overflow-x:hidden;line-height:1.65;}
 h1,h2,h3,h4{font-family:'Lora',serif;line-height:1.2;}
+
+/* Justified body copy, inherited from the original static site. It works for
+   long-form prose in a wide measure, where a line holds enough words to absorb
+   the extra space.
+
+   It fails badly everywhere else. Justification stretches the gaps between
+   words until the line reaches both edges, so a short sentence in a narrow or
+   centred column comes out as "Ministry    of    Information    Technology" -
+   one rule, one defect, in every such block. The exceptions below are the
+   layouts where that happens; they are switched back to normal alignment
+   rather than patched word by word.
+
+   hyphens is reset with them: automatic hyphenation exists to give justified
+   text somewhere to break, and once the text is no longer justified it only
+   introduces stray hyphens. */
 p{text-align:justify;hyphens:auto;}
+
+/* .section-desc   the single-sentence description under a section heading
+                   ("Meet the experts driving Mauritius' AI strategy...").
+                   Capped at 600px, so its lines are always short.
+   .page-subtitle  centred inside .page-header - the blanket rule above was
+                   silently overriding that text-align:center.
+   .contact-block  address, phone and email sit in the narrow left column of
+                   .contact-grid, less an icon: the tightest measure on the
+                   site, and the worst affected. */
+.section-desc,
+.contact-block p{text-align:left;hyphens:manual;}
+
+.page-subtitle{text-align:center;hyphens:manual;}
 /* Headings are split into a plain half and an <em> half ("Driving Mauritius" /
    "AI Future"). The em used to be forced to --blue-mid, which made every such
    heading two-tone. `inherit` collapses each one to a single colour by taking
@@ -204,7 +232,13 @@ button{font-family:'Sora',sans-serif;}
 .simple-toggle:hover{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-pale);transform:translateY(-1px);box-shadow:var(--shadow-md);}
 .simple-toggle[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:white;box-shadow:0 8px 20px rgba(26,58,143,0.24);}
 .simple-toggle[aria-pressed="true"] span{color:white;}
-.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;}
+/* 44x44 rather than the 34x28 the 6px padding used to give it. The three bars
+   are still 22px wide and 5px apart - only the hit area grew, so the icon looks
+   identical while becoming a comfortable touch target. The rotate transforms
+   below still use the same 7px offset (5px gap + 2px bar), so the X animation
+   is unaffected. Set on the base rule because the button only ever appears
+   below 1100px, where it is always a touch target. */
+.hamburger{display:none;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:0;width:44px;height:44px;}
 .hamburger span{display:block;width:22px;height:2px;background:var(--text-1);border-radius:2px;transition:all var(--trans);}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
 .hamburger.open span:nth-child(2){opacity:0;}
@@ -524,7 +558,10 @@ button{font-family:'Sora',sans-serif;}
 .ai-for-all-box:last-child{margin-bottom:0;}
 .ai-for-all-box strong{display:block;margin-bottom:4px;font-size:0.9rem;}
 .ai-for-all-box em{font-size:0.8rem;color:var(--text-3);display:block;margin-bottom:12px;}
-.btn-redesign{display:inline-flex;align-items:center;gap:6px;background:white;border:1.5px solid var(--blue-mid);color:var(--blue-mid);padding:8px 18px;border-radius:40px;font-weight:600;font-size:0.8rem;cursor:pointer;transition:all 0.2s ease;}
+/* text-decoration:none because the two "AI for All" controls are <a> elements,
+   not <button>s - without it they would render underlined. Everything else
+   here is unchanged, so the pill looks exactly as it did. */
+.btn-redesign{display:inline-flex;align-items:center;gap:6px;background:white;border:1.5px solid var(--blue-mid);color:var(--blue-mid);padding:8px 18px;border-radius:40px;font-weight:600;font-size:0.8rem;font-family:'Sora',sans-serif;text-decoration:none;cursor:pointer;transition:all 0.2s ease;}
 .btn-redesign:hover{background:var(--blue-mid);color:white;transform:translateY(-2px);box-shadow:var(--shadow-sm);}
 @media(max-width:768px){.action-grid{grid-template-columns:1fr;}}
 
@@ -757,13 +794,68 @@ button{font-family:'Sora',sans-serif;}
 .diva-widget{position:fixed;bottom:28px;right:28px;z-index:1500;}
 .diva-trigger{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform var(--trans);position:relative;background:none !important;border:none !important;padding:0 !important;margin:0 !important;box-shadow:none !important;outline:none !important;-webkit-appearance:none !important;appearance:none !important;border-radius:0 !important;}
 .diva-trigger:hover{transform:scale(1.1);}
+
+/* ---- DIVA unavailable (DIVA_API_URL unset or unusable) ----
+   The assistant stays on the page, dimmed and disabled, rather than
+   disappearing: a missing feature and a broken one look identical to a visitor
+   otherwise, and only one of them is worth reporting.
+
+   The widget switches to a column so the notice sits above the icon instead of
+   beside it, which keeps it clear of the site's bottom-right corner at every
+   width. */
+.diva-widget--unavailable{display:flex;flex-direction:column;align-items:flex-end;gap:10px;max-width:min(280px,calc(100vw - 56px));}
+
+/* Greyed and inert. The hover lift is cancelled too - a control that responds
+   to the pointer reads as usable however faint it looks. */
+.diva-widget--unavailable .diva-trigger{opacity:0.45;filter:grayscale(1);cursor:not-allowed;}
+.diva-widget--unavailable .diva-trigger:hover{transform:none;}
+
+.diva-unavailable{
+  margin:0;
+  padding:10px 14px;
+  border-radius:var(--radius);
+  background:var(--surface);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow-md);
+  color:var(--text-2);
+  font-family:'Sora',sans-serif;
+  font-size:0.8rem;
+  font-weight:600;
+  line-height:1.5;
+  /* Overrides the site-wide p{text-align:justify}, which would stretch this
+     short sentence across the pill. */
+  text-align:left;
+  hyphens:manual;
+}
 .diva-trigger img{display:block;width:96px;height:96px;object-fit:contain;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.22));background:none;border:none;box-shadow:none;}
 
+/* The panel is anchored to the BOTTOM of the viewport and grows upward, so
+   without a ceiling its top edge simply leaves the screen: header + messages +
+   input row + footer came to roughly 558px, and on a 1366x568 window that put
+   the title bar and the close button about 30px above the top of the viewport,
+   unreachable. Nothing about that is visible on a tall desktop monitor, which
+   is why it survived so long.
+
+   max-height ties the panel to the viewport instead of to its contents. The
+   56px is the existing 28px bottom offset mirrored at the top, so the panel
+   keeps the same visual margin at both ends.
+
+   The vh line first, then dvh: dvh tracks the viewport as mobile browser
+   chrome slides in and out, so the panel does not get clipped when the address
+   bar reappears. Browsers that do not know dvh discard that line and keep the
+   vh value, which is the same number minus that refinement.
+
+   max-width is the horizontal counterpart - a guard for narrow-but-not-mobile
+   widths where the fixed 560px plus the 120px right offset would otherwise
+   push the left edge off screen. */
 .diva-panel{
   position:fixed;
   bottom:28px;
   right:120px;
   width:560px;
+  max-width:calc(100vw - 32px);
+  max-height:calc(100vh - 56px);
+  max-height:calc(100dvh - 56px);
   background:var(--surface);
   border-radius:24px;
   border:1.5px solid var(--border);
@@ -785,7 +877,13 @@ button{font-family:'Sora',sans-serif;}
   flex-shrink:0;
 }
 .diva-panel-header img{width:56px;height:56px;object-fit:contain;flex-shrink:0;background:none;border:none;padding:0;border-radius:0;}
-.diva-panel-header-text{display:flex;flex-direction:column;gap:2px;}
+/* min-width:0 for the same reason .diva-messages needs min-height:0 - a flex
+   item will not shrink below its content's intrinsic width by default. The
+   avatar, close button and Clear button are all fixed-width and unshrinkable,
+   so on a 320px screen this column is the only one that can yield; without
+   this it holds itself at the width of "Interactive" and pushes the row wider
+   than the panel. */
+.diva-panel-header-text{display:flex;flex-direction:column;gap:2px;min-width:0;}
 .diva-panel-header h4{color:white;font-size:1.05rem;font-weight:700;margin:0;letter-spacing:0.01em;}
 .diva-panel-header p{color:rgba(255,255,255,0.8);font-size:0.78rem;margin:0;}
 .diva-online{display:flex;align-items:center;gap:5px;color:rgba(255,255,255,0.85);font-size:0.72rem;font-weight:500;margin-top:2px;}
@@ -805,12 +903,30 @@ button{font-family:'Sora',sans-serif;}
 }
 .diva-close:hover{background:rgba(255,255,255,0.3);}
 
+/* The one part of the panel that is allowed to give way when space runs out.
+   Header, input row and footer all carry flex-shrink:0, so a capped panel
+   takes the space it needs from here and from nowhere else - the close button,
+   the text field and the send button stay exactly where they are however long
+   the conversation gets.
+
+   min-height:0 is what makes that work. A flex item's automatic minimum size
+   is its content, so without this the message list refuses to shrink, the
+   panel is pushed past its max-height, and the overflow reappears - the
+   scrollbar below would never engage. It replaces the previous 280px floor,
+   which was the same obstruction with a smaller number on it; the opening
+   welcome message and its three suggestion buttons come to roughly that height
+   on their own, so the panel still opens at the size it always did.
+
+   max-height keeps the desktop proportions: on a tall screen the panel stays
+   the size it has always been rather than stretching to fill the viewport now
+   that it is allowed to. */
 .diva-messages{
   padding:20px 18px;
   display:flex;
   flex-direction:column;
   gap:14px;
-  min-height:280px;
+  flex:1 1 auto;
+  min-height:0;
   max-height:360px;
   overflow-y:auto;
   background:var(--surface-2);
@@ -970,21 +1086,109 @@ button{font-family:'Sora',sans-serif;}
    layout rules below: at ~1024px the full logo + nav links + search + a11y
    trigger row no longer fits in one line, well before the 768px breakpoint
    used for stacking the rest of the page's grids. */
-@media(max-width:1100px){.nav-links{position:fixed;top:68px;left:0;right:0;background:rgba(255,255,255,0.97);border-bottom:1px solid var(--border);flex-direction:column;padding:16px 20px;gap:2px;transform:translateY(-110%);opacity:0;transition:all var(--trans);backdrop-filter:blur(16px);box-shadow:var(--shadow-lg);}.nav-links.mobile-open{transform:translateY(0);opacity:1;}.hamburger{display:flex;}}
+@media(max-width:1100px){
+    /* The closed menu used to be hidden by appearance alone - slid off-screen
+       and made transparent. Neither transform nor opacity takes an element out
+       of the tab order or the accessibility tree, so all six links stayed
+       reachable while invisible: tabbing across the header gave six stops with
+       no focus ring anywhere on screen. The site's own screen reader announced
+       them too - its filter (accessibility-widget.js, isHiddenOrCollapsed)
+       tests visibility and display but not opacity.
+
+       visibility:hidden is what removes them from both, and it is deliberately
+       expressed HERE, inside the media query, rather than applied from
+       JavaScript. Above 1100px the rule simply does not exist, so returning to
+       a desktop width cannot leave the navigation stuck hidden - there is no
+       state to clean up and no resize handler that could fail to run. */
+    .nav-links{
+      position:fixed;top:68px;left:0;right:0;
+      background:rgba(255,255,255,0.97);
+      border-bottom:1px solid var(--border);
+      flex-direction:column;padding:16px 20px;gap:2px;
+      transform:translateY(-110%);
+      opacity:0;
+      visibility:hidden;
+      /* Explicit list, not `all`. visibility is a discrete property: under
+         `all` it would flip at the halfway point of the 0.24s slide, leaving
+         the menu invisible for the first half of its own opening animation.
+         Instead it changes in zero time - delayed until the slide-out has
+         finished when closing (below), immediate when opening. Only transform
+         and opacity actually differ between the two states, so restricting the
+         list changes nothing else. */
+      transition:transform var(--trans),opacity var(--trans),visibility 0s linear 0.24s;
+      backdrop-filter:blur(16px);
+      box-shadow:var(--shadow-lg);
+    }
+    .nav-links.mobile-open{
+      transform:translateY(0);
+      opacity:1;
+      visibility:visible;
+      transition:transform var(--trans),opacity var(--trans),visibility 0s linear 0s;
+    }
+    .hamburger{display:flex;}
+}
 @media(max-width:768px){.lang-bar{display:none;}.hero-inner{padding:60px 24px 80px;}.about-grid{grid-template-columns:1fr;}.contact-grid{grid-template-columns:1fr;gap:36px;}.footer-grid{grid-template-columns:1fr 1fr;gap:28px;}.form-row{grid-template-columns:1fr;}.footer-bottom{flex-direction:column;text-align:center;}.section{padding:72px 0;}.diva-panel{width:290px;}.team-member-panel{grid-template-columns:1fr;gap:28px;align-items:center;}.team-photo-img{max-width:280px;margin:0 auto;}.team-stats-strip{flex-direction:column;}.team-stat{border-right:none;border-bottom:1px solid var(--border);}.team-stat:last-child{border-bottom:none;}}
 @media(max-width:480px){.footer-grid{grid-template-columns:1fr;}.hero-cta{flex-direction:column;align-items:flex-start;}.team-tabs{gap:6px;}.team-tab{padding:8px 16px;font-size:0.8rem;}
-    /* Navbar: logo + search + a11y trigger + hamburger don't all fit on narrow phones */
+    /* ---- Navbar on narrow phones ----
+       The row is logo + Simple language + accessibility trigger + hamburger.
+       At 320px there are 288px to fit them into, and it needed about 354:
+       "Simple language" alone is ~106px of text, and BOTH .nav-logo and
+       .nav-right carry flex-shrink:0, so nothing could give and the excess
+       became page-wide horizontal scroll. The rule that made it inevitable was
+       `.simple-toggle span{display:inline}` right here - it existed to force
+       the label to stay visible at exactly the widths where it does not fit. */
     .nav-inner{padding:0 16px;gap:10px;}
     .nav-logo{gap:8px;}
     .nav-logo-img{width:40px;height:40px;}
     .logo-sub{display:none;}
     .nav-right{gap:6px;}
-    .btn-search span{display:none;}
-    .btn-search{padding:0 10px;}
-    .simple-toggle span{display:inline;}
-    .simple-toggle{padding:0 12px;min-height:38px;}
+
+    /* Icon-only, 44x44. The label is moved out of view rather than removed:
+       display:none would strip it from the accessibility tree and leave the
+       button with no accessible name at all, since the name comes from this
+       text. Clipping it keeps the name intact AND keeps it translated - the
+       span carries data-i18n, so a hardcoded aria-label would have frozen the
+       name in English while the interface switched to French or Kreol.
+
+       This also makes the two controls consistent: the accessibility trigger
+       beside it is already icon-only below 900px (see the widget's own CSS). */
+    .simple-toggle{width:44px;min-height:44px;padding:0;gap:0;justify-content:center;}
+    .simple-toggle span{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+    /* Structural safety net, not a fix for anything currently broken. The
+       overflow above was possible because neither side of the row could shrink;
+       letting the wordmark give way means a future longer label degrades to a
+       truncated logo rather than to a horizontally scrolling page. With the
+       sizes above there is ~27px to spare at 320px, so it never engages. */
+    .nav-logo{flex-shrink:1;min-width:0;}
+    .logo-text-wrap{min-width:0;}
+    .logo-main{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
     /* DIVA panel: fixed width+right-offset clips off the left edge on narrow phones */
     .diva-panel{left:16px;right:16px;width:auto;}
+
+    /* On a phone the panel spans the full width, so the 96px trigger - fixed at
+       bottom:28px right:28px, and painted last - lands directly on top of the
+       panel's own input row. It covers the send button and the right end of the
+       text field, which is why the panel could look complete and still be
+       unusable. On desktop there is no clash: the panel is offset to
+       right:120px, clear of the trigger.
+
+       Hiding it while the panel is open is what the .diva-widget.panel-open
+       rule further down was written to do, except nothing ever applies that
+       class. The sibling selector does it in CSS alone, with no change to the
+       widget's behaviour: the trigger follows the panel in the markup, so
+       "panel is open" is expressible directly.
+
+       Closing is unaffected - the header's close button, the Escape-free
+       outside-click handler in script.js and the panel's own controls are all
+       still there; only the redundant toggle underneath the panel goes away. */
+    .diva-panel.open ~ .diva-trigger{display:none;}
+
+    /* The avatar is the largest fixed element in the header row. Trimming it
+       gives the title and status text room to sit on fewer lines, which keeps
+       the header short on a 320px screen where vertical space is scarcest. */
+    .diva-panel-header{padding:14px 16px;gap:10px;}
+    .diva-panel-header img{width:44px;height:44px;}
 }
 
 .diva-widget.panel-open{opacity:0;pointer-events:none;transform:translateY(20px);transition:all 0.3s ease;}

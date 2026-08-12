@@ -55,6 +55,50 @@ $config = require __DIR__ . '/config/config.php';
 error_reporting(E_ALL);
 ini_set('display_errors', $config['app']['debug'] ? '1' : '0');
 
+// Errors must still be recorded when they are no longer shown - otherwise
+// switching APP_DEBUG off (now the default) would make failures silent rather
+// than private. storage/ is denied to the browser by its own .htaccess.
+ini_set('log_errors', '1');
+ini_set('error_log', __DIR__ . '/storage/logs/php-error.log');
+
+\App\Core\SecurityHeaders::send();
+
 if (session_status() === PHP_SESSION_NONE) {
+    /*
+     * Session cookie hardening. Set before session_start(), which is the only
+     * point at which these take effect.
+     *
+     * use_strict_mode makes PHP reject a session ID it did not issue itself,
+     * which closes session fixation - without it, an attacker can pick the ID
+     * and hand it to a victim. use_only_cookies stops PHP falling back to a
+     * session ID in the query string, where it would leak through referers,
+     * logs and shared links.
+     */
+    ini_set('session.use_strict_mode', '1');
+    ini_set('session.use_only_cookies', '1');
+
+    session_set_cookie_params([
+        // Expires with the browser session.
+        'lifetime' => 0,
+        'path' => '/',
+        'domain' => '',
+        /*
+         * Only mark the cookie Secure when the request actually arrived over
+         * HTTPS. Hardcoding true would stop the admin login working on XAMPP
+         * over plain http://localhost, because the browser would refuse to
+         * send the cookie back at all.
+         */
+        'secure' => request_is_https(),
+        // Not readable from JavaScript, so an XSS cannot exfiltrate the session.
+        'httponly' => true,
+        /*
+         * Lax rather than Strict: the site links out to Calendly and the AI
+         * Marketplace, and Strict would drop the session on the way back,
+         * silently signing an admin out. Lax still blocks the cross-site POST
+         * that CSRF depends on, and App\Core\Csrf remains the primary defence.
+         */
+        'samesite' => 'Lax',
+    ]);
+
     session_start();
 }

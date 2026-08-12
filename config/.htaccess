@@ -1,0 +1,10 @@
+# Private application directory - never served over HTTP.
+#
+# Nothing in here is a route. These files are read from disk by PHP (via
+# bootstrap.php's autoloader and require statements); a browser has no reason
+# to reach any of them.
+#
+# This duplicates the rewrite rule in the repository-root .htaccess on purpose.
+# That rule needs mod_rewrite; this one does not, so the directory stays closed
+# even on a server where the module is unavailable.
+Require all denied

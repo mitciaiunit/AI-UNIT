@@ -39,8 +39,11 @@ $isHome = $isHome ?? false;
  * installed. Must be emitted before script.js loads.
  */
 $jsConfig = [
-    'assetBase' => rtrim((string) config('site.root_url'), '/') . rtrim((string) config('site.asset_path'), '/'),
-    'divaApiUrl' => (string) config('diva.api_url'),
+    'assetBase' => rtrim((string) config('site.base_url'), '/') . rtrim((string) config('site.asset_path'), '/'),
+    // Empty when DIVA is not configured. script.js treats an empty value as
+    // "do not send", so no request is attempted rather than one being aimed at
+    // a guessed address.
+    'divaApiUrl' => diva_api_url(),
 ];
 ?>
 <script>window.AI_UNIT = <?= json_encode($jsConfig, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?>;</script>

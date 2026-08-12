@@ -31,6 +31,35 @@ function env(string $key, mixed $default = null): mixed
 }
 
 /**
+ * Whether the current request reached us over HTTPS.
+ *
+ * Used by bootstrap.php to decide whether the session cookie may be marked
+ * Secure. Getting this wrong in the "yes" direction breaks local XAMPP
+ * development outright - the browser would stop sending the cookie over plain
+ * http://localhost - so all three signals below are checked rather than
+ * assuming a value for $_SERVER['HTTPS'].
+ *
+ * X-Forwarded-Proto is honoured because a government deployment is likely to
+ * sit behind a TLS-terminating proxy, where it is the only remaining evidence
+ * that the client used HTTPS. A forged header can only turn the Secure flag
+ * ON, which locks the forger out of their own session rather than exposing
+ * anyone else's.
+ */
+function request_is_https(): bool
+{
+    $https = $_SERVER['HTTPS'] ?? '';
+    if ($https !== '' && strtolower((string) $https) !== 'off') {
+        return true;
+    }
+
+    if ((int) ($_SERVER['SERVER_PORT'] ?? 0) === 443) {
+        return true;
+    }
+
+    return strtolower((string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https';
+}
+
+/**
  * Fetch a config value using dot notation, e.g. config('site.name').
  */
 function config(string $key, mixed $default = null): mixed
@@ -62,11 +91,13 @@ function config(string $key, mixed $default = null): mixed
 function asset(string $path): string
 {
     $relative = ltrim($path, '/');
-    $url = rtrim((string) config('site.root_url'), '/')
+    $url = rtrim((string) config('site.base_url'), '/')
         . rtrim((string) config('site.asset_path'), '/')
         . '/' . $relative;
 
-    $absolutePath = dirname(__DIR__, 2) . '/assets/' . $relative;
+    // assets/ moved inside public/ when public/ became the document root, so
+    // the on-disk lookup for the cache-busting mtime moved with it.
+    $absolutePath = dirname(__DIR__, 2) . '/public/assets/' . $relative;
     $mtime = @filemtime($absolutePath);
 
     return $mtime !== false ? $url . '?v=' . $mtime : $url;
@@ -112,6 +143,45 @@ function redirect(string $path): never
 function e(?string $value): string
 {
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
+}
+
+/**
+ * The DIVA chat endpoint, or an empty string when DIVA is not usable.
+ *
+ * Two callers need the same answer and must not be able to disagree about it:
+ * includes/layouts/app.php hands the URL to the browser, and
+ * includes/diva-widget.php decides whether to render the assistant as
+ * available. A widget that says "unavailable" while the script still holds a
+ * URL - or the reverse - is worse than either state on its own.
+ *
+ * A malformed value counts as unconfigured. There is nothing useful to do with
+ * "yes" or "diva.example" except fail at the point where a visitor is already
+ * typing a question, so it is treated the same as absent and reported honestly
+ * up front.
+ *
+ * http is accepted as well as https: a developer running a local proxy needs
+ * it, and DIVA_API_URL is set deliberately in their own .env. What no longer
+ * exists is a localhost DEFAULT - see the note in config/config.php.
+ */
+function diva_api_url(): string
+{
+    $url = trim((string) config('diva.api_url', ''));
+    if ($url === '') {
+        return '';
+    }
+
+    $parts = parse_url($url);
+    $scheme = strtolower((string) ($parts['scheme'] ?? ''));
+
+    if (($parts['host'] ?? '') === '' || !in_array($scheme, ['http', 'https'], true)) {
+        \App\Core\Logger::warning('DIVA_API_URL is set but is not a usable http(s) URL - DIVA will show as unavailable', [
+            'value' => $url,
+        ]);
+
+        return '';
+    }
+
+    return $url;
 }
 
 /**

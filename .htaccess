@@ -1,0 +1,110 @@
+# =============================================================================
+# AI Unit website - repository-root access control (backstop only)
+# =============================================================================
+#
+# WHY THIS FILE STILL EXISTS
+# --------------------------
+# It should now be dead weight. With DocumentRoot = <repo>/public (WO-01b),
+# Apache never reads this file, because .htaccess is only consulted from the
+# DocumentRoot downwards - and nothing in this directory is served at all.
+#
+# It is kept as a backstop for the one case that still matters: a server whose
+# DocumentRoot is wrong. That is not hypothetical - it is exactly how this site
+# was deployed until WO-01b (htdocs/AI-UNIT symlinked to the repository root),
+# and http://localhost/AI-UNIT/.env returned HTTP 200 with the real SMTP and
+# database credentials in the body. Anyone who restores that layout, or points
+# a new server one directory too high, lands back on these rules instead of on
+# an open repository.
+#
+# So: the real protection is that private files are outside the document root.
+# This is the seatbelt, not the brakes.
+#
+# It is deliberately self-contained - it relies on nothing in httpd.conf. An
+# equivalent .git deny rule exists in this machine's Apache configuration, but
+# that lives outside the repository and will not follow a deployment anywhere
+# else, so .git is denied again below.
+#
+# Security headers are NOT set here any more; they moved to public/.htaccess,
+# which is inside the document root and therefore actually read. See that file.
+#
+# ORDER OF DEFENCE
+# ----------------
+# Two independent mechanisms cover the private directories, because either one
+# alone has a failure mode:
+#   1. The mod_rewrite block below - one rule, covers vendor/ (which is
+#      gitignored and so cannot carry many tracked files of its own).
+#   2. A "Require all denied" .htaccess inside each private directory - still
+#      works if mod_rewrite is unavailable or the module is disabled.
+# =============================================================================
+
+
+# --- Directory listings ------------------------------------------------------
+# XAMPP's stock httpd.conf enables "Options Indexes" for htdocs. Without this
+# line, requesting a directory with no index file returns a full browsable
+# listing of it - /vendor/ and /assets/ both did. Turning Indexes off is a
+# prerequisite for the deny rules to be meaningful: denying a file is no use if
+# the listing above it advertises what to ask for.
+Options -Indexes
+
+
+# --- Private directories -----------------------------------------------------
+# <Directory> and <DirectoryMatch> are not permitted in .htaccess, so the
+# directory-level block is expressed as a rewrite to 403.
+#
+# The pattern is matched against the request path relative to THIS directory,
+# so "app/Core/Database.php" is tested as "app/Core/Database.php". public/ is
+# deliberately absent - it is the one tree the browser is supposed to reach,
+# and assets/ and uploads/ now live inside it.
+#
+# Rewrite rules are not inherited by subdirectories by default, so this does
+# not interfere with public/.htaccess, which has its own RewriteEngine and its
+# own front-controller rules.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(app|api|config|database|includes|routes|storage|tools|vendor|\.git|\.github|\.claude)(/|$) - [F,L]
+</IfModule>
+
+
+# --- Dotfiles ----------------------------------------------------------------
+# .env is the one that matters. .gitignore, .env.example and .htaccess itself
+# are covered by the same rule.
+#
+# <FilesMatch> tests the final path segment only, which is why this does NOT
+# cover /.git/config (segment "config") - that is the rewrite rule's job above.
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+
+# --- Private file types ------------------------------------------------------
+# .sql  database/schema.sql
+# .lock composer.lock
+# .ps1  tools/deploy.ps1, tools/deploy-media.ps1 (also covered by the tools/
+#       rule above; listed so a script dropped elsewhere is still denied)
+# .md   README.md and any work order or notes committed alongside it
+# .example, .dist, .ini, .log, .bak, .sh, .yml, .yaml - conventional names for
+#       configuration and operational files that are never page content.
+<FilesMatch "\.(sql|lock|ps1|sh|md|ini|log|bak|dist|example|yml|yaml)$">
+    Require all denied
+</FilesMatch>
+
+
+# --- Private entry points ----------------------------------------------------
+# These are real PHP files that Apache would happily execute if requested
+# directly. They are not routes: bootstrap.php is included by the front
+# controller, and router.php exists only for PHP's built-in development server
+# (`php -S ... router.php`), which does not read .htaccess at all.
+#
+# composer.json/package.json are listed by name because .json is not blanket
+# denied - no public JSON is served today, but denying the extension outright
+# would quietly break any future endpoint that returns it.
+<FilesMatch "^(bootstrap\.php|router\.php|composer\.json|package\.json|package-lock\.json)$">
+    Require all denied
+</FilesMatch>
+
+
+# --- Security headers --------------------------------------------------------
+# Not set here. They live in public/.htaccess, which is inside the document
+# root and therefore actually read under the intended deployment; this file is
+# not. Repeating them here would cover only the legacy layout and would put the
+# same four values in two places to drift apart.

@@ -69,13 +69,13 @@ const translations = {
     principle3_title: "Inclusiveness & Integrity", principle3_text: "Technology should serve everyone. We design AI tools that are accessible across language, ability, and geography - leaving no community behind, and upholding the highest standards of honesty and transparency in everything we do.",
     principle4_title: "Responsibility", principle4_text: "We act with purpose and accountability. Responsible AI means moving with care - shipping thoughtfully, learning continuously, and always keeping the long-term wellbeing of citizens at the centre of our work.",
     team_title1: "The People", team_title2: "Behind the Work", team_desc: "Meet the experts driving Mauritius' AI strategy and digital transformation.",
-    team_tab1: "Mr. Ramakrishna", team_tab2: "Dr. Heman", team_tab3: "Mr. Ruben",
+    team_tab1: "Mr. Ramakrishna", team_tab2: "Dr. Mohabeer", team_tab3: "Mr. Ramdhony",
     team_rama_tag: "Alignment & Safety", team_rama_role: "Head - AI Unit", team_rama_quote: "Ramakrishna Mudaliar serves as Head of the AI Unit, where he spearheads the country's people-centric approach to leverage Artificial Intelligence for responsible development and implementation at a national scale. He holds Master's Degrees from the University of Montpellier and the University of Manipal. With more than two decades of experience across both the private technology sector and public service, Ramakrishna brings a well-rounded perspective that bridges innovation with real-world implementation.",
     rama_stat1: "Years Experience", rama_stat2: "Master's Degrees", rama_stat3: "AI Unit Founded",
     // PLACEHOLDER: copied from the team_rama_* strings above until Mr. Ramdoyal's
     // own role, biography and statistics are supplied. The role and biography
     // below still describe Mr. Mudaliar's post and career.
-    team_tab4: "Mr. Yudhaveer",
+    team_tab4: "Mr. Ramdoyal",
     team_yudhaveer_tag: "Alignment & Safety", team_yudhaveer_role: "Head - AI Unit", team_yudhaveer_quote: "Yudhaveer Vaibhav Ramdoyal serves as Head of the AI Unit, where he spearheads the country's people-centric approach to leverage Artificial Intelligence for responsible development and implementation at a national scale. He holds Master's Degrees from the University of Montpellier and the University of Manipal. With more than two decades of experience across both the private technology sector and public service, Yudhaveer brings a well-rounded perspective that bridges innovation with real-world implementation.",
     yudhaveer_stat1: "Years Experience", yudhaveer_stat2: "Master's Degrees", yudhaveer_stat3: "AI Unit Founded",
     team_heman_tag: "Architecture & Scale", team_heman_role: "AI Expert", team_heman_quote: "Dr. Heman Mohabeer is an AI researcher, strategist, and inventor serving as an AI Expert at the AI Unit of the Government of Mauritius. With a PhD in Artificial Intelligence and Machine Learning, he supports national AI policy development, advises on digital transformation, and promotes resilient, explainable, and locally owned AI systems.",
@@ -83,7 +83,11 @@ const translations = {
     team_ruben_tag: "Digital Transformation", team_ruben_role: "AI Expert", team_ruben_quote: "Ruben Ramdhony is a Digital Transformation Executive and former Chief Information Officer with over 20 years of enterprise experience across Australia and Mauritius. He holds an MBA from Macquarie Business School, Australia. He is currently serving in an AI Expert capacity, translating policy into working systems, governance into practice, and strategy into measurable outcomes across Government.",
     ruben_stat1: "Years Enterprise", ruben_stat2: "Former Chief Info. Officer", ruben_stat3: "Cross-Border Experience",
     contact_eyebrow: "Get in Touch", contact_title1: "We're Here", contact_title2: "for You", contact_desc: "Have questions about AI in Mauritius? Want to partner with us or learn more about our programmes? Reach out - we welcome every question.",
-    contact_address_title: "Address", contact_address_text: "Ministry of Information Technology,\nCommunication and Innovation\nLevel 5, SIT Building, Ebène\nMauritius",
+    // applyTranslations() assigns this with innerHTML, so the \n line breaks
+    // this string used to carry collapsed into ordinary spaces and rendered as
+    // one long run of text in the narrow contact column. Kept to a single
+    // short line, which wraps on its own when the column is too narrow.
+    contact_address_title: "Address", contact_address_text: "Cyber Tower 2, Level 6, Ebene",
     contact_email_title: "Email", contact_phone_title: "Phone", contact_hours_title: "Office Hours", contact_hours_text: "Monday - Friday: 9:00 AM - 4:00 PM\nClosed on Public Holidays",
     form_name: "Your Name", form_email: "Email Address", form_topic: "Topic", form_topic_placeholder: "Select a topic",
     form_topic1: "AI Strategy Enquiry", form_topic2: "Partnership Proposal", form_topic3: "Public Services Feedback", form_topic4: "DIVA / Digital Services", form_topic5: "AI Marketplace", form_topic6: "Media & Press", form_topic7: "Other",
@@ -509,20 +513,54 @@ window.addEventListener('scroll',()=>{
   sections.forEach(sec=>{if(window.scrollY>=sec.offsetTop-90)current=sec.id;});
   allNavLinks.forEach(link=>link.classList.toggle('active',link.dataset.scroll===current));
 });
+/**
+ * Closes the mobile navigation, keeping the panel, the hamburger's icon and
+ * its aria-expanded in step. Three things close this menu - picking a link,
+ * pressing the hamburger again, and Escape - and they must not be able to
+ * disagree about the state, which is why they all come through here.
+ *
+ * Returns focus to the hamburger when asked. That matters for Escape: the
+ * closed panel is visibility:hidden, so whatever was focused inside it is gone
+ * and focus would otherwise fall back to the top of the document.
+ */
+function closeMobileMenu(returnFocus){
+  if(!navLinksDiv.classList.contains('mobile-open'))return;
+  navLinksDiv.classList.remove('mobile-open');
+  hamburger.classList.remove('open');
+  hamburger.setAttribute('aria-expanded','false');
+  if(returnFocus)hamburger.focus();
+}
+
 document.querySelectorAll('[data-scroll]').forEach(el=>{
   el.addEventListener('click',e=>{
     e.preventDefault();
     const target=document.getElementById(el.dataset.scroll);
     if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
-    navLinksDiv.classList.remove('mobile-open');
-    hamburger.classList.remove('open');
-    hamburger.setAttribute('aria-expanded','false');
+    // No focus return: the user is being sent to a section, so pulling focus
+    // back up to the hamburger would undo the navigation they just asked for.
+    closeMobileMenu(false);
   });
 });
+
 hamburger.addEventListener('click',()=>{
   const open=hamburger.classList.toggle('open');
-  navLinksDiv.classList.toggle('mobile-open');
+  // Driven from the same value rather than toggled independently, so the panel
+  // and the button cannot drift out of step.
+  navLinksDiv.classList.toggle('mobile-open',open);
   hamburger.setAttribute('aria-expanded',open.toString());
+});
+
+/*
+ * Escape closes the menu from anywhere, not just from within it - someone who
+ * opened the menu and then clicked elsewhere still expects it to work.
+ *
+ * No preventDefault, and closeMobileMenu() returns immediately when the menu is
+ * already closed, so this is inert the rest of the time. The accessibility
+ * widget has its own Escape handlers for its panel and its reader and neither
+ * stops propagation; leaving the event untouched lets all of them coexist.
+ */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeMobileMenu(true);
 });
 
 document.querySelectorAll('.team-tab').forEach(tab=>{
@@ -651,7 +689,15 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
 // DIVA's backend URL comes from server config (config('diva.api_url'), settable
 // via the DIVA_API_URL environment variable) rather than being hardcoded here,
 // so it can be repointed per-environment without editing this file.
-const WORKER_URL = AI_UNIT_CONFIG.divaApiUrl || 'http://127.0.0.1:8000/api/chat';
+//
+// Empty string, not a fallback address. This file is served verbatim to every
+// visitor, so the loopback address this line used to fall back to was part of
+// the delivered JavaScript whether or not the site was configured correctly -
+// which is why the address is not written out here either. An empty value
+// means "not configured", which sendDivaMessage() below refuses to act on; the
+// server has already rendered the assistant as unavailable to match
+// (includes/diva-widget.php).
+const WORKER_URL = AI_UNIT_CONFIG.divaApiUrl || '';
 const divaTrigger=document.getElementById('divaTrigger');
 const divaPanel=document.getElementById('divaPanel');
 const divaClose=document.getElementById('divaClose');
@@ -998,6 +1044,12 @@ function pickSuggestion(btn) {
 }
 
 async function sendDivaMessage() {
+  // Single choke point for every way a message can be sent - the send button,
+  // Enter in the field, a suggestion chip and the voice input all arrive here -
+  // so one guard covers them all. With no endpoint configured there is nothing
+  // to send to, and guessing an address is what this work item removed.
+  if (!WORKER_URL) return;
+
   const msg = divaInput.value.trim();
   if (!msg || divaIsLoading) return;
   addDivaMessage(msg, 'user');
@@ -1010,7 +1062,11 @@ async function sendDivaMessage() {
     const response = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 400, messages: divaHistory })
+      // No model name. The proxy picks the model itself and ignores anything
+      // sent from here - verified against the live endpoint - so the field this
+      // used to carry had no effect, and a model name chosen in the browser is
+      // not something a server should honour anyway.
+      body: JSON.stringify({ max_tokens: 400, messages: divaHistory })
     });
     if (!response.ok) throw new Error('API error ' + response.status);
     const data = await response.json();
@@ -1062,8 +1118,11 @@ document.addEventListener('click', function (e) {
   }
 });
 
-document.getElementById('readEnBooklet')?.addEventListener('click', () => window.open('/booklet/aie', '_blank'));
-document.getElementById('readKmBooklet')?.addEventListener('click', () => window.open('/booklet/aim', '_blank'));
+// The two "AI for All" booklet controls are plain links in pages/home.php now.
+// They used to be handled here with window.open('/booklet/aie'), which hardcoded
+// a root-relative path and so 404ed on any deployment that is not at the domain
+// root. A link built with url() carries the right prefix on its own; JavaScript
+// has no business in it.
 document.getElementById('browseSolutionsBtn')?.addEventListener('click', () => window.open('https://aimarketplace.govmu.org/', '_blank', 'noopener'));
 document.getElementById('listSolutionBtn')?.addEventListener('click', () => window.open('https://aimarketplace.govmu.org/search', '_blank', 'noopener'));
 (function(){

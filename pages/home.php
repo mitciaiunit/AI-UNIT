@@ -246,8 +246,22 @@ $isHome = true;
         <h3 data-i18n="action_card2_title">Discover "AI for All"</h3>
         <p data-i18n="action_card2_desc" tabindex="0">Our national booklet designed to make Artificial Intelligence accessible, understandable and beneficial to every citizen.</p>
         <div class="action-description" data-i18n="action_card2_note" tabindex="0">Making AI understandable for everyone - available in English and Kreol versions.</div>
-        <div class="ai-for-all-box"><strong data-i18n="ai_en_title">🇬🇧 AI For All - English Version</strong><em data-i18n="ai_en_sub">The Future Belongs to Us</em><button class="btn-redesign" id="readEnBooklet" data-i18n="ai_en_btn">Read the Booklet →</button></div>
-        <div class="ai-for-all-box"><strong lang="mfe" data-i18n="ai_km_title">🇲🇺 AI Pou Nou Tou - Version Kreol</strong><em lang="mfe" data-i18n="ai_km_sub">Lavenir Apartenir A Nou Tou</em><button class="btn-redesign" id="readKmBooklet" lang="mfe" data-i18n="ai_km_btn">Lire Livre la →</button></div>
+        <?php
+        /*
+         * Real links, built with url(), exactly like the Kreol booklet link in
+         * the card above. They used to be <button>s wired up in script.js with
+         * window.open('/booklet/aie') - a root-relative path with no base, so
+         * they only ever worked when the site sat at the domain root and 404ed
+         * under any prefix. url() resolves the prefix from the request, so one
+         * markup works at "/", at "/AI-UNIT/public" and behind an alias.
+         *
+         * As links they also gain what a button never had: a real href, so
+         * middle-click, "open in new tab" and copy-link work, and a screen
+         * reader announces them as links to a destination.
+         */
+        ?>
+        <div class="ai-for-all-box"><strong data-i18n="ai_en_title">🇬🇧 AI For All - English Version</strong><em data-i18n="ai_en_sub">The Future Belongs to Us</em><a class="btn-redesign" href="<?= e(url('booklet/aie')) ?>" target="_blank" rel="noopener" data-i18n="ai_en_btn">Read the Booklet →</a></div>
+        <div class="ai-for-all-box"><strong lang="mfe" data-i18n="ai_km_title">🇲🇺 AI Pou Nou Tou - Version Kreol</strong><em lang="mfe" data-i18n="ai_km_sub">Lavenir Apartenir A Nou Tou</em><a class="btn-redesign" href="<?= e(url('booklet/aim')) ?>" target="_blank" rel="noopener" lang="mfe" data-i18n="ai_km_btn">Lire Livre la →</a></div>
       </div>
     </div>
   </div>
@@ -472,7 +486,18 @@ $isHome = true;
     <h2 class="section-title" id="team-title"><span data-i18n="team_title1">The People</span> <em data-i18n="team_title2">Behind the Work</em></h2>
     <p class="section-desc" data-i18n="team_desc" tabindex="0">Meet the experts driving Mauritius' AI strategy and digital transformation.</p>
     <div class="team-tabs" role="tablist" aria-label="Team members">
-      <button class="team-tab active" role="tab" aria-selected="true" aria-controls="panel-rama" data-member="0" data-i18n="team_tab1">Mr. Mudaliar</button>
+      <?php
+      /*
+       * These four labels must match the team_tab1..4 strings in
+       * assets/js/script.js. applyTranslations() rewrites every [data-i18n]
+       * element on load, so the dictionary is what a visitor actually sees and
+       * the markup here is the pre-JavaScript fallback. They had drifted apart
+       * - the markup read "Mr. Mudaliar" while the dictionary said
+       * "Mr. Ramakrishna" - which is why the page never showed what the file
+       * said it would.
+       */
+      ?>
+      <button class="team-tab active" role="tab" aria-selected="true" aria-controls="panel-rama" data-member="0" data-i18n="team_tab1">Mr. Ramakrishna</button>
       <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-heman" data-member="1" data-i18n="team_tab2">Dr. Mohabeer</button>
       <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-ruben" data-member="2" data-i18n="team_tab3">Mr. Ramdhony</button>
       <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-yudhaveer" data-member="3" data-i18n="team_tab4">Mr. Ramdoyal</button>
@@ -546,7 +571,7 @@ $isHome = true;
     <p class="section-desc" data-i18n="contact_desc" tabindex="0">Have questions about AI in Mauritius? Want to partner with us or learn more about our programmes? Reach out - we welcome every question.</p>
     <div class="contact-grid">
       <div class="contact-info">
-        <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><h3 data-i18n="contact_address_title">Address</h3><p data-i18n="contact_address_text" tabindex="0">Cyber Tower 2, Level 6, in the Ebène Cybercity,<br>Mauritius</p></div></div>
+        <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><h3 data-i18n="contact_address_title">Address</h3><p data-i18n="contact_address_text" tabindex="0">Cyber Tower 2, Level 6, Ebene</p></div></div>
         <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><h3 data-i18n="contact_email_title">Email</h3><p><a href="mailto:<?= e(config('site.contact_email')) ?>" style="color:var(--blue-mid);"><?= e(config('site.contact_email')) ?></a></p></div></div>
         <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.89 12 19.79 19.79 0 0 1 1.86 3.35 2 2 0 0 1 3.83 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.91 5.91l.95-.95a2 2 0 0 1 2.11.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><h3 data-i18n="contact_phone_title">Phone</h3><p><?= e(config('site.contact_phone')) ?></p></div></div>
         <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><div><h3 data-i18n="contact_hours_title">Office Hours</h3><p data-i18n="contact_hours_text" tabindex="0">Monday - Friday: 8:45 AM - 4:00 PM<br>Closed on Public Holidays</p></div></div>

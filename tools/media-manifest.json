@@ -1,0 +1,418 @@
+{
+    "_comment": "Media assets the AI Unit website requires. Verified by tools/verify-assets.ps1; the mediaGroups block also drives tools/deploy-media.ps1, so deployment and verification cannot drift apart. Paths are relative to the documentRoot below. Regenerate bytes/sha256 with: powershell -File tools\\verify-assets.ps1 -UpdateManifest",
+    "version": 1,
+    "documentRoot": "public",
+    "mediaGroups": [
+        {
+            "id": "video",
+            "targetDir": "assets/video",
+            "sourceDir": "video",
+            "filter": "*.mp4",
+            "contentType": "video/mp4",
+            "inGit": false
+        },
+        {
+            "id": "audio",
+            "targetDir": "assets/audio",
+            "sourceDir": "Audio",
+            "filter": "*.mp3",
+            "contentType": "audio/mpeg",
+            "inGit": false
+        },
+        {
+            "id": "captions",
+            "targetDir": "assets/captions",
+            "sourceDir": "vtt",
+            "filter": "*.vtt",
+            "contentType": "text/vtt",
+            "inGit": false
+        },
+        {
+            "id": "documents",
+            "targetDir": "assets/documents",
+            "sourceDir": "document",
+            "filter": "*.pdf",
+            "contentType": "application/pdf",
+            "inGit": false
+        },
+        {
+            "id": "images",
+            "targetDir": "assets/images",
+            "sourceDir": null,
+            "filter": null,
+            "contentType": null,
+            "inGit": true
+        }
+    ],
+    "assets": [
+        {
+            "path": "assets/video/video01.mp4",
+            "group": "video",
+            "bytes": 163797242,
+            "sha256": "c023b0b462c2e112f216b41092a58a8a52f66b4b88c1931bf4c0ec70c548c349",
+            "required": true,
+            "usedBy": "VideoController - /video/1"
+        },
+        {
+            "path": "assets/video/video02.mp4",
+            "group": "video",
+            "bytes": 270776058,
+            "sha256": "1f5b7eda2cb44c11a559589538ca476322a83810528724463ebc8242660c77df",
+            "required": true,
+            "usedBy": "VideoController - /video/2"
+        },
+        {
+            "path": "assets/video/video03.mp4",
+            "group": "video",
+            "bytes": 278198008,
+            "sha256": "100c8e903e5899eb431c14055850702485a7f85700f1d88e5975b9a47013000f",
+            "required": true,
+            "usedBy": "VideoController - /video/3"
+        },
+        {
+            "path": "assets/video/video04.mp4",
+            "group": "video",
+            "bytes": 402886314,
+            "sha256": "f7e255c8128f1e87851af8c415537bbddb695aaf28e93031ea1fe91427dde477",
+            "required": true,
+            "usedBy": "VideoController - /video/4"
+        },
+        {
+            "path": "assets/audio/AIStrategy.mp3",
+            "group": "audio",
+            "bytes": 135121280,
+            "sha256": "c7737ddd742390d798f668fef397121eb6b37eb9915bb996dc85a7b272387eaa",
+            "required": true,
+            "usedBy": "Homepage Library - Listen button (aistrategy)"
+        },
+        {
+            "path": "assets/audio/Blueprint.mp3",
+            "group": "audio",
+            "bytes": 99380096,
+            "sha256": "bf6201c3d9d6364f92cc18f336b6a232a511454b28b259b42aebc8ed38fc45dd",
+            "required": true,
+            "usedBy": "Homepage Library - Listen button (blueprint)"
+        },
+        {
+            "path": "assets/audio/Fairguidelines.mp3",
+            "group": "audio",
+            "bytes": 75067520,
+            "sha256": "0b64d638f90dc9600e61645fb3a7371b1d163e5cb0eddc66aa3bfe7709635c66",
+            "required": true,
+            "usedBy": "Homepage Library - Listen button (fairguidelines)"
+        },
+        {
+            "path": "assets/audio/Playbook.mp3",
+            "group": "audio",
+            "bytes": 69396224,
+            "sha256": "507e0fbb5bae9c54ab8ef6709df543bdedaa4ddf472573ca8166796ee894cd64",
+            "required": true,
+            "usedBy": "Homepage Library - Listen button (playbook)"
+        },
+        {
+            "path": "assets/captions/video1.vtt",
+            "group": "captions",
+            "bytes": 3936,
+            "sha256": "66125ab8c1f14db5b636d45fbbe03e82ab8d59d5ba7b5f9571694f31529ec016",
+            "required": true,
+            "usedBy": "/video/1 - French captions track"
+        },
+        {
+            "path": "assets/captions/video1e.vtt",
+            "group": "captions",
+            "bytes": 3651,
+            "sha256": "9bb71ac4fd6bbf96500acb997c2e385ed3eba8626cb0024c30b7b394d9712136",
+            "required": true,
+            "usedBy": "/video/1 - English captions track"
+        },
+        {
+            "path": "assets/captions/video2.vtt",
+            "group": "captions",
+            "bytes": 6743,
+            "sha256": "f71b10d237920ab7ca101e7576d05c98540ba8acb73944783566af67b7a60b5d",
+            "required": true,
+            "usedBy": "/video/2 - French captions track"
+        },
+        {
+            "path": "assets/captions/video2e.vtt",
+            "group": "captions",
+            "bytes": 6077,
+            "sha256": "b36b3f168af3183e989b865d9e9d06af27554c7208512fd1cf4fba4e074ce66b",
+            "required": true,
+            "usedBy": "/video/2 - English captions track"
+        },
+        {
+            "path": "assets/captions/video3.vtt",
+            "group": "captions",
+            "bytes": 5763,
+            "sha256": "b8827b211f39e3726b1876eff935d48494973ce3ce6b270537e17f116f1d2ba4",
+            "required": true,
+            "usedBy": "/video/3 - French captions track"
+        },
+        {
+            "path": "assets/captions/video3e.vtt",
+            "group": "captions",
+            "bytes": 5168,
+            "sha256": "3df01dc0f08cc28e85e523a38dd438735942d880fbf8de869d22ac6c04117d62",
+            "required": true,
+            "usedBy": "/video/3 - English captions track"
+        },
+        {
+            "path": "assets/captions/video4.vtt",
+            "group": "captions",
+            "bytes": 7595,
+            "sha256": "f05b08a2b7296e28aeebc3c525722f18c4c2e9b92df6f3a17b1c98f23c152f3c",
+            "required": true,
+            "usedBy": "/video/4 - French captions track"
+        },
+        {
+            "path": "assets/captions/video4e.vtt",
+            "group": "captions",
+            "bytes": 7161,
+            "sha256": "36997b22ffc24a99519ed92a4761fdc3d6e06fa8f1a34318db9c88c4e250d6cf",
+            "required": true,
+            "usedBy": "/video/4 - English captions track"
+        },
+        {
+            "path": "assets/documents/Booklet_English.pdf",
+            "group": "documents",
+            "bytes": 12145379,
+            "sha256": "8152b448ab6079df49df70240650ec6cb750569ead22eaab19ca713cbcfe175b",
+            "required": true,
+            "usedBy": "BookletController - /booklet/aie"
+        },
+        {
+            "path": "assets/documents/Booklet_Kreol.pdf",
+            "group": "documents",
+            "bytes": 12147515,
+            "sha256": "3b7fd086831b3465a8bc7951876c1ffe8e04c08b7c23493b59efbd6842879d0e",
+            "required": true,
+            "usedBy": "BookletController - /booklet/aim"
+        },
+        {
+            "path": "assets/documents/aistrategy.pdf",
+            "group": "documents",
+            "bytes": 66111305,
+            "sha256": "cb64dadffe0c835bf8e94eb0a1adc49f88efb30ac9858b6c0fba5bbc7a7b1915",
+            "required": true,
+            "usedBy": "DocumentController - /document/aistrategy, and the homepage Download button"
+        },
+        {
+            "path": "assets/documents/blueprint.pdf",
+            "group": "documents",
+            "bytes": 7939140,
+            "sha256": "9ddb6c9652f53099713277cb78c4e539280b64b352f968aed15da009042be795",
+            "required": true,
+            "usedBy": "DocumentController - /document/blueprint, and the homepage Download button"
+        },
+        {
+            "path": "assets/documents/fairguidelines.pdf",
+            "group": "documents",
+            "bytes": 1948705,
+            "sha256": "f025c3f55ca3b56fd46ee2015779ddb38e1c87c9af0941d30662cb1176986572",
+            "required": true,
+            "usedBy": "DocumentController - /document/fairguidelines, and the homepage Download button"
+        },
+        {
+            "path": "assets/documents/playbook.pdf",
+            "group": "documents",
+            "bytes": 6087315,
+            "sha256": "4d55d43d36bccbac2376f3c2eec722a68f255916ae73984b96872941ceaf322d",
+            "required": true,
+            "usedBy": "DocumentController - /document/playbook, and the homepage Download button"
+        },
+        {
+            "path": "assets/documents/violence.pdf",
+            "group": "documents",
+            "bytes": 5386289,
+            "sha256": "7b723786c60b2d57ea22f56fb520eeb77d5941d92337a96380153d74755b9c87",
+            "required": true,
+            "usedBy": "BookletController - /booklet/livret"
+        },
+        {
+            "path": "assets/images/AI playbook.png",
+            "group": "images",
+            "bytes": 68932,
+            "sha256": "aa3b19fd3d88b218b0796f420a4e68322be8941647856559827459703f5944b8",
+            "required": true,
+            "usedBy": "Homepage Library - AI Playbook cover"
+        },
+        {
+            "path": "assets/images/AI strategy.png",
+            "group": "images",
+            "bytes": 237776,
+            "sha256": "938b0ef413c4ed1913825927f8ef537db0aaea989d5d528190ef0ac1b7e03278",
+            "required": true,
+            "usedBy": "Homepage Library - AI Strategy cover"
+        },
+        {
+            "path": "assets/images/DIVA.png",
+            "group": "images",
+            "bytes": 79911,
+            "sha256": "e70797b0eb2a3655eb1f6dd4e9b1846046ac15fb29c47db99984527a477b68ad",
+            "required": true,
+            "usedBy": "DIVA widget trigger and panel header"
+        },
+        {
+            "path": "assets/images/Fair guideline.png",
+            "group": "images",
+            "bytes": 199280,
+            "sha256": "36b6087d5855858add5fbb6a319d9a7a69abc7913f33de0272ba05298d199c06",
+            "required": true,
+            "usedBy": "Homepage Library - FAIR Guidelines cover"
+        },
+        {
+            "path": "assets/images/MLogo.png",
+            "group": "images",
+            "bytes": 45389,
+            "sha256": "f451dcf776118d3d7e6608eec76430d3aafd1f45f21445d3bccdcae99da6dc46",
+            "required": true,
+            "usedBy": "Footer ministry logo"
+        },
+        {
+            "path": "assets/images/ai-lab.jpg",
+            "group": "images",
+            "bytes": 246577,
+            "sha256": "edd4821ac89f334b8841bde8d834e82bc66acf55c73bfd8699bd6b8196ae9d9f",
+            "required": true,
+            "usedBy": "AI Lab page - feature image"
+        },
+        {
+            "path": "assets/images/blueprint.webp",
+            "group": "images",
+            "bytes": 101704,
+            "sha256": "9cc230f77914ce24810bed4d04187187dc7d667efc8d963c8278033c1f3ea110",
+            "required": true,
+            "usedBy": "Homepage Library - Blueprint cover"
+        },
+        {
+            "path": "assets/images/highlights/Accessibility1.png",
+            "group": "images",
+            "bytes": 104063,
+            "sha256": "2308ea274b9c37dd43d5defc3432b49f00e68e041227b1f39f8daec71f003870",
+            "required": true,
+            "usedBy": "Highlights page - editorial figure"
+        },
+        {
+            "path": "assets/images/highlights/Accessibility2.png",
+            "group": "images",
+            "bytes": 57393,
+            "sha256": "574b3367d02896199678b6d36fcb8b92fa333c283cab70039eda1665a13a4099",
+            "required": true,
+            "usedBy": "Highlights page - editorial figure"
+        },
+        {
+            "path": "assets/images/highlights/Accessibility3.png",
+            "group": "images",
+            "bytes": 78293,
+            "sha256": "06ab381d7b74df2664b7f6f54a589d15df1e35e2c9792dec14f893286f393480",
+            "required": true,
+            "usedBy": "Highlights page - editorial figure"
+        },
+        {
+            "path": "assets/images/highlights/DIVA1.png",
+            "group": "images",
+            "bytes": 77209,
+            "sha256": "3684cac7dfcd4da514ddd349ab656f9922d6ed54072cc3de5eccafbb7857e8cd",
+            "required": true,
+            "usedBy": "Highlights page - editorial figure"
+        },
+        {
+            "path": "assets/images/highlights/DIVA2.png",
+            "group": "images",
+            "bytes": 221481,
+            "sha256": "9b99530e7c09a519bd03764d33a9b652a2a58d83d0dd3be04309a09adfd19c1c",
+            "required": true,
+            "usedBy": "Highlights page - editorial figure"
+        },
+        {
+            "path": "assets/images/highlights/Mitci.jpg",
+            "group": "images",
+            "bytes": 134219,
+            "sha256": "3b9269317b50ebfd2da71e4495934a875639ee06172491ebcefe13fc2a1e137f",
+            "required": true,
+            "usedBy": "Highlights page - editorial figure"
+        },
+        {
+            "path": "assets/images/highlights/VIDEO1.png",
+            "group": "images",
+            "bytes": 406323,
+            "sha256": "52d66bb59de5b411928f28c6992463c743e02c067934f57e8ec6644a9cd293ed",
+            "required": true,
+            "usedBy": "Highlights page - editorial figure"
+        },
+        {
+            "path": "assets/images/highlights/framework.png",
+            "group": "images",
+            "bytes": 226536,
+            "sha256": "06b2eeb701fbaf8337218f3b29ee6f103b7a36b94b300f5402415aeb92654355",
+            "required": true,
+            "usedBy": "Highlights page - editorial figure"
+        },
+        {
+            "path": "assets/images/highlights/kanban.jpg",
+            "group": "images",
+            "bytes": 52357,
+            "sha256": "b2a31c6b349637c7a63b9da011d20200e611fc7e5a83a9844efb6fbd3a2a2ea3",
+            "required": true,
+            "usedBy": "Highlights page - editorial figure"
+        },
+        {
+            "path": "assets/images/highlights/team.jpg",
+            "group": "images",
+            "bytes": 99457,
+            "sha256": "57b3bec13ade80e97a8035ca15ac7f6bb9d6478d7691b28f64ab0d7c54c3b63b",
+            "required": true,
+            "usedBy": "Highlights page - editorial figure"
+        },
+        {
+            "path": "assets/images/highlights/team2.jpg",
+            "group": "images",
+            "bytes": 101947,
+            "sha256": "ff762666d3cec8e22d69f329df445dba5c8ad6fe8c8e783831395fc0348b47c3",
+            "required": true,
+            "usedBy": "Highlights page - editorial figure"
+        },
+        {
+            "path": "assets/images/hm.jpg",
+            "group": "images",
+            "bytes": 350945,
+            "sha256": "87835b8cb57b91b6ed7fc4ed83987af33e7011849cfba5627bf26c9c6007735e",
+            "required": true,
+            "usedBy": "Homepage team tab 2 - Dr. Heman Mohabeer"
+        },
+        {
+            "path": "assets/images/logo.gif",
+            "group": "images",
+            "bytes": 2868244,
+            "sha256": "094ded3938cc135bcfe2fbf1e8378198d882ec47a256b8ef707aff234ccb46dd",
+            "required": true,
+            "usedBy": "Navbar logo and favicon - every page"
+        },
+        {
+            "path": "assets/images/rm.jpg",
+            "group": "images",
+            "bytes": 91853,
+            "sha256": "e0aeef2609855fd19867a56ce8b3fcd6962ea238816b056ce66d90f8c3ee279f",
+            "required": true,
+            "usedBy": "Homepage team tab 1 - Mr. Ramakrishna Mudaliar"
+        },
+        {
+            "path": "assets/images/rr.jpg",
+            "group": "images",
+            "bytes": 128681,
+            "sha256": "4ccab04504e66563b17574f7eeccb201f1a63579288dd6070c2334b87166e2d0",
+            "required": true,
+            "usedBy": "Homepage team tab 3 - Mr. Ruben Ramdhony"
+        },
+        {
+            "path": "assets/images/yr.jpg",
+            "group": "images",
+            "bytes": null,
+            "sha256": null,
+            "required": false,
+            "usedBy": "Homepage team tab 4 - Mr. Yudhaveer Ramdoyal",
+            "note": "KNOWN GAP - work order WO-05. The approved portrait has not been supplied, so the fourth team tab renders a broken image. Marked not-required so it reports as a warning rather than failing the run; flip required to true once the file is added."
+        }
+    ]
+}
