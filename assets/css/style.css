@@ -98,10 +98,49 @@ html.a11y-mode-dark{
   --warm-gray:#AEB7CC;
   --warm-gray-light:#232A3A;
 }
+/* A few components set translucent white directly (glass/blur effects) rather
+   than reading a token, so redefining the tokens above does not reach them.
+   Same 4.5:1 text / 3:1 UI verification as the token block above, checked
+   against whatever sits behind each: the dark --bg/--surface page background
+   or (for the nav) the sticky bar's own blurred backdrop. */
+html.a11y-mode-dark .navbar{background:rgba(18,22,31,0.9);}
+html.a11y-mode-dark .navbar.scrolled{background:rgba(27,33,46,0.97);}
+@media(max-width:1100px){
+  html.a11y-mode-dark .nav-links{background:rgba(27,33,46,0.97);}
+}
+/* The hero's bottom wave is an inline SVG with a literal fill="#FFFFFF" -
+   meant to match the light section it flows into, not a fixed design choice
+   - so in dark mode it needs to match that section's new, dark background
+   instead, or it reads as a stray white bar. */
+html.a11y-mode-dark .hero-wave svg path{fill:var(--bg);}
+
+/* Framework Library's frosted-glass cards: same reasoning as above, redone
+   in dark-appropriate tones (--surface/--border/--blue-mid at their dark
+   values) rather than fixed light-mode whites, so .doc-body h3/p - which do
+   read var(--text-1)/var(--text-2) - land on a card that is actually dark
+   instead of a translucent white one their now-light text would disappear
+   into. */
+html.a11y-mode-dark .library-section{
+  background:radial-gradient(circle at top left,rgba(125,162,255,.10),transparent 30%),radial-gradient(circle at top right,rgba(111,214,232,.08),transparent 28%),linear-gradient(180deg,var(--surface) 0%,var(--surface-2) 100%);
+}
+html.a11y-mode-dark .library-section::before{
+  background:linear-gradient(120deg,rgba(255,255,255,.05),transparent 24%,transparent 76%,rgba(255,255,255,.03));
+}
+html.a11y-mode-dark .doc-card{background:rgba(27,33,46,.85);border-color:rgba(69,79,102,.9);}
+html.a11y-mode-dark .doc-card::before{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(125,162,255,.16));}
+html.a11y-mode-dark .doc-cover-frame{background:var(--surface-2);}
+html.a11y-mode-dark .meta-chip{background:rgba(43,50,68,.9);border-color:rgba(69,79,102,.95);}
+html.a11y-mode-dark .doc-btn-ghost{background:rgba(43,50,68,.85);border-color:rgba(69,79,102,.95);}
+html.a11y-mode-dark .doc-btn-ghost:hover{background:rgba(23,31,53,.95);}
+html.a11y-mode-dark .doc-btn-audio{background:rgba(43,50,68,.9);border-color:rgba(125,162,255,.25);}
+html.a11y-mode-dark .doc-btn-audio:hover{background:rgba(23,31,53,1);}
+html.a11y-mode-dark .audio-player-inline{background:linear-gradient(180deg,rgba(23,31,53,.9),rgba(27,33,46,.85));border-color:rgba(69,79,102,.9);}
+html.a11y-mode-dark .audio-progress-bar{background:rgba(43,50,68,.9);border-color:rgba(69,79,102,.9);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;font-size:16px;}
 body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text-1);overflow-x:hidden;line-height:1.65;}
 h1,h2,h3,h4{font-family:'Lora',serif;line-height:1.2;}
+p{text-align:justify;hyphens:auto;}
 /* Headings are split into a plain half and an <em> half ("Driving Mauritius" /
    "AI Future"). The em used to be forced to --blue-mid, which made every such
    heading two-tone. `inherit` collapses each one to a single colour by taking
@@ -679,7 +718,7 @@ button{font-family:'Sora',sans-serif;}
 .btn-full{width:100%;justify-content:center;border-radius:10px;}
 
 /* ─── FOOTER ─── */
-.footer{background:#FFFFFF;padding:64px 0 28px;border-top:1px solid var(--border);}
+.footer{background:var(--surface);padding:64px 0 28px;border-top:1px solid var(--border);}
 .footer-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px;}
 .footer-logo{display:flex;align-items:center;gap:10px;font-family:'Lora',serif;font-size:1.1rem;font-weight:700;color:var(--text-1);margin-bottom:12px;}
 .footer-brand p{font-size:0.84rem;color:var(--text-3);line-height:1.65;margin-bottom:18px;}
@@ -700,9 +739,9 @@ button{font-family:'Sora',sans-serif;}
 .search-modal.open{opacity:1;pointer-events:all;}
 .search-backdrop{position:absolute;inset:0;background:rgba(13,27,62,0.55);backdrop-filter:blur(8px);}
 .search-box{position:relative;z-index:1;display:flex;gap:10px;width:100%;max-width:560px;padding:0 24px;}
-.search-box input{flex:1;min-width:0;background:white;border:1.5px solid var(--border);border-radius:12px;padding:15px 20px;color:var(--text-1);font-size:1rem;font-family:'Sora',sans-serif;box-shadow:var(--shadow-lg);}
+.search-box input{flex:1;min-width:0;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:15px 20px;color:var(--text-1);font-size:1rem;font-family:'Sora',sans-serif;box-shadow:var(--shadow-lg);}
 .search-box input:focus{outline:none;border-color:var(--blue-mid);}
-.search-close{background:white;border:1.5px solid var(--border);color:var(--text-2);width:50px;height:50px;border-radius:12px;font-size:0.9rem;cursor:pointer;transition:all var(--trans);flex-shrink:0;box-shadow:var(--shadow-md);}
+.search-close{background:var(--surface);border:1.5px solid var(--border);color:var(--text-2);width:50px;height:50px;border-radius:12px;font-size:0.9rem;cursor:pointer;transition:all var(--trans);flex-shrink:0;box-shadow:var(--shadow-md);}
 .search-close:hover{border-color:var(--blue-mid);color:var(--blue-mid);}
 
 /* ─── VIDEO MODAL ─── */
@@ -725,7 +764,7 @@ button{font-family:'Sora',sans-serif;}
   bottom:28px;
   right:120px;
   width:560px;
-  background:white;
+  background:var(--surface);
   border-radius:24px;
   border:1.5px solid var(--border);
   box-shadow:0 24px 64px rgba(13,27,62,0.18);
@@ -774,7 +813,7 @@ button{font-family:'Sora',sans-serif;}
   min-height:280px;
   max-height:360px;
   overflow-y:auto;
-  background:#f8f9fd;
+  background:var(--surface-2);
   scroll-behavior:smooth;
 }
 .diva-messages::-webkit-scrollbar{width:4px;}
@@ -789,7 +828,7 @@ button{font-family:'Sora',sans-serif;}
   word-break:break-word;
 }
 .diva-msg.bot{
-  background:white;
+  background:var(--surface);
   color:var(--text-1);
   align-self:flex-start;
   border-bottom-left-radius:4px;
@@ -814,7 +853,7 @@ button{font-family:'Sora',sans-serif;}
   max-width:88%;
 }
 .diva-suggestion-btn{
-  background:white;
+  background:var(--surface);
   border:1.5px solid var(--blue-light);
   color:var(--blue);
   border-radius:100px;
@@ -835,7 +874,7 @@ button{font-family:'Sora',sans-serif;}
   display:flex;
   gap:8px;
   align-items:center;
-  background:white;
+  background:var(--surface);
   flex-shrink:0;
 }
 .diva-input-row input{
@@ -848,15 +887,15 @@ button{font-family:'Sora',sans-serif;}
   outline:none;
   font-family:'Sora',sans-serif;
   color:var(--text-1);
-  background:#f8f9fd;
+  background:var(--surface-2);
   transition:border-color 0.2s,background 0.2s;
 }
 .diva-input-row input::placeholder{color:var(--text-4);}
-.diva-input-row input:focus{border-color:var(--blue);background:white;}
+.diva-input-row input:focus{border-color:var(--blue);background:var(--surface);}
 .diva-input-row input:disabled{opacity:0.55;cursor:not-allowed;}
 
 .diva-mic{
-  background:white;
+  background:var(--surface);
   border:1.5px solid var(--border);
   color:var(--text-3);
   width:42px;height:42px;
@@ -888,7 +927,7 @@ button{font-family:'Sora',sans-serif;}
 .diva-footer{
   padding:8px 16px;
   border-top:1px solid var(--border);
-  background:#f8f9fd;
+  background:var(--surface-2);
   text-align:center;
   font-size:0.68rem;
   /* --text-4 is reserved for placeholder text, which WCAG 2.2 AA exempts
@@ -902,7 +941,7 @@ button{font-family:'Sora',sans-serif;}
 .diva-typing-dots{
   display:flex;gap:5px;align-items:center;
   padding:12px 16px;
-  background:white;
+  background:var(--surface);
   border:1px solid var(--border);
   border-radius:18px;border-bottom-left-radius:4px;
   align-self:flex-start;
@@ -1148,13 +1187,13 @@ button{font-family:'Sora',sans-serif;}
   background:none;
   padding:4px;
   cursor:pointer;
-  color:#7a7a7a;
+  color:var(--text-3);
   transition:all 0.2s ease;
 }
 
 .diva-read-aloud:hover,
 .diva-copy-btn:hover{
-  color:#111;
+  color:var(--text-1);
 }
 
 .diva-read-aloud svg,

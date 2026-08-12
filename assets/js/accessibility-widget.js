@@ -464,12 +464,13 @@ html.a11y-no-motion *::after{
 html.a11y-mode-high-contrast{filter:contrast(1.35);}
 html.a11y-mode-high-contrast body{background:#fff;}
 
-/* Dark mode */
-html.a11y-mode-dark body{background:#12161f;color:#e8ecf5;}
-html.a11y-mode-dark .section,
-html.a11y-mode-dark .card,
-html.a11y-mode-dark .doc-card,
-html.a11y-mode-dark .action-card{background:#1b212e;color:#e8ecf5;}
+/* Dark mode: handled entirely in style.css, which redefines --bg/--surface/
+   --text-* etc. under html.a11y-mode-dark so every component that already
+   reads those tokens (which is nearly all of them) repaints correctly with
+   no per-component rule needed here. See style.css for the token block and
+   the handful of components (navbar, footer, DIVA widget, doc cards...) that
+   set literal colours instead of tokens and so needed their own dark-mode
+   override there. */
 
 /* Greyscale */
 html.a11y-mode-grayscale{filter:grayscale(1);}
@@ -726,7 +727,7 @@ html[style*="--a11y-font-scale"] body{
     </div>
   </div>
 
-  <div class="a11y-kbd-bar"><span data-i18n="a11y_kbd_open">Open panel:</span> <kbd>Alt</kbd> + <kbd>A</kbd> &middot; <span data-i18n="a11y_kbd_close">Close:</span> <kbd>Esc</kbd></div>
+  <div class="a11y-kbd-bar"><span data-i18n="a11y_kbd_open">Open panel:</span> <kbd>Alt</kbd> + <kbd>A</kbd> &middot; <span data-i18n="a11y_kbd_close">Close:</span> <kbd>Esc</kbd> &middot; <span data-i18n="a11y_kbd_reset">Reset:</span> <kbd>Alt</kbd> + <kbd>R</kbd></div>
 </div>`);
 
     // Move the trigger into the navbar next to search/hamburger when one
@@ -1515,7 +1516,7 @@ setTimeout(function () {
      - feature toggles (links, images, motion, dyslexia, read guide,
        letter spacing, focus outline, cursor, keyboard shortcuts class)
      - quick profiles (vision, motor, dyslexia, cognitive, elderly)
-     - reset button
+     - reset button (also Alt+R, from anywhere on the page)
      - persistence via localStorage
    ========================================================== */
 
@@ -1805,6 +1806,10 @@ document.addEventListener('keydown', function (e) {
   if (e.altKey && (e.key === 'a' || e.key === 'A')) {
     e.preventDefault();
     togglePanel();
+  }
+  if (e.altKey && (e.key === 'r' || e.key === 'R')) {
+    e.preventDefault();
+    resetBtn && resetBtn.click();
   }
 });
 

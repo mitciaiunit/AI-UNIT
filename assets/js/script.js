@@ -105,7 +105,7 @@ const translations = {
     a11y_toggle_links: "Highlight Links", a11y_toggle_images: "Hide Images", a11y_toggle_motion: "Stop Animations",
     a11y_reading: "Reading & Focus", a11y_toggle_dyslexia: "Dyslexia-Friendly Font", a11y_toggle_readguide: "Reading Guide Line", a11y_toggle_spacing: "Wider Letter Spacing", a11y_toggle_focus: "Bold Focus Outline",
     a11y_navigation: "Navigation", a11y_toggle_cursor: "Large Mouse Cursor", a11y_toggle_keyboard: "Show Keyboard Shortcuts",
-    a11y_kbd_open: "Open panel:", a11y_kbd_close: "Close:",
+    a11y_kbd_open: "Open panel:", a11y_kbd_close: "Close:", a11y_kbd_reset: "Reset:",
 
     // ─── SIMPLE LANGUAGE MODE: UI strings ───
     simple_toggle: "Simple language",
@@ -187,6 +187,23 @@ const translations = {
     // section ledes, project descriptions); short list items, card blurbs
     // and figure captions were left as-is, matching how the homepage never
     // simplified its own tags/chips/short list text either.
+    // Base (full-text) entries for the hl_ keys above. Without these,
+    // applyTranslations() had nothing to fall back to when simple mode was
+    // switched off, so it left the _s text on screen instead of restoring
+    // the original paragraph - simple mode looked like it "didn't work"
+    // because turning it off never actually turned it off.
+    hl_hero_lead: "Over a ten-week industrial attachment at the AI Unit, hosted at the Mauritius Emerging Technologies Council in Ebene, a team of university interns redesigned and rebuilt aim.govmu.org, the official government portal for artificial intelligence in Mauritius. The work spanned front-end development, WCAG accessibility, speech synthesis and the integration of the DIVA chatbot. This page is a record of what was built.",
+    hl_overview_lede: "The AI Unit had no permanent development staff, so its active projects were carried forward by the intern team. The placement began with a single intern analysing the existing portal and setting up the project; by the later weeks it had grown into a team of several interns from different Universities working in one shared codebase.",
+    hl_revamp_lede: "aim.govmu.org is the official Mauritian government portal for artificial intelligence, covering news, policies, events and resources.",
+    hl_revamp_analysis: "The work began with a full review of the existing portal, guided by the AI Unit's aspirations for its redevelopment. That analysis fed a detailed wireframe covering the home page, the navigation structure, the key content sections and the placement of interactive features such as the accessibility tool, and the chatbot. Once the wireframe was reviewed and approved by the mentor, front-end development began.",
+    hl_revamp_kanban: "Project management for the portal team was run on a Kanban workflow, introduced in Week 2 after guidance from the mentor on Agile practice. It began as a physical board at the workplace and, at the mentor's recommendation, moved to a digital Jira board that the whole intern team adopted as it grew. Tasks were grouped into Epics and Sub-Epics matching the portal's features.",
+    hl_revamp_github: "GitHub served as the team's version control platform, with a shared repository that let all the interns work concurrently on different features without conflicts in the code.",
+    hl_diva_lede: "DIVA is an AI-powered assistant integrated into the portal to answer questions about artificial intelligence in Mauritius, the content of the portal and government AI resources. It is a prototype, grounded in four key documents: the Digital Transformation Blueprint, the AI Strategy, the FAIR Guidelines and the AI Playbook.",
+    hl_diva_entry: "Users reach DIVA through two entry points. A dedicated section of the portal introduces the assistant and opens it with a Chat with DIVA button, and a floating chatbot widget stays available across the portal, so a conversation can be started or continued from any page without leaving the current content.",
+    hl_diva_speech: "The Web Speech Synthesis API, a native browser API that turns text into speech without any third-party software, was integrated into the portal. Activated with a single control, it reads the content of DIVA's response aloud.",
+    hl_a11y_lede: "In Week 3 the mentor raised the bar: the portal had to meet WCAG 2.2, the international guidelines for making web content usable by people with visual, hearing, physical, cognitive and other disabilities. Beyond meeting the guidelines, the interns built an accessibility toolbar into the portal itself, designed on the principle of user choice: each visitor decides how they want to use the site.",
+    hl_a11y_standards: "Meeting WCAG 2.2 meant independent research into the A, AA and AAA conformance levels, testing the portal with browser-based accessibility evaluation tools, and reworking front-end code that had already been written. It was a practical lesson in building accessibility in from the start rather than retrofitting it.",
+
     hl_hero_lead_s: "University interns spent ten weeks at the AI Unit, hosted by the Mauritius Emerging Technologies Council in Ebene. They rebuilt aim.govmu.org, the government's AI portal. The work covered front-end development, accessibility, speech synthesis and the DIVA chatbot. This page shows what they built.", // (62 → 44)
     hl_overview_lede_s: "The AI Unit had no permanent developers, so interns carried the work forward. It began with one intern reviewing the portal and setting up the project. By the later weeks, several interns from different universities were working together in one shared codebase.", // (58 → 43)
     hl_revamp_lede_s: "aim.govmu.org is the government's AI portal for Mauritius, with news, policies, events and resources.", // (17 → 16)
@@ -198,6 +215,97 @@ const translations = {
     hl_diva_speech_s: "The team added the Web Speech Synthesis API, a browser feature that turns text into speech with no extra software. One button press reads DIVA's answer aloud.", // (35 → 27)
     hl_a11y_lede_s: "In Week 3, the mentor set a new goal: the portal had to meet WCAG 2.2, the international guidelines for making websites usable by people with visual, hearing, physical, cognitive and other disabilities. The interns also built an accessibility toolbar into the portal, so every visitor can choose how they want to use the site.", // (65 → 53)
     hl_a11y_standards_s: "Meeting WCAG 2.2 meant researching the A, AA and AAA conformance levels, testing the portal with browser accessibility tools, and reworking code that was already written. It taught the team that building accessibility in from the start is easier than adding it later.", // (47 → 42)
+
+    // Remaining highlights.php paragraphs - previously hardcoded, not wired to
+    // Simple Language at all. Short technical labels (tech-grid, steps) are
+    // already plain, so they carry no _s variant and fall back to the full text.
+    hl_hero_photo_caption: "The intern team at the AI Unit, METC, during the May to July 2026 attachment",
+
+    hl_ov_tick1: "A flat, collaborative structure with the mentor as the single source of technical guidance, and work coordinated through a shared Kanban board.",
+    hl_ov_tick1_s: "One mentor gave technical guidance. The team worked together and tracked tasks on a shared Kanban board.",
+    hl_ov_tick2: "New interns were onboarded onto the existing code and workflow, features were divided across the team, and pieces like the PDF-to-audio converter were built and integrated by different interns working together.",
+    hl_ov_tick2_s: "New interns learned the existing code and workflow fast. Work was split across the team, and features like the PDF-to-audio tool were built together.",
+    hl_ov_tick3: "WCAG standards, the Web Speech API and Jira were all learned through self-directed research and then applied directly to the portal, with the mentor guiding rather than handing over solutions.",
+    hl_ov_tick3_s: "Interns taught themselves WCAG, the Web Speech API and Jira, then used them on the portal. The mentor guided but did not hand over solutions.",
+    hl_ov_tick4: "The portal serves a national audience, and the work was presented to the Ministry of Technology and to the Electoral Commission of Mauritius during the attachment.",
+    hl_ov_tick4_s: "The portal serves the whole country. The team presented it to the Ministry of Technology and the Electoral Commission of Mauritius.",
+
+    hl_revamp_screenshot_caption: "The rebuilt Framework Library. The Listen buttons are the PDF-to-audio feature: the AI Strategy, FAIR Guidelines, Digital Blueprint and AI Playbook can be read aloud.",
+    hl_revamp_screenshot_caption_s: "The rebuilt Framework Library page. The Listen buttons read the AI Strategy, FAIR Guidelines, Digital Blueprint and AI Playbook aloud.",
+    hl_revamp_step1: "Review of aim.govmu.org: styling, mobile-friendliness, accessibility gaps and missing features.",
+    hl_revamp_step2: "A detailed wireframe of the home page, navigation and feature placement, approved before any code.",
+    hl_revamp_step3: "A consistent design language built on typography, colour schemes and spacing.",
+    hl_revamp_step4: "A fully responsive layout built with CSS Flexbox and Grid.",
+    hl_revamp_spec_frontend: "Built with HTML5, CSS3 and JavaScript (ES6+) without any front-end framework, so the codebase stays easy to maintain for future developers.",
+    hl_revamp_spec_frontend_s: "Built with HTML5, CSS3 and JavaScript, with no framework, so it stays easy to maintain.",
+    hl_revamp_spec_backend: "Python with FastAPI and PostgreSQL was agreed as the back-end stack, with API design patterns and database schema research under way at the end of the attachment.",
+    hl_revamp_spec_backend_s: "Python, FastAPI and PostgreSQL were chosen for the back end. API design and database planning began near the end.",
+    hl_revamp_spec_responsive: "A fully responsive layout using CSS Flexbox and Grid, with a consistent scheme of typography, colour and spacing.",
+    hl_revamp_spec_responsive_s: "A responsive layout using CSS Flexbox and Grid, with consistent typography, colour and spacing.",
+    hl_revamp_kanban_caption: "The physical Kanban board that came first, before the workflow moved to Jira",
+
+    hl_diva_entry_caption: "The invitation to start a conversation, placed alongside the documents themselves",
+    hl_diva_feature_assistant: "Answers questions on AI in Mauritius, the portal's content and government AI resources, drawing on the four published documents.",
+    hl_diva_feature_assistant_s: "Answers questions on AI in Mauritius and the portal's content, based on four published documents.",
+    hl_diva_feature_integration: "The first integration attempt failed against the portal's Content Security Policy. The conflict was diagnosed through browser developer tools and resolved with a CSP configuration that permits the required cross-origin calls while keeping the portal secure.",
+    hl_diva_feature_integration_s: "The chatbot first failed to load because of the portal's security settings. The team found the problem using browser tools and fixed it safely.",
+    hl_diva_speech_caption: "The conversation view, with read-aloud, copy and voice input",
+    hl_diva_feature_conversation: "Questions can be typed or spoken, answers can be read aloud or copied, and the conversation can be cleared and restarted at any point.",
+    hl_diva_feature_conversation_s: "Questions can be typed or spoken. Answers can be read aloud or copied, and the chat can be cleared and restarted.",
+    hl_diva_feature_accessibility: "Reading page content aloud supports users with visual impairments and lower literacy levels, in keeping with the WCAG principles behind the portal.",
+    hl_diva_feature_accessibility_s: "Reading content aloud helps users with visual impairments or lower literacy, matching the portal's WCAG goals.",
+
+    hl_a11y_panel1_caption: "A built-in screen reader reads the page in natural segments while highlighting the current element and scrolling it into view. Space pauses, S stops, arrow keys change the speed, and a slider and voice list give finer control. Five quick profiles, for low vision, motor, dyslexia, cognitive and senior needs, apply a set of adjustments in one click.",
+    hl_a11y_panel1_caption_s: "A built-in screen reader reads the page aloud and highlights each part as it goes. Space pauses, S stops, and arrow keys change speed. Five one-click profiles cover low vision, motor, dyslexia, cognitive and senior needs.",
+    hl_a11y_panel2_caption: "Base text size scales between 80% and 150% without breaking the page layout. Five display modes, Normal, High Contrast, Dark, Greyscale and Negative, cover different contrast needs, alongside toggles to highlight links, hide images and stop animations.",
+    hl_a11y_panel2_caption_s: "Text size can scale from 80% to 150% without breaking the layout. Five colour modes, Normal, High Contrast, Dark, Greyscale and Negative, plus toggles to highlight links, hide images and stop animations.",
+    hl_a11y_panel3_caption: "A dyslexia-friendly font toggle, a reading guide that follows the cursor, wider letter spacing and a bold focus outline for keyboard navigation, plus a large mouse pointer for users with motor difficulties and a keyboard shortcut guide. The panel itself opens with <kbd>Alt</kbd> + <kbd>A</kbd>.",
+    hl_a11y_panel3_caption_s: "Extra tools: a dyslexia-friendly font, a reading guide, wider letter spacing, a bold focus outline, a large mouse pointer and a shortcut guide. Open the panel with <kbd>Alt</kbd> + <kbd>A</kbd>.",
+    hl_a11y_principle_wcag: "The portal was tested against the guidelines with browser-based evaluation tools, and the required adjustments were identified and applied across the front-end code.",
+    hl_a11y_principle_wcag_s: "The portal was tested against WCAG with browser tools, and the needed fixes were made in the code.",
+    hl_a11y_principle_contrast: "Contrast ratios in the existing front end were reviewed and improved to meet the guidelines, with a High Contrast display mode available for users who need more.",
+    hl_a11y_principle_contrast_s: "Colour contrast was reviewed and improved, with a High Contrast mode for users who need it.",
+    hl_a11y_principle_keyboard: "Keyboard navigation support across the portal, a bold focus outline to keep the current position visible, and a shortcut guide for fully mouseless use.",
+    hl_a11y_principle_keyboard_s: "The whole portal works with a keyboard: a bold focus outline and a shortcut guide support mouse-free use.",
+    hl_a11y_principle_screenreaders: "The toolbar announces its state changes through an ARIA live region, keeping external screen readers such as NVDA and JAWS in step with what is on screen.",
+    hl_a11y_principle_screenreaders_s: "The toolbar announces changes out loud, so screen readers like NVDA and JAWS stay in sync with the screen.",
+    hl_a11y_principle_aria: "ARIA labels and text alternatives for non-text content were added throughout the front end so that assistive technology can name and describe every control.",
+    hl_a11y_principle_aria_s: "ARIA labels and text alternatives were added throughout, so assistive technology can describe every control.",
+    hl_a11y_principle_saved: "Every setting is stored in the browser's local storage, so a returning visitor's preferences are restored automatically with no account needed.",
+    hl_a11y_principle_saved_s: "Every setting is saved in the browser, so a returning visitor's preferences come back automatically.",
+
+    hl_journey_lede: "The same six stages carried every piece of work from an open question to something ready to hand over.",
+    hl_journey_lede_s: "The same six stages guided every piece of work, from question to finished result.",
+    hl_journey_video_caption: "The video captioning feature: audio transcribed by hand into timed WebVTT files, surfaced through the HTML5 track element, with captions available in English and French. The interface presenting the videos and captions was also built by the interns.",
+    hl_journey_video_caption_s: "Captions were typed by hand and added with HTML5's caption feature, in English and French. Interns also built the video player itself.",
+    hl_journey_stage1: "Analysis of the existing aim.govmu.org site, plus self-directed research into WCAG 2.2, the Web Speech API and open data.",
+    hl_journey_stage1_s: "Reviewed the old aim.govmu.org site and researched WCAG 2.2, the Web Speech API and open data.",
+    hl_journey_stage2: "A wireframe of the home page, navigation and feature placement, approved by the mentor, alongside the Kanban board that would organise the work.",
+    hl_journey_stage2_s: "Made a wireframe of the home page and navigation, approved by the mentor, and set up the Kanban board.",
+    hl_journey_stage3: "Front-end build in HTML5, CSS3 and JavaScript, followed by the accessibility toolbar, speech synthesis, DIVA, video captions and PDF-to-audio.",
+    hl_journey_stage3_s: "Built the front end in HTML5, CSS3 and JavaScript, then added the accessibility toolbar, speech, DIVA, captions and PDF-to-audio.",
+    hl_journey_stage4: "The portal was checked against WCAG 2.2 with browser-based evaluation tools, and integration problems, like the chatbot's CSP conflict, were diagnosed through browser developer tools.",
+    hl_journey_stage4_s: "Tested the portal against WCAG 2.2 and fixed problems, like the chatbot's security conflict, using browser tools.",
+    hl_journey_stage5: "Early front-end code was reworked to meet the WCAG requirement, and the speech engine gained a voice selection algorithm to align voices with the chosen language.",
+    hl_journey_stage5_s: "Reworked early code to meet WCAG, and added a voice-selection feature that matches voices to the chosen language.",
+    hl_journey_stage6: "The portal was presented to the Ministry of Technology, back-end planning began, and the code structure was documented so incoming interns could continue the work.",
+    hl_journey_stage6_s: "Presented the portal to the Ministry of Technology, started back-end planning, and documented the code for future interns.",
+    hl_journey_closing_caption: "At the Ministry of Information Technology, Communication and Innovation, where the portal was presented.",
+
+    hl_skills_lede: "The technologies used across the portal, and the tools the team worked with.",
+    hl_skills_html: "Semantic markup, ARIA labels and the track element for captions",
+    hl_skills_css: "Responsive layouts with Flexbox and Grid, and a consistent design language",
+    hl_skills_js: "All portal interactivity, written without a front-end framework",
+    hl_skills_frontend: "Wireframing, interface build and usability improvements",
+    hl_skills_responsive: "A layout that holds from a small phone to a wide desktop",
+    hl_skills_a11y: "WCAG 2.2, ARIA labels, keyboard navigation and contrast",
+    hl_skills_speech: "Speech synthesis for the screen reader and PDF-to-audio",
+    hl_skills_chatbot: "Integration of the DIVA assistant into the portal",
+    hl_skills_python: "Selected for the back end, researched during the attachment",
+    hl_skills_fastapi: "The agreed back-end framework, with API design patterns explored",
+    hl_skills_postgresql: "The chosen relational database, with schema planning under way",
+    hl_skills_git: "A shared repository for concurrent work across the intern team",
+    hl_skills_jira: "Kanban board with tasks organised into Epics and Sub-Epics",
   }
 };
   
