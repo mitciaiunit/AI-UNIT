@@ -24,8 +24,10 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
       <div class="footer-col"><h4 data-i18n="footer_nav">Navigation</h4><ul>
         <li><a <?= $navTarget('about-combined') ?> data-i18n="footer_about">About Us</a></li>
         <li><a <?= $navTarget('team') ?> data-i18n="footer_team">Meet the Team</a></li>
+        <li><a href="<?= e(url('ai-lab')) ?>" data-i18n="nav_ailab">AI Lab</a></li>
         <li><a <?= $navTarget('action') ?> data-i18n="footer_action">AI in Action</a></li>
         <li><a <?= $navTarget('strategy') ?> data-i18n="footer_framework">AI Framework</a></li>
+        <li><a href="<?= e(url('highlights')) ?>" data-i18n="nav_highlights">Highlights</a></li>
       </ul></div>
       <div class="footer-col"><h4 data-i18n="footer_resources">Resources</h4><ul>
         <li><a href="<?= e(url('document/aistrategy')) ?>" data-i18n="footer_strategy">National AI Strategy</a></li>
