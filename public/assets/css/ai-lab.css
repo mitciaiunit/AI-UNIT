@@ -304,6 +304,49 @@
   border: 0;
 }
 
+.ai-lab .lab-notice {
+  padding: 18px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.ai-lab .lab-notice a { color: var(--blue-mid); text-decoration: underline; }
+
+.ai-lab .lab-privacy {
+  font-size: 0.86rem !important;
+  color: var(--text-3) !important;
+}
+
+.ai-lab .lab-privacy a { color: var(--blue-mid); text-decoration: underline; }
+
+/* ─── Calendly embed ───
+   Calendly injects an <iframe> into this container. The height is fixed
+   because the iframe is cross-origin: its content cannot be measured, so it
+   cannot size itself to fit. These values follow Calendly's documented
+   minimums and give the month view room without an inner scrollbar on
+   desktop. min-width guards the iframe against being squeezed below the width
+   Calendly's own layout needs. */
+.ai-lab .lab-calendly {
+  min-width: 320px;
+  height: 700px;
+  margin-top: 26px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.ai-lab .lab-calendly iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 /* Hidden only once the embed has actually rendered - ai-lab.js adds this. The
    link stays in the DOM either way, so it is available to everyone until the
    embed is genuinely working. */

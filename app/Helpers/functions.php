@@ -91,18 +91,15 @@ function config(string $key, mixed $default = null): mixed
 function asset(string $path): string
 {
     $relative = ltrim($path, '/');
-    $url = rtrim((string) config('site.base_url'), '/')
-        . rtrim((string) config('site.asset_path'), '/')
-        . '/' . $relative;
 
-    // assets/ moved inside public/ when public/ became the document root, so
-    // the on-disk lookup for the cache-busting mtime moved with it.
+    $url = rtrim((string) config('site.base_url'), '/')
+        . '/assets/' . $relative;
+
     $absolutePath = dirname(__DIR__, 2) . '/public/assets/' . $relative;
     $mtime = @filemtime($absolutePath);
 
     return $mtime !== false ? $url . '?v=' . $mtime : $url;
 }
-
 /**
  * Build an absolute URL to an application route (e.g. url('video/1')).
  */
@@ -192,7 +189,7 @@ function asset_url(string $path): string
 }
 function asset_filesize(string $path): ?string
 {
-    $absolutePath = dirname(__DIR__, 2) . '/assets/' . ltrim($path, '/');
+    $absolutePath = dirname(__DIR__, 2) . '/public/assets/' . ltrim($path, '/');
     $bytes = @filesize($absolutePath);
 
     if ($bytes === false) {
