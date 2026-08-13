@@ -18,10 +18,10 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="footer-logo"><img src="<?= e(asset('images/MLogo.png')) ?>" alt="Ministry logo" style="width:50%;height:50%;object-fit:contain;" /></div>
+        <div class="footer-logo"><img src="<?= e(asset('images/MLogo.png')) ?>" alt="Ministry logo" width="896" height="251" loading="lazy" decoding="async" style="width:50%;height:50%;object-fit:contain;" /></div>
         <p data-i18n="footer_brand">Ministry of Information Technology, Communication and Innovation - Republic of Mauritius. Building a smarter, fairer future with AI.</p>
       </div>
-      <div class="footer-col"><h4 data-i18n="footer_nav">Navigation</h4><ul>
+      <div class="footer-col"><h2 class="footer-col-title" data-i18n="footer_nav">Navigation</h2><ul>
         <li><a <?= $navTarget('about-combined') ?> data-i18n="footer_about">About Us</a></li>
         <li><a <?= $navTarget('team') ?> data-i18n="footer_team">Meet the Team</a></li>
         <li><a href="<?= e(url('ai-lab')) ?>" data-i18n="nav_ailab">AI Lab</a></li>
@@ -29,13 +29,13 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
         <li><a <?= $navTarget('strategy') ?> data-i18n="footer_framework">AI Framework</a></li>
         <li><a href="<?= e(url('highlights')) ?>" data-i18n="nav_highlights">Highlights</a></li>
       </ul></div>
-      <div class="footer-col"><h4 data-i18n="footer_resources">Resources</h4><ul>
+      <div class="footer-col"><h2 class="footer-col-title" data-i18n="footer_resources">Resources</h2><ul>
         <li><a href="<?= e(url('document/aistrategy')) ?>" data-i18n="footer_strategy">National AI Strategy</a></li>
         <li><a href="<?= e(url('document/fairguidelines')) ?>" data-i18n="footer_fair">FAIR Guidelines</a></li>
         <li><a href="<?= e(url('document/blueprint')) ?>" data-i18n="footer_blueprint">Digital Blueprint</a></li>
         <li><a href="<?= e(url('document/playbook')) ?>" data-i18n="footer_playbook">AI Playbook</a></li>
       </ul></div>
-      <div class="footer-col"><h4 data-i18n="footer_info">Information</h4><ul>
+      <div class="footer-col"><h2 class="footer-col-title" data-i18n="footer_info">Information</h2><ul>
         <li><a href="<?= e(url('privacy-policy')) ?>" data-i18n="footer_privacy">Privacy Policy</a></li>
         <li><a href="<?= e(url('disclaimer')) ?>" data-i18n="footer_disclaimer">Disclaimer</a></li>
         <li><a href="<?= e(url('cookie-policy')) ?>" data-i18n="footer_cookie">Cookie Policy</a></li>

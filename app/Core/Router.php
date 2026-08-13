@@ -61,7 +61,13 @@ final class Router
         }
 
         http_response_code(404);
-        View::render('404', [], 'app');
+        /*
+         * noindex: this handler answers on ANY unmatched path, so leaving it
+         * indexable would offer search engines an unbounded set of URLs that
+         * all render the same page. The 404 status alone does not undo that
+         * for a crawler that has already been pointed at one.
+         */
+        View::render('404', ['noindex' => true], 'app');
     }
 
     /**

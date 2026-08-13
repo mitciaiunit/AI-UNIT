@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title><?= e(page_title($title)) ?></title>
-  <link rel="icon" type="image/x-icon" href="<?= e(asset('images/logo.gif')) ?>" />
+  <link rel="icon" type="image/png" href="<?= e(asset('images/favicon.png')) ?>" />
+  <?php require __DIR__ . '/../includes/meta.php'; ?>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -20,7 +21,7 @@
       --surface:   #FFFFFF;
       --text1:     #0D1B3E;
       --text2:     #4B5E77;
-      --text3:     #8896B0;
+      --text3:     #4B5E77;
       --border:    #DDE2EF;
       --border2:   #C8CFE4;
       --trans:     0.18s ease;
@@ -186,7 +187,7 @@
     @media (max-width: 900px) {
       .logo-sub    { display: none; }
       .doc-meta-label { display: none; }
-      .doc-meta-title { font-size: 0.82rem; }
+      .doc-meta-title { font-size: 0.82rem; margin: 0; font-weight: 600; line-height: 1.2; }
     }
 
     @media (max-width: 640px) {
@@ -239,7 +240,7 @@
 <header class="topbar" role="banner">
   <div class="topbar-left">
     <a href="<?= e(url('/')) ?>" class="logo-wrap" aria-label="AI Unit - Back to homepage">
-      <img src="<?= e(asset('images/logo.gif')) ?>" alt="" aria-hidden="true" />
+      <img src="<?= e(asset('images/logo.webp')) ?>" alt="" aria-hidden="true" width="300" height="200" decoding="async" />
       <div class="logo-text">
         <span class="logo-main">AI Unit</span>
         <span class="logo-sub">Ministry of ICT · Mauritius</span>
@@ -248,7 +249,7 @@
     <div class="divider-line" aria-hidden="true"></div>
     <div class="doc-meta">
       <span class="doc-meta-label">Framework Library</span>
-      <span class="doc-meta-title" id="docTitle"><?= e($title) ?></span>
+      <h1 class="doc-meta-title" id="docTitle"><?= e($title) ?></h1>
     </div>
   </div>
 

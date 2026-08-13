@@ -92,6 +92,10 @@ final class VideoController extends Controller
 
         $this->view('video', [
             'title' => sprintf('Video %d - %s · AI Unit Mauritius', $videoId, $video['title']['en']),
+            // The English synopsis this video already carries, so the search
+            // result and the social card describe this video and no other.
+            'description' => $video['desc']['en'],
+            'ogType' => 'video.other',
             'isHome' => false,
             'videoId' => $videoId,
             'video' => $video,

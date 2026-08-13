@@ -43,7 +43,13 @@ $isHome = true;
           <div class="diva-icon" aria-hidden="true"><img src="<?= e(asset('images/DIVA.png')) ?>" alt="DIVA"></div>
           <div>
             <h3 data-i18n="diva_title">Meet DIVA - Digital Interactive Virtual Assistant</h3>
-            <p data-i18n="diva_desc" tabindex="0">DIVA is a prototype assistant that answers questions based on three key documents: the Digital Transformation Blueprint, AI Strategyand and the FAIR Guidelines.</p>
+            <?php /* Three documents, not four: the AI Playbook is not part of
+                     DIVA's grounding set. The Framework Library below still
+                     offers all four - the Playbook is a document the site
+                     publishes, just not one DIVA answers from. Keep this list
+                     in step with diva_desc in assets/js/script.js, which
+                     overwrites this text on load. */ ?>
+            <p data-i18n="diva_desc" tabindex="0">DIVA is a prototype assistant that answers questions based on three key documents: the Digital Transformation Blueprint, the AI Strategy and the FAIR Guidelines.</p>
             <button class="btn-sm" id="openDiva"><span data-i18n="diva_chat">Chat with DIVA</span> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
           </div>
         </div>
@@ -98,6 +104,25 @@ $isHome = true;
   <div class="container">
     <div class="ailab-promo reveal">
       <div class="ailab-promo-main">
+        <?php
+        /*
+         * Launch flag. Deliberately a single line inside the existing promo
+         * card rather than a banner of its own: the homepage already carries
+         * this section and its CTA to /ai-lab, so the announcement only needs
+         * to add the date. Nothing is added near the hero, which stays the
+         * page's primary message.
+         *
+         * The full announcement lives on the AI Lab page (pages/ai-lab.php);
+         * this is the short form, and the whole promo card is what links there.
+         *
+         * NOTE: fixed wording, not a countdown - it needs updating to the
+         * present tense on 20 August 2026, together with the AI Lab page.
+         */
+        ?>
+        <p class="ailab-launch-flag">
+          <span class="ailab-launch-dot" aria-hidden="true"></span>
+          <span data-i18n="ailab_launch_flag">Launching <time datetime="2026-08-20">20 August 2026</time></span>
+        </p>
         <div class="section-eyebrow" data-i18n="ailab_eyebrow">AI Unit Facility</div>
         <h2 class="section-title ailab-promo-title" id="ailab-home-title">
           <span data-i18n="ailab_title1">Explore the</span> <em data-i18n="ailab_title2">AI Lab</em>
@@ -246,8 +271,22 @@ $isHome = true;
         <h3 data-i18n="action_card2_title">Discover "AI for All"</h3>
         <p data-i18n="action_card2_desc" tabindex="0">Our national booklet designed to make Artificial Intelligence accessible, understandable and beneficial to every citizen.</p>
         <div class="action-description" data-i18n="action_card2_note" tabindex="0">Making AI understandable for everyone - available in English and Kreol versions.</div>
-        <div class="ai-for-all-box"><strong data-i18n="ai_en_title">🇬🇧 AI For All - English Version</strong><em data-i18n="ai_en_sub">The Future Belongs to Us</em><button class="btn-redesign" id="readEnBooklet" data-i18n="ai_en_btn">Read the Booklet →</button></div>
-        <div class="ai-for-all-box"><strong lang="mfe" data-i18n="ai_km_title">🇲🇺 AI Pou Nou Tou - Version Kreol</strong><em lang="mfe" data-i18n="ai_km_sub">Lavenir Apartenir A Nou Tou</em><button class="btn-redesign" id="readKmBooklet" lang="mfe" data-i18n="ai_km_btn">Lire Livre la →</button></div>
+        <?php
+        /*
+         * Real links, built with url(), exactly like the Kreol booklet link in
+         * the card above. They used to be <button>s wired up in script.js with
+         * window.open('/booklet/aie') - a root-relative path with no base, so
+         * they only ever worked when the site sat at the domain root and 404ed
+         * under any prefix. url() resolves the prefix from the request, so one
+         * markup works at "/", at "/AI-UNIT/public" and behind an alias.
+         *
+         * As links they also gain what a button never had: a real href, so
+         * middle-click, "open in new tab" and copy-link work, and a screen
+         * reader announces them as links to a destination.
+         */
+        ?>
+        <div class="ai-for-all-box"><strong data-i18n="ai_en_title">🇬🇧 AI For All - English Version</strong><em data-i18n="ai_en_sub">The Future Belongs to Us</em><a class="btn-redesign" href="<?= e(url('booklet/aie')) ?>" target="_blank" rel="noopener" data-i18n="ai_en_btn">Read the Booklet →</a></div>
+        <div class="ai-for-all-box"><strong lang="mfe" data-i18n="ai_km_title">🇲🇺 AI Pou Nou Tou - Version Kreol</strong><em lang="mfe" data-i18n="ai_km_sub">Lavenir Apartenir A Nou Tou</em><a class="btn-redesign" href="<?= e(url('booklet/aim')) ?>" target="_blank" rel="noopener" lang="mfe" data-i18n="ai_km_btn">Lire Livre la →</a></div>
       </div>
     </div>
   </div>
@@ -300,7 +339,7 @@ $isHome = true;
       <article class="doc-card reveal">
         <div class="doc-cover">
           <div class="doc-cover-frame">
-            <img src="<?= e(asset('images/blueprint.webp')) ?>" alt="Digital Transformation Blueprint" loading="lazy">
+            <img src="<?= e(asset('images/blueprint.webp')) ?>" alt="Digital Transformation Blueprint" width="1191" height="1684" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="doc-body">
@@ -341,7 +380,7 @@ $isHome = true;
       <article class="doc-card reveal">
         <div class="doc-cover">
           <div class="doc-cover-frame">
-            <img src="<?= e(asset('images/AI strategy.png')) ?>" alt="National AI Strategy" loading="lazy">
+            <img src="<?= e(asset('images/AI strategy.png')) ?>" alt="National AI Strategy" width="413" height="603" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="doc-body">
@@ -382,7 +421,7 @@ $isHome = true;
       <article class="doc-card reveal">
         <div class="doc-cover">
           <div class="doc-cover-frame">
-            <img src="<?= e(asset('images/Fair guideline.png')) ?>" alt="FAIR Guidelines" loading="lazy">
+            <img src="<?= e(asset('images/Fair guideline.png')) ?>" alt="FAIR Guidelines" width="429" height="599" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="doc-body">
@@ -423,7 +462,7 @@ $isHome = true;
       <article class="doc-card reveal">
         <div class="doc-cover">
           <div class="doc-cover-frame">
-            <img src="<?= e(asset('images/AI playbook.png')) ?>" alt="AI Playbook" loading="lazy">
+            <img src="<?= e(asset('images/AI playbook.png')) ?>" alt="AI Playbook" width="437" height="605" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="doc-body">
@@ -485,13 +524,24 @@ $isHome = true;
     <h2 class="section-title" id="team-title"><span data-i18n="team_title1">The People</span> <em data-i18n="team_title2">Behind the Work</em></h2>
     <p class="section-desc" data-i18n="team_desc" tabindex="0">Meet the experts driving Mauritius' AI strategy and digital transformation.</p>
     <div class="team-tabs" role="tablist" aria-label="Team members">
-      <button class="team-tab active" role="tab" aria-selected="true" aria-controls="panel-rama" data-member="0" tabindex="0" data-i18n="team_tab1">Mr. Mudaliar</button>
-      <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-heman" data-member="1" tabindex="-1" data-i18n="team_tab2">Dr. Mohabeer</button>
-      <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-ruben" data-member="2" tabindex="-1" data-i18n="team_tab3">Mr. Ramdhony</button>
-      <button class="team-tab" role="tab" aria-selected="false" aria-controls="panel-yudhaveer" data-member="3" tabindex="-1" data-i18n="team_tab4">Mr. Ramdoyal</button>
+      <?php
+      /*
+       * These four labels must match the team_tab1..4 strings in
+       * assets/js/script.js. applyTranslations() rewrites every [data-i18n]
+       * element on load, so the dictionary is what a visitor actually sees and
+       * the markup here is the pre-JavaScript fallback. They had drifted apart
+       * - the markup read "Mr. Mudaliar" while the dictionary said
+       * "Mr. Ramakrishna" - which is why the page never showed what the file
+       * said it would.
+       */
+      ?>
+      <button class="team-tab active" role="tab" aria-selected="true" id="tab-rama" aria-controls="panel-rama" data-member="0" data-i18n="team_tab1">Mr. Ramakrishna</button>
+      <button class="team-tab" role="tab" aria-selected="false" id="tab-heman" aria-controls="panel-heman" data-member="1" data-i18n="team_tab2">Dr. Mohabeer</button>
+      <button class="team-tab" role="tab" aria-selected="false" id="tab-ruben" aria-controls="panel-ruben" data-member="2" data-i18n="team_tab3">Mr. Ramdhony</button>
+      <button class="team-tab" role="tab" aria-selected="false" id="tab-yudhaveer" aria-controls="panel-yudhaveer" data-member="3" data-i18n="team_tab4">Mr. Ramdoyal</button>
     </div>
-    <div class="team-member-panel active reveal" id="panel-rama" role="tabpanel">
-      <div class="team-photo-wrap"><img src="<?= e(asset('images/rm.jpg')) ?>" alt="Portrait of Mr. Ramakrishna Mudaliar" class="team-photo-img" /></div>
+    <div class="team-member-panel active reveal" id="panel-rama" role="tabpanel" aria-labelledby="tab-rama">
+      <div class="team-photo-wrap"><img src="<?= e(asset('images/rm.jpg')) ?>" alt="Portrait of Mr. Ramakrishna Mudaliar" class="team-photo-img" width="1024" height="1024" loading="lazy" decoding="async" /></div>
       <div class="team-bio">
         <div class="team-focus-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="team_rama_tag">Alignment &amp; Safety</span></div>
         <h3 class="team-name">Mr. Ramakrishna<br>Mudaliar</h3>
@@ -500,8 +550,8 @@ $isHome = true;
         <div class="team-stats-strip"><div class="team-stat"><span class="team-stat-value">20+</span><span class="team-stat-label" data-i18n="rama_stat1">Years Experience</span></div><div class="team-stat"><span class="team-stat-value">2x</span><span class="team-stat-label" data-i18n="rama_stat2">Master's Degrees</span></div><div class="team-stat"><span class="team-stat-value">2024</span><span class="team-stat-label" data-i18n="rama_stat3">AI Unit Founded</span></div></div>
       </div>
     </div>
-    <div class="team-member-panel reveal" id="panel-heman" role="tabpanel">
-      <div class="team-photo-wrap"><img src="<?= e(asset('images/hm.jpg')) ?>" alt="Portrait of Dr. Heman Mohabeer" class="team-photo-img" /></div>
+    <div class="team-member-panel reveal" id="panel-heman" role="tabpanel" aria-labelledby="tab-heman">
+      <div class="team-photo-wrap"><img src="<?= e(asset('images/hm.jpg')) ?>" alt="Portrait of Dr. Heman Mohabeer" class="team-photo-img" width="1084" height="1084" loading="lazy" decoding="async" /></div>
       <div class="team-bio">
         <div class="team-focus-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><span data-i18n="team_heman_tag">Architecture &amp; Scale</span></div>
         <h3 class="team-name">Dr. Heman<br>Mohabeer</h3>
@@ -510,8 +560,8 @@ $isHome = true;
         <div class="team-stats-strip"><div class="team-stat"><span class="team-stat-value">PhD</span><span class="team-stat-label" data-i18n="heman_stat1">AI &amp; Machine Learning</span></div><div class="team-stat"><span class="team-stat-value">15+</span><span class="team-stat-label" data-i18n="heman_stat2">Years Experience</span></div><div class="team-stat"><span class="team-stat-value">Africa</span><span class="team-stat-label" data-i18n="heman_stat3">Regional AI Leader</span></div></div>
       </div>
     </div>
-    <div class="team-member-panel reveal" id="panel-ruben" role="tabpanel">
-      <div class="team-photo-wrap"><img src="<?= e(asset('images/rr.jpg')) ?>" alt="Portrait of Mr. Ruben Ramdhony" class="team-photo-img" /></div>
+    <div class="team-member-panel reveal" id="panel-ruben" role="tabpanel" aria-labelledby="tab-ruben">
+      <div class="team-photo-wrap"><img src="<?= e(asset('images/rr.jpg')) ?>" alt="Portrait of Mr. Ruben Ramdhony" class="team-photo-img" width="800" height="800" loading="lazy" decoding="async" /></div>
       <div class="team-bio">
         <div class="team-focus-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg><span data-i18n="team_ruben_tag">Digital Transformation</span></div>
         <h3 class="team-name">Mr. Ruben<br>Ramdhony</h3>
@@ -522,30 +572,41 @@ $isHome = true;
     </div>
     <?php
     /**
-     * PLACEHOLDER PROFILE - not yet accurate.
+     * Mr. Yudhaveer Vaibhav Ramdoyal, AI Expert.
      *
-     * Structure, focus tag, role, biography and statistics are a copy of
-     * Mr. Ramakrishna Mudaliar's panel, pending Mr. Ramdoyal's own details.
-     * The role therefore currently reads "Head - AI Unit", which is Mr.
-     * Mudaliar's post, and the biography describes his career. Replace the
-     * team_yudhaveer_* and yudhaveer_stat* strings in assets/js/script.js
-     * (and the matching fallbacks below) before this section goes public.
+     * This panel was previously a copy of Mr. Mudaliar's - his post, his
+     * biography, his portrait - marked in the code as a placeholder. It now
+     * carries Mr. Ramdoyal's own details, supplied by the AI Unit.
      *
-     * The photo is Mr. Mudaliar's (images/rm.jpg) standing in until the
-     * official portrait is supplied.
+     * Every statement here comes from that supplied biography and nothing is
+     * extrapolated from it: the stats strip therefore shows his degree, his
+     * certificate and the sectors he has worked in, and NOT a years-of-
+     * experience figure like the other panels, because the biography gives no
+     * number and one must not be guessed on a government page.
+     *
+     * The same strings exist in assets/js/script.js (team_yudhaveer_*,
+     * yudhaveer_stat*). Those win at runtime - applyTranslations() overwrites
+     * this markup on load - so the two must be changed together.
      *
      * The panel must stay in the same position as its tab: the tab handler in
      * script.js indexes .team-member-panel by the tab's data-member value.
      */
     ?>
-    <div class="team-member-panel reveal" id="panel-yudhaveer" role="tabpanel">
-      <div class="team-photo-wrap"><img src="<?= e(asset('images/yr.jpg')) ?>" alt="Portrait of Mr. Yudhaveer Vaibhav Ramdoyal" class="team-photo-img" /></div>
+    <div class="team-member-panel reveal" id="panel-yudhaveer" role="tabpanel" aria-labelledby="tab-yudhaveer">
+      <?php /* yr.jpeg, as supplied by the AI Unit. The other three portraits
+               are .jpg; this one keeps the extension it arrived with rather
+               than being renamed, so the file on disk and the reference here
+               cannot diverge. */ ?>
+      <div class="team-photo-wrap"><img src="<?= e(asset('images/yr.jpeg')) ?>" alt="Portrait of Mr. Yudhaveer Vaibhav Ramdoyal" class="team-photo-img" loading="lazy" decoding="async" /></div>
       <div class="team-bio">
-        <div class="team-focus-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="team_yudhaveer_tag">Alignment &amp; Safety</span></div>
+        <?php /* Icon differs from Mr. Mudaliar's shield, which this panel only
+                 carried because it was copied from his. Each member has their
+                 own; this one reads as a spark/innovation mark. */ ?>
+        <div class="team-focus-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="3"/></svg><span data-i18n="team_yudhaveer_tag">AI &amp; Digital Innovation</span></div>
         <h3 class="team-name">Mr. Yudhaveer Vaibhav<br>Ramdoyal</h3>
         <p class="team-role" data-i18n="team_yudhaveer_role">AI Expert</p>
-        <blockquote class="team-quote" data-i18n="team_yudhaveer_quote" tabindex="0">Yudhaveer Vaibhav Ramdoyal serves as Head of the AI Unit, where he spearheads the country's people-centric approach to leverage Artificial Intelligence for responsible development and implementation at a national scale. He holds Master's Degrees from the University of Montpellier and the University of Manipal. With more than two decades of experience across both the private technology sector and public service, Yudhaveer brings a well-rounded perspective that bridges innovation with real-world implementation.</blockquote>
-        <div class="team-stats-strip"><div class="team-stat"><span class="team-stat-value">20+</span><span class="team-stat-label" data-i18n="yudhaveer_stat1">Years Experience</span></div><div class="team-stat"><span class="team-stat-value">2x</span><span class="team-stat-label" data-i18n="yudhaveer_stat2">Master's Degrees</span></div><div class="team-stat"><span class="team-stat-value">2024</span><span class="team-stat-label" data-i18n="yudhaveer_stat3">AI Unit Founded</span></div></div>
+        <blockquote class="team-quote" data-i18n="team_yudhaveer_quote" tabindex="0">Yudhaveer Vaibhav Ramdoyal serves as an AI Expert at the AI Unit, supporting the national vision to drive responsible digital transformation and modern public service delivery. He holds a Bachelor of Science (Hons) in Computer Science from the University of Mauritius and earned a Google AI Professional Certificate. Drawing on a strong background in data engineering and technical leadership across the corporate and financial technology sectors, Yudhaveer bridges core data capabilities with practical AI implementation. His expertise spans ICT strategy, enterprise transformation, and technology governance, positioning him to effectively advance national priorities in Artificial Intelligence and digital innovation.</blockquote>
+        <div class="team-stats-strip"><div class="team-stat"><span class="team-stat-value">BSc</span><span class="team-stat-label" data-i18n="yudhaveer_stat1">Computer Science (Hons)</span></div><div class="team-stat"><span class="team-stat-value">Google</span><span class="team-stat-label" data-i18n="yudhaveer_stat2">AI Professional Certificate</span></div><div class="team-stat"><span class="team-stat-value">FinTech</span><span class="team-stat-label" data-i18n="yudhaveer_stat3">Corporate &amp; Financial Sectors</span></div></div>
       </div>
     </div>
   </div>
@@ -559,7 +620,7 @@ $isHome = true;
     <p class="section-desc" data-i18n="contact_desc" tabindex="0">Have questions about AI in Mauritius? Want to partner with us or learn more about our programmes? Reach out - we welcome every question.</p>
     <div class="contact-grid">
       <div class="contact-info">
-        <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><h3 data-i18n="contact_address_title">Address</h3><p data-i18n="contact_address_text" tabindex="0">Cyber Tower 2, Level 6,<br>Ebene Cyber City,<br>Mauritius</p></div></div>
+        <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><h3 data-i18n="contact_address_title">Address</h3><p data-i18n="contact_address_text" tabindex="0">Cyber Tower 2, Level 6, Ebene</p></div></div>
         <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><h3 data-i18n="contact_email_title">Email</h3><p><a href="mailto:<?= e(config('site.contact_email')) ?>" style="color:var(--blue-mid);"><?= e(config('site.contact_email')) ?></a></p></div></div>
         <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.89 12 19.79 19.79 0 0 1 1.86 3.35 2 2 0 0 1 3.83 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.91 5.91l.95-.95a2 2 0 0 1 2.11.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><h3 data-i18n="contact_phone_title">Phone</h3><p><?= e(config('site.contact_phone')) ?></p></div></div>
         <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><div><h3 data-i18n="contact_hours_title">Office Hours</h3><p data-i18n="contact_hours_text" tabindex="0">Monday - Friday: 8:45 AM - 4:00 PM<br>Closed on Public Holidays</p></div></div>
@@ -574,18 +635,18 @@ $isHome = true;
         <div class="form-row">
           <div class="form-group">
             <label for="name" data-i18n="form_name">Your Name <span aria-hidden="true" style="color:red;">*</span></label>
-            <input type="text" id="name" name="name" placeholder="e.g. Jean-Marie Dupont" required autocomplete="name" />
-            <span class="field-error" id="name-error" role="alert"></span>
+            <input type="text" id="name" name="name" placeholder="e.g. Jean-Marie Dupont" required autocomplete="name" aria-describedby="name-error" />
+            <span class="field-error" id="name-error"></span>
           </div>
           <div class="form-group">
             <label for="email" data-i18n="form_email">Email Address <span aria-hidden="true" style="color:red;">*</span></label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
-            <span class="field-error" id="email-error" role="alert"></span>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" aria-describedby="email-error" />
+            <span class="field-error" id="email-error"></span>
           </div>
         </div>
         <div class="form-group">
           <label for="subject" data-i18n="form_topic">Topic</label>
-          <select id="subject" name="subject">
+          <select id="subject" name="subject" aria-describedby="subject-error">
             <option value="" data-i18n="form_topic_placeholder">Select a topic</option>
             <option data-i18n="form_topic1">AI Strategy Enquiry</option>
             <option data-i18n="form_topic2">Partnership Proposal</option>
@@ -595,12 +656,12 @@ $isHome = true;
             <option data-i18n="form_topic6">Media &amp; Press</option>
             <option data-i18n="form_topic7">Other</option>
           </select>
-          <span class="field-error" id="subject-error" role="alert"></span>
+          <span class="field-error" id="subject-error"></span>
         </div>
         <div class="form-group">
           <label for="message" data-i18n="form_message">Your Message <span aria-hidden="true" style="color:red;">*</span></label>
-          <textarea id="message" name="message" rows="5" placeholder="Tell us what's on your mind..." required></textarea>
-          <span class="field-error" id="message-error" role="alert"></span>
+          <textarea id="message" name="message" rows="5" placeholder="Tell us what's on your mind..." required aria-describedby="message-error"></textarea>
+          <span class="field-error" id="message-error"></span>
         </div>
         <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
         <button type="submit" class="btn-primary btn-full">

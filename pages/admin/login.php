@@ -3,7 +3,7 @@ $disabled = !empty($lockedOut);
 ?>
 <section class="adm-auth__card" aria-labelledby="admin-login-title">
   <div class="adm-auth__head">
-    <img src="<?= e(asset('images/logo.gif')) ?>" alt="" width="46" height="46">
+    <img src="<?= e(asset('images/favicon.png')) ?>" alt="" width="46" height="46" decoding="async">
     <h1 id="admin-login-title">Highlights admin</h1>
     <p>Sign in to manage categories and gallery images.</p>
   </div>

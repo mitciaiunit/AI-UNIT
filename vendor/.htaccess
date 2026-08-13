@@ -1,0 +1,12 @@
+# Composer dependencies - never served over HTTP.
+#
+# Third-party packages routinely ship examples, test fixtures and scripts that
+# were never meant to be reachable, so the whole tree is closed rather than
+# picked over file by file.
+#
+# This duplicates the rewrite rule in the repository-root .htaccess on purpose.
+# That rule needs mod_rewrite; this one does not.
+#
+# Tracked in git via the "!vendor/.htaccess" exception in .gitignore, so a
+# fresh clone is protected before anyone runs `composer install`.
+Require all denied

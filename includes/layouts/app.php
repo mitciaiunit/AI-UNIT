@@ -39,11 +39,33 @@ $isHome = $isHome ?? false;
  * installed. Must be emitted before script.js loads.
  */
 $jsConfig = [
-    'assetBase' => rtrim((string) config('site.root_url'), '/') . rtrim((string) config('site.asset_path'), '/'),
-    'divaApiUrl' => (string) config('diva.api_url'),
+    'assetBase' => rtrim((string) config('site.base_url'), '/') . rtrim((string) config('site.asset_path'), '/'),
+    // Empty when DIVA is not configured. script.js treats an empty value as
+    // "do not send", so no request is attempted rather than one being aimed at
+    // a guessed address.
+    'divaApiUrl' => diva_api_url(),
 ];
 ?>
 <script>window.AI_UNIT = <?= json_encode($jsConfig, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?>;</script>
+<?php
+/*
+ * Twemoji 14.0.2, pinned exactly - not ^14 or latest, so the rendered flags
+ * cannot change under us.
+ *
+ * Windows ships no colour glyph for regional-indicator pairs, so the Mauritius
+ * and UK flags in the "AI for All" cards render as the letters MU and GB, or
+ * as empty boxes, in most Windows browsers. Twemoji replaces them with images.
+ *
+ * Loaded here, in the shared layout, so every page using it gets the library
+ * once - no per-page duplication. It must come BEFORE script.js, whose
+ * parseEmoji() calls it; that function guards with typeof, so if this request
+ * fails the page simply keeps the original emoji characters.
+ *
+ * No defer/async: script.js runs parseEmoji() during its own initial pass, so
+ * the library has to be defined by then.
+ */
+?>
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script src="<?= e(asset('js/script.js')) ?>"></script>
 <script src="<?= e(asset('js/accessibility-widget.js')) ?>"></script>
 <?php

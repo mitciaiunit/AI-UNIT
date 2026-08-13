@@ -29,7 +29,7 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
 <header class="navbar" id="navbar">
   <div class="nav-inner">
     <a <?= $isHome ? 'href="#hero" data-scroll="hero"' : 'href="' . e(url('/')) . '"' ?> class="nav-logo" aria-label="AI Unit Home">
-      <img src="<?= e(asset('images/logo.gif')) ?>" alt="AI Unit - Ministry of ICT, Mauritius" class="nav-logo-img">
+      <img src="<?= e(asset('images/logo.webp')) ?>" alt="AI Unit - Ministry of ICT, Mauritius" class="nav-logo-img" width="300" height="200" decoding="async">
       <div class="logo-text-wrap">
         <span class="logo-main">AI Unit</span>
         <span class="logo-sub">Ministry of ICT · Mauritius</span>

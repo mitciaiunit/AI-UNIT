@@ -31,6 +31,35 @@ function env(string $key, mixed $default = null): mixed
 }
 
 /**
+ * Whether the current request reached us over HTTPS.
+ *
+ * Used by bootstrap.php to decide whether the session cookie may be marked
+ * Secure. Getting this wrong in the "yes" direction breaks local XAMPP
+ * development outright - the browser would stop sending the cookie over plain
+ * http://localhost - so all three signals below are checked rather than
+ * assuming a value for $_SERVER['HTTPS'].
+ *
+ * X-Forwarded-Proto is honoured because a government deployment is likely to
+ * sit behind a TLS-terminating proxy, where it is the only remaining evidence
+ * that the client used HTTPS. A forged header can only turn the Secure flag
+ * ON, which locks the forger out of their own session rather than exposing
+ * anyone else's.
+ */
+function request_is_https(): bool
+{
+    $https = $_SERVER['HTTPS'] ?? '';
+    if ($https !== '' && strtolower((string) $https) !== 'off') {
+        return true;
+    }
+
+    if ((int) ($_SERVER['SERVER_PORT'] ?? 0) === 443) {
+        return true;
+    }
+
+    return strtolower((string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https';
+}
+
+/**
  * Fetch a config value using dot notation, e.g. config('site.name').
  */
 function config(string $key, mixed $default = null): mixed
@@ -62,11 +91,13 @@ function config(string $key, mixed $default = null): mixed
 function asset(string $path): string
 {
     $relative = ltrim($path, '/');
-    $url = rtrim((string) config('site.root_url'), '/')
+    $url = rtrim((string) config('site.base_url'), '/')
         . rtrim((string) config('site.asset_path'), '/')
         . '/' . $relative;
 
-    $absolutePath = dirname(__DIR__, 2) . '/assets/' . $relative;
+    // assets/ moved inside public/ when public/ became the document root, so
+    // the on-disk lookup for the cache-busting mtime moved with it.
+    $absolutePath = dirname(__DIR__, 2) . '/public/assets/' . $relative;
     $mtime = @filemtime($absolutePath);
 
     return $mtime !== false ? $url . '?v=' . $mtime : $url;
@@ -84,12 +115,81 @@ function url(string $path = ''): string
 }
 
 /**
+ * The site's absolute origin - "https://host[:port]", no trailing slash.
+ *
+ * Derived from the request unless APP_CANONICAL_ORIGIN is set. No production
+ * domain is hardcoded: none is recorded anywhere in this repository, and
+ * guessing one would put a wrong hostname into every canonical and og:url.
+ *
+ * Deriving it from the request is correct for a site reached at one hostname,
+ * which is the case here. Set APP_CANONICAL_ORIGIN when that stops being true
+ * - several hostnames pointing at the same site, or a TLS-terminating proxy
+ * that changes the scheme - because then the request is no longer a reliable
+ * witness to the canonical address.
+ */
+function site_origin(): string
+{
+    $configured = trim((string) config('site.canonical_origin', ''));
+    if ($configured !== '') {
+        return rtrim($configured, '/');
+    }
+
+    $host = (string) ($_SERVER['HTTP_HOST'] ?? '');
+    if ($host === '') {
+        return '';
+    }
+
+    return (request_is_https() ? 'https://' : 'http://') . $host;
+}
+
+/**
+ * Absolute URL for a route, for <link rel="canonical"> and og:url.
+ *
+ * Built on url(), so it inherits that helper's base path and is correct both
+ * at the document root and under a subdirectory - and cannot double the prefix,
+ * because the prefix is applied exactly once, by url().
+ *
+ * Passing null uses the current request path with any query string removed:
+ * tracking parameters and pagination noise must not appear in a canonical.
+ */
+function canonical_url(?string $path = null): string
+{
+    if ($path === null) {
+        $requestPath = (string) parse_url((string) ($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH);
+
+        return site_origin() . ($requestPath === '' ? '/' : $requestPath);
+    }
+
+    $url = url($path);
+
+    /*
+     * The homepage needs its trailing slash. url('/') returns the bare base -
+     * "" at the document root, "/AI-UNIT" under a subdirectory - and a server
+     * redirects that to the same address with a slash. A canonical that points
+     * at a redirect is a canonical pointing at the wrong URL.
+     */
+    if ($path === '/' || $path === '') {
+        $url = rtrim($url, '/') . '/';
+    }
+
+    return site_origin() . $url;
+}
+
+/**
+ * Absolute URL for a file under assets/, for og:image - social scrapers do not
+ * resolve relative paths.
+ */
+function asset_url(string $path): string
+{
+    return site_origin() . asset($path);
+/**
  * Human-readable size of a file under assets/ (e.g. "2.3 MB"), or null if the
  * file isn't present on disk. Computed from the real file rather than typed
  * in by hand, so it can never drift out of sync when a document is replaced -
  * unlike the page counts on the same document cards, which have to be
  * hand-maintained because nothing here parses PDF contents.
  */
+}
 function asset_filesize(string $path): ?string
 {
     $absolutePath = dirname(__DIR__, 2) . '/assets/' . ltrim($path, '/');
@@ -142,6 +242,45 @@ function redirect(string $path): never
 function e(?string $value): string
 {
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
+}
+
+/**
+ * The DIVA chat endpoint, or an empty string when DIVA is not usable.
+ *
+ * Two callers need the same answer and must not be able to disagree about it:
+ * includes/layouts/app.php hands the URL to the browser, and
+ * includes/diva-widget.php decides whether to render the assistant as
+ * available. A widget that says "unavailable" while the script still holds a
+ * URL - or the reverse - is worse than either state on its own.
+ *
+ * A malformed value counts as unconfigured. There is nothing useful to do with
+ * "yes" or "diva.example" except fail at the point where a visitor is already
+ * typing a question, so it is treated the same as absent and reported honestly
+ * up front.
+ *
+ * http is accepted as well as https: a developer running a local proxy needs
+ * it, and DIVA_API_URL is set deliberately in their own .env. What no longer
+ * exists is a localhost DEFAULT - see the note in config/config.php.
+ */
+function diva_api_url(): string
+{
+    $url = trim((string) config('diva.api_url', ''));
+    if ($url === '') {
+        return '';
+    }
+
+    $parts = parse_url($url);
+    $scheme = strtolower((string) ($parts['scheme'] ?? ''));
+
+    if (($parts['host'] ?? '') === '' || !in_array($scheme, ['http', 'https'], true)) {
+        \App\Core\Logger::warning('DIVA_API_URL is set but is not a usable http(s) URL - DIVA will show as unavailable', [
+            'value' => $url,
+        ]);
+
+        return '';
+    }
+
+    return $url;
 }
 
 /**

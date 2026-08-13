@@ -1,4 +1,37 @@
+# =============================================================================
+# public/ - the document root
+# =============================================================================
+#
+# Everything the browser may reach lives in this directory: the front
+# controller, assets/ and uploads/. Nothing above it is served.
+#
+# Apache reads .htaccess from the DocumentRoot downwards, so with
+# DocumentRoot = <repo>/public the repository-root .htaccess is never
+# consulted. That is why the security headers are set here and not there -
+# here they apply under both supported deployments:
+#
+#   DocumentRoot = <repo>/public       this file is the only one read
+#   htdocs/AI-UNIT -> <repo>           the root .htaccess is read first (deny
+#                                      rules), then this one (headers)
+#
+# Content-Security-Policy is deliberately absent: it names the configured DIVA
+# endpoint and so is built and sent by App\Core\SecurityHeaders instead.
+# =============================================================================
+
 DirectoryIndex index.php
+
+# No browsable listings of assets/ or uploads/. XAMPP's stock httpd.conf turns
+# Indexes on for htdocs, and the rewrite below serves real directories
+# directly, so without this /assets/ would return a full file listing.
+# "-Indexes" rather than "None" keeps the inherited FollowSymLinks, which the
+# htdocs symlink deployment depends on.
+Options -Indexes
+
+# Dotfiles that ship inside this tree - assets/.htaccess, uploads/.htaccess -
+# are configuration, not content.
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
 
 RewriteEngine On
 
@@ -9,3 +42,27 @@ RewriteRule ^ - [L]
 
 # Otherwise hand everything to the front controller.
 RewriteRule ^ index.php [L]
+
+# --- Security headers --------------------------------------------------------
+# Set here rather than in PHP so they also cover responses PHP never sees:
+# static files under assets/ and uploads/, and Apache's own error pages.
+<IfModule mod_headers.c>
+    # Stops a browser second-guessing a declared Content-Type. Matters most for
+    # uploads/, where an attacker controls the bytes but not the type.
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Full URL to same-origin destinations, origin only when leaving the site,
+    # nothing at all when downgrading to http. Keeps document/booklet paths out
+    # of third-party referer logs.
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Legacy clickjacking control, kept alongside the modern frame-ancestors in
+    # the CSP for browsers that honour only this one.
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # microphone is allowed for same-origin documents on purpose: DIVA's voice
+    # input uses webkitSpeechRecognition (assets/js/script.js), which Chrome
+    # gates behind exactly this feature. Denying it here would silently break
+    # the microphone button.
+    Header always set Permissions-Policy "camera=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), microphone=(self)"
+</IfModule>
