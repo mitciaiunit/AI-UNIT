@@ -44,9 +44,18 @@ final class SecurityHeaders
     private const CDNJS = 'https://cdnjs.cloudflare.com';
 
     /**
-     * Tabler icon webfont and its stylesheet, also used by the booklet viewer.
+     * Tabler icon webfont and its stylesheet (booklet viewer), and the Twemoji
+     * 14.0.2 library loaded by includes/layouts/app.php.
      */
     private const JSDELIVR = 'https://cdn.jsdelivr.net';
+
+    /**
+     * Where Twemoji fetches its flag images from. The library's own default
+     * asset base, verified live at 14.0.2 - the script comes from jsDelivr but
+     * the SVGs it points at do not, so allowing the script origin alone would
+     * load the library and then block every image it inserted.
+     */
+    private const TWEMOJI_ASSETS = 'https://twemoji.maxcdn.com';
 
     /**
      * Calendly's booking widget (assets/js/ai-lab.js). Both forms are needed:
@@ -93,7 +102,7 @@ final class SecurityHeaders
             // Anything not named below falls back to same-origin only.
             'default-src' => "'self'",
 
-            'script-src' => "'self' 'unsafe-inline' " . self::CDNJS . ' ' . $calendly,
+            'script-src' => "'self' 'unsafe-inline' " . self::CDNJS . ' ' . self::JSDELIVR . ' ' . $calendly,
             'style-src' => "'self' 'unsafe-inline' " . self::GOOGLE_FONTS_CSS
                 . ' ' . self::JSDELIVR . ' ' . $calendly,
 
@@ -102,7 +111,7 @@ final class SecurityHeaders
 
             // blob: is required by pdf.js, which paints pages to a canvas and
             // can hand back blob URLs for them.
-            'img-src' => "'self' data: blob: " . $calendly,
+            'img-src' => "'self' data: blob: " . self::TWEMOJI_ASSETS . ' ' . $calendly,
 
             'media-src' => "'self' " . self::HERO_VIDEO_HOST,
 
@@ -122,7 +131,28 @@ final class SecurityHeaders
              * parsers ignore the extra whitespace, but a security header that
              * looks malformed invites someone to "fix" it.
              */
-            'connect-src' => implode(' ', array_filter(["'self'", self::divaOrigin(), $calendly])),
+            /*
+             * The font and CDN origins appear here as well as in style-src /
+             * font-src because Chrome checks the speculative connection a
+             * <link rel="preconnect"> or stylesheet fetch opens against
+             * connect-src, not only the eventual resource load. Without them
+             * every page logged a CSP violation per stylesheet: the fonts
+             * still rendered, but a console full of policy noise hides the
+             * violations that would matter.
+             *
+             * Found by capturing the real browser console during final QA - no
+             * static inspection of the header could have surfaced it. These
+             * origins are already trusted for the very same files by style-src
+             * and font-src, so nothing new is permitted.
+             */
+            'connect-src' => implode(' ', array_filter([
+                "'self'",
+                self::divaOrigin(),
+                self::GOOGLE_FONTS_CSS,
+                self::GOOGLE_FONTS_FILES,
+                self::JSDELIVR,
+                $calendly,
+            ])),
 
             // No <object>/<embed>/<applet> anywhere on the site.
             'object-src' => "'none'",

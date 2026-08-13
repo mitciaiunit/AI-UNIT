@@ -239,6 +239,29 @@ button{font-family:'Sora',sans-serif;}
 .skip-link{position:absolute;top:-40px;left:16px;background:var(--blue);color:white;padding:8px 16px;border-radius:8px;font-size:0.875rem;font-weight:600;z-index:9999;transition:top 0.2s;}
 .skip-link:focus{top:16px;}
 
+/* ─── TWEMOJI ───
+   Twemoji replaces each emoji with <img class="emoji" ...>. Left unstyled it
+   arrives at its natural 72px and blows the line apart, so it is pinned to the
+   surrounding text size.
+
+   1em square: the image scales with whatever font-size it sits in, so the same
+   rule works in a heading, a button and body copy.
+   vertical-align:-0.1em drops it onto the text baseline instead of the
+   bottom of the line box, which is where an inline image otherwise sits.
+   The asymmetric margin reproduces the side bearing a real glyph would have
+   had, so surrounding words keep their spacing.
+   display:inline-block keeps the box from affecting line-height.
+
+   Because the size is relative and the box is exactly 1em, the substitution
+   causes no reflow: the image occupies the space the character did. */
+img.emoji{
+  height:1em;
+  width:1em;
+  margin:0 .05em 0 .1em;
+  vertical-align:-0.1em;
+  display:inline-block;
+}
+
 .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;}
 
 /* ─── SIMPLE LANGUAGE: TIME-SAVINGS NOTE ───
@@ -508,80 +531,7 @@ button{font-family:'Sora',sans-serif;}
 .btn-back svg{flex-shrink:0;transition:transform var(--trans);}
 .btn-back:hover svg{transform:translateX(-2px);}
 
-/* ─── REDUCED MOTION ────────────────────────────────────────────────────────
-   Written against the motion this site actually contains, not as a blanket
-   kill-switch: seven @keyframes, the .reveal scroll-in, two smooth-scroll
-   declarations, and the transform-based hover lifts. Each is dealt with by
-   name below so it is clear what is being stopped and what the user is left
-   looking at.
 
-   The governing rule throughout: reduced motion means the FINAL state
-   immediately, never missing content. Nothing here hides anything.
-
-   Two motion sources cannot be reached from CSS at all and are handled in
-   assets/js/script.js instead - the marketplace ticker, which is an SVG SMIL
-   <animate> element, and DIVA's word-by-word message typing, which is a
-   JavaScript timer. Both are noted where they live. */
-@media(prefers-reduced-motion:reduce){
-    .btn-back:hover svg{transform:none;}
-
-    /* 1. Smooth scrolling - both declarations, the page and the DIVA log. */
-    html,
-    .diva-messages{scroll-behavior:auto;}
-
-    /* 2. Continuous decorative animation. The elements stay exactly where
-       they are and keep their colour and size; only the looping stops. The
-       status dots remain visible as dots, the listening/speaking states keep
-       their border and colour change, and the typing indicator still shows
-       three dots - it simply no longer bounces. */
-    .badge-dot,
-    .diva-online-dot,
-    .diva-mic.listening,
-    .diva-typing-dots span,
-    .diva-speak.speaking,
-    .diva-read-aloud.speaking{animation:none;}
-
-    /* 3. One-shot entrance animation. All of these use `both`, so their end
-       state is the normal rendered state - removing the animation shows that
-       state at once rather than sliding into it. The hero text, the team
-       panel and the DIVA panel are all fully visible without them. */
-    .hero-title,
-    .hero-subtitle,
-    .hero-cta,
-    .team-member-panel,
-    .diva-panel{animation:none;}
-
-    /* 4. The scroll-triggered reveal. Forced to its finished state so the
-       content does not depend on an IntersectionObserver callback, or on a
-       transition completing, to become readable. */
-    .reveal{opacity:1;transform:none;transition:none;}
-
-    /* 5. Movement. Rather than switching every transition off - which would
-       also remove the colour and shadow feedback that tells a user a control
-       is interactive - the transition PROPERTY list is narrowed to the
-       non-moving properties. Hover and focus still respond; nothing travels.
-       The paired transform declarations below stop the movement itself. */
-    *,*::before,*::after{
-        transition-property:color,background-color,border-color,box-shadow,opacity,outline-color,fill,stroke;
-    }
-    .btn-primary:hover,
-    .diva-clear:hover,
-    .simple-toggle:hover,
-    .card:hover,
-    .action-card:hover,
-    .btn-redesign:hover,
-    .mkt-card:hover,
-    .btn-white:hover,
-    .doc-card:hover,
-    .doc-btn-primary:hover,
-    .doc-btn-ghost:hover,
-    .doc-btn-audio:hover,
-    .principle-card:hover,
-    .close-modal:hover,
-    .diva-trigger:hover,
-    .btn-booklet:hover,
-    .diva-send:hover:not(:disabled){transform:none;}
-}
 
 .hero-wave{
     position:absolute;
@@ -651,7 +601,7 @@ button{font-family:'Sora',sans-serif;}
 .objectives-list li{font-size:0.875rem;color:var(--text-2);display:flex;align-items:center;gap:8px;}
 .objectives-list li::before{content:'';flex-shrink:0;width:7px;height:7px;border-radius:50%;background:var(--blue-mid);}
 .about-mission-text{font-size:1.1rem;font-family:'Lora',serif;font-style:italic;color:var(--text-1);line-height:1.75;margin-bottom:24px;padding-left:20px;border-left:3px solid var(--blue-mid);}
-.about-body{font-size:0.95rem;color:var(--text-2);line-height:1.78;margin-bottom:20px;}
+.about-body{font-size:1rem;color:var(--text-2);line-height:1.78;margin-bottom:20px;}
 .diva-callout{background:linear-gradient(135deg,var(--sage-pale),var(--teal-pale));border:1.5px solid var(--sage-light);border-radius:var(--radius);padding:24px;display:flex;gap:16px;align-items:flex-start;margin-top:32px;}
 .diva-icon{width:75px;height:75px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent;border:none;padding:0;overflow:hidden;}
 .diva-icon img{width:100%;height:100%;object-fit:contain;}
@@ -1597,7 +1547,7 @@ button{font-family:'Sora',sans-serif;}
 .plain-policy h2{font-family:'Lora',serif;font-size:1.55rem;font-weight:700;color:var(--text-1);margin-top:40px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--border);}
 .plain-policy h2:first-of-type{margin-top:0;}
 .plain-policy h3{font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:600;color:var(--text-1);margin-top:28px;margin-bottom:10px;}
-.plain-policy p{font-size:0.93rem;color:var(--text-2);line-height:1.85;margin-bottom:14px;}
+.plain-policy p{font-size:1rem;color:var(--text-2);line-height:1.85;margin-bottom:14px;}
 .plain-policy ul{list-style:disc;padding-left:24px;margin-bottom:16px;}
 .plain-policy ul li{font-size:0.93rem;color:var(--text-2);line-height:1.85;margin-bottom:6px;}
 .plain-policy a{color:var(--blue-mid);text-decoration:underline;text-underline-offset:3px;overflow-wrap:break-word;word-break:break-word;}
@@ -1631,3 +1581,199 @@ button{font-family:'Sora',sans-serif;}
 .a11y-statement .contact-val a{color:var(--blue-mid);}
 .a11y-statement .notice{background:var(--blue-pale);border-left:3px solid var(--blue-mid);padding:14px 18px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:0.9rem;color:var(--text-2);line-height:1.6;margin-bottom:16px;text-align:justify;hyphens:auto;}
 .a11y-statement .footer-note{font-size:0.82rem;color:var(--text-3);line-height:1.7;}
+/* ─── MOBILE TYPOGRAPHY FLOOR ───────────────────────────────────────────────
+   Studio26 baseline: no text below 14 CSS pixels on mobile, ordinary body copy
+   at least 16.
+
+   Scoped to <=768px on purpose. The desktop sizes below 14px are a deliberate
+   part of the visual hierarchy - eyebrows, chips, metadata, legal footnotes -
+   and raising them everywhere would flatten it. On a phone, held further from
+   the eye and often outdoors, the same sizes stop being legible, which is what
+   the baseline is about.
+
+   0.875rem = exactly 14px against the 16px root. Applied as a floor, not a
+   reset: anything already at or above 14px is untouched, and the relative
+   order of these elements is preserved because they were all below the floor
+   to begin with.
+
+   Generated from the stylesheet rather than hand-listed, so no small selector
+   is missed.
+   ======================================================================== */
+@media(max-width:768px){
+    .a11y-statement .footer-note,
+    .a11y-statement .page-meta,
+    .a11y-statement .tool-desc,
+    .action-chip,
+    .action-description,
+    .ai-for-all-box em,
+    .ailab-promo-note,
+    .ailab-promo-tags li,
+    .audio-time-row,
+    .btn-back,
+    .btn-booklet,
+    .btn-redesign,
+    .btn-search,
+    .contact-block h3,
+    .dim-tags span,
+    .diva-callout .btn-sm,
+    .diva-callout p,
+    .diva-clear,
+    .diva-footer,
+    .diva-online,
+    .diva-panel-header p,
+    .diva-unavailable,
+    .doc-badge,
+    .doc-body p,
+    .doc-btn,
+    .doc-kicker,
+    .field-error,
+    .footer-bottom p,
+    .footer-brand p,
+    .footer-col .footer-col-title,
+    .footer-disclaimer p,
+    .form-group label,
+    .form-status,
+    .hero-badge,
+    .lang-bar,
+    .lang-bar a,
+    .lang-btn,
+    .logo-sub,
+    .meta-chip,
+    .mkt-card p,
+    .nav-link,
+    .page-eyebrow,
+    .section-eyebrow,
+    .simple-toggle,
+    .team-focus-tag,
+    .team-stat-label,
+    .team-tab,
+    .video-icon{font-size:0.875rem;}
+}
+
+/* ─── LINE LENGTH ───────────────────────────────────────────────────────────
+   Studio26 baseline: roughly 75 characters per line maximum.
+
+   These are the prose blocks that had no measure of their own and were
+   constrained only by .container at 1180px - about 148 characters on a desktop
+   window, roughly twice a comfortable line. .section-desc already caps at
+   600px (~75 characters) and is left alone.
+
+   Expressed in ch, which measures what the rule is actually about: 72ch is 72
+   zero-widths of the current font, so the limit holds whatever the font size
+   or the user's zoom. It is a maximum, not a width - narrow screens are
+   unaffected, so nothing here can cause overflow at 320 or 360px.
+
+   The policy pages keep their centring; .about-body and .page-subtitle sit in
+   left-aligned columns and stay left-aligned. */
+.plain-policy p,
+.plain-policy ul li{max-width:72ch;}
+.about-body{max-width:72ch;}
+.page-subtitle{max-width:72ch;}
+.footer-disclaimer p{max-width:72ch;}
+.a11y-statement .block p,
+.a11y-statement .tool-desc{max-width:72ch;}
+
+/* NOTE: this block is deliberately the LAST thing in this file.
+   It was originally placed mid-file, where it lost the cascade: rules
+   like .reveal{opacity:0} and .diva-online-dot{animation:...} are
+   defined further down at the SAME specificity, so they overrode it and
+   reduced-motion users still got hidden .reveal content and a pulsing
+   status dot. Browser testing during final QA caught it; a static check
+   that the declarations exist could not. Keep it last. */
+/* ─── REDUCED MOTION ────────────────────────────────────────────────────────
+   Written against the motion this site actually contains, not as a blanket
+   kill-switch: seven @keyframes, the .reveal scroll-in, two smooth-scroll
+   declarations, and the transform-based hover lifts. Each is dealt with by
+   name below so it is clear what is being stopped and what the user is left
+   looking at.
+
+   The governing rule throughout: reduced motion means the FINAL state
+   immediately, never missing content. Nothing here hides anything.
+
+   Two motion sources cannot be reached from CSS at all and are handled in
+   assets/js/script.js instead - the marketplace ticker, which is an SVG SMIL
+   <animate> element, and DIVA's word-by-word message typing, which is a
+   JavaScript timer. Both are noted where they live. */
+@media(prefers-reduced-motion:reduce){
+    .btn-back:hover svg{transform:none;}
+
+    /* 1. Smooth scrolling - both declarations, the page and the DIVA log. */
+    html,
+    .diva-messages{scroll-behavior:auto;}
+
+    /* 2. Continuous decorative animation. The elements stay exactly where
+       they are and keep their colour and size; only the looping stops. The
+       status dots remain visible as dots, the listening/speaking states keep
+       their border and colour change, and the typing indicator still shows
+       three dots - it simply no longer bounces. */
+    .badge-dot,
+    .diva-online-dot,
+    .diva-mic.listening,
+    .diva-typing-dots span,
+    .diva-speak.speaking,
+    .diva-read-aloud.speaking{animation:none;}
+
+    /* 3. One-shot entrance animation. All of these use `both`, so their end
+       state is the normal rendered state - removing the animation shows that
+       state at once rather than sliding into it. The hero text, the team
+       panel and the DIVA panel are all fully visible without them. */
+    .hero-title,
+    .hero-subtitle,
+    .hero-cta,
+    .team-member-panel,
+    .diva-panel{animation:none;}
+
+    /* 4. The scroll-triggered reveal. Forced to its finished state so the
+       content does not depend on an IntersectionObserver callback, or on a
+       transition completing, to become readable. */
+    .reveal{opacity:1;transform:none;transition:none;}
+
+    /* 5. Movement. Rather than switching every transition off - which would
+       also remove the colour and shadow feedback that tells a user a control
+       is interactive - the transition PROPERTY list is narrowed to the
+       non-moving properties. Hover and focus still respond; nothing travels.
+       The paired transform declarations below stop the movement itself. */
+    *,*::before,*::after{
+        transition-property:color,background-color,border-color,box-shadow,opacity,outline-color,fill,stroke;
+    }
+    .btn-primary:hover,
+    .diva-clear:hover,
+    .simple-toggle:hover,
+    .card:hover,
+    .action-card:hover,
+    .btn-redesign:hover,
+    .mkt-card:hover,
+    .btn-white:hover,
+    .doc-card:hover,
+    .doc-btn-primary:hover,
+    .doc-btn-ghost:hover,
+    .doc-btn-audio:hover,
+    .principle-card:hover,
+    .close-modal:hover,
+    .diva-trigger:hover,
+    .btn-booklet:hover,
+    .diva-send:hover:not(:disabled){transform:none;}
+}
+
+/* ─── JUSTIFICATION ON NARROW COLUMNS ───────────────────────────────────────
+   Justified text works by stretching the spaces between words until the line
+   reaches both edges. On a phone column there are only a handful of words per
+   line to absorb that, so the gaps become rivers - visible in the 320px QA
+   screenshots as "Welcome  to  the  AI  Unit  of".
+
+   Individual offenders were switched to left alignment earlier; this addresses
+   the cause for every narrow column at once, rather than waiting for each new
+   prose block to be found. Desktop keeps the justified setting the design
+   chose - the measure there is wide enough for it to work.
+
+   Found by looking at the responsive QA screenshots, not by any automated
+   check: nothing here is measurable as a failure, it is simply hard to read. */
+@media(max-width:768px){
+    p,
+    .hero-subtitle,
+    .about-body,
+    .ailab-promo-desc,
+    .doc-body p,
+    .plain-policy p,
+    .plain-policy ul li{text-align:left;hyphens:manual;}
+}

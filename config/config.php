@@ -134,7 +134,23 @@ return [
     // to the database (see App\Services\EmailService).
     'mail' => [
         'enabled' => filter_var(env('EMAIL_ENABLED', 'false'), FILTER_VALIDATE_BOOLEAN),
-        'to_address' => env('CONTACT_EMAIL', 'aiunit@govmu.org'),
+        /*
+         * Mailbox that receives contact form submissions.
+         *
+         * Deliberately its own variable, not the CONTACT_EMAIL used for
+         * site.contact_email above. That one is the address PUBLISHED on the
+         * site - the homepage contact block, the accessibility statement, the
+         * cookie policy, and twice in the privacy policy as the designated
+         * contact for data subject rights requests. Where the form delivers
+         * and what the public is told to write to are two different decisions,
+         * and routing the form to an internal mailbox must not silently
+         * rewrite a legal notice.
+         *
+         * The default is the intended production value, so no environment
+         * variable is required for it to take effect; CONTACT_RECIPIENT only
+         * exists to override it per environment (e.g. a test mailbox).
+         */
+        'to_address' => env('CONTACT_RECIPIENT', 'admin_aiunit@govmu.org'),
         'from_address' => env('MAIL_FROM_ADDRESS', 'no-reply@aiunit.govmu.org'),
         'from_name' => env('MAIL_FROM_NAME', 'AI Unit Website'),
         'smtp' => [

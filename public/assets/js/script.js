@@ -325,6 +325,31 @@ const HTML_LANG = { en: 'en', fr: 'fr', km: 'mfe' };
 // Task 1. Set by the navbar toggle (Task 2), not here.
 let simpleMode = false;
 
+/**
+ * Replaces emoji with Twemoji images.
+ *
+ * Windows has no colour glyph for regional-indicator pairs, so the Mauritius
+ * and UK flags in the "AI for All" cards render as the bare letters MU and GB,
+ * or as empty boxes, on most Windows browsers. Twemoji swaps them for real
+ * flag images.
+ *
+ * The typeof guard is the required pattern: if the CDN is blocked, offline or
+ * down, `twemoji` is simply never defined, this returns immediately, and the
+ * page keeps the original emoji text. Nothing else in this file depends on it.
+ *
+ * svg rather than the library's default 72x72 PNG - it stays sharp at any size
+ * and any zoom, which matters for a glyph sitting inside a line of text.
+ */
+function parseEmoji(root) {
+  if (typeof twemoji === 'undefined') return;
+  try {
+    twemoji.parse(root || document.body, { folder: 'svg', ext: '.svg' });
+  } catch (err) {
+    // A parse failure must never take the rest of the page down with it.
+    console.error('Twemoji parse failed:', err);
+  }
+}
+
 function applyTranslations() {
   const T = translations[currentLang] || {};
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -346,6 +371,17 @@ function applyTranslations() {
   // applyTranslations() - including restoring a saved language on page
   // load - keeps <html lang> in sync with the actual content language.
   document.documentElement.lang = HTML_LANG[currentLang] || 'en';
+
+  /*
+   * Re-run after every translation pass, not once at startup. The loop above
+   * rewrites [data-i18n] elements with innerHTML, and two of those strings
+   * (ai_en_title, ai_km_title) carry the UK and Mauritius flags - so any
+   * Twemoji images in them are destroyed and replaced with raw emoji text on
+   * every language switch and every simple-language toggle. Parsing here is
+   * the only point that catches all of them.
+   */
+  parseEmoji(document.body);
+
   // Notify screen reader and other components of language change
   window.dispatchEvent(new CustomEvent('aiunit-lang-changed', { detail: { lang: currentLang } }));
 }
@@ -363,6 +399,14 @@ const savedLang = localStorage.getItem('ai_unit_lang');
 if (savedLang && (savedLang === 'fr' || savedLang === 'km')) {
   currentLang = savedLang;
   applyTranslations();
+} else {
+  /*
+   * applyTranslations() runs on load only when a non-English language was
+   * saved - an English visitor never reaches it, so the flags in the markup
+   * would stay unparsed. This is the one pass that catches the default case;
+   * every other pass happens inside applyTranslations() itself.
+   */
+  parseEmoji(document.body);
 }
 
 /* ─── SIMPLE LANGUAGE MODE ───

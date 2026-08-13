@@ -21,7 +21,7 @@
       --surface:   #FFFFFF;
       --text1:     #0D1B3E;
       --text2:     #4B5E77;
-      --text3:     #8896B0;
+      --text3:     #4B5E77;
       --border:    #DDE2EF;
       --border2:   #C8CFE4;
       --trans:     0.18s ease;

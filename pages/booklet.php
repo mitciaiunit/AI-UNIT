@@ -37,7 +37,7 @@
 
       --text1: #0D1B3E;
       --text2: #4B5E77;
-      --text3: #8896B0;
+      --text3: #4B5E77;
 
       --border:  #DDE2EF;
       --border2: #C8CFE4;
@@ -329,7 +329,10 @@
       background: var(--surface);
       border-top: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center; gap: 18px;
-      opacity: 0.8;
+      /* opacity:0.8 removed - it faded this text to 2.32:1 against the bar it
+         sits on. Darkening --text3 alone still left it at 4.14:1, because the
+         fade applies on top of the colour; the two together were the failure.
+         Found by an axe-core scan during final QA (WCAG 2.1 AA 1.4.3). */
     }
     .kbd-hint { display: flex; align-items: center; gap: 4px; }
     kbd {
