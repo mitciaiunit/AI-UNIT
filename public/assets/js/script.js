@@ -58,6 +58,7 @@ const translations = {
     marketplace_card2_title: "For Businesses", marketplace_card2_desc: "Discover vetted AI solutions that can transform your operations",
     marketplace_card3_title: "For Public Institutions", marketplace_card3_desc: "Find trusted AI tools to modernise government services for citizens",
     library_eyebrow: "Framework", library_title1: "Framework Library", library_title2: "And AI Playbook", library_desc: "Our core governance documents: strategic blueprint, AI strategy, FAIR guidelines, and the AI Playbook for public sector implementation.",
+    library_instructions: "Each document offers Download, View Online and Listen. Press a Listen button to have that document read aloud; press the same button again to pause. The progress bar below it shows how much has played.",
     doc1_title: "BLUEPRINT", doc1_desc: "Digital Transformation Blueprint: 4 strategic pillars and governance framework.", doc1_pages: "54 Pages",
     doc2_title: "AI STRATEGY", doc2_desc: "Mauritius' first national AI strategy - governance, adoption framework, sectoral applications.", doc2_pages: "74 Pages",
     doc3_title: "FAIR GUIDELINES", doc3_desc: "Principles-based responsible AI guidelines for Fairness, Accountability, Inclusiveness & Responsibility.", doc3_pages: "38 Pages",
@@ -594,28 +595,45 @@ hamburger.addEventListener('click',()=>{
   hamburger.setAttribute('aria-expanded',open.toString());
 });
 
-/*
- * Escape closes the menu from anywhere, not just from within it - someone who
- * opened the menu and then clicked elsewhere still expects it to work.
- *
- * No preventDefault, and closeMobileMenu() returns immediately when the menu is
- * already closed, so this is inert the rest of the time. The accessibility
- * widget has its own Escape handlers for its panel and its reader and neither
- * stops propagation; leaving the event untouched lets all of them coexist.
- */
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')closeMobileMenu(true);
+const teamTabs = Array.from(document.querySelectorAll('.team-tab'));
+
+// Shared by click and arrow-key switching, so both stay in sync: sets the
+// clicked/arrowed-to tab active (and, per the roving-tabindex pattern below,
+// the only one left in the Tab order), and swaps in its panel.
+function activateTeamTab(tab) {
+  const idx = tab.dataset.member;
+  teamTabs.forEach(t => {
+    const isTarget = t === tab;
+    t.classList.toggle('active', isTarget);
+    t.setAttribute('aria-selected', String(isTarget));
+    t.setAttribute('tabindex', isTarget ? '0' : '-1');
+  });
+  document.querySelectorAll('.team-member-panel').forEach(p => p.classList.remove('active'));
+  const panels = document.querySelectorAll('.team-member-panel');
+  if (panels[idx]) panels[idx].classList.add('active');
+}
+
+teamTabs.forEach(tab => {
+  tab.addEventListener('click', () => activateTeamTab(tab));
 });
 
-document.querySelectorAll('.team-tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    const idx=tab.dataset.member;
-    document.querySelectorAll('.team-tab').forEach(t=>{t.classList.remove('active');t.setAttribute('aria-selected','false');});
-    tab.classList.add('active');tab.setAttribute('aria-selected','true');
-    document.querySelectorAll('.team-member-panel').forEach(p=>p.classList.remove('active'));
-    const panels=document.querySelectorAll('.team-member-panel');
-    if(panels[idx])panels[idx].classList.add('active');
-  });
+// Roving-tabindex arrow key support, per the WAI-ARIA tabs pattern: Left/Right
+// (and Up/Down) move between tabs and activate them, Home/End jump to the
+// first/last. Without this, each tab was still individually reachable with
+// Tab, but arrow-key switching - what screen reader users expect once
+// they're inside a tablist - never worked.
+document.querySelector('.team-tabs')?.addEventListener('keydown', function (e) {
+  const current = teamTabs.indexOf(document.activeElement);
+  if (current === -1) return;
+  let next;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (current + 1) % teamTabs.length;
+  else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (current - 1 + teamTabs.length) % teamTabs.length;
+  else if (e.key === 'Home') next = 0;
+  else if (e.key === 'End') next = teamTabs.length - 1;
+  else return;
+  e.preventDefault();
+  activateTeamTab(teamTabs[next]);
+  teamTabs[next].focus();
 });
 
 /**
@@ -1741,6 +1759,12 @@ function setButtonPlay(button) {
     if (label) label.textContent = 'Play';
     button.classList.remove('is-playing');
     button.setAttribute('aria-pressed', 'false');
+    // The visible label alone is ambiguous with four identical "Listen"
+    // buttons on the page - aria-label names which document this one is,
+    // so a screen reader announces "Listen to <title>" / "Pause <title>"
+    // instead of four indistinguishable "Listen" buttons.
+    const title = button.dataset.docTitle;
+    if (title) button.setAttribute('aria-label', 'Listen to ' + title);
 }
 
 function setButtonPause(button) {
@@ -1748,6 +1772,8 @@ function setButtonPause(button) {
     if (label) label.textContent = 'Pause';
     button.classList.add('is-playing');
     button.setAttribute('aria-pressed', 'true');
+    const title = button.dataset.docTitle;
+    if (title) button.setAttribute('aria-label', 'Pause ' + title);
 }
 
 function formatTime(seconds) {

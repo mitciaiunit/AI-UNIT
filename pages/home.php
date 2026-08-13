@@ -308,6 +308,7 @@ $isHome = true;
     <div class="section-eyebrow" data-i18n="library_eyebrow">Framework</div>
     <h2 class="section-title" id="strategy-title"><span data-i18n="library_title1">Framework Library</span><br><em data-i18n="library_title2">And AI Playbook</em></h2>
     <p class="section-desc" data-i18n="library_desc" tabindex="0">Our core governance documents: strategic blueprint, AI strategy, FAIR guidelines, and the AI Playbook for public sector implementation.</p>
+    <p class="doc-instructions" data-i18n="library_instructions" tabindex="0">Each document offers Download, View Online and Listen. Press a Listen button to have that document read aloud; press the same button again to pause. The progress bar below it shows how much has played.</p>
 
     <div class="doc-grid">
       <article class="doc-card reveal">
@@ -323,6 +324,9 @@ $isHome = true;
           <div class="doc-meta">
             <span class="meta-chip" data-i18n="doc1_pages">54 Pages</span>
             <span class="meta-chip">2025 - 2029</span>
+            <?php if ($size = asset_filesize('documents/blueprint.pdf')): ?>
+              <span class="meta-chip"><?= e($size) ?></span>
+            <?php endif; ?>
           </div>
           <div class="doc-actions">
             <a href="<?= e(asset('documents/blueprint.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary">
@@ -333,7 +337,7 @@ $isHome = true;
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
               <span data-i18n="doc_view">View Online</span>
             </a>
-            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Blueprint.mp3')) ?>" aria-pressed="false">
+            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Blueprint.mp3')) ?>" data-doc-title="Digital Transformation Blueprint" aria-pressed="false" aria-label="Listen to Digital Transformation Blueprint">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
               <span data-i18n="doc_play">Listen</span>
             </button>
@@ -361,6 +365,9 @@ $isHome = true;
           <div class="doc-meta">
             <span class="meta-chip" data-i18n="doc2_pages">74 Pages</span>
             <span class="meta-chip">2025 - 2029</span>
+            <?php if ($size = asset_filesize('documents/aistrategy.pdf')): ?>
+              <span class="meta-chip"><?= e($size) ?></span>
+            <?php endif; ?>
           </div>
           <div class="doc-actions">
             <a href="<?= e(asset('documents/aistrategy.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary">
@@ -371,7 +378,7 @@ $isHome = true;
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
               <span data-i18n="doc_view">View Online</span>
             </a>
-            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/AIStrategy.mp3')) ?>" aria-pressed="false">
+            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/AIStrategy.mp3')) ?>" data-doc-title="Mauritius' First National AI Strategy" aria-pressed="false" aria-label="Listen to Mauritius' First National AI Strategy">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
               <span data-i18n="doc_play">Listen</span>
             </button>
@@ -399,6 +406,9 @@ $isHome = true;
           <div class="doc-meta">
             <span class="meta-chip" data-i18n="doc3_pages">38 Pages</span>
             <span class="meta-chip">2025 - 2029</span>
+            <?php if ($size = asset_filesize('documents/fairguidelines.pdf')): ?>
+              <span class="meta-chip"><?= e($size) ?></span>
+            <?php endif; ?>
           </div>
           <div class="doc-actions">
             <a href="<?= e(asset('documents/fairguidelines.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary">
@@ -409,7 +419,7 @@ $isHome = true;
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
               <span data-i18n="doc_view">View Online</span>
             </a>
-            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Fairguidelines.mp3')) ?>" aria-pressed="false">
+            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Fairguidelines.mp3')) ?>" data-doc-title="Guidelines for Responsible AI" aria-pressed="false" aria-label="Listen to Guidelines for Responsible AI">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
               <span data-i18n="doc_play">Listen</span>
             </button>
@@ -437,6 +447,9 @@ $isHome = true;
           <div class="doc-meta">
             <span class="meta-chip" data-i18n="doc4_pages">62 Pages</span>
             <span class="meta-chip">2026 Edition</span>
+            <?php if ($size = asset_filesize('documents/playbook.pdf')): ?>
+              <span class="meta-chip"><?= e($size) ?></span>
+            <?php endif; ?>
           </div>
           <div class="doc-actions">
             <a href="<?= e(asset('documents/playbook.pdf')) ?>" download class="btn-download doc-btn doc-btn-primary">
@@ -447,7 +460,7 @@ $isHome = true;
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
               <span data-i18n="doc_view">View Online</span>
             </a>
-            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Playbook.mp3')) ?>" aria-pressed="false">
+            <button type="button" class="btn-view-doc btn-listen-audio doc-btn doc-btn-audio" data-audio="<?= e(asset('audio/Playbook.mp3')) ?>" data-doc-title="Practical AI Implementation Playbook" aria-pressed="false" aria-label="Listen to Practical AI Implementation Playbook">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a10 10 0 0 1 0 13"/></svg>
               <span data-i18n="doc_play">Listen</span>
             </button>
@@ -571,7 +584,11 @@ $isHome = true;
     <p class="section-desc" data-i18n="contact_desc" tabindex="0">Have questions about AI in Mauritius? Want to partner with us or learn more about our programmes? Reach out - we welcome every question.</p>
     <div class="contact-grid">
       <div class="contact-info">
+<<<<<<< HEAD
         <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><h3 data-i18n="contact_address_title">Address</h3><p data-i18n="contact_address_text" tabindex="0">Cyber Tower 2, Level 6, Ebene</p></div></div>
+=======
+        <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><h3 data-i18n="contact_address_title">Address</h3><p data-i18n="contact_address_text" tabindex="0">Cyber Tower 2, Level 6,<br>Ebene Cyber City,<br>Mauritius</p></div></div>
+>>>>>>> main
         <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><h3 data-i18n="contact_email_title">Email</h3><p><a href="mailto:<?= e(config('site.contact_email')) ?>" style="color:var(--blue-mid);"><?= e(config('site.contact_email')) ?></a></p></div></div>
         <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.89 12 19.79 19.79 0 0 1 1.86 3.35 2 2 0 0 1 3.83 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.91 5.91l.95-.95a2 2 0 0 1 2.11.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><h3 data-i18n="contact_phone_title">Phone</h3><p><?= e(config('site.contact_phone')) ?></p></div></div>
         <div class="contact-block reveal"><div class="contact-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><div><h3 data-i18n="contact_hours_title">Office Hours</h3><p data-i18n="contact_hours_text" tabindex="0">Monday - Friday: 8:45 AM - 4:00 PM<br>Closed on Public Holidays</p></div></div>

@@ -551,6 +551,7 @@ img.emoji{
 .section-eyebrow{font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue-mid);margin-bottom:12px;}
 .section-title{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;color:var(--text-1);letter-spacing:-0.02em;margin-bottom:16px;}
 .section-desc{font-size:1.02rem;color:var(--text-2);line-height:1.78;max-width:600px;margin-bottom:56px;}
+.doc-instructions{font-size:0.85rem;color:var(--text-3);line-height:1.6;max-width:640px;margin-top:-40px;margin-bottom:40px;}
 
 /* ─── ABOUT ─── */
 .about-section{background:linear-gradient(180deg,var(--surface) 0%,var(--amber-pale) 100%);}
@@ -1538,6 +1539,7 @@ img.emoji{
 /* SIMPLE CONTENT PAGES (privacy policy, disclaimer, cookie policy, accessibility statement) */
 .main-content{min-height:calc(100vh - 200px);padding:64px 0 96px;}
 .main-content .container{max-width:900px;}
+.page-back{margin-top:40px;}
 .page-header{text-align:center;margin-bottom:56px;padding-top:20px;}
 .page-eyebrow{font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue-mid);margin-bottom:12px;}
 .page-title{font-family:'Lora',serif;font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;color:var(--text-1);letter-spacing:-0.02em;margin-bottom:16px;white-space:nowrap;overflow:visible;text-overflow:clip;}

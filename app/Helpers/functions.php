@@ -182,6 +182,35 @@ function canonical_url(?string $path = null): string
 function asset_url(string $path): string
 {
     return site_origin() . asset($path);
+/**
+ * Human-readable size of a file under assets/ (e.g. "2.3 MB"), or null if the
+ * file isn't present on disk. Computed from the real file rather than typed
+ * in by hand, so it can never drift out of sync when a document is replaced -
+ * unlike the page counts on the same document cards, which have to be
+ * hand-maintained because nothing here parses PDF contents.
+ */
+}
+function asset_filesize(string $path): ?string
+{
+    $absolutePath = dirname(__DIR__, 2) . '/assets/' . ltrim($path, '/');
+    $bytes = @filesize($absolutePath);
+
+    if ($bytes === false) {
+        return null;
+    }
+
+    $units = ['B', 'KB', 'MB', 'GB'];
+    $i = 0;
+    $size = (float) $bytes;
+
+    while ($size >= 1024 && $i < count($units) - 1) {
+        $size /= 1024;
+        $i++;
+    }
+
+    $decimals = $i === 0 ? 0 : 1;
+
+    return number_format($size, $decimals) . ' ' . $units[$i];
 }
 
 /**
