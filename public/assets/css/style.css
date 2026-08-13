@@ -140,7 +140,35 @@ html.a11y-mode-dark .audio-progress-bar{background:rgba(43,50,68,.9);border-colo
 html{scroll-behavior:smooth;font-size:16px;}
 body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text-1);overflow-x:hidden;line-height:1.65;}
 h1,h2,h3,h4{font-family:'Lora',serif;line-height:1.2;}
+
+/* Justified body copy, inherited from the original static site. It works for
+   long-form prose in a wide measure, where a line holds enough words to absorb
+   the extra space.
+
+   It fails badly everywhere else. Justification stretches the gaps between
+   words until the line reaches both edges, so a short sentence in a narrow or
+   centred column comes out as "Ministry    of    Information    Technology" -
+   one rule, one defect, in every such block. The exceptions below are the
+   layouts where that happens; they are switched back to normal alignment
+   rather than patched word by word.
+
+   hyphens is reset with them: automatic hyphenation exists to give justified
+   text somewhere to break, and once the text is no longer justified it only
+   introduces stray hyphens. */
 p{text-align:justify;hyphens:auto;}
+
+/* .section-desc   the single-sentence description under a section heading
+                   ("Meet the experts driving Mauritius' AI strategy...").
+                   Capped at 600px, so its lines are always short.
+   .page-subtitle  centred inside .page-header - the blanket rule above was
+                   silently overriding that text-align:center.
+   .contact-block  address, phone and email sit in the narrow left column of
+                   .contact-grid, less an icon: the tightest measure on the
+                   site, and the worst affected. */
+.section-desc,
+.contact-block p{text-align:left;hyphens:manual;}
+
+.page-subtitle{text-align:center;hyphens:manual;}
 /* Headings are split into a plain half and an <em> half ("Driving Mauritius" /
    "AI Future"). The em used to be forced to --blue-mid, which made every such
    heading two-tone. `inherit` collapses each one to a single colour by taking
@@ -156,11 +184,83 @@ button{font-family:'Sora',sans-serif;}
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--blue-mid);border-radius:3px;}
+/* ─── KEYBOARD FOCUS ───────────────────────────────────────────────────────
+   The site-wide default: a 3px ring held 2px clear of the control, so it reads
+   as a ring around the component rather than as part of its border. Both
+   exceed the 2px minimum.
+
+   --blue-mid measures 6.24:1 on the page background, 6.62:1 on white and
+   5.92:1 on the tinted surfaces - comfortably past the 3:1 that WCAG 1.4.11
+   asks of a non-text indicator, so the existing token is used everywhere the
+   control sits on a light surface. The one place it does not work is the DIVA
+   panel header, handled separately below.
+
+   :focus-visible, not :focus, so a ring appears for keyboard and programmatic
+   focus without framing every button the moment it is clicked. */
 :focus-visible{outline:3px solid var(--blue-mid);outline-offset:2px;border-radius:4px;}
+
+/* The rule above is a bare pseudo-class, so ANY component rule that also sets
+   outline overrides it simply by being more specific or later in the file -
+   which is exactly how the DIVA trigger lost its ring to `all:unset` plus an
+   `outline:none !important`. Naming these controls explicitly puts them out of
+   reach of that: each selector here carries a class, so it outranks the
+   component rule it belongs to and cannot be silently undone again. */
+.diva-trigger:focus-visible,
+.diva-close:focus-visible,
+.diva-clear:focus-visible,
+.diva-suggestion-btn:focus-visible,
+.diva-input-row input:focus-visible,
+.diva-mic:focus-visible,
+.diva-send:focus-visible,
+.diva-speak:focus-visible,
+.diva-read-aloud:focus-visible,
+.hamburger:focus-visible,
+.nav-right .a11y-trigger-wrap:focus-visible,
+.simple-toggle:focus-visible,
+.nav-link:focus-visible,
+.team-tab:focus-visible,
+.doc-btn:focus-visible,
+.btn-booklet:focus-visible,
+.btn-sm:focus-visible{
+  outline:3px solid var(--blue-mid);
+  outline-offset:2px;
+}
+
+/* Close and Clear sit on the panel's blue-to-teal header, where the blue token
+   drops to 1.55:1 against the gradient's light end and 1.19:1 against its dark
+   end - invisible. White measures 10.27:1 and 5.59:1 across the same gradient,
+   so the ring inverts here rather than disappearing. */
+.diva-close:focus-visible,
+.diva-clear:focus-visible{
+  outline-color:#fff;
+}
 
 /* ─── SKIP LINK ─── */
 .skip-link{position:absolute;top:-40px;left:16px;background:var(--blue);color:white;padding:8px 16px;border-radius:8px;font-size:0.875rem;font-weight:600;z-index:9999;transition:top 0.2s;}
 .skip-link:focus{top:16px;}
+
+/* ─── TWEMOJI ───
+   Twemoji replaces each emoji with <img class="emoji" ...>. Left unstyled it
+   arrives at its natural 72px and blows the line apart, so it is pinned to the
+   surrounding text size.
+
+   1em square: the image scales with whatever font-size it sits in, so the same
+   rule works in a heading, a button and body copy.
+   vertical-align:-0.1em drops it onto the text baseline instead of the
+   bottom of the line box, which is where an inline image otherwise sits.
+   The asymmetric margin reproduces the side bearing a real glyph would have
+   had, so surrounding words keep their spacing.
+   display:inline-block keeps the box from affecting line-height.
+
+   Because the size is relative and the box is exactly 1em, the substitution
+   causes no reflow: the image occupies the space the character did. */
+img.emoji{
+  height:1em;
+  width:1em;
+  margin:0 .05em 0 .1em;
+  vertical-align:-0.1em;
+  display:inline-block;
+}
 
 .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;}
 
@@ -198,13 +298,33 @@ button{font-family:'Sora',sans-serif;}
 .btn-search span{color:var(--text-3);}
 .btn-search:hover{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-pale);}
 .btn-search:hover span{color:var(--blue-mid);}
-.simple-toggle{background:var(--surface);border:1px solid var(--blue-light);color:var(--blue);padding:0 14px;min-height:40px;border-radius:100px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all var(--trans);font-size:0.82rem;font-weight:700;font-family:'Sora',sans-serif;box-shadow:var(--shadow-sm);}
+.simple-toggle{background:var(--surface);border:1px solid var(--blue-light);color:var(--blue);padding:0 14px;min-height:44px;border-radius:100px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all var(--trans);font-size:0.82rem;font-weight:700;font-family:'Sora',sans-serif;box-shadow:var(--shadow-sm);}
 .simple-toggle svg{flex-shrink:0;}
 .simple-toggle span{color:inherit;display:inline;}
 .simple-toggle:hover{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-pale);transform:translateY(-1px);box-shadow:var(--shadow-md);}
 .simple-toggle[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:white;box-shadow:0 8px 20px rgba(26,58,143,0.24);}
 .simple-toggle[aria-pressed="true"] span{color:white;}
-.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;}
+/* The accessibility trigger is injected into .nav-right by
+   accessibility-widget.js, which also injects its own stylesheet - and that
+   arrives after this file, so an equally specific rule here would lose. The
+   widget sizes it at height:36px, and 38px wide once the label is dropped
+   below 900px; both are under the 44x44 target.
+   .nav-right + two classes outranks the widget's two-class rule, so the size
+   is corrected from here without editing the widget itself. */
+.nav-right .a11y-trigger-wrap.a11y-trigger-navbar{
+  height:auto;
+  min-height:44px;
+  min-width:44px;
+  justify-content:center;
+}
+
+/* 44x44 rather than the 34x28 the 6px padding used to give it. The three bars
+   are still 22px wide and 5px apart - only the hit area grew, so the icon looks
+   identical while becoming a comfortable touch target. The rotate transforms
+   below still use the same 7px offset (5px gap + 2px bar), so the X animation
+   is unaffected. Set on the base rule because the button only ever appears
+   below 1100px, where it is always a touch target. */
+.hamburger{display:none;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:0;width:44px;height:44px;}
 .hamburger span{display:block;width:22px;height:2px;background:var(--text-1);border-radius:2px;transition:all var(--trans);}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
 .hamburger.open span:nth-child(2){opacity:0;}
@@ -411,9 +531,7 @@ button{font-family:'Sora',sans-serif;}
 .btn-back svg{flex-shrink:0;transition:transform var(--trans);}
 .btn-back:hover svg{transform:translateX(-2px);}
 
-@media(prefers-reduced-motion:reduce){
-    .btn-back:hover svg{transform:none;}
-}
+
 
 .hero-wave{
     position:absolute;
@@ -453,6 +571,11 @@ button{font-family:'Sora',sans-serif;}
 .ailab-promo-tags li{padding:4px 12px;background:var(--blue-pale);border:1px solid var(--blue-light);border-radius:100px;font-size:0.74rem;font-weight:600;color:var(--blue);}
 .ailab-promo-action{display:flex;flex-direction:column;align-items:flex-start;gap:10px;flex-shrink:0;}
 .ailab-promo-note{font-size:0.78rem;color:var(--text-3);margin:0;}
+/* Launch flag - one line above the eyebrow inside the existing promo card.
+   Uses --blue on --blue-pale (the same pairing as .ailab-promo-tags) so it
+   reads as part of the card rather than a separate banner. */
+.ailab-launch-flag{display:inline-flex;align-items:center;gap:7px;margin:0 0 10px;padding:4px 12px;background:var(--blue-pale);border:1px solid var(--blue-light);border-radius:100px;font-size:0.74rem;font-weight:700;letter-spacing:0.02em;color:var(--blue);}
+.ailab-launch-dot{width:6px;height:6px;border-radius:50%;background:var(--blue-mid);flex-shrink:0;}
 
 @media(max-width:900px){
     /* Stack before the button column gets squeezed narrower than its label. */
@@ -484,13 +607,13 @@ button{font-family:'Sora',sans-serif;}
 .objectives-list li{font-size:0.875rem;color:var(--text-2);display:flex;align-items:center;gap:8px;}
 .objectives-list li::before{content:'';flex-shrink:0;width:7px;height:7px;border-radius:50%;background:var(--blue-mid);}
 .about-mission-text{font-size:1.1rem;font-family:'Lora',serif;font-style:italic;color:var(--text-1);line-height:1.75;margin-bottom:24px;padding-left:20px;border-left:3px solid var(--blue-mid);}
-.about-body{font-size:0.95rem;color:var(--text-2);line-height:1.78;margin-bottom:20px;}
+.about-body{font-size:1rem;color:var(--text-2);line-height:1.78;margin-bottom:20px;}
 .diva-callout{background:linear-gradient(135deg,var(--sage-pale),var(--teal-pale));border:1.5px solid var(--sage-light);border-radius:var(--radius);padding:24px;display:flex;gap:16px;align-items:flex-start;margin-top:32px;}
 .diva-icon{width:75px;height:75px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent;border:none;padding:0;overflow:hidden;}
 .diva-icon img{width:100%;height:100%;object-fit:contain;}
 .diva-callout h3{font-size:0.95rem;font-weight:700;color:var(--blue);margin-bottom:4px;font-family:'Sora',sans-serif;}
 .diva-callout p{font-size:0.84rem;color:var(--text-2);line-height:1.65;}
-.diva-callout .btn-sm{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;background:var(--blue);color:white;border-radius:100px;font-size:0.78rem;font-weight:600;cursor:pointer;border:none;margin-top:10px;transition:all var(--trans);}
+.diva-callout .btn-sm{display:inline-flex;align-items:center;min-height:44px;gap:5px;padding:6px 14px;background:var(--blue);color:white;border-radius:100px;font-size:0.78rem;font-weight:600;cursor:pointer;border:none;margin-top:10px;transition:all var(--trans);}
 .diva-callout .btn-sm:hover{background:var(--blue-mid);}
 
 /* ─── FRAMEWORK ─── */
@@ -525,7 +648,10 @@ button{font-family:'Sora',sans-serif;}
 .ai-for-all-box:last-child{margin-bottom:0;}
 .ai-for-all-box strong{display:block;margin-bottom:4px;font-size:0.9rem;}
 .ai-for-all-box em{font-size:0.8rem;color:var(--text-3);display:block;margin-bottom:12px;}
-.btn-redesign{display:inline-flex;align-items:center;gap:6px;background:white;border:1.5px solid var(--blue-mid);color:var(--blue-mid);padding:8px 18px;border-radius:40px;font-weight:600;font-size:0.8rem;cursor:pointer;transition:all 0.2s ease;}
+/* text-decoration:none because the two "AI for All" controls are <a> elements,
+   not <button>s - without it they would render underlined. Everything else
+   here is unchanged, so the pill looks exactly as it did. */
+.btn-redesign{display:inline-flex;align-items:center;gap:6px;background:white;border:1.5px solid var(--blue-mid);color:var(--blue-mid);padding:8px 18px;border-radius:40px;font-weight:600;font-size:0.8rem;font-family:'Sora',sans-serif;text-decoration:none;cursor:pointer;transition:all 0.2s ease;}
 .btn-redesign:hover{background:var(--blue-mid);color:white;transform:translateY(-2px);box-shadow:var(--shadow-sm);}
 @media(max-width:768px){.action-grid{grid-template-columns:1fr;}}
 
@@ -677,7 +803,7 @@ button{font-family:'Sora',sans-serif;}
 .team-section{background:linear-gradient(180deg,var(--surface) 0%,var(--blue-pale) 100%);padding:96px 0;position:relative;overflow:hidden;}
 .team-section::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 20% 50%,rgba(26,58,143,0.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(11,114,133,0.04) 0%,transparent 60%);pointer-events:none;}
 .team-tabs{display:flex;gap:8px;margin-bottom:48px;flex-wrap:wrap;}
-.team-tab{padding:10px 24px;border-radius:100px;font-size:0.875rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;border:1.5px solid var(--border);background:var(--bg);color:var(--text-3);transition:all var(--trans);}
+.team-tab{min-height:44px;display:inline-flex;align-items:center;padding:10px 24px;border-radius:100px;font-size:0.875rem;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;border:1.5px solid var(--border);background:var(--bg);color:var(--text-3);transition:all var(--trans);}
 .team-tab:hover{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-pale);}
 .team-tab.active{background:var(--blue);color:white;border-color:var(--blue);box-shadow:0 4px 16px rgba(26,58,143,0.25);}
 .team-member-panel{display:none;grid-template-columns:340px 1fr;gap:56px;align-items:center;animation:fadeUp 0.4s ease both;}
@@ -715,7 +841,11 @@ button{font-family:'Sora',sans-serif;}
 .form-group label{font-size:0.84rem;font-weight:600;color:var(--text-2);}
 .form-group input,.form-group select,.form-group textarea{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:11px 15px;color:var(--text-1);font-size:0.9rem;font-family:'Sora',sans-serif;transition:all var(--trans);resize:none;appearance:none;}
 .form-group input::placeholder,.form-group textarea::placeholder{color:var(--text-4);}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--blue-mid);background:white;box-shadow:0 0 0 3px rgba(37,84,199,0.1);}
+/* :focus:not(:focus-visible) so the soft tinted ring stays for pointer focus
+   while KEYBOARD focus keeps the real outline. Previously this suppressed the
+   outline for both, leaving only a 10%-opacity ring. */
+.form-group input:focus:not(:focus-visible),.form-group select:focus:not(:focus-visible),.form-group textarea:focus:not(:focus-visible){outline:none;border-color:var(--blue-mid);background:white;box-shadow:0 0 0 3px rgba(37,84,199,0.1);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue-mid);background:white;}
 .btn-full{width:100%;justify-content:center;border-radius:10px;}
 
 /* ─── FOOTER ─── */
@@ -723,7 +853,7 @@ button{font-family:'Sora',sans-serif;}
 .footer-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px;}
 .footer-logo{display:flex;align-items:center;gap:10px;font-family:'Lora',serif;font-size:1.1rem;font-weight:700;color:var(--text-1);margin-bottom:12px;}
 .footer-brand p{font-size:0.84rem;color:var(--text-3);line-height:1.65;margin-bottom:18px;}
-.footer-col h4{font-size:0.74rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;font-family:'Sora',sans-serif;}
+.footer-col .footer-col-title{font-size:0.74rem;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;font-family:'Sora',sans-serif;}
 .footer-col ul{display:flex;flex-direction:column;gap:9px;}
 .footer-col ul li a{font-size:0.875rem;color:var(--text-2);transition:color var(--trans);}
 .footer-col ul li a:hover{color:var(--blue-mid);}
@@ -756,15 +886,74 @@ button{font-family:'Sora',sans-serif;}
 
 /* ─── DIVA CHATBOT WIDGET ─── */
 .diva-widget{position:fixed;bottom:28px;right:28px;z-index:1500;}
-.diva-trigger{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform var(--trans);position:relative;background:none !important;border:none !important;padding:0 !important;margin:0 !important;box-shadow:none !important;outline:none !important;-webkit-appearance:none !important;appearance:none !important;border-radius:0 !important;}
+/* outline:none !important removed - it suppressed the keyboard focus ring on
+   the one control that opens DIVA, and !important meant nothing could restore
+   it. `all:unset` still resets outline to none, so the focus ring is put back
+   explicitly in the focus block near the top of this file. */
+.diva-trigger{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform var(--trans);position:relative;background:none !important;border:none !important;padding:0 !important;margin:0 !important;box-shadow:none !important;-webkit-appearance:none !important;appearance:none !important;border-radius:0 !important;}
 .diva-trigger:hover{transform:scale(1.1);}
+
+/* ---- DIVA unavailable (DIVA_API_URL unset or unusable) ----
+   The assistant stays on the page, dimmed and disabled, rather than
+   disappearing: a missing feature and a broken one look identical to a visitor
+   otherwise, and only one of them is worth reporting.
+
+   The widget switches to a column so the notice sits above the icon instead of
+   beside it, which keeps it clear of the site's bottom-right corner at every
+   width. */
+.diva-widget--unavailable{display:flex;flex-direction:column;align-items:flex-end;gap:10px;max-width:min(280px,calc(100vw - 56px));}
+
+/* Greyed and inert. The hover lift is cancelled too - a control that responds
+   to the pointer reads as usable however faint it looks. */
+.diva-widget--unavailable .diva-trigger{opacity:0.45;filter:grayscale(1);cursor:not-allowed;}
+.diva-widget--unavailable .diva-trigger:hover{transform:none;}
+
+.diva-unavailable{
+  margin:0;
+  padding:10px 14px;
+  border-radius:var(--radius);
+  background:var(--surface);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow-md);
+  color:var(--text-2);
+  font-family:'Sora',sans-serif;
+  font-size:0.8rem;
+  font-weight:600;
+  line-height:1.5;
+  /* Overrides the site-wide p{text-align:justify}, which would stretch this
+     short sentence across the pill. */
+  text-align:left;
+  hyphens:manual;
+}
 .diva-trigger img{display:block;width:96px;height:96px;object-fit:contain;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.22));background:none;border:none;box-shadow:none;}
 
+/* The panel is anchored to the BOTTOM of the viewport and grows upward, so
+   without a ceiling its top edge simply leaves the screen: header + messages +
+   input row + footer came to roughly 558px, and on a 1366x568 window that put
+   the title bar and the close button about 30px above the top of the viewport,
+   unreachable. Nothing about that is visible on a tall desktop monitor, which
+   is why it survived so long.
+
+   max-height ties the panel to the viewport instead of to its contents. The
+   56px is the existing 28px bottom offset mirrored at the top, so the panel
+   keeps the same visual margin at both ends.
+
+   The vh line first, then dvh: dvh tracks the viewport as mobile browser
+   chrome slides in and out, so the panel does not get clipped when the address
+   bar reappears. Browsers that do not know dvh discard that line and keep the
+   vh value, which is the same number minus that refinement.
+
+   max-width is the horizontal counterpart - a guard for narrow-but-not-mobile
+   widths where the fixed 560px plus the 120px right offset would otherwise
+   push the left edge off screen. */
 .diva-panel{
   position:fixed;
   bottom:28px;
   right:120px;
   width:560px;
+  max-width:calc(100vw - 32px);
+  max-height:calc(100vh - 56px);
+  max-height:calc(100dvh - 56px);
   background:var(--surface);
   border-radius:24px;
   border:1.5px solid var(--border);
@@ -786,7 +975,13 @@ button{font-family:'Sora',sans-serif;}
   flex-shrink:0;
 }
 .diva-panel-header img{width:56px;height:56px;object-fit:contain;flex-shrink:0;background:none;border:none;padding:0;border-radius:0;}
-.diva-panel-header-text{display:flex;flex-direction:column;gap:2px;}
+/* min-width:0 for the same reason .diva-messages needs min-height:0 - a flex
+   item will not shrink below its content's intrinsic width by default. The
+   avatar, close button and Clear button are all fixed-width and unshrinkable,
+   so on a 320px screen this column is the only one that can yield; without
+   this it holds itself at the width of "Interactive" and pushes the row wider
+   than the panel. */
+.diva-panel-header-text{display:flex;flex-direction:column;gap:2px;min-width:0;}
 .diva-panel-header h4{color:white;font-size:1.05rem;font-weight:700;margin:0;letter-spacing:0.01em;}
 .diva-panel-header p{color:rgba(255,255,255,0.8);font-size:0.78rem;margin:0;}
 .diva-online{display:flex;align-items:center;gap:5px;color:rgba(255,255,255,0.85);font-size:0.72rem;font-weight:500;margin-top:2px;}
@@ -797,7 +992,7 @@ button{font-family:'Sora',sans-serif;}
   border:1px solid rgba(255,255,255,0.25);
   color:white;
   cursor:pointer;
-  width:34px;height:34px;
+  width:44px;height:44px;
   border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   font-size:1.1rem;
@@ -806,12 +1001,30 @@ button{font-family:'Sora',sans-serif;}
 }
 .diva-close:hover{background:rgba(255,255,255,0.3);}
 
+/* The one part of the panel that is allowed to give way when space runs out.
+   Header, input row and footer all carry flex-shrink:0, so a capped panel
+   takes the space it needs from here and from nowhere else - the close button,
+   the text field and the send button stay exactly where they are however long
+   the conversation gets.
+
+   min-height:0 is what makes that work. A flex item's automatic minimum size
+   is its content, so without this the message list refuses to shrink, the
+   panel is pushed past its max-height, and the overflow reappears - the
+   scrollbar below would never engage. It replaces the previous 280px floor,
+   which was the same obstruction with a smaller number on it; the opening
+   welcome message and its three suggestion buttons come to roughly that height
+   on their own, so the panel still opens at the size it always did.
+
+   max-height keeps the desktop proportions: on a tall screen the panel stays
+   the size it has always been rather than stretching to fill the viewport now
+   that it is allowed to. */
 .diva-messages{
   padding:20px 18px;
   display:flex;
   flex-direction:column;
   gap:14px;
-  min-height:280px;
+  flex:1 1 auto;
+  min-height:0;
   max-height:360px;
   overflow-y:auto;
   background:var(--surface-2);
@@ -854,6 +1067,7 @@ button{font-family:'Sora',sans-serif;}
   max-width:88%;
 }
 .diva-suggestion-btn{
+  min-height:44px;
   background:var(--surface);
   border:1.5px solid var(--blue-light);
   color:var(--blue);
@@ -885,7 +1099,9 @@ button{font-family:'Sora',sans-serif;}
   border-radius:100px;
   padding:13px 20px;
   font-size:1rem;
-  outline:none;
+  /* outline:none removed - it stripped the keyboard focus ring from the one
+     field a DIVA conversation is typed into. The border colour change below is
+     a supplement, not a substitute. */
   font-family:'Sora',sans-serif;
   color:var(--text-1);
   background:var(--surface-2);
@@ -899,7 +1115,7 @@ button{font-family:'Sora',sans-serif;}
   background:var(--surface);
   border:1.5px solid var(--border);
   color:var(--text-3);
-  width:42px;height:42px;
+  width:44px;height:44px;
   border-radius:50%;
   cursor:pointer;
   display:flex;align-items:center;justify-content:center;
@@ -914,7 +1130,7 @@ button{font-family:'Sora',sans-serif;}
   background:linear-gradient(135deg,var(--blue),var(--blue-mid));
   border:none;
   color:white;
-  width:42px;height:42px;
+  width:44px;height:44px;
   border-radius:50%;
   cursor:pointer;
   display:flex;align-items:center;justify-content:center;
@@ -957,7 +1173,7 @@ button{font-family:'Sora',sans-serif;}
 .booklet-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;margin:18px 0 20px;transition:all var(--trans);}
 .booklet-row:hover{border-color:var(--blue-light);box-shadow:var(--shadow-sm);}
 .booklet-label{font-size:0.88rem;font-weight:500;color:var(--text-2);}
-.btn-booklet{display:inline-flex;align-items:center;gap:8px;padding:9px 20px;background:var(--blue);color:white;border-radius:100px;font-size:0.84rem;font-weight:600;font-family:'Sora',sans-serif;text-decoration:none;transition:all var(--trans);box-shadow:0 2px 10px rgba(26,58,143,0.22);border:none;cursor:pointer;}
+.btn-booklet{min-height:44px;display:inline-flex;align-items:center;display:inline-flex;align-items:center;gap:8px;padding:9px 20px;background:var(--blue);color:white;border-radius:100px;font-size:0.84rem;font-weight:600;font-family:'Sora',sans-serif;text-decoration:none;transition:all var(--trans);box-shadow:0 2px 10px rgba(26,58,143,0.22);border:none;cursor:pointer;}
 .btn-booklet:hover{background:var(--blue-mid);transform:translateY(-2px);box-shadow:0 6px 20px rgba(26,58,143,0.32);}
 
 /* ─── ANIMATIONS ─── */
@@ -971,21 +1187,109 @@ button{font-family:'Sora',sans-serif;}
    layout rules below: at ~1024px the full logo + nav links + search + a11y
    trigger row no longer fits in one line, well before the 768px breakpoint
    used for stacking the rest of the page's grids. */
-@media(max-width:1100px){.nav-links{position:fixed;top:68px;left:0;right:0;background:rgba(255,255,255,0.97);border-bottom:1px solid var(--border);flex-direction:column;padding:16px 20px;gap:2px;transform:translateY(-110%);opacity:0;transition:all var(--trans);backdrop-filter:blur(16px);box-shadow:var(--shadow-lg);}.nav-links.mobile-open{transform:translateY(0);opacity:1;}.hamburger{display:flex;}}
+@media(max-width:1100px){
+    /* The closed menu used to be hidden by appearance alone - slid off-screen
+       and made transparent. Neither transform nor opacity takes an element out
+       of the tab order or the accessibility tree, so all six links stayed
+       reachable while invisible: tabbing across the header gave six stops with
+       no focus ring anywhere on screen. The site's own screen reader announced
+       them too - its filter (accessibility-widget.js, isHiddenOrCollapsed)
+       tests visibility and display but not opacity.
+
+       visibility:hidden is what removes them from both, and it is deliberately
+       expressed HERE, inside the media query, rather than applied from
+       JavaScript. Above 1100px the rule simply does not exist, so returning to
+       a desktop width cannot leave the navigation stuck hidden - there is no
+       state to clean up and no resize handler that could fail to run. */
+    .nav-links{
+      position:fixed;top:68px;left:0;right:0;
+      background:rgba(255,255,255,0.97);
+      border-bottom:1px solid var(--border);
+      flex-direction:column;padding:16px 20px;gap:2px;
+      transform:translateY(-110%);
+      opacity:0;
+      visibility:hidden;
+      /* Explicit list, not `all`. visibility is a discrete property: under
+         `all` it would flip at the halfway point of the 0.24s slide, leaving
+         the menu invisible for the first half of its own opening animation.
+         Instead it changes in zero time - delayed until the slide-out has
+         finished when closing (below), immediate when opening. Only transform
+         and opacity actually differ between the two states, so restricting the
+         list changes nothing else. */
+      transition:transform var(--trans),opacity var(--trans),visibility 0s linear 0.24s;
+      backdrop-filter:blur(16px);
+      box-shadow:var(--shadow-lg);
+    }
+    .nav-links.mobile-open{
+      transform:translateY(0);
+      opacity:1;
+      visibility:visible;
+      transition:transform var(--trans),opacity var(--trans),visibility 0s linear 0s;
+    }
+    .hamburger{display:flex;}
+}
 @media(max-width:768px){.lang-bar{display:none;}.hero-inner{padding:60px 24px 80px;}.about-grid{grid-template-columns:1fr;}.contact-grid{grid-template-columns:1fr;gap:36px;}.footer-grid{grid-template-columns:1fr 1fr;gap:28px;}.form-row{grid-template-columns:1fr;}.footer-bottom{flex-direction:column;text-align:center;}.section{padding:72px 0;}.diva-panel{width:290px;}.team-member-panel{grid-template-columns:1fr;gap:28px;align-items:center;}.team-photo-img{max-width:280px;margin:0 auto;}.team-stats-strip{flex-direction:column;}.team-stat{border-right:none;border-bottom:1px solid var(--border);}.team-stat:last-child{border-bottom:none;}}
 @media(max-width:480px){.footer-grid{grid-template-columns:1fr;}.hero-cta{flex-direction:column;align-items:flex-start;}.team-tabs{gap:6px;}.team-tab{padding:8px 16px;font-size:0.8rem;}
-    /* Navbar: logo + search + a11y trigger + hamburger don't all fit on narrow phones */
+    /* ---- Navbar on narrow phones ----
+       The row is logo + Simple language + accessibility trigger + hamburger.
+       At 320px there are 288px to fit them into, and it needed about 354:
+       "Simple language" alone is ~106px of text, and BOTH .nav-logo and
+       .nav-right carry flex-shrink:0, so nothing could give and the excess
+       became page-wide horizontal scroll. The rule that made it inevitable was
+       `.simple-toggle span{display:inline}` right here - it existed to force
+       the label to stay visible at exactly the widths where it does not fit. */
     .nav-inner{padding:0 16px;gap:10px;}
     .nav-logo{gap:8px;}
     .nav-logo-img{width:40px;height:40px;}
     .logo-sub{display:none;}
     .nav-right{gap:6px;}
-    .btn-search span{display:none;}
-    .btn-search{padding:0 10px;}
-    .simple-toggle span{display:inline;}
-    .simple-toggle{padding:0 12px;min-height:38px;}
+
+    /* Icon-only, 44x44. The label is moved out of view rather than removed:
+       display:none would strip it from the accessibility tree and leave the
+       button with no accessible name at all, since the name comes from this
+       text. Clipping it keeps the name intact AND keeps it translated - the
+       span carries data-i18n, so a hardcoded aria-label would have frozen the
+       name in English while the interface switched to French or Kreol.
+
+       This also makes the two controls consistent: the accessibility trigger
+       beside it is already icon-only below 900px (see the widget's own CSS). */
+    .simple-toggle{width:44px;min-height:44px;padding:0;gap:0;justify-content:center;}
+    .simple-toggle span{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+    /* Structural safety net, not a fix for anything currently broken. The
+       overflow above was possible because neither side of the row could shrink;
+       letting the wordmark give way means a future longer label degrades to a
+       truncated logo rather than to a horizontally scrolling page. With the
+       sizes above there is ~27px to spare at 320px, so it never engages. */
+    .nav-logo{flex-shrink:1;min-width:0;}
+    .logo-text-wrap{min-width:0;}
+    .logo-main{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
     /* DIVA panel: fixed width+right-offset clips off the left edge on narrow phones */
     .diva-panel{left:16px;right:16px;width:auto;}
+
+    /* On a phone the panel spans the full width, so the 96px trigger - fixed at
+       bottom:28px right:28px, and painted last - lands directly on top of the
+       panel's own input row. It covers the send button and the right end of the
+       text field, which is why the panel could look complete and still be
+       unusable. On desktop there is no clash: the panel is offset to
+       right:120px, clear of the trigger.
+
+       Hiding it while the panel is open is what the .diva-widget.panel-open
+       rule further down was written to do, except nothing ever applies that
+       class. The sibling selector does it in CSS alone, with no change to the
+       widget's behaviour: the trigger follows the panel in the markup, so
+       "panel is open" is expressible directly.
+
+       Closing is unaffected - the header's close button, the Escape-free
+       outside-click handler in script.js and the panel's own controls are all
+       still there; only the redundant toggle underneath the panel goes away. */
+    .diva-panel.open ~ .diva-trigger{display:none;}
+
+    /* The avatar is the largest fixed element in the header row. Trimming it
+       gives the title and status text room to sit on fewer lines, which keeps
+       the header short on a 320px screen where vertical space is scarcest. */
+    .diva-panel-header{padding:14px 16px;gap:10px;}
+    .diva-panel-header img{width:44px;height:44px;}
 }
 
 .diva-widget.panel-open{opacity:0;pointer-events:none;transform:translateY(20px);transition:all 0.3s ease;}
@@ -1077,8 +1381,8 @@ button{font-family:'Sora',sans-serif;}
 
 /* Microphone */
 .diva-mic{
-  width:36px;
-  height:36px;
+  width:44px;
+  height:44px;
   border:none;
   background:transparent;
   cursor:pointer;
@@ -1205,6 +1509,9 @@ button{font-family:'Sora',sans-serif;}
 
 /* Clear Chat */
 .diva-clear{
+  display:inline-flex;
+  align-items:center;
+  min-height:44px;
   border:none;
   background:rgba(255,255,255,0.12);
   border:1px solid rgba(255,255,255,0.2);
@@ -1247,7 +1554,7 @@ button{font-family:'Sora',sans-serif;}
 .plain-policy h2{font-family:'Lora',serif;font-size:1.55rem;font-weight:700;color:var(--text-1);margin-top:40px;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--border);}
 .plain-policy h2:first-of-type{margin-top:0;}
 .plain-policy h3{font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:600;color:var(--text-1);margin-top:28px;margin-bottom:10px;}
-.plain-policy p{font-size:0.93rem;color:var(--text-2);line-height:1.85;margin-bottom:14px;}
+.plain-policy p{font-size:1rem;color:var(--text-2);line-height:1.85;margin-bottom:14px;}
 .plain-policy ul{list-style:disc;padding-left:24px;margin-bottom:16px;}
 .plain-policy ul li{font-size:0.93rem;color:var(--text-2);line-height:1.85;margin-bottom:6px;}
 .plain-policy a{color:var(--blue-mid);text-decoration:underline;text-underline-offset:3px;overflow-wrap:break-word;word-break:break-word;}
@@ -1281,3 +1588,199 @@ button{font-family:'Sora',sans-serif;}
 .a11y-statement .contact-val a{color:var(--blue-mid);}
 .a11y-statement .notice{background:var(--blue-pale);border-left:3px solid var(--blue-mid);padding:14px 18px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:0.9rem;color:var(--text-2);line-height:1.6;margin-bottom:16px;text-align:justify;hyphens:auto;}
 .a11y-statement .footer-note{font-size:0.82rem;color:var(--text-3);line-height:1.7;}
+/* ─── MOBILE TYPOGRAPHY FLOOR ───────────────────────────────────────────────
+   Studio26 baseline: no text below 14 CSS pixels on mobile, ordinary body copy
+   at least 16.
+
+   Scoped to <=768px on purpose. The desktop sizes below 14px are a deliberate
+   part of the visual hierarchy - eyebrows, chips, metadata, legal footnotes -
+   and raising them everywhere would flatten it. On a phone, held further from
+   the eye and often outdoors, the same sizes stop being legible, which is what
+   the baseline is about.
+
+   0.875rem = exactly 14px against the 16px root. Applied as a floor, not a
+   reset: anything already at or above 14px is untouched, and the relative
+   order of these elements is preserved because they were all below the floor
+   to begin with.
+
+   Generated from the stylesheet rather than hand-listed, so no small selector
+   is missed.
+   ======================================================================== */
+@media(max-width:768px){
+    .a11y-statement .footer-note,
+    .a11y-statement .page-meta,
+    .a11y-statement .tool-desc,
+    .action-chip,
+    .action-description,
+    .ai-for-all-box em,
+    .ailab-promo-note,
+    .ailab-promo-tags li,
+    .audio-time-row,
+    .btn-back,
+    .btn-booklet,
+    .btn-redesign,
+    .btn-search,
+    .contact-block h3,
+    .dim-tags span,
+    .diva-callout .btn-sm,
+    .diva-callout p,
+    .diva-clear,
+    .diva-footer,
+    .diva-online,
+    .diva-panel-header p,
+    .diva-unavailable,
+    .doc-badge,
+    .doc-body p,
+    .doc-btn,
+    .doc-kicker,
+    .field-error,
+    .footer-bottom p,
+    .footer-brand p,
+    .footer-col .footer-col-title,
+    .footer-disclaimer p,
+    .form-group label,
+    .form-status,
+    .hero-badge,
+    .lang-bar,
+    .lang-bar a,
+    .lang-btn,
+    .logo-sub,
+    .meta-chip,
+    .mkt-card p,
+    .nav-link,
+    .page-eyebrow,
+    .section-eyebrow,
+    .simple-toggle,
+    .team-focus-tag,
+    .team-stat-label,
+    .team-tab,
+    .video-icon{font-size:0.875rem;}
+}
+
+/* ─── LINE LENGTH ───────────────────────────────────────────────────────────
+   Studio26 baseline: roughly 75 characters per line maximum.
+
+   These are the prose blocks that had no measure of their own and were
+   constrained only by .container at 1180px - about 148 characters on a desktop
+   window, roughly twice a comfortable line. .section-desc already caps at
+   600px (~75 characters) and is left alone.
+
+   Expressed in ch, which measures what the rule is actually about: 72ch is 72
+   zero-widths of the current font, so the limit holds whatever the font size
+   or the user's zoom. It is a maximum, not a width - narrow screens are
+   unaffected, so nothing here can cause overflow at 320 or 360px.
+
+   The policy pages keep their centring; .about-body and .page-subtitle sit in
+   left-aligned columns and stay left-aligned. */
+.plain-policy p,
+.plain-policy ul li{max-width:72ch;}
+.about-body{max-width:72ch;}
+.page-subtitle{max-width:72ch;}
+.footer-disclaimer p{max-width:72ch;}
+.a11y-statement .block p,
+.a11y-statement .tool-desc{max-width:72ch;}
+
+/* NOTE: this block is deliberately the LAST thing in this file.
+   It was originally placed mid-file, where it lost the cascade: rules
+   like .reveal{opacity:0} and .diva-online-dot{animation:...} are
+   defined further down at the SAME specificity, so they overrode it and
+   reduced-motion users still got hidden .reveal content and a pulsing
+   status dot. Browser testing during final QA caught it; a static check
+   that the declarations exist could not. Keep it last. */
+/* ─── REDUCED MOTION ────────────────────────────────────────────────────────
+   Written against the motion this site actually contains, not as a blanket
+   kill-switch: seven @keyframes, the .reveal scroll-in, two smooth-scroll
+   declarations, and the transform-based hover lifts. Each is dealt with by
+   name below so it is clear what is being stopped and what the user is left
+   looking at.
+
+   The governing rule throughout: reduced motion means the FINAL state
+   immediately, never missing content. Nothing here hides anything.
+
+   Two motion sources cannot be reached from CSS at all and are handled in
+   assets/js/script.js instead - the marketplace ticker, which is an SVG SMIL
+   <animate> element, and DIVA's word-by-word message typing, which is a
+   JavaScript timer. Both are noted where they live. */
+@media(prefers-reduced-motion:reduce){
+    .btn-back:hover svg{transform:none;}
+
+    /* 1. Smooth scrolling - both declarations, the page and the DIVA log. */
+    html,
+    .diva-messages{scroll-behavior:auto;}
+
+    /* 2. Continuous decorative animation. The elements stay exactly where
+       they are and keep their colour and size; only the looping stops. The
+       status dots remain visible as dots, the listening/speaking states keep
+       their border and colour change, and the typing indicator still shows
+       three dots - it simply no longer bounces. */
+    .badge-dot,
+    .diva-online-dot,
+    .diva-mic.listening,
+    .diva-typing-dots span,
+    .diva-speak.speaking,
+    .diva-read-aloud.speaking{animation:none;}
+
+    /* 3. One-shot entrance animation. All of these use `both`, so their end
+       state is the normal rendered state - removing the animation shows that
+       state at once rather than sliding into it. The hero text, the team
+       panel and the DIVA panel are all fully visible without them. */
+    .hero-title,
+    .hero-subtitle,
+    .hero-cta,
+    .team-member-panel,
+    .diva-panel{animation:none;}
+
+    /* 4. The scroll-triggered reveal. Forced to its finished state so the
+       content does not depend on an IntersectionObserver callback, or on a
+       transition completing, to become readable. */
+    .reveal{opacity:1;transform:none;transition:none;}
+
+    /* 5. Movement. Rather than switching every transition off - which would
+       also remove the colour and shadow feedback that tells a user a control
+       is interactive - the transition PROPERTY list is narrowed to the
+       non-moving properties. Hover and focus still respond; nothing travels.
+       The paired transform declarations below stop the movement itself. */
+    *,*::before,*::after{
+        transition-property:color,background-color,border-color,box-shadow,opacity,outline-color,fill,stroke;
+    }
+    .btn-primary:hover,
+    .diva-clear:hover,
+    .simple-toggle:hover,
+    .card:hover,
+    .action-card:hover,
+    .btn-redesign:hover,
+    .mkt-card:hover,
+    .btn-white:hover,
+    .doc-card:hover,
+    .doc-btn-primary:hover,
+    .doc-btn-ghost:hover,
+    .doc-btn-audio:hover,
+    .principle-card:hover,
+    .close-modal:hover,
+    .diva-trigger:hover,
+    .btn-booklet:hover,
+    .diva-send:hover:not(:disabled){transform:none;}
+}
+
+/* ─── JUSTIFICATION ON NARROW COLUMNS ───────────────────────────────────────
+   Justified text works by stretching the spaces between words until the line
+   reaches both edges. On a phone column there are only a handful of words per
+   line to absorb that, so the gaps become rivers - visible in the 320px QA
+   screenshots as "Welcome  to  the  AI  Unit  of".
+
+   Individual offenders were switched to left alignment earlier; this addresses
+   the cause for every narrow column at once, rather than waiting for each new
+   prose block to be found. Desktop keeps the justified setting the design
+   chose - the measure there is wide enough for it to work.
+
+   Found by looking at the responsive QA screenshots, not by any automated
+   check: nothing here is measurable as a failure, it is simply hard to read. */
+@media(max-width:768px){
+    p,
+    .hero-subtitle,
+    .about-body,
+    .ailab-promo-desc,
+    .doc-body p,
+    .plain-policy p,
+    .plain-policy ul li{text-align:left;hyphens:manual;}
+}

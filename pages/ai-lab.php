@@ -48,6 +48,50 @@ $calendlyUrl = $calendlyUrl ?? null;
 
     <?php
     /*
+     * Launch announcement.
+     *
+     * Sits directly under the page introduction so it is the first thing read
+     * after the title, and above the feature image, because on the day it
+     * matters the date is more useful than the picture.
+     *
+     * <aside> rather than <section>: this is a time-bound notice about the
+     * page's subject, not part of the lab's permanent description. It carries
+     * its own <h2>, which keeps the heading order intact - the page's only
+     * <h1> is the page title above, and every other block here is also an <h2>.
+     *
+     * The date is written once, into $labLaunchDate, and rendered both as the
+     * machine-readable <time datetime> value and as the visible text, so the
+     * two cannot drift apart.
+     *
+     * NOTE: this is a fixed announcement, not a countdown. On 20 August 2026 the
+     * wording here (and the shorter flag on the homepage, pages/home.php) needs
+     * changing to the present tense - nothing switches it over automatically.
+     */
+    $labLaunchDate = new DateTimeImmutable('2026-08-20');
+    ?>
+    <aside class="lab-launch" aria-labelledby="lab-launch-title">
+      <p class="lab-launch-flag">
+        <span class="lab-launch-dot" aria-hidden="true"></span>
+        Launch announcement
+      </p>
+      <h2 class="lab-launch-title" id="lab-launch-title">
+        AI Lab launching
+        <time datetime="<?= e($labLaunchDate->format('Y-m-d')) ?>"><?= e($labLaunchDate->format('j F Y')) ?></time>
+      </h2>
+      <?php /* Deliberately no data-i18n: applyTranslations() replaces innerHTML
+               from a static string, which would hardcode the date a second time
+               in script.js and let the two copies drift. The date belongs in
+               $labLaunchDate only. */ ?>
+      <p class="lab-launch-body" tabindex="0">
+        The AI Lab officially launches on
+        <?= e($labLaunchDate->format('j F Y')) ?>. From that date the space is
+        open to students, technopreneurs and innovators. Explore the platform and
+        the resources below to see what the lab offers and how to take part.
+      </p>
+    </aside>
+
+    <?php
+    /*
      * Feature image, immediately under the introduction so the space is
      * understandable before any body text is read.
      *

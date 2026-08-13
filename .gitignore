@@ -26,14 +26,23 @@ env/
 # Composer dependencies (currently just PHPMailer, for SMTP mail sending).
 # composer.json and composer.lock ARE tracked - run `composer install` to
 # regenerate this folder.
-vendor/
+#
+# "vendor/*" rather than "vendor/" so the deny-all .htaccess inside it can be
+# tracked: git cannot re-include a file from a directory that is itself
+# excluded. That file has to ship with a clone, because vendor/ is the one
+# private directory whose contents are recreated by `composer install` and so
+# cannot carry protection of its own. Composer leaves unknown files alone, so
+# it survives reinstalls.
+vendor/*
+!vendor/.htaccess
 
-# Runtime storage & user uploads (keep the folders, ignore their contents)
+# Runtime storage & user uploads (keep the folders, ignore their contents).
+# uploads/ moved to public/uploads/ when public/ became the document root.
 storage/logs/*
 storage/cache/*
 !storage/logs/.gitkeep
 !storage/cache/.gitkeep
-uploads/*
-!uploads/.gitkeep
-!uploads/highlights/
-!uploads/highlights/**
+public/uploads/*
+!public/uploads/.gitkeep
+!public/uploads/highlights/
+!public/uploads/highlights/**

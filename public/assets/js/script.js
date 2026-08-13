@@ -20,11 +20,15 @@ const translations = {
     ailab_desc: "A space at the AI Unit for learning, exploring and working with artificial intelligence - available primarily to students from colleges and universities, researchers, educators and members of the public.",
     ailab_tag1: "College & university students", ailab_tag2: "Researchers", ailab_tag3: "Educators", ailab_tag4: "Members of the public",
     ailab_cta: "Explore the AI Lab", ailab_note: "Sessions can be booked online.",
+    // Keeps the <time> element: applyTranslations() assigns innerHTML, so the
+    // markup survives a language switch. Update this date together with the
+    // announcement in pages/ai-lab.php and pages/home.php.
+    ailab_launch_flag: "Launching <time datetime=\"2026-08-20\">20 August 2026</time>",
     about_eyebrow: "Who We Are", about_title_prefix: "Driving Mauritius", about_title_suffix: "AI Future", about_mission_quote: "\"Mauritius is committed to becoming a smart, inclusive and future-ready nation - where every citizen benefits from responsible AI.\"",
     about_body1: "The AI Unit is the dedicated body established under the Ministry of Information Technology, Communication and Innovation (MITCI) to lead Mauritius' artificial intelligence journey. We coordinate AI governance, promote innovation, and ensure that technology serves all Mauritians - fairly and transparently.",
     about_body2: "We are the strategic vehicle for MITCI's <strong>Digital Transformation 2025-2029</strong> blueprint - a bold roadmap to modernise public services and position Mauritius as a leading AI nation in Africa.",
     about_body3: "Whether you are a citizen curious about AI, a business exploring new solutions, or a student building your future - the AI Unit is here for you.",
-    diva_title: "Meet DIVA - Digital Interactive Virtual Assistant", diva_desc: "DIVA is a prototype assistant that answers questions based on four key documents: the Digital Transformation Blueprint, AI Strategy, FAIR Guidelines, and AI Playbook.", diva_chat: "Chat with DIVA",
+    diva_title: "Meet DIVA - Digital Interactive Virtual Assistant", diva_desc: "DIVA is a prototype assistant that answers questions based on three key documents: the Digital Transformation Blueprint, the AI Strategy and the FAIR Guidelines.", diva_chat: "Chat with DIVA",
     vision_title: "Our Vision", vision_text: "Position Mauritius as a regional leader in trusted, responsible AI - powering economic transformation, elevating public services, and enhancing the quality of life for every citizen.",
     mission_title: "Our Mission", mission_text: "Drive responsible AI in Mauritius by leading its implementation and governance - ensuring every system is secure, ethical, and transparent, and that AI delivers meaningful impact for citizens and businesses.",
     objectives_title: "Our Six Objectives", obj1: "Govern Trusted AI", obj2: "Modernize Public Services", obj3: "Grow the AI Ecosystem", obj4: "Build Future-Ready Skills", obj5: "Strengthen Data Infrastructure", obj6: "Elevate Mauritius' Global Standing",
@@ -70,21 +74,25 @@ const translations = {
     principle3_title: "Inclusiveness & Integrity", principle3_text: "Technology should serve everyone. We design AI tools that are accessible across language, ability, and geography - leaving no community behind, and upholding the highest standards of honesty and transparency in everything we do.",
     principle4_title: "Responsibility", principle4_text: "We act with purpose and accountability. Responsible AI means moving with care - shipping thoughtfully, learning continuously, and always keeping the long-term wellbeing of citizens at the centre of our work.",
     team_title1: "The People", team_title2: "Behind the Work", team_desc: "Meet the experts driving Mauritius' AI strategy and digital transformation.",
-    team_tab1: "Mr. Ramakrishna", team_tab2: "Dr. Heman", team_tab3: "Mr. Ruben",
+    team_tab1: "Mr. Ramakrishna", team_tab2: "Dr. Mohabeer", team_tab3: "Mr. Ramdhony",
     team_rama_tag: "Alignment & Safety", team_rama_role: "Head - AI Unit", team_rama_quote: "Ramakrishna Mudaliar serves as Head of the AI Unit, where he spearheads the country's people-centric approach to leverage Artificial Intelligence for responsible development and implementation at a national scale. He holds Master's Degrees from the University of Montpellier and the University of Manipal. With more than two decades of experience across both the private technology sector and public service, Ramakrishna brings a well-rounded perspective that bridges innovation with real-world implementation.",
     rama_stat1: "Years Experience", rama_stat2: "Master's Degrees", rama_stat3: "AI Unit Founded",
-    // PLACEHOLDER: copied from the team_rama_* strings above until Mr. Ramdoyal's
-    // own role, biography and statistics are supplied. The role and biography
-    // below still describe Mr. Mudaliar's post and career.
-    team_tab4: "Mr. Yudhaveer",
-    team_yudhaveer_tag: "Alignment & Safety", team_yudhaveer_role: "Head - AI Unit", team_yudhaveer_quote: "Yudhaveer Vaibhav Ramdoyal serves as Head of the AI Unit, where he spearheads the country's people-centric approach to leverage Artificial Intelligence for responsible development and implementation at a national scale. He holds Master's Degrees from the University of Montpellier and the University of Manipal. With more than two decades of experience across both the private technology sector and public service, Yudhaveer brings a well-rounded perspective that bridges innovation with real-world implementation.",
-    yudhaveer_stat1: "Years Experience", yudhaveer_stat2: "Master's Degrees", yudhaveer_stat3: "AI Unit Founded",
+    // Mr. Ramdoyal's own details, as supplied by the AI Unit. These strings win
+    // over the markup in pages/home.php - applyTranslations() overwrites it on
+    // load - so the two copies must be edited together.
+    team_tab4: "Mr. Ramdoyal",
+    team_yudhaveer_tag: "AI & Digital Innovation", team_yudhaveer_role: "AI Expert", team_yudhaveer_quote: "Yudhaveer Vaibhav Ramdoyal serves as an AI Expert at the AI Unit, supporting the national vision to drive responsible digital transformation and modern public service delivery. He holds a Bachelor of Science (Hons) in Computer Science from the University of Mauritius and earned a Google AI Professional Certificate. Drawing on a strong background in data engineering and technical leadership across the corporate and financial technology sectors, Yudhaveer bridges core data capabilities with practical AI implementation. His expertise spans ICT strategy, enterprise transformation, and technology governance, positioning him to effectively advance national priorities in Artificial Intelligence and digital innovation.",
+    yudhaveer_stat1: "Computer Science (Hons)", yudhaveer_stat2: "AI Professional Certificate", yudhaveer_stat3: "Corporate & Financial Sectors",
     team_heman_tag: "Architecture & Scale", team_heman_role: "AI Expert", team_heman_quote: "Dr. Heman Mohabeer is an AI researcher, strategist, and inventor serving as an AI Expert at the AI Unit of the Government of Mauritius. With a PhD in Artificial Intelligence and Machine Learning, he supports national AI policy development, advises on digital transformation, and promotes resilient, explainable, and locally owned AI systems.",
     heman_stat1: "AI & Machine Learning", heman_stat2: "Years Experience", heman_stat3: "Regional AI Leader",
     team_ruben_tag: "Digital Transformation", team_ruben_role: "AI Expert", team_ruben_quote: "Ruben Ramdhony is a Digital Transformation Executive and former Chief Information Officer with over 20 years of enterprise experience across Australia and Mauritius. He holds an MBA from Macquarie Business School, Australia. He is currently serving in an AI Expert capacity, translating policy into working systems, governance into practice, and strategy into measurable outcomes across Government.",
     ruben_stat1: "Years Enterprise", ruben_stat2: "Former Chief Info. Officer", ruben_stat3: "Cross-Border Experience",
     contact_eyebrow: "Get in Touch", contact_title1: "We're Here", contact_title2: "for You", contact_desc: "Have questions about AI in Mauritius? Want to partner with us or learn more about our programmes? Reach out - we welcome every question.",
-    contact_address_title: "Address", contact_address_text: "Cyber Tower 2, Level 6,\nEbene Cyber City,\nMauritius",
+    // applyTranslations() assigns this with innerHTML, so the \n line breaks
+    // this string used to carry collapsed into ordinary spaces and rendered as
+    // one long run of text in the narrow contact column. Kept to a single
+    // short line, which wraps on its own when the column is too narrow.
+    contact_address_title: "Address", contact_address_text: "Cyber Tower 2, Level 6, Ebene",
     contact_email_title: "Email", contact_phone_title: "Phone", contact_hours_title: "Office Hours", contact_hours_text: "Monday - Friday: 9:00 AM - 4:00 PM\nClosed on Public Holidays",
     form_name: "Your Name", form_email: "Email Address", form_topic: "Topic", form_topic_placeholder: "Select a topic",
     form_topic1: "AI Strategy Enquiry", form_topic2: "Partnership Proposal", form_topic3: "Public Services Feedback", form_topic4: "DIVA / Digital Services", form_topic5: "AI Marketplace", form_topic6: "Media & Press", form_topic7: "Other",
@@ -123,7 +131,7 @@ const translations = {
     about_body3_s: "The AI Unit is here for everyone: citizens, businesses and students.", // (26 → 11)
     vision_text_s: "We want Mauritius to lead the region in safe, trusted AI that improves the economy, public services and daily life.", // (25 → 20)
     mission_text_s: "We lead how AI is built and managed in Mauritius. Every system must be safe, fair and open, and must help people and businesses.", // (29 → 24)
-    diva_desc_s: "DIVA is a test assistant. It answers questions using our four main documents.", // (23 → 13)
+    diva_desc_s: "DIVA is a test assistant. It answers questions using three of our main documents.", // (23 → 13)
     action_desc_s: "See how AI is already helping people in Mauritius, from keeping children safe online to making technology easier to use.", // (22 → 20)
     action_card1_desc_s: "A booklet and four videos about online violence against children: how to spot it, how to stop it, and where to get help.", // (18 → 19)
     action_card2_desc_s: "A booklet that explains what AI is and how it can help you. Written for everyone.", // (15 → 16)
@@ -199,7 +207,7 @@ const translations = {
     hl_revamp_analysis: "The work began with a full review of the existing portal, guided by the AI Unit's aspirations for its redevelopment. That analysis fed a detailed wireframe covering the home page, the navigation structure, the key content sections and the placement of interactive features such as the accessibility tool, and the chatbot. Once the wireframe was reviewed and approved by the mentor, front-end development began.",
     hl_revamp_kanban: "Project management for the portal team was run on a Kanban workflow, introduced in Week 2 after guidance from the mentor on Agile practice. It began as a physical board at the workplace and, at the mentor's recommendation, moved to a digital Jira board that the whole intern team adopted as it grew. Tasks were grouped into Epics and Sub-Epics matching the portal's features.",
     hl_revamp_github: "GitHub served as the team's version control platform, with a shared repository that let all the interns work concurrently on different features without conflicts in the code.",
-    hl_diva_lede: "DIVA is an AI-powered assistant integrated into the portal to answer questions about artificial intelligence in Mauritius, the content of the portal and government AI resources. It is a prototype, grounded in four key documents: the Digital Transformation Blueprint, the AI Strategy, the FAIR Guidelines and the AI Playbook.",
+    hl_diva_lede: "DIVA is an AI-powered assistant integrated into the portal to answer questions about artificial intelligence in Mauritius, the content of the portal and government AI resources. It is a prototype, grounded in three key documents: the Digital Transformation Blueprint, the AI Strategy and the FAIR Guidelines.",
     hl_diva_entry: "Users reach DIVA through two entry points. A dedicated section of the portal introduces the assistant and opens it with a Chat with DIVA button, and a floating chatbot widget stays available across the portal, so a conversation can be started or continued from any page without leaving the current content.",
     hl_diva_speech: "The Web Speech Synthesis API, a native browser API that turns text into speech without any third-party software, was integrated into the portal. Activated with a single control, it reads the content of DIVA's response aloud.",
     hl_a11y_lede: "In Week 3 the mentor raised the bar: the portal had to meet WCAG 2.2, the international guidelines for making web content usable by people with visual, hearing, physical, cognitive and other disabilities. Beyond meeting the guidelines, the interns built an accessibility toolbar into the portal itself, designed on the principle of user choice: each visitor decides how they want to use the site.",
@@ -211,7 +219,7 @@ const translations = {
     hl_revamp_analysis_s: "The team began by reviewing the existing portal, guided by the AI Unit's goals for it. That review shaped a detailed wireframe covering the home page, navigation, key content and features like the accessibility tool and chatbot. Once the mentor approved the wireframe, front-end development began.", // (65 → 48)
     hl_revamp_kanban_s: "The team managed the project with a Kanban workflow, introduced in Week 2 on the mentor's advice. It started as a physical board, then moved to a digital Jira board as the team grew. Tasks were grouped into Epics and Sub-Epics matching the portal's features.", // (65 → 46)
     hl_revamp_github_s: "GitHub was the team's version control platform. A shared repository let all the interns work on different features at the same time without conflicts.", // (29 → 25)
-    hl_diva_lede_s: "DIVA is an AI assistant built into the portal. It answers questions about AI in Mauritius, the portal's content, and government AI resources. It is a prototype, based on four key documents: the Digital Transformation Blueprint, the AI Strategy, the FAIR Guidelines and the AI Playbook.", // (50 → 45)
+    hl_diva_lede_s: "DIVA is an AI assistant built into the portal. It answers questions about AI in Mauritius, the portal's content, and government AI resources. It is a prototype, based on three key documents: the Digital Transformation Blueprint, the AI Strategy and the FAIR Guidelines.", // (50 → 45)
     hl_diva_entry_s: "Users can reach DIVA in two ways. A section of the portal introduces DIVA with a Chat with DIVA button. A floating chatbot widget also stays on screen everywhere, so you can start or continue a chat from any page.", // (52 → 40)
     hl_diva_speech_s: "The team added the Web Speech Synthesis API, a browser feature that turns text into speech with no extra software. One button press reads DIVA's answer aloud.", // (35 → 27)
     hl_a11y_lede_s: "In Week 3, the mentor set a new goal: the portal had to meet WCAG 2.2, the international guidelines for making websites usable by people with visual, hearing, physical, cognitive and other disabilities. The interns also built an accessibility toolbar into the portal, so every visitor can choose how they want to use the site.", // (65 → 53)
@@ -274,6 +282,15 @@ const translations = {
     hl_a11y_principle_aria_s: "ARIA labels and text alternatives were added throughout, so assistive technology can describe every control.",
     hl_a11y_principle_saved: "Every setting is stored in the browser's local storage, so a returning visitor's preferences are restored automatically with no account needed.",
     hl_a11y_principle_saved_s: "Every setting is saved in the browser, so a returning visitor's preferences come back automatically.",
+    // User testing with SENA, 24 July 2026. These mirror the markup in
+    // pages/highlights.php and win over it at runtime, so edit both together.
+    // Mrs Burtony André is described by her role and by the perspective she
+    // tested from - the source report does not state that she is blind, and
+    // neither may these strings.
+    hl_a11y_usertest_intro: "An accessibility toolbar is only worth as much as it proves to be in the hands of someone who depends on assistive technology. Accessibility testing was conducted with Mrs Aarthi Burtony André, SENA Resource Person for Learners with Visual Impairments, who evaluated the website from the perspective of a blind user relying on screen reader technology. The session was held at the SENA Office on 24 July 2026, with the two AI Unit interns who requested it, while the portal was still under development and before any official launch.",
+    hl_a11y_usertest_intro_s: "An accessibility toolbar has to work for the people who rely on it. So the site was tested with Mrs Aarthi Burtony André, SENA Resource Person for Learners with Visual Impairments. She checked the site the way a blind person using a screen reader would. The test took place at the SENA Office on 24 July 2026, with the two AI Unit interns. The site was still being built and had not launched yet.",
+    hl_a11y_usertest_appreciation: "The report closes on the collaboration itself. It records that the session demonstrated the Ministry's willingness to engage with persons with disabilities during the development of the website, and describes that approach as greatly appreciated and as good practice in inclusive digital design. It ends by calling the initiative an encouraging first step towards a more accessible and inclusive digital platform for all users - while restating that technical improvements remain necessary, particularly on screen reader compatibility and independent navigation.",
+    hl_a11y_usertest_appreciation_s: "At the end, the report thanks the Ministry. It says the session showed that the Ministry is willing to work with persons with disabilities while the website is being built. It calls this good practice. It also says the work is a good first step towards a website that more people can use - but that there is still technical work to do, especially so screen readers work and blind people can use the site on their own.",
 
     hl_journey_lede: "The same six stages carried every piece of work from an open question to something ready to hand over.",
     hl_journey_lede_s: "The same six stages guided every piece of work, from question to finished result.",
@@ -322,6 +339,31 @@ const HTML_LANG = { en: 'en', fr: 'fr', km: 'mfe' };
 // Task 1. Set by the navbar toggle (Task 2), not here.
 let simpleMode = false;
 
+/**
+ * Replaces emoji with Twemoji images.
+ *
+ * Windows has no colour glyph for regional-indicator pairs, so the Mauritius
+ * and UK flags in the "AI for All" cards render as the bare letters MU and GB,
+ * or as empty boxes, on most Windows browsers. Twemoji swaps them for real
+ * flag images.
+ *
+ * The typeof guard is the required pattern: if the CDN is blocked, offline or
+ * down, `twemoji` is simply never defined, this returns immediately, and the
+ * page keeps the original emoji text. Nothing else in this file depends on it.
+ *
+ * svg rather than the library's default 72x72 PNG - it stays sharp at any size
+ * and any zoom, which matters for a glyph sitting inside a line of text.
+ */
+function parseEmoji(root) {
+  if (typeof twemoji === 'undefined') return;
+  try {
+    twemoji.parse(root || document.body, { folder: 'svg', ext: '.svg' });
+  } catch (err) {
+    // A parse failure must never take the rest of the page down with it.
+    console.error('Twemoji parse failed:', err);
+  }
+}
+
 function applyTranslations() {
   const T = translations[currentLang] || {};
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -343,6 +385,17 @@ function applyTranslations() {
   // applyTranslations() - including restoring a saved language on page
   // load - keeps <html lang> in sync with the actual content language.
   document.documentElement.lang = HTML_LANG[currentLang] || 'en';
+
+  /*
+   * Re-run after every translation pass, not once at startup. The loop above
+   * rewrites [data-i18n] elements with innerHTML, and two of those strings
+   * (ai_en_title, ai_km_title) carry the UK and Mauritius flags - so any
+   * Twemoji images in them are destroyed and replaced with raw emoji text on
+   * every language switch and every simple-language toggle. Parsing here is
+   * the only point that catches all of them.
+   */
+  parseEmoji(document.body);
+
   // Notify screen reader and other components of language change
   window.dispatchEvent(new CustomEvent('aiunit-lang-changed', { detail: { lang: currentLang } }));
 }
@@ -360,6 +413,14 @@ const savedLang = localStorage.getItem('ai_unit_lang');
 if (savedLang && (savedLang === 'fr' || savedLang === 'km')) {
   currentLang = savedLang;
   applyTranslations();
+} else {
+  /*
+   * applyTranslations() runs on load only when a non-English language was
+   * saved - an English visitor never reaches it, so the flags in the markup
+   * would stay unparsed. This is the one pass that catches the default case;
+   * every other pass happens inside applyTranslations() itself.
+   */
+  parseEmoji(document.body);
 }
 
 /* ─── SIMPLE LANGUAGE MODE ───
@@ -510,19 +571,40 @@ window.addEventListener('scroll',()=>{
   sections.forEach(sec=>{if(window.scrollY>=sec.offsetTop-90)current=sec.id;});
   allNavLinks.forEach(link=>link.classList.toggle('active',link.dataset.scroll===current));
 });
+/**
+ * Closes the mobile navigation, keeping the panel, the hamburger's icon and
+ * its aria-expanded in step. Three things close this menu - picking a link,
+ * pressing the hamburger again, and Escape - and they must not be able to
+ * disagree about the state, which is why they all come through here.
+ *
+ * Returns focus to the hamburger when asked. That matters for Escape: the
+ * closed panel is visibility:hidden, so whatever was focused inside it is gone
+ * and focus would otherwise fall back to the top of the document.
+ */
+function closeMobileMenu(returnFocus){
+  if(!navLinksDiv.classList.contains('mobile-open'))return;
+  navLinksDiv.classList.remove('mobile-open');
+  hamburger.classList.remove('open');
+  hamburger.setAttribute('aria-expanded','false');
+  if(returnFocus)hamburger.focus();
+}
+
 document.querySelectorAll('[data-scroll]').forEach(el=>{
   el.addEventListener('click',e=>{
     e.preventDefault();
     const target=document.getElementById(el.dataset.scroll);
     if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
-    navLinksDiv.classList.remove('mobile-open');
-    hamburger.classList.remove('open');
-    hamburger.setAttribute('aria-expanded','false');
+    // No focus return: the user is being sent to a section, so pulling focus
+    // back up to the hamburger would undo the navigation they just asked for.
+    closeMobileMenu(false);
   });
 });
+
 hamburger.addEventListener('click',()=>{
   const open=hamburger.classList.toggle('open');
-  navLinksDiv.classList.toggle('mobile-open');
+  // Driven from the same value rather than toggled independently, so the panel
+  // and the button cannot drift out of step.
+  navLinksDiv.classList.toggle('mobile-open',open);
   hamburger.setAttribute('aria-expanded',open.toString());
 });
 
@@ -567,10 +649,116 @@ document.querySelector('.team-tabs')?.addEventListener('keydown', function (e) {
   teamTabs[next].focus();
 });
 
+/**
+ * Whether the visitor has asked for reduced motion. Read on each call rather
+ * than cached - the preference can change mid-session, and matchMedia reflects
+ * that immediately. Mirrors the helper assets/js/highlights.js already uses.
+ */
+function prefersReducedMotion() {
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+/*
+ * The marketplace ticker is an SVG SMIL <animate> element (pages/home.php).
+ * SMIL is not CSS, so no prefers-reduced-motion rule can touch it - this is
+ * the one continuous animation on the site that genuinely needs JavaScript to
+ * stop. pauseAnimations() freezes the SVG's own timeline, leaving the wave and
+ * its "Regional AI Marketplace" text on screen and readable; only the scroll
+ * stops. The listener keeps that true if the preference is changed later.
+ */
+(function () {
+  if (!window.matchMedia) return;
+  const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const applyTickerPreference = () => {
+    document.querySelectorAll('.marketplace-wave-top svg').forEach(svg => {
+      if (typeof svg.pauseAnimations !== 'function') return;
+      if (query.matches) svg.pauseAnimations();
+      else svg.unpauseAnimations();
+    });
+  };
+  applyTickerPreference();
+  if (typeof query.addEventListener === 'function') {
+    query.addEventListener('change', applyTickerPreference);
+  }
+})();
+
 const revealObs=new IntersectionObserver(entries=>{
   entries.forEach((entry,i)=>{if(entry.isIntersecting)setTimeout(()=>entry.target.classList.add('visible'),(i%4)*80);});
 },{threshold:0.08,rootMargin:'0px 0px -32px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+
+/* ─── CONTACT FORM ───
+ *
+ * Field order used for both clearing and focus. It matches the order of the
+ * client checks below AND the order ContactValidator applies on the server, so
+ * "the first invalid field" means the same thing whichever side produced the
+ * errors. subject is included because the server can return a "Topic is too
+ * long." error for it even though nothing here validates it.
+ */
+const CONTACT_FIELDS = ['name', 'email', 'subject', 'message'];
+
+/**
+ * Marks a field invalid: the class for styling, aria-invalid for assistive
+ * technology, and the message into the span the field's aria-describedby
+ * already points at. Both client-side checks and server-returned errors call
+ * this, so the two can never drift apart in what they announce.
+ */
+function setContactFieldError(fieldId, msg) {
+  const field = document.getElementById(fieldId);
+  const errorEl = document.getElementById(fieldId + '-error');
+  if (field) {
+    field.classList.add('invalid');
+    field.setAttribute('aria-invalid', 'true');
+  }
+  if (errorEl) {
+    errorEl.textContent = msg;
+    errorEl.classList.add('show');
+  }
+}
+
+/** Undoes the above completely - no stale aria-invalid, no stale message. */
+function clearContactFieldError(fieldId) {
+  const field = document.getElementById(fieldId);
+  const errorEl = document.getElementById(fieldId + '-error');
+  if (field) {
+    field.classList.remove('invalid');
+    field.removeAttribute('aria-invalid');
+  }
+  if (errorEl) {
+    errorEl.textContent = '';
+    errorEl.classList.remove('show');
+  }
+}
+
+/**
+ * Moves focus to the first field still marked invalid, in CONTACT_FIELDS
+ * order. aria-invalid is the single source of truth for "is this field bad",
+ * so this works identically after a client check and after a server response.
+ */
+function focusFirstInvalidContactField() {
+  const first = CONTACT_FIELDS
+    .map(id => document.getElementById(id))
+    .find(f => f && f.getAttribute('aria-invalid') === 'true');
+  if (first) first.focus();
+  return Boolean(first);
+}
+
+/*
+ * Correcting a field clears its error as you type.
+ *
+ * Registered once, at load. This used to be attached at the END of the submit
+ * handler with { once: true }, which meant it did not exist until after a
+ * first failed submit, fired a single time, and was skipped entirely on the
+ * success path - so a corrected field kept its aria-invalid and its stale
+ * message. Binding once here also stops a listener being added per submit.
+ */
+CONTACT_FIELDS.forEach(id => {
+  const field = document.getElementById(id);
+  if (!field) return;
+  field.addEventListener(field.tagName === 'SELECT' ? 'change' : 'input', () => {
+    if (field.getAttribute('aria-invalid') === 'true') clearContactFieldError(id);
+  });
+});
 
 document.getElementById('contactForm')?.addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -581,19 +769,10 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
   const status = document.getElementById('formStatus');
   const btn = form.querySelector('[type="submit"]');
 
-  function showFieldError(fieldId, msg) {
-    const field = document.getElementById(fieldId);
-    const errorEl = document.getElementById(fieldId + '-error');
-    if (field) field.classList.add('invalid');
-    if (errorEl) {
-      errorEl.textContent = msg;
-      errorEl.classList.add('show');
-    }
-  }
+  const showFieldError = setContactFieldError;
 
   function clearErrors() {
-    [name, email, message].forEach(field => field.classList.remove('invalid'));
-    document.querySelectorAll('.field-error').forEach(el => { el.textContent = ''; el.classList.remove('show'); });
+    CONTACT_FIELDS.forEach(clearContactFieldError);
     status.classList.remove('show', 'success', 'error');
   }
 
@@ -623,8 +802,14 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
   }
 
   if (!valid) {
+    // The polite summary says how many/that there are problems; focus then
+    // takes the user to the first one, where its own message is read out as
+    // the field's description. Two different pieces of information, announced
+    // once each - which is why the per-field spans no longer carry
+    // role="alert" (that would repeat the same text a third time).
     status.textContent = 'Please correct the errors above.';
     status.classList.add('show', 'error');
+    focusFirstInvalidContactField();
     return;
   }
 
@@ -655,12 +840,20 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
       return;
     }
 
-    // Field-specific validation errors from the server
+    /*
+     * Field-specific validation errors from the server. The server remains the
+     * authority - the checks above are a convenience that saves a round trip,
+     * and anything they miss (length limits, stricter email rules) still comes
+     * back from ContactValidator and is rendered here through exactly the same
+     * function, so a server error is indistinguishable from a client one in
+     * aria-invalid, aria-describedby, message and focus behaviour.
+     */
     if (data.errors) {
       Object.keys(data.errors).forEach(field => showFieldError(field, data.errors[field]));
     }
     status.textContent = data.message || 'Please correct the errors above.';
     status.classList.add('show', 'error');
+    focusFirstInvalidContactField();
   } catch (err) {
     status.textContent = 'Something went wrong. Please check your connection and try again.';
     status.classList.add('show', 'error');
@@ -668,21 +861,22 @@ document.getElementById('contactForm')?.addEventListener('submit', async functio
     btn.disabled = false;
     if (btn.innerHTML === 'Sending…') btn.innerHTML = originalBtnHtml;
   }
-
-  // Clear error on input
-  [name, email, message].forEach(field => {
-    field.addEventListener('input', function() {
-      field.classList.remove('invalid');
-      const errorEl = document.getElementById(field.id + '-error');
-      if (errorEl) errorEl.classList.remove('show');
-    }, { once: true });
-  });
+  // The "clear error on input" listeners that used to be registered here on
+  // every submit now live at the top of this block, bound once at load.
 });
 
 // DIVA's backend URL comes from server config (config('diva.api_url'), settable
 // via the DIVA_API_URL environment variable) rather than being hardcoded here,
 // so it can be repointed per-environment without editing this file.
-const WORKER_URL = AI_UNIT_CONFIG.divaApiUrl || 'http://127.0.0.1:8000/api/chat';
+//
+// Empty string, not a fallback address. This file is served verbatim to every
+// visitor, so the loopback address this line used to fall back to was part of
+// the delivered JavaScript whether or not the site was configured correctly -
+// which is why the address is not written out here either. An empty value
+// means "not configured", which sendDivaMessage() below refuses to act on; the
+// server has already rendered the assistant as unavailable to match
+// (includes/diva-widget.php).
+const WORKER_URL = AI_UNIT_CONFIG.divaApiUrl || '';
 const divaTrigger=document.getElementById('divaTrigger');
 const divaPanel=document.getElementById('divaPanel');
 const divaClose=document.getElementById('divaClose');
@@ -766,12 +960,21 @@ async function typeDivaMessage(text, source = null) {
   content.setAttribute('aria-hidden', 'true');
   div.appendChild(content);
   divaMessages.appendChild(div);
-  const words = text.split(' ');
 
-  for (const word of words) {
-    content.textContent += word + ' ';
+  if (prefersReducedMotion()) {
+    // The reply arrives complete instead of a word at a time. This is the
+    // final state of the loop below, not a reduced one - the same text, the
+    // same element, the same action buttons appended afterwards; only the
+    // 25ms-per-word reveal is skipped.
+    content.textContent = text;
     divaMessages.scrollTop = divaMessages.scrollHeight;
-    await new Promise(resolve => setTimeout(resolve, 25));
+  } else {
+    const words = text.split(' ');
+    for (const word of words) {
+      content.textContent += word + ' ';
+      divaMessages.scrollTop = divaMessages.scrollHeight;
+      await new Promise(resolve => setTimeout(resolve, 25));
+    }
   }
 
   content.removeAttribute('aria-hidden');
@@ -843,6 +1046,13 @@ function clearDivaChat() {
 divaClear?.addEventListener('click', () => {
   if (confirm('Start a new conversation?')) {
     clearDivaChat();
+    // clearDivaChat() replaces the whole message list, so anything focused in
+    // there - a suggestion chip, a speak button - is destroyed and focus falls
+    // to the document. Only step in when that has actually happened; if focus
+    // is still on Clear itself it is already where the user left it.
+    if (divaPanel && !divaPanel.contains(document.activeElement)) {
+      divaDeferFocus(divaInitialFocusTarget());
+    }
   }
 });
 
@@ -1029,6 +1239,12 @@ function pickSuggestion(btn) {
 }
 
 async function sendDivaMessage() {
+  // Single choke point for every way a message can be sent - the send button,
+  // Enter in the field, a suggestion chip and the voice input all arrive here -
+  // so one guard covers them all. With no endpoint configured there is nothing
+  // to send to, and guessing an address is what this work item removed.
+  if (!WORKER_URL) return;
+
   const msg = divaInput.value.trim();
   if (!msg || divaIsLoading) return;
   addDivaMessage(msg, 'user');
@@ -1041,7 +1257,11 @@ async function sendDivaMessage() {
     const response = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 400, messages: divaHistory })
+      // No model name. The proxy picks the model itself and ignores anything
+      // sent from here - verified against the live endpoint - so the field this
+      // used to carry had no effect, and a model name chosen in the browser is
+      // not something a server should honour anyway.
+      body: JSON.stringify({ max_tokens: 400, messages: divaHistory })
     });
     if (!response.ok) throw new Error('API error ' + response.status);
     const data = await response.json();
@@ -1062,39 +1282,200 @@ async function sendDivaMessage() {
   }
 }
 
-/* ─── DIVA PANEL TOGGLE ─── */
+/* ─── DIVA PANEL: MODAL DIALOG BEHAVIOUR ───
+ *
+ * Modelled on the accessibility panel in accessibility-widget.js, which is this
+ * project's established modal: role="dialog", aria-modal toggled in lockstep
+ * with the open class, a Tab trap, and a keydown listener attached only while
+ * the dialog is open. Following the same shape keeps the two dialogs behaving
+ * alike and means the Escape handler cannot fire when DIVA is closed - there is
+ * nothing listening then, so no guard, no stopPropagation, and no interference
+ * with the video modal, the mobile menu or the accessibility panel.
+ */
+
+const divaWidget = document.getElementById('divaWidget');
+
+/** The control that opened the dialog, so focus can be handed back to it. */
+let divaLastFocused = null;
+
+/** Body children we switched to inert, so only our own state is undone. */
+let divaInertedNodes = [];
+
+/**
+ * Focusable controls inside the panel, in DOM order.
+ *
+ * Queried live rather than kept in a list: the suggestion chips delete
+ * themselves when used, Clear rebuilds them, and replies can add speak buttons.
+ * offsetParent is null for anything display:none, which is how the closed panel
+ * and any hidden control drop out; disabled controls are excluded by the
+ * selector. Same filter the accessibility panel uses.
+ */
+function divaFocusable() {
+  if (!divaPanel) return [];
+  const sel = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  return Array.from(divaPanel.querySelectorAll(sel))
+    .filter(el => el.offsetParent !== null && !el.hasAttribute('hidden') && el.getAttribute('aria-hidden') !== 'true');
+}
+
+/**
+ * Everything except the widget is made inert while the dialog is open, so the
+ * page behind it cannot be reached by Tab, click or assistive technology.
+ *
+ * The widget itself is skipped - it holds both the panel and its trigger, and
+ * making an ancestor inert would take the dialog down with the page. Each node
+ * is tagged so that closing only clears inertness this code applied, never
+ * something another component set.
+ *
+ * The focus trap below is the real guarantee; this is belt and braces for
+ * browsers that support it, which is why an older browser simply skips it.
+ */
+function divaSetBackgroundInert(on) {
+  if (!('inert' in HTMLElement.prototype) || !divaWidget) return;
+
+  if (on) {
+    divaInertedNodes = Array.from(document.body.children)
+      .filter(el => el !== divaWidget && !el.contains(divaWidget) && !el.inert);
+    divaInertedNodes.forEach(el => { el.inert = true; });
+    return;
+  }
+
+  divaInertedNodes.forEach(el => { el.inert = false; });
+  divaInertedNodes = [];
+}
+
+/**
+ * Focus is moved on the next frame rather than immediately: the panel's display
+ * only changes when the "open" class is applied, and focus() does nothing to an
+ * element that is still display:none. The same applies on the way out, where
+ * below 480px the trigger is itself hidden until the class is removed (WO-06).
+ */
+function divaDeferFocus(el) {
+  if (!el || typeof el.focus !== 'function') return;
+  if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => el.focus());
+  else el.focus();
+}
+
+/** The input if it is usable, otherwise the first focusable control. */
+function divaInitialFocusTarget() {
+  if (divaInput && !divaInput.disabled && divaInput.offsetParent !== null) return divaInput;
+  return divaFocusable()[0] || null;
+}
+
+function onDivaKeydown(e) {
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    closeDivaPanel();
+    return;
+  }
+  if (e.key !== 'Tab') return;
+
+  const focusable = divaFocusable();
+  // A dialog with nothing to focus is not a trap worth enforcing; letting Tab
+  // through is better than throwing on focusable[0].
+  if (!focusable.length) return;
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  // Focus somehow outside the dialog while it is open - pull it back rather
+  // than letting Tab walk away into the (inert) page.
+  if (!divaPanel.contains(document.activeElement)) {
+    e.preventDefault();
+    (e.shiftKey ? last : first).focus();
+    return;
+  }
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
+function openDivaPanel(opener) {
+  if (!divaPanel || divaPanel.classList.contains('open')) return;
+
+  // The trigger is the usual opener, but the homepage "Chat with DIVA" button
+  // (#openDiva) opens it too, and focus has to go back to whichever was used.
+  divaLastFocused = (opener && typeof opener.focus === 'function') ? opener : divaTrigger;
+
+  divaPanel.classList.add('open');
+  divaPanel.setAttribute('aria-modal', 'true');
+  divaTrigger.setAttribute('aria-expanded', 'true');
+  divaSetBackgroundInert(true);
+  document.addEventListener('keydown', onDivaKeydown);
+  divaDeferFocus(divaInitialFocusTarget());
+}
+
+function closeDivaPanel() {
+  if (!divaPanel || !divaPanel.classList.contains('open')) return;
+
+  /*
+   * Focus is handed back only when it is currently inside the dialog, or
+   * nowhere at all - those are the cases where closing would otherwise strand
+   * it on a hidden element or drop it to the top of the document.
+   *
+   * When it is elsewhere the user has already moved it deliberately: they
+   * clicked the trigger, or clicked something else on the page and the
+   * outside-click handler closed the dialog behind them. Pulling focus back
+   * there would take it away from whatever they just chose.
+   */
+  const active = document.activeElement;
+  const shouldRestore = !active || active === document.body || divaPanel.contains(active);
+
+  divaPanel.classList.remove('open');
+  divaPanel.removeAttribute('aria-modal');
+  divaTrigger.setAttribute('aria-expanded', 'false');
+  divaSetBackgroundInert(false);
+  document.removeEventListener('keydown', onDivaKeydown);
+
+  if (shouldRestore) {
+    // The opener may have been removed or hidden while the dialog was open, so
+    // fall back to the trigger, and to nothing at all if that is unusable
+    // (DIVA unavailable, WO-09) rather than focusing a dead element.
+    const opener = divaLastFocused;
+    const usable = el => el && document.contains(el) && !el.disabled && typeof el.focus === 'function';
+    divaDeferFocus(usable(opener) ? opener : (usable(divaTrigger) ? divaTrigger : null));
+  }
+
+  divaLastFocused = null;
+}
+
 divaTrigger.addEventListener('click', () => {
-  const open = divaPanel.classList.toggle('open');
-  divaTrigger.setAttribute('aria-expanded', open.toString());
-  if (open && divaInput) setTimeout(() => divaInput.focus(), 100);
+  if (divaPanel.classList.contains('open')) closeDivaPanel();
+  else openDivaPanel(divaTrigger);
 });
 
-divaClose.addEventListener('click', () => {
-  divaPanel.classList.remove('open');
-  divaTrigger.setAttribute('aria-expanded', 'false');
-});
+divaClose.addEventListener('click', closeDivaPanel);
 
 divaSend.addEventListener('click', sendDivaMessage);
 divaInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendDivaMessage(); });
 
+// The homepage's "Chat with DIVA" button is the second way in. It passes
+// itself as the opener so focus returns here, not to the floating trigger.
+// stopPropagation is kept: without it this same click reaches the
+// outside-click handler below and closes the dialog it just opened.
 openDiva?.addEventListener('click', (e) => {
   e.stopPropagation();
-  divaPanel.classList.add('open');
-  divaTrigger.setAttribute('aria-expanded', 'true');
-  if (divaInput) setTimeout(() => divaInput.focus(), 150);
+  openDivaPanel(openDiva);
   divaMessages.scrollTop = divaMessages.scrollHeight;
 });
 
+// Pre-existing outside-click close, now routed through closeDivaPanel so it
+// clears aria-modal, background inertness and the keydown listener like every
+// other close path. It does not steal focus - see the note in closeDivaPanel.
 document.addEventListener('click', function (e) {
-  const divaWidget = document.getElementById('divaWidget');
   if (divaPanel && divaPanel.classList.contains('open') && divaWidget && !divaWidget.contains(e.target)) {
-    divaPanel.classList.remove('open');
-    divaTrigger.setAttribute('aria-expanded', 'false');
+    closeDivaPanel();
   }
 });
 
-document.getElementById('readEnBooklet')?.addEventListener('click', () => window.open('/booklet/aie', '_blank'));
-document.getElementById('readKmBooklet')?.addEventListener('click', () => window.open('/booklet/aim', '_blank'));
+// The two "AI for All" booklet controls are plain links in pages/home.php now.
+// They used to be handled here with window.open('/booklet/aie'), which hardcoded
+// a root-relative path and so 404ed on any deployment that is not at the domain
+// root. A link built with url() carries the right prefix on its own; JavaScript
+// has no business in it.
 document.getElementById('browseSolutionsBtn')?.addEventListener('click', () => window.open('https://aimarketplace.govmu.org/', '_blank', 'noopener'));
 document.getElementById('listSolutionBtn')?.addEventListener('click', () => window.open('https://aimarketplace.govmu.org/search', '_blank', 'noopener'));
 (function(){

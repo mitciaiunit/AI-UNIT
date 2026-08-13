@@ -1,0 +1,74 @@
+# =============================================================================
+# AI Unit website - Apache VirtualHost template
+# =============================================================================
+#
+# Copy the block below into your Apache configuration and replace
+# /path/to/AI-UNIT with the real location of the repository.
+#
+#   XAMPP:  D:\xampp2\apache\conf\extra\httpd-vhosts.conf
+#           (already included by httpd.conf; use forward slashes in paths)
+#   Linux:  /etc/apache2/sites-available/ai-unit.conf, then a2ensite ai-unit
+#
+# THE ONE RULE THAT MATTERS
+# -------------------------
+# DocumentRoot must be the repository's public/ directory, NOT the repository
+# root. public/ holds index.php, assets/ and uploads/ and nothing else; .env,
+# app/, config/, database/ and vendor/ all live above it and are therefore
+# unreachable by any URL.
+#
+# Pointing DocumentRoot one directory too high is not a theoretical mistake -
+# it is how this site was deployed until work order WO-01b, and
+# http://localhost/AI-UNIT/.env returned the real SMTP and database
+# credentials. The repository-root .htaccess is a backstop against exactly that
+# error, but it is a backstop, not the design.
+#
+# Required modules: mod_rewrite (clean URLs) and mod_headers (security
+# headers). Both are enabled by default in XAMPP.
+# =============================================================================
+
+<VirtualHost *:80>
+    ServerName ai-unit.local
+
+    DocumentRoot "/path/to/AI-UNIT/public"
+
+    <Directory "/path/to/AI-UNIT/public">
+        # -Indexes: no browsable listing of assets/ or uploads/.
+        # +FollowSymLinks: needed if the path reaches the repository through a
+        # symlink or junction, as the XAMPP htdocs setup does.
+        Options -Indexes +FollowSymLinks
+
+        # public/.htaccess supplies the front-controller rewrite, the security
+        # headers and the dotfile deny. Without AllowOverride All none of them
+        # take effect and every route except / returns 404.
+        AllowOverride All
+
+        Require all granted
+    </Directory>
+
+    ErrorLog  "logs/ai-unit-error.log"
+    CustomLog "logs/ai-unit-access.log" common
+</VirtualHost>
+
+
+# -----------------------------------------------------------------------------
+# ALTERNATIVE: subdirectory deployment, no VirtualHost
+# -----------------------------------------------------------------------------
+# The application derives its URL prefix from the request, so it also runs
+# unchanged under a path. Point the alias at public/, never at the repository
+# root:
+#
+#     Alias /ai-unit "/path/to/AI-UNIT/public"
+#
+#     <Directory "/path/to/AI-UNIT/public">
+#         Options -Indexes +FollowSymLinks
+#         AllowOverride All
+#         Require all granted
+#     </Directory>
+#
+# The site is then at http://localhost/ai-unit/ and every generated link
+# carries that prefix automatically. On XAMPP the same thing can be done with a
+# directory junction inside htdocs:
+#
+#     mklink /J D:\xampp2\htdocs\ai-unit C:\path\to\AI-UNIT\public
+#
+# Note it targets ...\AI-UNIT\public, not ...\AI-UNIT.

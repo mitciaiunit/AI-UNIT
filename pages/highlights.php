@@ -373,9 +373,8 @@
               <p class="lede lede--wide" data-i18n="hl_diva_lede" tabindex="0">
                 DIVA is an AI-powered assistant integrated into the portal to answer questions
                 about artificial intelligence in Mauritius, the content of the portal and
-                government AI resources. It is a prototype, grounded in four key documents: the
-                Digital Transformation Blueprint, the AI Strategy, the FAIR Guidelines and the
-                AI Playbook.
+                government AI resources. It is a prototype, grounded in three key documents: the
+                Digital Transformation Blueprint, the AI Strategy and the FAIR Guidelines.
               </p>
             </div>
           </header>
@@ -540,6 +539,150 @@
                 <p data-i18n="hl_a11y_principle_saved" tabindex="0">Every setting is stored in the browser's local storage, so a returning visitor's preferences are restored automatically with no account needed.</p>
               </li>
             </ul>
+          </div>
+
+          <?php
+          /*
+           * User testing with SENA - 24 July 2026.
+           *
+           * Source: the meeting report "Testing of Accessibility Features of the
+           * MITCI AI Policy Website", prepared by Mrs Aarthi Burtony André.
+           * Everything below is drawn from that report and nothing is added to
+           * it. Two points are deliberate and must survive any later edit:
+           *
+           * 1. The report does NOT state that Mrs Burtony André is herself
+           *    blind. It states that she evaluated the site from the
+           *    perspective of a blind user relying on screen reader
+           *    technology. She is described here exactly that way, by her role.
+           *
+           * 2. The report contains no first-person testimonial. The closing
+           *    paragraph is therefore an attributed summary of the report, set
+           *    without quotation marks - presenting a paraphrase as a direct
+           *    quote would put invented words in a named person's mouth.
+           *
+           * The findings are recorded as they were found, including the failure.
+           * The portal was still under development on the day of testing and the
+           * report is explicit that improvements were required before release;
+           * writing this block as a success story would misrepresent it.
+           */
+
+          /*
+           * Participant photograph.
+           *
+           * Null until an approved photograph exists AND permission to publish
+           * it has been given. While null, the block renders a neutral inline
+           * SVG placeholder rather than an <img> pointing at a file that is not
+           * there - which is what produces a broken-image icon. No generated or
+           * stock portrait stands in for her: a made-up face attached to a named
+           * person would misrepresent her.
+           *
+           * To add the photograph later: put the file in
+           * assets/images/highlights/ and set $participantPhoto to its
+           * filename. Nothing else here changes, and if permission is never
+           * given the highlight still reads correctly as it stands.
+           */
+          $participantPhoto = null;
+          ?>
+          <div class="usertest">
+            <div class="usertest__layout">
+              <figure class="usertest__person" data-reveal>
+                <?php if ($participantPhoto !== null): ?>
+                  <img class="usertest__photo"
+                       src="<?= e(asset('images/highlights/' . $participantPhoto)) ?>"
+                       alt="Portrait of Mrs Aarthi Burtony André, SENA Resource Person for Learners with Visual Impairments."
+                       loading="lazy" decoding="async">
+                <?php else: ?>
+                  <div class="usertest__photo usertest__photo--empty"
+                       role="img"
+                       aria-label="Photo placeholder for accessibility testing participant">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false">
+                      <circle cx="12" cy="8.5" r="3.75"/>
+                      <path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/>
+                    </svg>
+                  </div>
+                <?php endif; ?>
+                <figcaption>
+                  <p class="usertest__name">Mrs Aarthi Burtony André</p>
+                  <p class="usertest__role">SENA Resource Person for Learners with Visual Impairments</p>
+                  <dl class="usertest__meta">
+                    <div><dt>Date</dt><dd><time datetime="2026-07-24">24 July 2026</time></dd></div>
+                    <div><dt>Venue</dt><dd>SENA Office</dd></div>
+                    <div><dt>Tools</dt><dd>NVDA, Microsoft Narrator</dd></div>
+                  </dl>
+                </figcaption>
+              </figure>
+
+              <?php
+              /*
+               * The intro sits in the second column, beside the participant
+               * card, at the AI Unit's request. Two blocks that used to follow
+               * it have been removed on the same instruction: the per-tool
+               * result cards (NVDA / Microsoft Narrator) and the "Why this was
+               * worth doing before launch" explanation.
+               *
+               * What that removes is the specific finding - that one screen
+               * reader read almost everything and the other read nothing. What
+               * remains still prevents the opposite reading: the paragraph below
+               * says the portal was tested while under development and before
+               * any launch, the attribution records that several areas needed
+               * improvement before public release, and the closing note names
+               * screen reader compatibility and independent navigation as
+               * outstanding. Nothing here may be edited into a statement that
+               * the site passed.
+               */
+              ?>
+              <div class="usertest__intro" data-reveal data-reveal-delay="80">
+                <h3 class="h3">Tested with a screen reader specialist</h3>
+                <p data-i18n="hl_a11y_usertest_intro" tabindex="0">
+                  An accessibility toolbar is only worth as much as it proves to be
+                  in the hands of someone who depends on assistive technology.
+                  Accessibility testing was conducted with Mrs Aarthi Burtony André,
+                  SENA Resource Person for Learners with Visual Impairments, who
+                  evaluated the website from the perspective of a blind user relying
+                  on screen reader technology. The session was held at the SENA
+                  Office on 24 July 2026, with the two AI Unit interns who requested
+                  it, while the portal was still under development and before any
+                  official launch.
+                </p>
+                <p class="usertest__attrib">
+                  Summarised from the meeting report of 24 July 2026, prepared by
+                  Mrs Aarthi Burtony André. The report describes the Ministry's work
+                  to build accessibility into the portal as commendable and as a
+                  positive commitment to digital inclusion, while stating plainly
+                  that several areas needed improvement before the website was made
+                  publicly available.
+                </p>
+              </div>
+            </div>
+
+            <?php
+            /*
+             * The report's closing section (7. Appreciation, and the paragraph
+             * that follows it).
+             *
+             * Attributed prose, not a quotation - same rule as the note above.
+             * The words are the report's, but they are reported here rather
+             * than set in quotation marks, because nothing in this block should
+             * read as a statement made directly to camera by a named person who
+             * has not approved being quoted.
+             *
+             * The caveat travels with the praise on purpose. The report pairs
+             * them in the same breath - encouraging first step, technical
+             * improvements still necessary - and printing only the warm half
+             * would turn a development-stage finding into a launch endorsement.
+             */
+            ?>
+            <p class="usertest__appreciation" data-i18n="hl_a11y_usertest_appreciation" tabindex="0">
+              The report closes on the collaboration itself. It records that the
+              session demonstrated the Ministry's willingness to engage with
+              persons with disabilities during the development of the website,
+              and describes that approach as greatly appreciated and as good
+              practice in inclusive digital design. It ends by calling the
+              initiative an encouraging first step towards a more accessible and
+              inclusive digital platform for all users - while restating that
+              technical improvements remain necessary, particularly on screen
+              reader compatibility and independent navigation.
+            </p>
           </div>
         </div>
       </section>

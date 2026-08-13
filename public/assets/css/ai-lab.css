@@ -212,6 +212,98 @@
   color: var(--text-2);
 }
 
+/* ─── Launch announcement ───
+   Built from the same tokens as .lab-notice and .lab-tbc rather than new
+   colours, so it reads as part of this page instead of a bolted-on banner.
+   The blue left rule marks it as an announcement, matching the amber rule
+   .lab-tbc already uses to mark an outstanding item. */
+.ai-lab .lab-launch {
+  margin: 0 0 32px;
+  padding: 20px 24px;
+  border: 1px solid var(--blue-light);
+  border-left: 3px solid var(--blue-mid);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--blue-pale);
+}
+
+.ai-lab .lab-launch-flag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+.ai-lab .lab-launch-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--blue-mid);
+  flex-shrink: 0;
+}
+
+.ai-lab .lab-launch-title {
+  margin: 0 0 8px;
+  font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+  line-height: 1.3;
+  color: var(--text-1);
+}
+
+.ai-lab .lab-launch-body {
+  margin: 0;
+  max-width: 70ch;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+.ai-lab .lab-notice {
+  padding: 18px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.ai-lab .lab-notice a { color: var(--blue-mid); text-decoration: underline; }
+
+.ai-lab .lab-privacy {
+  font-size: 0.86rem !important;
+  color: var(--text-3) !important;
+}
+
+.ai-lab .lab-privacy a { color: var(--blue-mid); text-decoration: underline; }
+
+/* ─── Calendly embed ───
+   Calendly injects an <iframe> into this container. The height is fixed
+   because the iframe is cross-origin: its content cannot be measured, so it
+   cannot size itself to fit. These values follow Calendly's documented
+   minimums and give the month view room without an inner scrollbar on
+   desktop. min-width guards the iframe against being squeezed below the width
+   Calendly's own layout needs. */
+.ai-lab .lab-calendly {
+  min-width: 320px;
+  height: 700px;
+  margin-top: 26px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.ai-lab .lab-calendly iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .ai-lab .lab-notice {
   padding: 18px 22px;
   border: 1px solid var(--border);

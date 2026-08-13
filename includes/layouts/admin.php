@@ -23,8 +23,8 @@ $navItems = [
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= e(($title ?? 'Admin') . ' · Highlights admin · AI Unit') ?></title>
 <?php /* Admin pages must never be indexed, even if the URL leaks. */ ?>
-<meta name="robots" content="noindex, nofollow">
-<link rel="icon" type="image/x-icon" href="<?= e(asset('images/logo.gif')) ?>">
+<?php $noindex = true; require __DIR__ . '/../meta.php'; ?>
+<link rel="icon" type="image/png" href="<?= e(asset('images/favicon.png')) ?>">
 <link rel="stylesheet" href="<?= e(asset('css/admin.css')) ?>">
 </head>
 <body>
@@ -34,7 +34,7 @@ $navItems = [
 <header class="adm-topbar">
   <div class="adm-topbar__inner">
     <a class="adm-brand" href="<?= e(url('admin')) ?>">
-      <img src="<?= e(asset('images/logo.gif')) ?>" alt="" width="34" height="34">
+      <img src="<?= e(asset('images/favicon.png')) ?>" alt="" width="34" height="34" decoding="async">
       <span>
         <strong>Highlights admin</strong>
         <small>AI Unit</small>

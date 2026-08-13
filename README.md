@@ -6,10 +6,19 @@ This is a **vanilla PHP 8.x** project (no framework) using **PDO** for database 
 
 ## Folder Structure
 
+Everything the browser can reach is inside `public/`. Everything else - the
+application code, configuration, `.env`, `vendor/` - sits above it and is not
+served at any URL. **Apache's `DocumentRoot` must be `public/`, not the
+repository root.**
+
 ```
-public/             Web root - the ONLY folder your web server should point at
+public/             DOCUMENT ROOT - the ONLY folder your web server may point at
   index.php           Front controller: bootstraps the app and dispatches routes
-  .htaccess            Rewrites clean URLs (e.g. /video/1) to index.php
+  .htaccess            Clean-URL rewrite, security headers, dotfile deny
+  assets/              Static files: css/, js/, images/, video/, captions/,
+                       documents/, audio/
+  uploads/             Admin-uploaded content; seeded Highlights images live in
+                       public/uploads/highlights
 
 pages/               PHP view templates - one (or one shared) template per route
   home.php             Homepage content (hero, about, framework, team, contact, …)
@@ -49,34 +58,73 @@ routes/
 
 api/                 (empty - reserved for future endpoints, e.g. a contact form submit handler)
 
-assets/              Static files served directly by the web server
-  css/style.css, js/script.js, images/, video/, captions/, documents/, audio/
-
-uploads/             Runtime admin-uploaded content; seeded Highlights images live in uploads/highlights
-storage/             (empty - reserved for logs/cache; not web-accessible)
+storage/             Logs and cache. Above the document root, so unreachable.
+tools/               Deployment scripts, admin-user CLI, Apache vhost template
+.htaccess            Backstop deny rules, in case a server's DocumentRoot is
+                     mistakenly set to the repository root instead of public/
 ```
 
 `bootstrap.php` (project root) wires everything together: it registers a small `App\` autoloader (no Composer required), loads `app/Helpers/functions.php`, applies `config/config.php`, and starts the session. `public/index.php` requires it, builds the `Router`, loads `routes/web.php`, and dispatches the current request.
 
 ## Running Locally with XAMPP / EasyPHP
 
-1. Copy (or clone) this entire project folder into your web server's document root - e.g. `C:\xampp\htdocs\AI-UNIT` for XAMPP.
+1. Clone the repository anywhere you like. It does **not** have to sit inside `htdocs`, and putting it there is no longer the recommended setup.
 2. Run `composer install` once from the project root. This downloads PHPMailer and phpdotenv into `vendor/` (see [Contact Form](#contact-form) and [Environment Configuration](#environment-configuration-env) below). Nothing else in the site needs them, and every page still works without `vendor/` present; only outbound email and `.env` loading would be skipped.
 3. Copy `.env.example` to `.env` and fill in your database credentials (see [Environment Configuration](#environment-configuration-env)).
-4. Start Apache (and MySQL, once you use the database - see below) from the XAMPP/EasyPHP control panel.
-5. Make sure Apache's `mod_rewrite` module is enabled (it is by default in XAMPP) and that `AllowOverride All` is set for the `htdocs` directory, so `public/.htaccess` takes effect.
-6. Visit **`http://localhost/AI-UNIT/public/`** in your browser. That's the site's home page.
-7. All other pages are reached through clean URLs handled by the router, e.g.:
-   - `http://localhost/AI-UNIT/public/privacy-policy`
-   - `http://localhost/AI-UNIT/public/document/blueprint`
-   - `http://localhost/AI-UNIT/public/video/1`
-   - `http://localhost/AI-UNIT/public/booklet/aie`
+4. **Point Apache at `public/`.** Copy the template in [`tools/apache-vhost.conf.example`](tools/apache-vhost.conf.example) into `xampp\apache\conf\extra\httpd-vhosts.conf`, replacing `/path/to/AI-UNIT` with the real path:
+
+   ```apache
+   <VirtualHost *:80>
+       ServerName ai-unit.local
+       DocumentRoot "C:/path/to/AI-UNIT/public"
+
+       <Directory "C:/path/to/AI-UNIT/public">
+           Options -Indexes +FollowSymLinks
+           AllowOverride All
+           Require all granted
+       </Directory>
+   </VirtualHost>
+   ```
+
+   Add `127.0.0.1 ai-unit.local` to `C:\Windows\System32\drivers\etc\hosts`, or drop the `ServerName` line and use a spare port (`Listen 8081` + `<VirtualHost *:8081>`).
+5. `AllowOverride All` is required - `public/.htaccess` supplies the clean-URL rewrite, the security headers and the dotfile deny, and none of them take effect without it. `mod_rewrite` and `mod_headers` must be enabled; both are on by default in XAMPP.
+6. Restart Apache from the XAMPP control panel (a reload is not enough when a new `Listen` line is added), and start MySQL if you are using the database.
+7. Visit **`http://ai-unit.local/`** (or `http://localhost:8081/`). All other pages are clean URLs handled by the router:
+   - `http://ai-unit.local/privacy-policy`
+   - `http://ai-unit.local/document/blueprint`
+   - `http://ai-unit.local/video/1`
+   - `http://ai-unit.local/booklet/aie`
+   - `http://ai-unit.local/admin/login`
 
 No build step and no Node tooling are required - this is plain PHP served directly by Apache, with Composer used solely to pull in two small dependencies (PHPMailer and phpdotenv - no framework).
 
+### Why `DocumentRoot` must be `public/`
+
+`public/` contains the front controller, `assets/` and `uploads/` - and nothing else. `.env`, `app/`, `config/`, `database/`, `storage/` and `vendor/` all live one level above it, so no URL reaches them.
+
+Setting `DocumentRoot` to the repository root instead publishes all of it. That is not hypothetical: it is how this site was deployed until work order WO-01b, and `http://localhost/AI-UNIT/.env` returned HTTP 200 with the real SMTP and database credentials in the body. The repository-root `.htaccess` denies those paths as a backstop against the same mistake, but the containment is the directory layout - the `.htaccess` is only the seatbelt.
+
+### Subdirectory deployment
+
+The application derives its URL prefix from the request, so it also runs unchanged under a path - every generated link picks up the prefix automatically, with no configuration. Alias the path to `public/`:
+
+```apache
+Alias /ai-unit "C:/path/to/AI-UNIT/public"
+```
+
+or, on XAMPP, make a junction inside `htdocs` that targets `public/` (note the final segment - **not** the repository root):
+
+```
+mklink /J D:\xampp2\htdocs\ai-unit C:\path\to\AI-UNIT\public
+```
+
+The site is then at `http://localhost/ai-unit/`.
+
+If you need to override the auto-detected prefix - typically behind a reverse proxy that rewrites paths - set `APP_BASE_URL` in `.env`.
+
 ### Media files (videos, audio, PDFs, captions) - required, not in this repo
 
-The site's videos, audio narrations, PDFs and caption files total roughly **1.5 GB** and are **not stored in git**. `.gitignore` excludes `*.mp4`, `*.mp3`, `*.pdf` and `*.vtt`, and GitHub rejects files over 100 MB (one video alone is 385 MB). A fresh clone therefore has empty `assets/video`, `assets/audio`, `assets/documents` and `assets/captions` folders.
+The site's videos, audio narrations, PDFs and caption files total roughly **1.5 GB** and are **not stored in git**. `.gitignore` excludes `*.mp4`, `*.mp3`, `*.pdf` and `*.vtt`, and GitHub rejects files over 100 MB (one video alone is 385 MB). A fresh clone therefore has empty `public/assets/video`, `public/assets/audio`, `public/assets/documents` and `public/assets/captions` folders.
 
 Without these files the site still loads, but: **videos stay at 0:00, the Listen buttons stay at 0:00, the PDF viewer reports "Unable to load the booklet", and document View/Download links 404.** If you are seeing those symptoms, this is why.
 
@@ -88,16 +136,35 @@ powershell -ExecutionPolicy Bypass -File tools\deploy-media.ps1
 
 | Source | Destination |
 |---|---|
-| `video\*.mp4` | `assets\video\` |
-| `Audio\*.mp3` | `assets\audio\` |
-| `document\*.pdf` | `assets\documents\` |
-| `vtt\*.vtt` | `assets\captions\` |
+| `video\*.mp4` | `public\assets\video\` |
+| `Audio\*.mp3` | `public\assets\audio\` |
+| `document\*.pdf` | `public\assets\documents\` |
+| `vtt\*.vtt` | `public\assets\captions\` |
 
-> **Known gap:** the hero section references `assets/video/hero-background.mp4`, which does not exist in the source media set. The hero falls back to its gradient background until that file is supplied.
+The `public\` prefix matters: media copied above the document root is not reachable by a browser.
+
+The source-to-destination mapping above is not written into the script - it is read from [`tools/media-manifest.json`](tools/media-manifest.json), the same file the verifier below uses, so the two cannot disagree about where media belongs.
+
+### Checking that the media is actually there
+
+`tools/verify-assets.ps1` reads the manifest and reports anything missing, empty, truncated or altered. It exits non-zero on failure, so it can gate a deploy:
+
+```
+powershell -ExecutionPolicy Bypass -File tools\verify-assets.ps1
+powershell -ExecutionPolicy Bypass -File tools\verify-assets.ps1 -Checksum
+powershell -ExecutionPolicy Bypass -File tools\verify-assets.ps1 -BaseUrl http://localhost:8081
+powershell -ExecutionPolicy Bypass -File tools\verify-assets.ps1 -ProjectRoot D:\xampp2\htdocs\AI-UNIT
+```
+
+`-ProjectRoot` defaults to the repository this script sits in, so a plain run needs no arguments. `-BaseUrl` additionally fetches every asset over HTTP and checks the status and `Content-Type` - the only way to catch a server-side problem a filesystem check cannot see, such as captions being served without `text/vtt` (browsers silently ignore a `<track>` that arrives with the wrong type).
+
+Assets marked `"required": false` in the manifest report as warnings instead of failures; that is how an accepted, known gap is recorded without turning every run red.
+
+After legitimately replacing a media file, refresh its recorded size and hash with `-UpdateManifest`.
 
 ### Deploying changes to the running site
 
-Apache serves the site from its own document root (e.g. `D:\xampp2\htdocs\AI-UNIT`), which is a **separate copy** from your git working tree. Editing a file in the repo has no effect on the running site until it is copied across - a mismatch that repeatedly looked like "my change didn't work" when the change was correct and simply had not been deployed.
+If Apache serves a **separate copy** of the site rather than your git working tree (e.g. `D:\xampp2\htdocs\AI-UNIT`), editing a file in the repo has no effect until it is copied across - a mismatch that repeatedly looked like "my change didn't work" when the change was correct and simply had not been deployed.
 
 Run this after any change you want to see in the browser:
 
@@ -106,17 +173,21 @@ powershell -ExecutionPolicy Bypass -File tools\deploy.ps1          # copy code
 powershell -ExecutionPolicy Bypass -File tools\deploy.ps1 -DryRun  # preview only
 ```
 
-It copies tracked code only and deliberately preserves the target's `.env`, `vendor/`, `storage/logs/`, `uploads/` and the large media folders, so deploying code never wipes credentials or media. Then hard-refresh the browser (Ctrl+F5).
+`-Target` is the directory that **contains** `public/`, not `public/` itself: the deployment keeps the repository's shape, with private code above the document root and `public/` below it. Apache's `DocumentRoot` then points at `<target>\public`.
+
+It copies tracked code only and deliberately preserves the target's `.env`, `vendor/`, `storage/logs/`, `public/uploads/` and the large media folders, so deploying code never wipes credentials, uploads or media. Then hard-refresh the browser (Ctrl+F5).
 
 ### Quick check without XAMPP
 
-You can also smoke-test the app with PHP's built-in server from the project root:
+You can also smoke-test the app with PHP's built-in server. Run it from the project root, with `public/` as the document root:
 
 ```
-php -S localhost:8000 router.php
+php -S 127.0.0.1:5600 -t public router.php
 ```
 
-using a one-line `router.php` that serves real files as-is and otherwise requires `public/index.php` (the built-in server, unlike Apache, needs an explicit router script to fall back to a front controller). This is only useful for a quick local check - XAMPP/Apache with `.htaccess` is the intended way to run the site.
+`-t public` is not optional. The built-in server does not read `.htaccess`, so `public/` being the document root is the only thing keeping `.env` and the application source out of reach; `router.php` enforces the same boundary a second time and refuses any path that resolves outside `public/`.
+
+`router.php` serves real files under `public/` as-is and hands everything else to `public/index.php` - the built-in server, unlike Apache, needs an explicit router script to fall back to a front controller. This is only useful for a quick local check; Apache with `.htaccess` is the intended way to run the site.
 
 ## Environment Configuration (`.env`)
 
@@ -157,7 +228,7 @@ Create the first administrator after importing `database/schema.sql`:
 php tools/create-admin.php <username> <password> [display-name]
 ```
 
-Passwords are stored with `password_hash()` and checked with `password_verify()`. Admin requests use session authentication, CSRF tokens, idle timeout enforcement and prepared statements. Uploaded images are saved under `uploads/highlights`, validated server-side by file size, MIME type and image dimensions, and protected by an `.htaccess` file that prevents executable content from running there.
+Passwords are stored with `password_hash()` and checked with `password_verify()`. Admin requests use session authentication, CSRF tokens, idle timeout enforcement and prepared statements. Uploaded images are saved under `public/uploads/highlights`, validated server-side by file size, MIME type and image dimensions, and protected by an `.htaccess` file that prevents executable content from running there.
 
 ## Contact Form
 
@@ -218,7 +289,7 @@ For a page that needs its own completely different layout (like the PDF/booklet/
 
 A page that needs styling or behaviour of its own - rather than a full separate
 layout - adds `pageStyles` / `pageScripts` to its view data. They are filenames
-under `assets/css/` and `assets/js/`, loaded after the shared assets (scripts
+under `public/assets/css/` and `public/assets/js/`, loaded after the shared assets (scripts
 are deferred), and only on that page:
 
 ```php
@@ -244,4 +315,4 @@ wins for properties both rules declare.
 - **PSR-12 & namespaces.** All PHP under `app/` uses `declare(strict_types=1)`, the `App\` namespace, and one class per file.
 - **Layout de-duplication.** The header, navbar, footer, cookie banner, and accessibility panel used to be copy-pasted (with drifting inconsistencies) across several pages. They're now single shared includes in `includes/`, used by every page.
 - **Static-first data.** The video series, booklets, and Framework Library documents are still simple PHP arrays inside their controllers (matching the original static site's content exactly). The `documents`/`videos` database tables exist only as scaffolding for a future admin-managed version - nothing reads from them yet.
-- **Original CSS/JS preserved.** `assets/css/style.css` and `assets/js/script.js` are the same files from the original site, moved as-is (only the handful of internal links that pointed at old `.html` filenames were updated to the new routes).
+- **Original CSS/JS preserved.** `public/assets/css/style.css` and `public/assets/js/script.js` are the same files from the original site, moved as-is (only the handful of internal links that pointed at old `.html` filenames were updated to the new routes).

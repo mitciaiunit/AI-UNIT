@@ -12,18 +12,25 @@
     This script makes that copy explicit and repeatable. It copies tracked code
     only, and deliberately does NOT touch:
 
-      .env            per-machine secrets (DB password, SMTP credentials)
-      vendor/         Composer packages - run `composer install` in the target
-      storage/logs/   runtime logs
-      uploads/        user-uploaded content
-      assets/video,audio,documents,captions
-                      large media files (~1.5 GB) that are gitignored and are
-                      NOT in this repo - see tools/deploy-media.ps1
+      .env                    per-machine secrets (DB password, SMTP credentials)
+      vendor/                 Composer packages - run `composer install` in the target
+      storage/logs/           runtime logs
+      public/uploads/         admin-uploaded gallery images, which exist only in
+                              the target and have no copy in this repository
+      public/assets/video,audio,documents,captions
+                              large media files (~1.5 GB) that are gitignored and
+                              are NOT in this repo - see tools/deploy-media.ps1
+
+    LAYOUT: the target keeps the repository's shape - private code above,
+    public/ below - and Apache's DocumentRoot points at <target>\public, not at
+    <target>. Deploying this tree to a DocumentRoot of <target> would publish
+    .env and the whole application source; see the README's Apache section.
 
     Run this after every change you want to see in the browser.
 
 .PARAMETER Target
-    Document-root copy to deploy into. Defaults to D:\xampp2\htdocs\AI-UNIT.
+    Deployment root - the directory that CONTAINS public/, not public/ itself.
+    Defaults to D:\xampp2\htdocs\AI-UNIT.
 
 .PARAMETER DryRun
     Show what would be copied without writing anything.
@@ -50,19 +57,43 @@ Write-Host "Target: $Target"
 if ($DryRun) { Write-Host "(dry run - nothing will be written)" -ForegroundColor Yellow }
 Write-Host ""
 
-# Directories copied wholesale. assets/ is handled separately below so that the
-# large gitignored media folders in the target are preserved.
-$codeDirs = @('app', 'config', 'database', 'includes', 'pages', 'public', 'routes', 'api')
+# Private application directories. These sit ABOVE the document root, which is
+# <target>\public - see the README's Apache section. They are copied so the
+# application can run, never so a browser can read them.
+$codeDirs = @('app', 'config', 'database', 'includes', 'pages', 'routes', 'api')
+
 $codeFiles = @(
-    'bootstrap.php', 'composer.json', 'composer.lock', '.env.example', '.gitignore', 'README.md',
+    'bootstrap.php', 'router.php', 'composer.json', 'composer.lock',
+    '.env.example', '.gitignore', 'README.md',
+    # Backstop deny rules for a server whose DocumentRoot is set one directory
+    # too high. Not read at all under a correct DocumentRoot.
+    '.htaccess',
+    # vendor/ is rebuilt in the target by `composer install`, which knows
+    # nothing about this file, so it has to be placed explicitly or the target
+    # would be the one deployment missing it.
+    'vendor\.htaccess'
+)
+
+# The document root itself. Copied as three explicit pieces rather than
+# wholesale, because public/ now also contains the two trees a code deploy must
+# never touch:
+#
+#   public\assets\video|audio|documents|captions   ~1.5 GB of deploy-only media
+#                                                  (tools\deploy-media.ps1)
+#   public\uploads                                 admin-uploaded gallery images
+#                                                  that exist only in the target
+#
+# Copying public\ in one sweep would drag the first across on every deploy and,
+# worse, is the kind of rule that later grows a "clean the target first" step
+# and destroys the second.
+$publicDirs = @('assets\css', 'assets\js', 'assets\images')
+$publicFiles = @(
+    'index.php',
+    '.htaccess',
     # Declares the .vtt MIME type Apache lacks by default; without it captions
     # are served with no Content-Type and browsers ignore them.
     'assets\.htaccess'
 )
-
-# Only these asset subfolders are version-controlled; video/audio/documents/
-# captions hold deploy-only media and must never be wiped by a code deploy.
-$assetDirs = @('css', 'js', 'images')
 
 $copied = 0
 
@@ -71,7 +102,10 @@ function Copy-Tree($relPath) {
     $dst = Join-Path $Target $relPath
     if (-not (Test-Path $src)) { return }
 
-    Get-ChildItem -Path $src -Recurse -File | ForEach-Object {
+    # -Force so dotfiles are included. Every .htaccess in this project is a
+    # security control, and Get-ChildItem skips hidden files without it - which
+    # would deploy the application with its deny rules silently missing.
+    Get-ChildItem -Path $src -Recurse -File -Force | ForEach-Object {
         $rel = $_.FullName.Substring($src.Length).TrimStart('\')
         $destFile = Join-Path $dst $rel
         $destDir = Split-Path -Parent $destFile
@@ -91,28 +125,37 @@ function Copy-Tree($relPath) {
     }
 }
 
-Write-Host "Code directories:"
-foreach ($d in $codeDirs) { Copy-Tree $d }
-
-Write-Host "Assets (css/js/images only - media folders left untouched):"
-foreach ($d in $assetDirs) { Copy-Tree "assets\$d" }
-
-Write-Host "Root files:"
-foreach ($f in $codeFiles) {
-    $src = Join-Path $Source $f
-    $dst = Join-Path $Target $f
-    if (-not (Test-Path $src)) { continue }
+function Copy-File($relPath) {
+    $src = Join-Path $Source $relPath
+    $dst = Join-Path $Target $relPath
+    if (-not (Test-Path $src)) { return }
 
     $differs = $true
     if (Test-Path $dst) {
         $differs = (Get-FileHash $src).Hash -ne (Get-FileHash $dst).Hash
     }
-    if (-not $differs) { continue }
+    if (-not $differs) { return }
 
-    Write-Host "  $f"
-    if (-not $DryRun) { Copy-Item $src $dst -Force }
-    $copied++
+    Write-Host "  $relPath"
+    if (-not $DryRun) {
+        $destDir = Split-Path -Parent $dst
+        if (-not (Test-Path $destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out-Null }
+        Copy-Item $src $dst -Force
+    }
+    $script:copied++
 }
+
+Write-Host "Private application directories (above the document root):"
+foreach ($d in $codeDirs) { Copy-Tree $d }
+
+Write-Host "Document root - public\assets (css/js/images only; media left untouched):"
+foreach ($d in $publicDirs) { Copy-Tree "public\$d" }
+
+Write-Host "Document root - public files:"
+foreach ($f in $publicFiles) { Copy-File "public\$f" }
+
+Write-Host "Root files:"
+foreach ($f in $codeFiles) { Copy-File $f }
 
 Write-Host ""
 if ($copied -eq 0) {

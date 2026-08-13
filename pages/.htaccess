@@ -1,0 +1,17 @@
+# Private application directory - never served over HTTP.
+#
+# These are the view templates the front controller renders; they are read from
+# disk by PHP (App\Core\View), never requested by a browser. On their own they
+# emit a fragment with no layout, no <head> and no security headers - and
+# pages/admin/ renders the administration screens - so a direct hit returns
+# partial markup that was never meant to leave the server.
+#
+# This directory was the one gap in the root .htaccess deny list: every other
+# private directory was named there, pages/ was not, so under a document root
+# set to the repository (htdocs/AI-UNIT symlinked one level too high) every
+# template answered HTTP 200. It is now named in that rule as well.
+#
+# This duplicates the rewrite rule in the repository-root .htaccess on purpose.
+# That rule needs mod_rewrite; this one does not, so the directory stays closed
+# even on a server where the module is unavailable.
+Require all denied
