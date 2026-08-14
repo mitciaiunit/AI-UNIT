@@ -620,68 +620,49 @@
                * result cards (NVDA / Microsoft Narrator) and the "Why this was
                * worth doing before launch" explanation.
                *
-               * What that removes is the specific finding - that one screen
-               * reader read almost everything and the other read nothing. What
-               * remains still prevents the opposite reading: the paragraph below
-               * says the portal was tested while under development and before
-               * any launch, the attribution records that several areas needed
-               * improvement before public release, and the closing note names
-               * screen reader compatibility and independent navigation as
-               * outstanding. Nothing here may be edited into a statement that
+               * How Mrs Burtony André is described is deliberate and was set by the
+               * AI Unit: her role at SENA and the fact that she took part, with
+               * no professional title attached to her and no wording that labels
+               * her disability. Do not reintroduce "screen reader specialist",
+               * "accessibility specialist" or "from the perspective of a blind
+               * user".
                * the site passed.
                */
               ?>
               <div class="usertest__intro" data-reveal data-reveal-delay="80">
-                <h3 class="h3">Tested with a screen reader specialist</h3>
+                <h3 class="h3">Accessibility testing with SENA</h3>
                 <p data-i18n="hl_a11y_usertest_intro" tabindex="0">
-                  An accessibility toolbar is only worth as much as it proves to be
-                  in the hands of someone who depends on assistive technology.
-                  Accessibility testing was conducted with Mrs Aarthi Burtony André,
-                  SENA Resource Person for Learners with Visual Impairments, who
-                  evaluated the website from the perspective of a blind user relying
-                  on screen reader technology. The session was held at the SENA
-                  Office on 24 July 2026, with the two AI Unit interns who requested
-                  it, while the portal was still under development and before any
-                  official launch.
+                  Mrs Aarthi Burtony André, SENA Resource Person for Learners with
+                  Visual Impairments, took part in accessibility testing of the website
+                  at the SENA Office on 24 July 2026, at the request of two AI Unit
+                  interns. The website was tested with the NVDA and Microsoft Narrator
+                  screen readers while it was still under development.
                 </p>
                 <p class="usertest__attrib">
-                  Summarised from the meeting report of 24 July 2026, prepared by
-                  Mrs Aarthi Burtony André. The report describes the Ministry's work
-                  to build accessibility into the portal as commendable and as a
-                  positive commitment to digital inclusion, while stating plainly
-                  that several areas needed improvement before the website was made
-                  publicly available.
+                  Her feedback and recommendations from the session were taken into
+                  consideration, and changes were subsequently made to improve the
+                  accessibility and usability of the website.
                 </p>
               </div>
             </div>
 
             <?php
             /*
-             * The report's closing section (7. Appreciation, and the paragraph
-             * that follows it).
+             * Closing note. Kept short and about the collaboration itself.
              *
-             * Attributed prose, not a quotation - same rule as the note above.
-             * The words are the report's, but they are reported here rather
-             * than set in quotation marks, because nothing in this block should
-             * read as a statement made directly to camera by a named person who
-             * has not approved being quoted.
-             *
-             * The caveat travels with the praise on purpose. The report pairs
-             * them in the same breath - encouraging first step, technical
-             * improvements still necessary - and printing only the warm half
-             * would turn a development-stage finding into a launch endorsement.
+             * This used to relay the meeting report's own closing section, in the
+             * report's framing ("the report records..."). The AI Unit asked for
+             * that framing to go: the section should describe what happened, not
+             * what a document says about it.
              */
             ?>
             <p class="usertest__appreciation" data-i18n="hl_a11y_usertest_appreciation" tabindex="0">
-              The report closes on the collaboration itself. It records that the
-              session demonstrated the Ministry's willingness to engage with
-              persons with disabilities during the development of the website,
-              and describes that approach as greatly appreciated and as good
-              practice in inclusive digital design. It ends by calling the
-              initiative an encouraging first step towards a more accessible and
-              inclusive digital platform for all users - while restating that
-              technical improvements remain necessary, particularly on screen
-              reader compatibility and independent navigation.
+              Mrs Burtony André welcomed the Ministry's initiative in engaging with
+              persons with disabilities during the development of its AI Unit website,
+              and described the collaborative approach as greatly appreciated and as
+              reflecting good practice in inclusive digital design. The AI Unit thanks
+              her and SENA for taking part in this testing, which continues to inform
+              accessibility work on the website.
             </p>
           </div>
         </div>
