@@ -581,7 +581,7 @@
            * filename. Nothing else here changes, and if permission is never
            * given the highlight still reads correctly as it stands.
            */
-          $participantPhoto = null;
+          $participantPhoto = 'MmeAarthi.jpg';
           ?>
           <div class="usertest">
             <div class="usertest__layout">

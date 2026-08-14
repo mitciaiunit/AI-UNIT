@@ -171,6 +171,37 @@
     .viewer-area::-webkit-scrollbar { width: 5px; height: 5px; }
     .viewer-area::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 
+    /* Covers the page-stage rather than replacing it, so toggling back
+       keeps zoom/scroll/thumbnail state exactly as it was. */
+    .text-view {
+      display: none;
+      position: absolute; inset: 0;
+      background: var(--surface);
+      overflow-y: auto;
+      z-index: 5;
+    }
+    .text-view.open { display: block; }
+    .text-view:focus { outline: none; }
+    .tv-inner { max-width: 720px; margin: 0 auto; padding: 40px 24px 80px; }
+    .tv-inner h2 { font-size: 1.05rem; font-weight: 700; color: var(--text1); margin: 28px 0 10px; }
+    .tv-inner h2:first-child { margin-top: 0; }
+    .tv-inner p { font-size: 1rem; line-height: 1.75; color: var(--text1); margin: 0 0 14px; }
+    .tv-instructions { padding: 12px 14px; background: var(--blue-pale); border-left: 4px solid var(--blue); border-radius: 4px; }
+    .tv-status { font-size: 0.9rem; color: var(--text2); margin: 0 0 14px; }
+
+    /* The floating page-turn arrows sit above the canvas view at all times;
+       hidden while the text view covers it so they don't float uselessly
+       over reading content. */
+    body.text-view-active .nav-btn { display: none; }
+
+    /* Page nav, zoom and thumbnails in the bottom toolbar all act on the
+       canvas view, which the text view has covered - and being
+       position:fixed, the full bar would otherwise sit on top of and hide
+       whatever text has scrolled underneath it. Collapsed to just the
+       toggle button itself, which stays reachable so the text view can be
+       closed again. */
+    body.text-view-active .bottom-bar > *:not(#btnTextView) { display: none; }
+
     .page-stage { position: relative; display: inline-flex; align-items: center; justify-content: center; }
 
     .page-frame {
@@ -421,6 +452,30 @@
              <code><?= e($pdfUrl) ?></code></p>
         </div>
       </div>
+
+      <!--
+       * Screen-reader alternative to the page-by-page canvas images above.
+       * Each page there is rendered to a <canvas> and shown as a plain <img>
+       * (see showPage() in the script below) - there is no text in the DOM
+       * for NVDA to read, only the fixed "Page N" alt text. This panel is
+       * built from the PDF's own text layer via pdf.js's getTextContent(),
+       * independent of that.
+       *
+       * Focus goes to #tvHeading, not this wrapper, when the panel opens.
+       * Focusing a plain <div> announces nothing - NVDA doesn't read a
+       * container's descendants just because focus landed on it, so a
+       * screen reader user would hear silence and have no reason to look
+       * further in. A heading has real text, so focusing it is actually
+       * announced, and it gives a natural point to arrow down from.
+      -->
+      <div class="text-view" id="textView">
+        <div class="tv-inner">
+          <h2 id="tvHeading" tabindex="-1" aria-describedby="tvInstructions"><?= e($s['textViewHeading']) ?></h2>
+          <p class="tv-instructions" id="tvInstructions"><?= e($s['textViewInstructions']) ?></p>
+          <p class="tv-status" id="tvStatus" role="status" aria-live="polite"></p>
+          <div id="tvContent"></div>
+        </div>
+      </div>
     </main>
   </div>
 </div>
@@ -465,6 +520,9 @@
 
   <button class="bb-btn" id="btnThumbs" title="<?= e($s['toggleThumbs']) ?>" aria-pressed="false" aria-label="<?= e($s['toggleThumbs']) ?>">
     <i class="ti ti-layout-grid" aria-hidden="true"></i>
+  </button>
+  <button class="bb-btn" id="btnTextView" title="<?= e($s['textViewLabel']) ?>" aria-pressed="false" aria-label="<?= e($s['textViewLabel']) ?>">
+    <i class="ti ti-file-text" aria-hidden="true"></i>
   </button>
 
   <div class="bb-sep" aria-hidden="true"></div>
@@ -543,6 +601,27 @@
   let sidebar   = false;
   let rendering = false;
   let cache     = {};
+  let textCache      = {};
+  let textViewOpen   = false;
+  let fullTextLoaded = false;
+  let textExtracting = false;
+  let initialTextPromise = null;
+  /*
+   * init() below sets `pdf` once pdfjsLib.getDocument() resolves - which, on
+   * a slow connection or CDN fetch of pdf.worker.min.js, can take a real
+   * couple of seconds. #btnTextView is clickable from the moment the page
+   * loads, not just once that finishes, so ensureFullTextLoaded() needs a
+   * way to wait for `pdf` rather than bail out silently if it's clicked
+   * first - which is exactly what used to happen: a bare `if (!pdf) return`
+   * with no retry, so a click that landed early did nothing at all, ever,
+   * with no error and no status update.
+   */
+  let resolvePdfReady, rejectPdfReady;
+  const pdfReady = new Promise((resolve, reject) => { resolvePdfReady = resolve; rejectPdfReady = reject; });
+  // Nothing awaits pdfReady at all when the PDF loads (or fails) before the
+  // text view is ever opened - without this, that's an unhandled promise
+  // rejection logged to the console on every ordinary load failure.
+  pdfReady.catch(() => {});
 
   const PDF_SRC = <?= json_encode($pdfUrl) ?>;
   const S = <?= json_encode($s, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) ?>;
@@ -560,6 +639,11 @@
   const btnNext      = document.getElementById('btnNext');
   const sharePopup   = document.getElementById('sharePopup');
   const toast        = document.getElementById('toast');
+  const btnTextView  = document.getElementById('btnTextView');
+  const textView     = document.getElementById('textView');
+  const tvHeading    = document.getElementById('tvHeading');
+  const tvStatus     = document.getElementById('tvStatus');
+  const tvContent    = document.getElementById('tvContent');
 
   async function renderPage(pageNum, scale) {
     const key = pageNum + '_' + scale.toFixed(2);
@@ -585,6 +669,134 @@
     return fit * zoom;
   }
 
+  /*
+   * Groups pdf.js's flat list of positioned text fragments into lines (by
+   * y-coordinate) and then into paragraphs (by flagging line-to-line gaps
+   * noticeably larger than the page's typical single-line gap). Best-effort
+   * reconstruction, not real structure - an untagged PDF carries no
+   * paragraph/heading information, so a multi-column layout can still
+   * interleave. Still far more useful to NVDA than no extractable text.
+   */
+  function groupTextItems(items) {
+    if (!items.length) return [];
+    const Y_EPS = 2;
+    const lines = [];
+    let curLine = [];
+    let curY = items[0].transform[5];
+    for (const item of items) {
+      const y = item.transform[5];
+      if (Math.abs(y - curY) > Y_EPS && curLine.length) {
+        lines.push({ y: curY, text: curLine.join('').trim() });
+        curLine = [];
+      }
+      curLine.push(item.str);
+      curY = y;
+      if (item.hasEOL) {
+        lines.push({ y: curY, text: curLine.join('').trim() });
+        curLine = [];
+      }
+    }
+    if (curLine.length) lines.push({ y: curY, text: curLine.join('').trim() });
+
+    const nonEmpty = lines.filter(l => l.text);
+    if (!nonEmpty.length) return [];
+
+    const gaps = [];
+    for (let i = 1; i < nonEmpty.length; i++) gaps.push(Math.abs(nonEmpty[i - 1].y - nonEmpty[i].y));
+    gaps.sort((a, b) => a - b);
+    const typicalGap = gaps.length ? gaps[Math.floor(gaps.length / 2)] : 0;
+
+    const paragraphs = [nonEmpty[0].text];
+    for (let i = 1; i < nonEmpty.length; i++) {
+      const gap = Math.abs(nonEmpty[i - 1].y - nonEmpty[i].y);
+      if (typicalGap > 0 && gap > typicalGap * 1.6) {
+        paragraphs.push(nonEmpty[i].text);
+      } else {
+        const last = paragraphs.length - 1;
+        const joiner = /[-‐-―]$/.test(paragraphs[last]) ? '' : ' ';
+        paragraphs[last] += joiner + nonEmpty[i].text;
+      }
+    }
+    return paragraphs;
+  }
+
+  async function extractPageText(pageNum) {
+    if (textCache[pageNum]) return textCache[pageNum];
+    const page = await pdf.getPage(pageNum);
+    const content = await page.getTextContent();
+    const paragraphs = groupTextItems(content.items);
+    textCache[pageNum] = paragraphs;
+    return paragraphs;
+  }
+
+  async function appendTextPage(pageNum) {
+    const paragraphs = await extractPageText(pageNum);
+    const section = document.createElement('section');
+    const h = document.createElement('h2');
+    h.textContent = S.pageHeadingPrefix + ' ' + pageNum;
+    section.appendChild(h);
+    if (paragraphs.length) {
+      paragraphs.forEach(text => {
+        const p = document.createElement('p');
+        p.textContent = text;
+        section.appendChild(p);
+      });
+    } else {
+      const p = document.createElement('p');
+      p.textContent = S.textViewPageEmpty;
+      section.appendChild(p);
+    }
+    tvContent.appendChild(section);
+  }
+
+  /* Make the page the visitor was viewing readable first. The remaining
+     booklet pages keep loading after focus reaches the first real heading. */
+  function ensureFullTextLoaded() {
+    if (fullTextLoaded) return Promise.resolve();
+    if (initialTextPromise) return initialTextPromise;
+
+    textExtracting = true;
+    tvStatus.textContent = S.textViewLoading;
+    tvContent.replaceChildren();
+
+    initialTextPromise = (async () => {
+      try {
+        // Waits rather than bailing out if the button was clicked before
+        // init() finished loading the PDF - see pdfReady above.
+        await pdfReady;
+        await appendTextPage(cur);
+        const remainingPages = Array.from({ length: total }, (_, index) => index + 1)
+          .filter(pageNum => pageNum !== cur);
+        if (!remainingPages.length) {
+          fullTextLoaded = true;
+          textExtracting = false;
+          tvStatus.textContent = S.textViewReady;
+          return;
+        }
+
+        tvStatus.textContent = S.textViewReadyLoading;
+        (async () => {
+          try {
+            for (const pageNum of remainingPages) await appendTextPage(pageNum);
+            fullTextLoaded = true;
+            tvStatus.textContent = S.textViewReady;
+          } catch (err) {
+            tvStatus.textContent = S.textViewPartialError;
+            console.error('Booklet text extraction failed:', err);
+          } finally {
+            textExtracting = false;
+          }
+        })();
+      } catch (err) {
+        textExtracting = false;
+        tvStatus.textContent = S.textViewError;
+        console.error('Booklet text extraction failed:', err);
+      }
+    })();
+
+    return initialTextPromise;
+  }
+
   async function showPage(pageNum, dir) {
     if (!pdf) return;
     rendering = true;
@@ -601,7 +813,11 @@
     const vp = (await pdf.getPage(pageNum)).getViewport({ scale });
     img.style.width  = Math.round(vp.width)  + 'px';
     img.style.height = Math.round(vp.height) + 'px';
-    img.alt = S.pageAlt.replace('%d', pageNum);
+    // Decorative: the real content is available to assistive tech through
+    // #btnTextView's extracted text view (see extractPageText() below), so
+    // this raster picture doesn't need its own competing description.
+    img.alt = '';
+    img.setAttribute('aria-hidden', 'true');
 
     frame.appendChild(img);
     pageStage.innerHTML = '';
@@ -694,9 +910,11 @@
       total = pdf.numPages;
       pageInput.max = total;
       loader.style.display = 'none';
+      resolvePdfReady();
       await showPage(1, null);
       buildThumbs();
     } catch (err) {
+      rejectPdfReady(err);
       loader.innerHTML =
         '<i class="ti ti-alert-circle err-icon" aria-hidden="true"></i>' +
         '<p class="err-title">' + S.errorTitle + '</p>' +
@@ -733,6 +951,31 @@
     this.classList.toggle('active', sidebar);
     this.setAttribute('aria-pressed', sidebar);
     setTimeout(() => { cache = {}; showPage(cur); }, 300);
+  });
+
+  btnTextView.addEventListener('click', async function () {
+    textViewOpen = !textViewOpen;
+    this.classList.toggle('active', textViewOpen);
+    this.setAttribute('aria-pressed', textViewOpen);
+    textView.classList.toggle('open', textViewOpen);
+    document.body.classList.toggle('text-view-active', textViewOpen);
+    // pageStage stays in the DOM (only visually covered) so it has to be
+    // pulled from the accessibility tree explicitly, or NVDA's Browse Mode
+    // can still reach the decorative canvas image behind the text panel.
+    pageStage.setAttribute('aria-hidden', textViewOpen ? 'true' : 'false');
+    if (textViewOpen) {
+      // ensureFullTextLoaded() fills #tvContent while nothing has focus yet
+      // - the aria-live #tvStatus text ("Extracting…") is announced on its
+      // own regardless of focus, so the user isn't left with no feedback
+      // while it runs. Focus only moves to the heading afterwards, once
+      // every page's text is actually in the DOM: focusing it earlier
+      // announces "Text version of this booklet" before the content behind
+      // it exists, so a screen reader user who immediately arrows down or
+      // presses Say All - the natural next move - reaches the end of an
+      // empty panel and never finds out the real text was still loading.
+      await ensureFullTextLoaded();
+      if (textViewOpen) tvHeading.focus();
+    }
   });
 
   document.getElementById('btnFullscreen').addEventListener('click', () => {
@@ -787,6 +1030,10 @@
 
   document.addEventListener('keydown', e => {
     if (e.target.tagName === 'INPUT') return;
+    // These are page-turn/zoom shortcuts for the visual canvas view; while
+    // the text view is open they'd only fight with normal reading/scrolling
+    // (e.g. ArrowDown) for no visible effect, so they're switched off.
+    if (textViewOpen) return;
     switch (e.key) {
       case 'ArrowRight': case 'ArrowDown': case 'PageDown': goTo(cur + 1, 'right'); break;
       case 'ArrowLeft':  case 'ArrowUp':   case 'PageUp':   goTo(cur - 1, 'left');  break;
