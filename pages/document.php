@@ -172,6 +172,9 @@
     .tv-inner h2 { font-size: 1.05rem; font-weight: 700; color: var(--text1); margin: 28px 0 10px; }
     .tv-inner h2:first-child { margin-top: 0; }
     .tv-inner p { font-size: 1rem; line-height: 1.75; color: var(--text1); margin: 0 0 14px; }
+    /* Only the converted document paragraphs are justified. Interface text,
+       headings and the screen-reader guidance keep their natural alignment. */
+    #tvContent p { text-align: justify; text-justify: inter-word; hyphens: auto; }
     .tv-instructions { padding: 12px 14px; background: var(--blue-pale); border-left: 4px solid var(--blue); border-radius: 4px; }
     .tv-status { font-size: 0.9rem; color: var(--text2); margin: 0 0 14px; }
     .fallback-icon { color: var(--blue); opacity: 0.5; }
