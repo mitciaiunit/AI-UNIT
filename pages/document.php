@@ -9,6 +9,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!--
+    Loaded so the "View as Text" button can extract the document's real text
+    layer with pdf.js's own parser, independent of whether this particular
+    PDF carries accessibility tags. See pages/booklet.php for the same
+    technique applied to the booklet reader. cdnjs/blob: are already allowed
+    by the site's CSP (app/Core/SecurityHeaders.php) for this exact purpose.
+  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -108,6 +116,7 @@
       font-family: 'Sora', sans-serif;
     }
     .back-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-pale); }
+    .back-btn.active { border-color: var(--blue-light); color: var(--blue); background: var(--blue-pale); }
 
     .btn-dl {
       display: inline-flex; align-items: center; justify-content: center; gap: 7px;
@@ -147,6 +156,24 @@
       position: absolute; inset: 0;
     }
     .pdf-fallback.show { display: flex; }
+
+    /* Text alternative to the embedded PDF - see #textViewBtn. Covers the
+       iframe rather than replacing it, so toggling back keeps the iframe's
+       scroll position and zoom level intact. */
+    .pdf-text-view {
+      display: none;
+      position: absolute; inset: 0;
+      background: var(--surface);
+      overflow-y: auto;
+    }
+    .pdf-text-view.show { display: block; }
+    .pdf-text-view:focus { outline: none; }
+    .tv-inner { max-width: 760px; margin: 0 auto; padding: 40px 24px 80px; }
+    .tv-inner h2 { font-size: 1.05rem; font-weight: 700; color: var(--text1); margin: 28px 0 10px; }
+    .tv-inner h2:first-child { margin-top: 0; }
+    .tv-inner p { font-size: 1rem; line-height: 1.75; color: var(--text1); margin: 0 0 14px; }
+    .tv-instructions { padding: 12px 14px; background: var(--blue-pale); border-left: 4px solid var(--blue); border-radius: 4px; }
+    .tv-status { font-size: 0.9rem; color: var(--text2); margin: 0 0 14px; }
     .fallback-icon { color: var(--blue); opacity: 0.5; }
     .fallback-title { font-size: 1.1rem; font-weight: 700; color: var(--text1); }
     .fallback-desc { font-size: 0.9rem; color: var(--text2); line-height: 1.7; max-width: 480px; }
@@ -260,6 +287,15 @@
       </svg>
       <span class="btn-label">Back to Homepage</span>
     </a>
+    <button type="button" class="back-btn" id="textViewBtn" aria-pressed="false" aria-label="View this document as accessible text">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="9" y1="13" x2="15" y2="13"/>
+        <line x1="9" y1="17" x2="15" y2="17"/>
+      </svg>
+      <span class="btn-label">View as Text</span>
+    </button>
     <a href="<?= e($docUrl) ?>" class="btn-dl" id="dlBtn" download="<?= e($downloadName) ?>" aria-label="Download <?= e($title) ?>">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -310,6 +346,28 @@
       </a>
     </div>
   </div>
+
+  <!--
+   * Screen-reader alternative to the embedded viewer above, built by
+   * extracting the PDF's own text layer with pdf.js - independent of
+   * whether this document carries the accessibility tags NVDA relies on to
+   * navigate a PDF opened directly (see #textViewBtn's click handler below).
+   *
+   * Focus goes to #tvHeading, not this wrapper, when the panel opens.
+   * Focusing a plain <div> announces nothing - NVDA doesn't read a
+   * container's descendants just because focus landed on it, so a screen
+   * reader user would hear silence and have no reason to go looking further
+   * in. A heading has real text, so focusing it is actually announced, and
+   * it gives the user a natural point to arrow down (or Say All) from.
+  -->
+  <div class="pdf-text-view" id="pdfTextView">
+    <div class="tv-inner">
+      <h2 id="tvHeading" tabindex="-1" aria-describedby="tvInstructions">Text version of this document</h2>
+      <p class="tv-instructions" id="tvInstructions">Screen reader help: Press Down Arrow to read line by line, or NVDA+Down Arrow to read continuously. Tab moves only between buttons and links.</p>
+      <p class="tv-status" id="tvStatus" role="status" aria-live="polite"></p>
+      <div id="tvContent"></div>
+    </div>
+  </div>
 </main>
 
 <!-- FOOTER BAR -->
@@ -352,6 +410,171 @@
       document.getElementById('pdfFallback').classList.add('show');
     }
   }, 4000);
+})();
+(function () {
+  const PDF_SRC = <?= json_encode($docUrl) ?>;
+  const btn = document.getElementById('textViewBtn');
+  const panel = document.getElementById('pdfTextView');
+  const tvHeading = document.getElementById('tvHeading');
+  const tvStatus = document.getElementById('tvStatus');
+  const tvContent = document.getElementById('tvContent');
+  const embed = document.getElementById('pdfEmbed');
+  const fallback = document.getElementById('pdfFallback');
+  let extracted = false;
+  let extracting = false;
+  let initialTextPromise = null;
+
+  /*
+   * Groups pdf.js's flat list of positioned text fragments into lines (by
+   * y-coordinate) and then into paragraphs (by flagging line-to-line gaps
+   * noticeably larger than the page's typical single-line gap). This is a
+   * best-effort reconstruction, not a real structure - an untagged PDF
+   * carries no paragraph/heading information at all, so a multi-column
+   * layout can still interleave. It is still far more useful to NVDA than
+   * the alternative of no extractable text whatsoever.
+   */
+  function groupTextItems(items) {
+    if (!items.length) return [];
+    const Y_EPS = 2;
+    const lines = [];
+    let curLine = [];
+    let curY = items[0].transform[5];
+    for (const item of items) {
+      const y = item.transform[5];
+      if (Math.abs(y - curY) > Y_EPS && curLine.length) {
+        lines.push({ y: curY, text: curLine.join('').trim() });
+        curLine = [];
+      }
+      curLine.push(item.str);
+      curY = y;
+      if (item.hasEOL) {
+        lines.push({ y: curY, text: curLine.join('').trim() });
+        curLine = [];
+      }
+    }
+    if (curLine.length) lines.push({ y: curY, text: curLine.join('').trim() });
+
+    const nonEmpty = lines.filter(l => l.text);
+    if (!nonEmpty.length) return [];
+
+    const gaps = [];
+    for (let i = 1; i < nonEmpty.length; i++) gaps.push(Math.abs(nonEmpty[i - 1].y - nonEmpty[i].y));
+    gaps.sort((a, b) => a - b);
+    const typicalGap = gaps.length ? gaps[Math.floor(gaps.length / 2)] : 0;
+
+    const paragraphs = [nonEmpty[0].text];
+    for (let i = 1; i < nonEmpty.length; i++) {
+      const gap = Math.abs(nonEmpty[i - 1].y - nonEmpty[i].y);
+      if (typicalGap > 0 && gap > typicalGap * 1.6) {
+        paragraphs.push(nonEmpty[i].text);
+      } else {
+        const last = paragraphs.length - 1;
+        const joiner = /[-‐-―]$/.test(paragraphs[last]) ? '' : ' ';
+        paragraphs[last] += joiner + nonEmpty[i].text;
+      }
+    }
+    return paragraphs;
+  }
+
+  async function appendTextPage(pdf, pageNum) {
+    const page = await pdf.getPage(pageNum);
+    const content = await page.getTextContent();
+    const paragraphs = groupTextItems(content.items);
+    const section = document.createElement('section');
+    const h = document.createElement('h2');
+    h.textContent = 'Page ' + pageNum;
+    section.appendChild(h);
+    if (paragraphs.length) {
+      paragraphs.forEach(text => {
+        const p = document.createElement('p');
+        p.textContent = text;
+        section.appendChild(p);
+      });
+    } else {
+      const p = document.createElement('p');
+      p.textContent = 'No extractable text on this page - it may be an image.';
+      section.appendChild(p);
+    }
+    tvContent.appendChild(section);
+  }
+
+  /*
+   * Do not make a screen-reader user wait for an entire 60 MB document to be
+   * parsed. The first page is added before this promise resolves, so focus can
+   * land on real DOM text straight away; later pages are appended quietly in
+   * order while the user reads. Waiting for every page here made NVDA appear
+   * to have nothing to read on the larger framework documents.
+   */
+  function extractText() {
+    if (extracted) return Promise.resolve();
+    if (initialTextPromise) return initialTextPromise;
+
+    extracting = true;
+    tvStatus.textContent = 'Extracting text from the document…';
+    tvContent.replaceChildren();
+
+    initialTextPromise = (async () => {
+      try {
+        if (typeof pdfjsLib === 'undefined') throw new Error('pdf.js failed to load');
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        const pdf = await pdfjsLib.getDocument(PDF_SRC).promise;
+
+        await appendTextPage(pdf, 1);
+        const remainingPages = Array.from({ length: pdf.numPages - 1 }, (_, index) => index + 2);
+        if (!remainingPages.length) {
+          extracted = true;
+          extracting = false;
+          tvStatus.textContent = 'Text version ready.';
+          return;
+        }
+
+        tvStatus.textContent = 'Text version ready. Loading the remaining pages…';
+        (async () => {
+          try {
+            for (const pageNum of remainingPages) await appendTextPage(pdf, pageNum);
+            extracted = true;
+            tvStatus.textContent = 'All text pages are ready.';
+          } catch (err) {
+            tvStatus.textContent = 'Some pages could not be converted to text.';
+            console.error('PDF text extraction failed:', err);
+          } finally {
+            extracting = false;
+          }
+        })();
+      } catch (err) {
+        extracting = false;
+        tvStatus.textContent = "Sorry, the text could not be extracted from this document. Please use the Download PDF button instead.";
+        console.error('PDF text extraction failed:', err);
+      }
+    })();
+
+    return initialTextPromise;
+  }
+
+  btn.addEventListener('click', async () => {
+    const open = !panel.classList.contains('show');
+    panel.classList.toggle('show', open);
+    btn.classList.toggle('active', open);
+    btn.setAttribute('aria-pressed', String(open));
+    embed.setAttribute('aria-hidden', String(open));
+    if (fallback) fallback.setAttribute('aria-hidden', String(open));
+    if (open) {
+      // extractText() fills #tvContent while nothing has focus yet - the
+      // aria-live #tvStatus text ("Extracting…") is announced on its own
+      // regardless of focus, so the user isn't left with no feedback while
+      // it runs. Focus only moves to the heading afterwards, once every
+      // page's text is actually in the DOM: focusing it earlier announces
+      // "Text version of this document" before the content behind it
+      // exists, so a screen reader user who immediately arrows down or
+      // presses Say All - the natural next move - reaches the end of an
+      // empty panel and never finds out the real text was still loading.
+      await extractText();
+      // Do not move focus into a panel the visitor closed while extraction was
+      // in progress.
+      if (panel.classList.contains('show')) tvHeading.focus();
+    }
+  });
 })();
 </script>
 <script src="<?= e(asset('js/accessibility-widget.js')) ?>"></script>

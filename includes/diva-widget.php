@@ -40,14 +40,23 @@ $divaAvailable = diva_api_url() !== '';
       <button class="diva-close" id="divaClose" aria-label="Close DIVA chat">✕</button>
       <button class="diva-clear" id="divaClear" aria-label="Clear conversation">Clear</button>
     </div>
-    <div class="diva-messages" id="divaMessages" role="log" aria-label="Conversation with DIVA">
-      <div class="diva-msg bot" data-i18n="diva_welcome">Hello! I'm <strong>DIVA</strong> - the Government of Mauritius' AI assistant. I'm here to help you with questions about our Digital Transformation Blueprint, AI strategy, and government services.<br><br>You can also <strong>speak to me</strong> - press the microphone button below and ask your question out loud.</div>
+    <div class="diva-messages" id="divaMessages" role="log" aria-live="polite" aria-atomic="false" aria-relevant="additions" tabindex="0" aria-label="Conversation with DIVA">
+      <div class="diva-msg bot"><span class="visually-hidden" data-i18n="diva_speaker_bot">DIVA said:</span><span data-i18n="diva_welcome">Hello! I'm <strong>DIVA</strong> - the Government of Mauritius' AI assistant. I'm here to help you with questions about our Digital Transformation Blueprint, AI strategy, and government services.<br><br>You can also <strong>speak to me</strong> - press the microphone button below and ask your question out loud.</span></div>
       <div class="diva-suggestions">
         <button class="diva-suggestion-btn" onclick="pickSuggestion(this)" data-i18n="diva_sug1">What is the Digital Transformation Blueprint?</button>
         <button class="diva-suggestion-btn" onclick="pickSuggestion(this)" data-i18n="diva_sug2">What does FAIR stand for in the AI Framework?</button>
         <button class="diva-suggestion-btn" onclick="pickSuggestion(this)" data-i18n="diva_sug3">How is AI used in Mauritius government services?</button>
       </div>
     </div>
+    <!--
+      Visually hidden, separate from #divaMessages so transient status text
+      ("DIVA is typing…") is announced without becoming part of the permanent
+      transcript. role="status" is its own live region - independent of
+      aria-atomic="false" above, so this always reads its full current
+      content. Cleared as soon as the reply lands, so it goes silent again
+      instead of restating stale status the next time it changes.
+    -->
+    <div id="divaStatus" role="status" aria-live="polite" class="visually-hidden"></div>
 
 <!-- Buttons -->
     <div class="diva-input-row">

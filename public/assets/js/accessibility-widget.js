@@ -13,6 +13,15 @@
   if (window.__A11Y_WIDGET_LOADED__) return;
   window.__A11Y_WIDGET_LOADED__ = true;
 
+  // Set right before a programmatic focus() restores focus after the panel
+  // closes, so the focusin listener below can tell that apart from the user
+  // actually tabbing/clicking elsewhere. Without this, closing the panel
+  // (close button, backdrop, Escape) refocuses whatever had focus before it
+  // opened, which the reader can't distinguish from real navigation - so it
+  // interrupted the say-all and announced the refocused control instead of
+  // continuing to read, making the reader look dead the moment the panel closed.
+  var a11ySkipNextFocusAnnounce = false;
+
   // Captured synchronously so it's still available once injectAssets() runs
   // later (on DOMContentLoaded), after document.currentScript has reset.
   // Resolving the icon relative to this script's own URL (rather than a
@@ -881,7 +890,16 @@ setTimeout(function () {
     // --- Text Extraction ---
     // Widget/UI chrome that should never end up in the read-aloud queue,
     // regardless of its current visibility state.
-    var A11Y_READER_SKIP_SELECTOR = '.video-modal, .diva-panel, #divaWidget, #a11y-announcer, #a11y-read-guide, #a11y-sr-prompt, #sr-speed-display, .simple-toggle, .listen-offer, .page-contents';
+    // #a11y-panel/#a11y-trigger: clicking the trigger to open or close the
+    // panel - or clicking the panel's own close button - moves DOM focus
+    // onto that button on mousedown, before the click handler (closePanel(),
+    // togglePanel()) even runs. That focus change reached the focusin
+    // listener below like any other, and speakFocus()'s "tabbing away ends
+    // the say-all" rule silenced continuous reading just from operating the
+    // widget's own toggle - the reported "reader goes quiet the moment you
+    // close the panel" bug. Same principle as the other entries here: the
+    // reader's own controls must not interrupt or narrate themselves.
+    var A11Y_READER_SKIP_SELECTOR = '.video-modal, .diva-panel, #divaWidget, #a11y-panel, #a11y-trigger, #a11y-announcer, #a11y-read-guide, #a11y-sr-prompt, #sr-speed-display, .simple-toggle, .listen-offer, .page-contents';
 
     // getComputedStyle(el) only ever reflects el's own specified/computed
     // style - display:none (or visibility/opacity/hidden/aria-hidden) on an
@@ -1141,6 +1159,13 @@ setTimeout(function () {
       SR.sessionActive = true;
       removeHighlight();
       SR.queue = [];
+      // Spoken once, only at the start of a fresh full-page read (not on
+      // skip-link continuations, which pass a root) - people relying only on
+      // this built-in reader never see the on-screen shortcut hints, so the
+      // stop command has to be spoken, not just displayed.
+      if (!root) {
+        SR.queue.push({ text: 'Reading page aloud. Press Alt plus S, or Escape, to stop.', element: null });
+      }
       const chunks = getReadableText(root);
       chunks.forEach(function (c) {
         const subChunks = chunkText(c.text, 200);
@@ -1157,7 +1182,7 @@ setTimeout(function () {
       SR.speaking = true;
       SR.paused = false;
       updateSRStatus('Reading page aloud');
-      announce('Reading page aloud');
+      announce('Reading page aloud. Press Alt+S or Escape to stop.');
       if (srStopFloating) srStopFloating.classList.add('visible');
       speakNext();
     }
@@ -1364,6 +1389,10 @@ setTimeout(function () {
     // page would start talking at a sighted keyboard user who never asked
     // for speech.
     document.addEventListener('focusin', function (e) {
+      if (a11ySkipNextFocusAnnounce) {
+        a11ySkipNextFocusAnnounce = false;
+        return;
+      }
       if (!SR.sessionActive) return;
       var el = e.target;
       if (!el || el === document.body) return;
@@ -1790,7 +1819,13 @@ function closePanel() {
   backdrop.classList.remove('show');
   trigger.setAttribute('aria-expanded', 'false');
   document.removeEventListener('keydown', onPanelKeydown);
-  if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+  if (lastFocused && typeof lastFocused.focus === 'function') {
+    // See a11ySkipNextFocusAnnounce's declaration up top: this focus() is
+    // restoring where the user already was, not moving them somewhere new,
+    // so it must not be read as "user tabbed away" and cut off the say-all.
+    a11ySkipNextFocusAnnounce = true;
+    lastFocused.focus();
+  }
 }
 
 function togglePanel() {

@@ -105,6 +105,9 @@ const translations = {
     footer_copyright: "© 2026 Artificial Intelligence Unit, Republic of Mauritius. Developed and Hosted by Government Online Centre.",
     diva_online: "Online & ready to help", diva_welcome: "Hello! I'm <strong>DIVA</strong> - the Government of Mauritius' AI assistant. I'm here to help you with questions about our Digital Transformation Blueprint, AI strategy, and government services.<br><br>You can also <strong>speak to me</strong> - press the microphone button below and ask your question out loud.",
     diva_sug1: "What is the Digital Transformation Blueprint?", diva_sug2: "What does FAIR stand for in the AI Framework?", diva_sug3: "How is AI used in Mauritius government services?",
+    // Screen-reader-only strings for the chat transcript's live region -
+    // see #divaMessages / #divaStatus in includes/diva-widget.php.
+    diva_speaker_bot: "DIVA said:", diva_speaker_user: "You said:", diva_typing: "DIVA is typing…",
     a11y_title: "Accessibility", a11y_subtitle: "Adjust this website to your needs", a11y_reset: "Reset",
     a11y_sr_title: "Screen Reader - Read this page aloud", a11y_read_btn_label: "Read page aloud", a11y_read_btn_hint: "Click to start · Space to pause / resume",
     a11y_kbd_hint: "Keyboard shortcuts (while reading)", a11y_kbd_playpause: "Play / Pause", a11y_kbd_stop: "Stop", a11y_kbd_slower: "Slower", a11y_kbd_faster: "Faster",
@@ -885,15 +888,38 @@ const divaInput=document.getElementById('divaInput');
 const divaSend=document.getElementById('divaSend');
 const divaMic=document.getElementById('divaMic');
 const divaMessages=document.getElementById('divaMessages');
+const divaStatus=document.getElementById('divaStatus');
 const openDiva=document.getElementById('openDiva');
 const divaHistory=[];
 let divaIsLoading=false;
 let lastDivaResponse='';
 
+/*
+ * Left/right bubble position conveys speaker to sighted users only, so every
+ * message also carries this text, hidden with .visually-hidden rather than
+ * display:none/visibility:hidden so it still reaches the accessibility tree.
+ * Falls back to the English strings if the active language has no
+ * translations object yet (currently true for fr/km - see translations above).
+ */
+function divaSpeakerLabel(role) {
+  const T = translations[currentLang] || translations.en;
+  const key = role === 'user' ? 'diva_speaker_user' : 'diva_speaker_bot';
+  return (T && T[key]) || translations.en[key];
+}
+
+function divaSpeakerSpan(role) {
+  const speaker = document.createElement('span');
+  speaker.className = 'visually-hidden';
+  speaker.setAttribute('data-i18n', role === 'user' ? 'diva_speaker_user' : 'diva_speaker_bot');
+  speaker.textContent = divaSpeakerLabel(role);
+  return speaker;
+}
+
 /* ─── ADD DIVA MESSAGE (with Read-Aloud + Copy per message) ─── */
 function addDivaMessage(text, role) {
   const div = document.createElement('div');
   div.className = 'diva-msg ' + role;
+  div.appendChild(divaSpeakerSpan(role));
   const content = document.createElement('div');
   content.textContent = text;
   div.appendChild(content);
@@ -952,12 +978,13 @@ function addDivaMessage(text, role) {
 async function typeDivaMessage(text, source = null) {
   const div = document.createElement('div');
   div.className = 'diva-msg bot';
+  // aria-hidden goes on the whole bubble, not just the text node, so the
+  // "DIVA said:" speaker prefix is exposed to assistive tech at the same
+  // moment as the finished reply below - otherwise it would be announced
+  // on its own the instant this element is inserted, ahead of any content.
+  div.setAttribute('aria-hidden', 'true');
+  div.appendChild(divaSpeakerSpan('bot'));
   const content = document.createElement('div');
-  // Hidden from the accessibility tree while typing, so the word-by-word
-  // visual effect doesn't fire a separate live-region announcement per
-  // word inside #divaMessages (role="log"). The finished message is
-  // exposed to assistive tech in one step once typing completes below.
-  content.setAttribute('aria-hidden', 'true');
   div.appendChild(content);
   divaMessages.appendChild(div);
 
@@ -977,7 +1004,7 @@ async function typeDivaMessage(text, source = null) {
     }
   }
 
-  content.removeAttribute('aria-hidden');
+  div.removeAttribute('aria-hidden');
 
   // ACTION BUTTONS CONTAINER
   const actions = document.createElement('div');
@@ -1032,7 +1059,7 @@ async function typeDivaMessage(text, source = null) {
 function clearDivaChat() {
   divaHistory.length = 0;
   divaMessages.innerHTML = `
-    <div class="diva-msg bot" data-i18n="diva_welcome">Hello! I'm <strong>DIVA</strong> - the Government of Mauritius' AI assistant. I'm here to help you with questions about our Digital Transformation Blueprint, AI strategy, and government services.<br><br>You can also <strong>speak to me</strong> - press the microphone button below and ask your question out loud.</div>
+    <div class="diva-msg bot"><span class="visually-hidden" data-i18n="diva_speaker_bot">DIVA said:</span><span data-i18n="diva_welcome">Hello! I'm <strong>DIVA</strong> - the Government of Mauritius' AI assistant. I'm here to help you with questions about our Digital Transformation Blueprint, AI strategy, and government services.<br><br>You can also <strong>speak to me</strong> - press the microphone button below and ask your question out loud.</span></div>
     <div class="diva-suggestions">
       <button class="diva-suggestion-btn" onclick="pickSuggestion(this)" data-i18n="diva_sug1">What is the Digital Transformation Blueprint?</button>
       <button class="diva-suggestion-btn" onclick="pickSuggestion(this)" data-i18n="diva_sug2">What does FAIR stand for in the AI Framework?</button>
@@ -1208,17 +1235,28 @@ function showDivaTyping() {
   const wrap = document.createElement('div');
   wrap.className = 'diva-typing-dots';
   wrap.id = 'diva-typing';
+  // Purely decorative - the actual "DIVA is typing…" announcement comes from
+  // #divaStatus below, so this doesn't get announced a second time as a
+  // separate addition inside #divaMessages.
+  wrap.setAttribute('aria-hidden', 'true');
   for (let i = 0; i < 3; i++) {
     const s = document.createElement('span');
     wrap.appendChild(s);
   }
   divaMessages.appendChild(wrap);
   divaMessages.scrollTop = divaMessages.scrollHeight;
+  if (divaStatus) {
+    const T = translations[currentLang] || translations.en;
+    divaStatus.textContent = (T && T.diva_typing) || translations.en.diva_typing;
+  }
 }
 
 function hideDivaTyping() {
   const el = document.getElementById('diva-typing');
   if (el) el.remove();
+  // Cleared, not left showing "DIVA is typing…", once the reply (or an
+  // error) has actually landed in #divaMessages.
+  if (divaStatus) divaStatus.textContent = '';
 }
 
 function setDivaLoading(on) {
