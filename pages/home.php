@@ -49,7 +49,7 @@ $isHome = true;
                      publishes, just not one DIVA answers from. Keep this list
                      in step with diva_desc in assets/js/script.js, which
                      overwrites this text on load. */ ?>
-            <p data-i18n="diva_desc" tabindex="0">DIVA is a prototype assistant that answers questions based on three key documents: the Digital Transformation Blueprint, the AI Strategy and the FAIR Guidelines.</p>
+            <p data-i18n="diva_desc" tabindex="0">DIVA is a prototype assistant that answers questions based on three key documents: the Digital Transformation Blueprint, the AI Strategy and the FAIR Guidelines. Try asking: &ldquo;What does FAIR stand for in the AI Framework?&rdquo;</p>
             <button class="btn-sm" id="openDiva"><span data-i18n="diva_chat">Chat with DIVA</span> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
           </div>
         </div>

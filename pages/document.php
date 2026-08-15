@@ -175,6 +175,7 @@
     /* Only the converted document paragraphs are justified. Interface text,
        headings and the screen-reader guidance keep their natural alignment. */
     #tvContent p { text-align: justify; text-justify: inter-word; hyphens: auto; }
+    #tvContent p.tv-image-desc { font-style: italic; color: var(--text2); }
     .tv-instructions { padding: 12px 14px; background: var(--blue-pale); border-left: 4px solid var(--blue); border-radius: 4px; }
     .tv-status { font-size: 0.9rem; color: var(--text2); margin: 0 0 14px; }
     .fallback-icon { color: var(--blue); opacity: 0.5; }
@@ -416,6 +417,9 @@
 })();
 (function () {
   const PDF_SRC = <?= json_encode($docUrl) ?>;
+  // Keyed by page number as a string (JSON object keys always are) - see
+  // app/Data/document-image-descriptions.php for how these are authored.
+  const IMAGE_DESCRIPTIONS = <?= json_encode($imageDescriptions, JSON_HEX_TAG | JSON_HEX_AMP) ?>;
   const btn = document.getElementById('textViewBtn');
   const panel = document.getElementById('pdfTextView');
   const tvHeading = document.getElementById('tvHeading');
@@ -487,12 +491,54 @@
     const h = document.createElement('h2');
     h.textContent = 'Page ' + pageNum;
     section.appendChild(h);
-    if (paragraphs.length) {
-      paragraphs.forEach(text => {
+    // Hand-authored, not extracted - see app/Data/document-image-descriptions.php.
+    // Object keys from JSON are always strings, so look up by String(pageNum).
+    const imageDesc = IMAGE_DESCRIPTIONS[String(pageNum)];
+    
+    // Detect corrupted text (box characters, replacement chars, stray control
+    // codes, or too many symbols). Confirmed against this document: some
+    // subset heading fonts map certain glyphs (e.g. the letters "e", "t", "c",
+    // "s" in one heading font here) onto unused C0/C1 control-code byte slots
+    // instead of a real ToUnicode value, because the font's own built-in
+    // encoding never expected those bytes to be read back as text. Chrome (and
+    // most browsers) render unprintable control characters as a "tofu" box,
+    // which is exactly the corruption this is meant to catch - \uFFFD etc.
+    // cover the other common cases where a PDF's own text layer is simply
+    // wrong.
+    const corruptionPattern = /[\uFFFD\u2610-\u2612\u25A0-\u25AA\u220A\u2400-\u243F\uFEFF\uE000-\uF8FF\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/g;
+    function isCorrupted(text) {
+      const corruptChars = (text.match(corruptionPattern) || []).length;
+      const letterCount = (text.match(/[a-zA-Z]/g) || []).length;
+      // If more than one corruption char, or very few letters with any corruption
+      return corruptChars > 1 || (corruptChars > 0 && letterCount < 10);
+    }
+    // Filtered per paragraph, not per page: one garbled heading (often just a
+    // duplicate of a caption already covered by imageDesc) shouldn't take down
+    // the real body paragraphs sitting next to it on the same page.
+    const goodParagraphs = paragraphs.filter(text => !isCorrupted(text));
+
+    if (goodParagraphs.length) {
+      goodParagraphs.forEach(text => {
         const p = document.createElement('p');
         p.textContent = text;
         section.appendChild(p);
       });
+      // A chart/diagram sitting alongside real paragraph text on the same
+      // page - append its description rather than replacing anything.
+      if (imageDesc) {
+        const p = document.createElement('p');
+        p.className = 'tv-image-desc';
+        p.textContent = 'Image on this page: ' + imageDesc;
+        section.appendChild(p);
+      }
+    } else if (imageDesc) {
+      // Page is pure image with nothing for pdf.js to extract, or every
+      // extracted paragraph was corrupted - the description stands in for the
+      // missing text entirely.
+      const p = document.createElement('p');
+      p.className = 'tv-image-desc';
+      p.textContent = imageDesc;
+      section.appendChild(p);
     } else {
       const p = document.createElement('p');
       p.textContent = 'No extractable text on this page - it may be an image.';

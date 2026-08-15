@@ -1226,6 +1226,20 @@ setTimeout(function () {
       if (srStopFloating) srStopFloating.classList.remove('visible');
     }
 
+    // Lets other same-page features (DIVA's voice input) silence this
+    // reader before they open the microphone - otherwise its own
+    // speechSynthesis output is just as capable of being picked up by
+    // speech recognition as an external screen reader's is. Scoped globally
+    // because SR itself lives inside this setTimeout closure.
+    window.__aiUnitStopScreenReader = function () {
+      if (SR.speaking || SR.paused || SR.sessionActive || SR.announcingFocus) {
+        stopReading();
+      }
+    };
+    window.__aiUnitScreenReaderSpeaking = function () {
+      return !!(SR.speaking || SR.announcingFocus);
+    };
+
     function toggleReading() {
       if (!SR.speaking) {
         startReading();
