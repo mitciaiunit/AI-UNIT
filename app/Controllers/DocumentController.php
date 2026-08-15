@@ -19,12 +19,12 @@ final class DocumentController extends Controller
     private const DOCUMENTS = [
         'blueprint' => [
             'title' => 'Digital Transformation Blueprint 2025–2029',
-            'description' => 'Read the Digital Transformation Blueprint 2025-2029, the Government of Mauritius roadmap for modernising public services and building national digital capability.',
+            'description' => 'Read the Digital Transformation Blueprint 2025–2029, the Government of Mauritius roadmap for modernising public services and building national digital capability.',
             'file' => 'documents/blueprint.pdf',
         ],
         'aistrategy' => [
             'title' => 'National AI Strategy 2025–2029',
-            'description' => 'Read the National AI Strategy 2025-2029, setting out how Mauritius will govern, adopt and grow artificial intelligence across the economy and the public sector.',
+            'description' => 'Read the National AI Strategy 2025–2029, setting out how Mauritius will govern, adopt and grow artificial intelligence across the economy and the public sector.',
             'file' => 'documents/aistrategy.pdf',
         ],
         'fairguidelines' => [
@@ -49,12 +49,15 @@ final class DocumentController extends Controller
             return;
         }
 
+        $imageDescriptions = (require dirname(__DIR__) . '/Data/document-image-descriptions.php')[$slug] ?? [];
+
         $this->view('document', [
             'title' => $document['title'],
             'description' => $document['description'],
             'ogType' => 'article',
             'docUrl' => asset($document['file']),
             'downloadName' => basename($document['file']),
+            'imageDescriptions' => $imageDescriptions,
         ], null);
     }
 }

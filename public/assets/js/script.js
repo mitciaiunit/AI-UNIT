@@ -28,7 +28,7 @@ const translations = {
     about_body1: "The AI Unit is the dedicated body established under the Ministry of Information Technology, Communication and Innovation (MITCI) to lead Mauritius' artificial intelligence journey. We coordinate AI governance, promote innovation, and ensure that technology serves all Mauritians - fairly and transparently.",
     about_body2: "We are the strategic vehicle for MITCI's <strong>Digital Transformation 2025-2029</strong> blueprint - a bold roadmap to modernise public services and position Mauritius as a leading AI nation in Africa.",
     about_body3: "Whether you are a citizen curious about AI, a business exploring new solutions, or a student building your future - the AI Unit is here for you.",
-    diva_title: "Meet DIVA - Digital Interactive Virtual Assistant", diva_desc: "DIVA is a prototype assistant that answers questions based on three key documents: the Digital Transformation Blueprint, the AI Strategy and the FAIR Guidelines.", diva_chat: "Chat with DIVA",
+    diva_title: "Meet DIVA - Digital Interactive Virtual Assistant", diva_desc: "DIVA is a prototype assistant that answers questions based on three key documents: the Digital Transformation Blueprint, the AI Strategy and the FAIR Guidelines. Try asking: “What does FAIR stand for in the AI Framework?”", diva_chat: "Chat with DIVA",
     vision_title: "Our Vision", vision_text: "Position Mauritius as a regional leader in trusted, responsible AI - powering economic transformation, elevating public services, and enhancing the quality of life for every citizen.",
     mission_title: "Our Mission", mission_text: "Drive responsible AI in Mauritius by leading its implementation and governance - ensuring every system is secure, ethical, and transparent, and that AI delivers meaningful impact for citizens and businesses.",
     objectives_title: "Our Six Objectives", obj1: "Govern Trusted AI", obj2: "Modernize Public Services", obj3: "Grow the AI Ecosystem", obj4: "Build Future-Ready Skills", obj5: "Strengthen Data Infrastructure", obj6: "Elevate Mauritius' Global Standing",
@@ -1051,6 +1051,16 @@ async function typeDivaMessage(text, source = null) {
   actions.appendChild(copyBtn);
   div.appendChild(actions);
 
+  // #divaMessages uses aria-relevant="additions" so that the word-by-word
+  // typing effect above (a text mutation on a node already in the DOM)
+  // doesn't get read aloud piecemeal. But that also means simply removing
+  // aria-hidden a few lines up is invisible to it - an attribute change
+  // isn't a node "addition", so screen readers never announced the
+  // finished reply. Re-inserting the now-complete, now-visible node makes
+  // it a genuine addition, so NVDA/JAWS/VoiceOver announce it once, in full.
+  div.remove();
+  divaMessages.appendChild(div);
+
   divaMessages.scrollTop = divaMessages.scrollHeight;
   lastDivaResponse = text;
 }
@@ -1059,7 +1069,7 @@ async function typeDivaMessage(text, source = null) {
 function clearDivaChat() {
   divaHistory.length = 0;
   divaMessages.innerHTML = `
-    <div class="diva-msg bot"><span class="visually-hidden" data-i18n="diva_speaker_bot">DIVA said:</span><span data-i18n="diva_welcome">Hello! I'm <strong>DIVA</strong> - the Government of Mauritius' AI assistant. I'm here to help you with questions about our Digital Transformation Blueprint, AI strategy, and government services.<br><br>You can also <strong>speak to me</strong> - press the microphone button below and ask your question out loud.</span></div>
+    <div class="diva-msg bot" id="divaWelcomeMsg" tabindex="-1"><span class="visually-hidden" data-i18n="diva_speaker_bot">DIVA said:</span><span data-i18n="diva_welcome">Hello! I'm <strong>DIVA</strong> - the Government of Mauritius' AI assistant. I'm here to help you with questions about our Digital Transformation Blueprint, AI strategy, and government services.<br><br>You can also <strong>speak to me</strong> - press the microphone button below and ask your question out loud.</span></div>
     <div class="diva-suggestions">
       <button class="diva-suggestion-btn" onclick="pickSuggestion(this)" data-i18n="diva_sug1">What is the Digital Transformation Blueprint?</button>
       <button class="diva-suggestion-btn" onclick="pickSuggestion(this)" data-i18n="diva_sug2">What does FAIR stand for in the AI Framework?</button>
@@ -1087,6 +1097,12 @@ divaClear?.addEventListener('click', () => {
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition;
 let isListening = false;
+let divaMicArmed = false;
+let divaMicStartTimer = null;
+// Fallback-only: if the user never gives a confirming second press (e.g.
+// they're not using a screen reader), open the mic on its own after this
+// long. Kept as a safety net, not the primary mechanism - see below.
+const DIVA_MIC_FALLBACK_DELAY = 2500;
 
 if (SpeechRecognition) {
   recognition = new SpeechRecognition();
@@ -1095,6 +1111,53 @@ if (SpeechRecognition) {
   recognition.interimResults = true;
 }
 
+function divaMicReset() {
+  divaMicArmed = false;
+  if (divaMicStartTimer) {
+    clearTimeout(divaMicStartTimer);
+    divaMicStartTimer = null;
+  }
+  divaMic.classList.remove('preparing', 'listening');
+  divaMic.setAttribute('aria-label', 'Speak to DIVA - press to start voice input');
+  divaInput.placeholder = 'Type or speak your question…';
+}
+
+function startDivaRecognition() {
+  divaMicArmed = false;
+  if (divaMicStartTimer) {
+    clearTimeout(divaMicStartTimer);
+    divaMicStartTimer = null;
+  }
+  // This site's own built-in screen reader (accessibility-widget.js) speaks
+  // through the same speakers via speechSynthesis - if it's still talking
+  // (or has a focus-announcement queued) the instant the mic opens, that
+  // gets captured exactly like an external screen reader's speech would.
+  // Unlike NVDA, this one is ours to silence.
+  if (window.__aiUnitStopScreenReader) window.__aiUnitStopScreenReader();
+  try {
+    recognition.start();
+  } catch (e) {
+    console.warn('Speech recognition error:', e);
+    divaMicReset();
+  }
+}
+
+/*
+ * Why "arm, then confirm" instead of just opening the mic on click:
+ * the moment we change the mic button's aria-label/placeholder to announce
+ * "Listening…", a screen reader (e.g. NVDA) speaks that change out loud
+ * because the button has focus. If audio capture were already running at
+ * that instant, the recognizer would pick up NVDA's own voice instead of
+ * (or mixed with) the user's. A fixed delay can't fix this reliably -
+ * NVDA's speech rate is user-configurable and unknowable from here.
+ *
+ * Instead, the first press only "arms" listening and announces once; the
+ * *second* press is what actually opens the mic. Because that second press
+ * is user-initiated, a screen reader user naturally performs it only after
+ * they've heard the announcement finish - so the mic never opens mid-speech.
+ * A fallback timer still opens it automatically for mouse/non-AT users so
+ * they don't need to click twice.
+ */
 divaMic?.addEventListener('click', () => {
   if (!recognition) {
     addDivaMessage('Voice input is not supported in your browser. Please type your question.', 'bot');
@@ -1104,26 +1167,37 @@ divaMic?.addEventListener('click', () => {
     recognition.stop();
     return;
   }
-  recognition.lang = navigator.language || 'en-GB';
-  try {
-    recognition.start();
-  } catch (e) {
-    console.warn('Speech recognition error:', e);
+  if (divaMicArmed) {
+    startDivaRecognition();
+    return;
   }
+  // Silence the built-in screen reader before even announcing "getting
+  // ready" - otherwise that announcement is competing with (or gets cut
+  // into) whatever it was already saying.
+  if (window.__aiUnitStopScreenReader) window.__aiUnitStopScreenReader();
+  divaMicArmed = true;
+  recognition.lang = navigator.language || 'en-GB';
+  divaMic.classList.add('preparing');
+  divaMic.setAttribute('aria-label', 'Getting ready to listen. Press the microphone again when you’re ready to speak.');
+  divaInput.placeholder = 'Press mic again when ready…';
+
+  divaMicStartTimer = setTimeout(startDivaRecognition, DIVA_MIC_FALLBACK_DELAY);
 });
 
 if (recognition) {
   recognition.onstart = () => {
     isListening = true;
+    // Deliberately not touching aria-label/placeholder here: the "getting
+    // ready" text announced at arm-time already told the user listening is
+    // about to begin. Speaking anything new the instant capture opens is
+    // exactly the collision this whole flow exists to avoid - so the visual
+    // pulse (class only) is the only feedback at this exact moment.
+    divaMic.classList.remove('preparing');
     divaMic.classList.add('listening');
-    divaMic.setAttribute('aria-label', 'Listening… speak now. Press again to stop.');
-    divaInput.placeholder = 'Listening…';
   };
   recognition.onend = () => {
     isListening = false;
-    divaMic.classList.remove('listening');
-    divaMic.setAttribute('aria-label', 'Speak to DIVA - press to start voice input');
-    divaInput.placeholder = 'Type or speak your question…';
+    divaMicReset();
   };
   recognition.onresult = (event) => {
     let transcript = '';
@@ -1138,9 +1212,7 @@ if (recognition) {
   recognition.onerror = (e) => {
     console.warn('Voice input error:', e.error);
     isListening = false;
-    divaMic.classList.remove('listening');
-    divaMic.setAttribute('aria-label', 'Speak to DIVA - press to start voice input');
-    divaInput.placeholder = 'Type or speak your question…';
+    divaMicReset();
   };
 }
 
@@ -1393,8 +1465,15 @@ function divaDeferFocus(el) {
   else el.focus();
 }
 
-/** The input if it is usable, otherwise the first focusable control. */
+/**
+ * The welcome message if present, so a screen reader announces it - the
+ * "Hello, I'm DIVA…" greeting - the moment the panel opens, rather than
+ * landing straight on the input field and skipping the introduction.
+ * Falls back to the input, then the first focusable control.
+ */
 function divaInitialFocusTarget() {
+  const welcome = document.getElementById('divaWelcomeMsg');
+  if (welcome && welcome.offsetParent !== null) return welcome;
   if (divaInput && !divaInput.disabled && divaInput.offsetParent !== null) return divaInput;
   return divaFocusable()[0] || null;
 }

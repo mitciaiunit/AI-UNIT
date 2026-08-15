@@ -1123,6 +1123,7 @@ img.emoji{
   transition:all 0.2s;
 }
 .diva-mic:hover{border-color:var(--blue-mid);color:var(--blue-mid);}
+.diva-mic.preparing{border-color:#d97706;color:#d97706;background:#fffbeb;animation:micPulse 1.6s ease-in-out infinite;}
 .diva-mic.listening{border-color:#e11d48;color:#e11d48;background:#fff1f4;animation:micPulse 1s ease-in-out infinite;}
 @keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(225,29,72,0.3);}50%{box-shadow:0 0 0 8px rgba(225,29,72,0);}}
 
@@ -1399,6 +1400,12 @@ img.emoji{
 .diva-mic:hover{
   background:#EEF2FF;
   color:var(--blue);
+}
+
+.diva-mic.preparing{
+  background:#D97706;
+  color:white;
+  animation:pulseMic 1.8s infinite;
 }
 
 .diva-mic.listening{
@@ -1715,6 +1722,7 @@ img.emoji{
        three dots - it simply no longer bounces. */
     .badge-dot,
     .diva-online-dot,
+    .diva-mic.preparing,
     .diva-mic.listening,
     .diva-typing-dots span,
     .diva-speak.speaking,
