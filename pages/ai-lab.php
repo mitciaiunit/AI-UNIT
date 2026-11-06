@@ -181,17 +181,8 @@ $calendlyUrl = $calendlyUrl ?? null;
           </a>
         </p>
       <?php else: ?>
-        <?php
-        /*
-         * Expected state until CALENDLY_AI_LAB_URL is set in .env. Says so
-         * plainly rather than rendering an empty embed frame, and points at the
-         * contact form so an enquiry is still possible.
-         */
-        ?>
-        <p class="lab-notice" role="status">
-          <strong>Online booking is not open yet.</strong>
-          The AI Lab booking calendar will appear here once it goes live. In the
-          meantime, please
+        <p class="lab-notice">
+          Please
           <a href="<?= e(url('/') . '#contact') ?>">contact the AI Unit</a>
           to enquire about a session.
         </p>

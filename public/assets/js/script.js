@@ -14,7 +14,7 @@ const ASSET_BASE = AI_UNIT_CONFIG.assetBase || '/assets';
 const translations = {
   en: {
     nav_action: "AI in Action", nav_framework: "Framework", nav_about: "About Us", nav_contact: "Contact Us", nav_ailab: "AI Lab", nav_highlights: "Highlights", nav_marketplace: "AI Marketplace", accessibility: "Accessibility",
-    hero_badge: "Ministry of Information Technology, Communication and Innovation", hero_title_prefix: "Where", hero_title_suffix: "Meets Impact", hero_subtitle: "Welcome to the AI Unit - your guide to how artificial intelligence is making public services smarter, faster, and fairer for every citizen.",
+    hero_title_prefix: "Where", hero_title_suffix: "Meets Impact", hero_subtitle: "Welcome to the AI Unit - your guide to how artificial intelligence is making public services smarter, faster, and fairer for every citizen.",
     hero_cta_marketplace: "Explore Regional AI Marketplace", hero_cta_learn: "Learn More", hero_cta_ailab: "Book an AI Lab session", badge_fair: "FAIR Guidelines", badge_ai4all: "AI4ALL Inclusion", badge_marketplace: "AI Marketplace", badge_smart: "Smart Services", badge_ppp: "PPP Adoption", badge_privacy: "Data Privacy",
     ailab_eyebrow: "AI Unit Facility", ailab_title1: "Explore the", ailab_title2: "AI Lab",
     ailab_desc: "A space at the AI Unit for learning, exploring and working with artificial intelligence - available primarily to students from colleges and universities, researchers, educators and members of the public.",

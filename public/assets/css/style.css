@@ -108,7 +108,7 @@ html.a11y-mode-dark{
    or (for the nav) the sticky bar's own blurred backdrop. */
 html.a11y-mode-dark .navbar{background:rgba(18,22,31,0.9);}
 html.a11y-mode-dark .navbar.scrolled{background:rgba(27,33,46,0.97);}
-@media(max-width:1250px){
+@media(max-width:900px){
   html.a11y-mode-dark .nav-links{background:rgba(27,33,46,0.97);}
 }
 /* The hero's bottom wave is an inline SVG with a literal fill="#FFFFFF" -
@@ -289,16 +289,21 @@ img.emoji{
    logo + six links + two utility controls measured 1225px against 1124px of
    usable width, so it escaped the container at every desktop width and
    clipped the accessibility trigger below about 1330px. The row is trimmed
-   below and given its own slightly wider ceiling. 1280px, not more, so the
+   below and given its own slightly wider ceiling. 1360px, so the
    header still reads as aligned with the page beneath it. */
-.nav-inner{max-width:1280px;margin:0 auto;padding:0 28px;height:72px;display:flex;align-items:center;justify-content:space-between;gap:14px;}
-.nav-logo{display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.nav-logo-img{width:75px;height:75px;object-fit:contain;}
-.logo-text-wrap{display:flex;flex-direction:column;line-height:1.1;}
-.logo-main{font-family:'Lora',serif;font-size:1.1rem;font-weight:700;color:var(--text-1);}
-.logo-sub{font-size:0.75rem;font-weight:500;color:var(--text-3);letter-spacing:0.04em;}
-.nav-links{display:flex;align-items:center;gap:0;}
-.nav-link{padding:7px 11px;font-size:0.845rem;font-weight:500;color:var(--text-2);border-radius:8px;transition:all var(--trans);white-space:nowrap;cursor:pointer;}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 28px;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:minmax(72px,auto) auto;align-items:center;column-gap:14px;}
+.nav-branding{display:flex;align-items:center;gap:10px;justify-self:start;min-width:0;}
+.nav-logo{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;flex-shrink:0;}
+.nav-logo-img{width:66px;height:66px;object-fit:contain;flex-shrink:0;}
+.nav-ministry{display:flex;align-items:center;min-height:44px;gap:8px;padding-inline-start:10px;border-inline-start:1px solid var(--border);}
+.nav-ministry-mark{display:block;width:46px;height:52px;overflow:hidden;flex-shrink:0;}
+/* Reuse the footer artwork for the coat of arms and render the name as live text. */
+.nav-ministry-mark img{display:block;width:auto;max-width:none;height:100%;}
+.nav-ministry-name{min-width:0;font-size:.875rem;font-weight:700;line-height:1.3;color:var(--text-1);}
+.nav-ministry:hover .nav-ministry-name{text-decoration:underline;text-underline-offset:2px;}
+.nav-logo:focus-visible,.nav-ministry:focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+.nav-links{grid-column:1/-1;display:flex;align-items:center;gap:clamp(0px,1vw,12px);border-top:1px solid var(--border);}
+.nav-link{display:flex;align-items:center;min-height:44px;padding:7px 11px;font-size:0.845rem;font-weight:500;color:var(--text-2);border-radius:8px;transition:all var(--trans);white-space:nowrap;cursor:pointer;}
 /* [aria-current="page"] marks a whole-page nav target (Highlights); .active
    is set by the homepage scroll spy. Both render identically. */
 .nav-link:hover,.nav-link.active,.nav-link[aria-current="page"]{color:var(--blue-mid);background:var(--blue-pale);}
@@ -332,7 +337,7 @@ img.emoji{
    identical while becoming a comfortable touch target. The rotate transforms
    below still use the same 7px offset (5px gap + 2px bar), so the X animation
    is unaffected. Set on the base rule because the button only ever appears
-   below 1250px, where it is always a touch target. */
+   below 900px, where it is always a touch target. */
 .hamburger{display:none;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:0;width:44px;height:44px;}
 .hamburger span{display:block;width:22px;height:2px;background:var(--text-1);border-radius:2px;transition:all var(--trans);}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
@@ -415,29 +420,6 @@ html.a11y-hide-images .hero-poster{
     position:relative;
     z-index:2;
     max-width:560px;
-}
-
-.hero-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:6px 14px 6px 10px;
-    border:1px solid rgba(255,255,255,.30);
-    border-radius:100px;
-    font-size:.76rem;
-    font-weight:600;
-    color:#fff;
-    background:rgba(255,255,255,.10);
-    backdrop-filter:blur(6px);
-    margin-bottom:20px;
-}
-
-.badge-dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:#5EEAD4;
-    animation:pulseDot 2s infinite;
 }
 
 @keyframes pulseDot{
@@ -1219,7 +1201,12 @@ html.a11y-hide-images .hero-poster{
 /* Navbar collapses before its full logo, six links and three utility controls
    exceed the row. The accessibility trigger keeps its text label until 900px,
    so the complete desktop header requires more room than the content grids. */
-@media(max-width:1250px){
+@media (min-width:901px) {
+    html{scroll-padding-top:7.5rem;}
+    .nav-links{justify-content:center;}
+}
+@media(max-width:900px){
+    html{scroll-padding-top:5rem;}
     /* The closed menu used to be hidden by appearance alone - slid off-screen
        and made transparent. Neither transform nor opacity takes an element out
        of the tab order or the accessibility tree, so all six links stayed
@@ -1230,11 +1217,11 @@ html.a11y-hide-images .hero-poster{
 
        visibility:hidden is what removes them from both, and it is deliberately
        expressed HERE, inside the media query, rather than applied from
-       JavaScript. Above 1250px the rule simply does not exist, so returning to
+       JavaScript. Above 900px the rule simply does not exist, so returning to
        a desktop width cannot leave the navigation stuck hidden - there is no
        state to clean up and no resize handler that could fail to run. */
     .nav-links{
-      position:fixed;top:68px;left:0;right:0;
+      position:absolute;top:100%;left:0;right:0;max-height:calc(100dvh - 5rem);overflow-y:auto;
       background:rgba(255,255,255,0.97);
       border-bottom:1px solid var(--border);
       flex-direction:column;padding:16px 20px;gap:2px;
@@ -1258,7 +1245,18 @@ html.a11y-hide-images .hero-poster{
       visibility:visible;
       transition:transform var(--trans),opacity var(--trans),visibility 0s linear 0s;
     }
+    .nav-ministry{min-width:0;}
     .hamburger{display:flex;}
+}
+@media(max-width:767px){
+    html{scroll-padding-top:8rem;}
+    .nav-inner{min-height:72px;grid-template-columns:minmax(0,1fr);grid-template-rows:auto;gap:4px;padding:6px 16px;}
+    .nav-branding{max-width:100%;gap:8px;}
+    .nav-logo-img{width:46px;height:46px;}
+    .nav-ministry{padding-inline-start:8px;}
+    .nav-ministry-mark{width:40px;height:45px;}
+    .nav-right{justify-self:end;}
+    .nav-links{max-height:calc(100dvh - 8rem);}
 }
 @media(max-width:768px){.lang-bar{display:none;}.hero-inner{padding:60px 24px 80px;}.about-grid{grid-template-columns:1fr;}.contact-grid{grid-template-columns:1fr;gap:36px;}.footer-grid{grid-template-columns:1fr 1fr;gap:28px;}.form-row{grid-template-columns:1fr;}.footer-bottom{flex-direction:column;text-align:center;}.section{padding:72px 0;}.diva-panel{width:290px;}.team-member-panel{grid-template-columns:1fr;gap:28px;align-items:center;}.team-photo-img{max-width:280px;margin:0 auto;}.team-stats-strip{flex-direction:column;}.team-stat{border-right:none;border-bottom:1px solid var(--border);}.team-stat:last-child{border-bottom:none;}}
 @media(max-width:480px){.footer-grid{grid-template-columns:1fr;}.hero-cta{flex-direction:column;align-items:flex-start;}.team-tabs{gap:6px;}.team-tab{padding:8px 16px;font-size:0.8rem;}
@@ -1270,10 +1268,8 @@ html.a11y-hide-images .hero-poster{
        became page-wide horizontal scroll. The rule that made it inevitable was
        `.simple-toggle span{display:inline}` right here - it existed to force
        the label to stay visible at exactly the widths where it does not fit. */
-    .nav-inner{padding:0 16px;gap:10px;}
-    .nav-logo{gap:8px;}
+    .nav-inner{padding:6px 16px;gap:4px;}
     .nav-logo-img{width:40px;height:40px;}
-    .logo-sub{display:none;}
     .nav-right{gap:6px;}
 
     /* Icon-only, 44x44. The label is moved out of view rather than removed:
@@ -1293,9 +1289,6 @@ html.a11y-hide-images .hero-poster{
        letting the wordmark give way means a future longer label degrades to a
        truncated logo rather than to a horizontally scrolling page. With the
        sizes above there is ~27px to spare at 320px, so it never engages. */
-    .nav-logo{flex-shrink:1;min-width:0;}
-    .logo-text-wrap{min-width:0;}
-    .logo-main{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
     /* DIVA panel: fixed width+right-offset clips off the left edge on narrow phones */
     .diva-panel{left:16px;right:16px;width:auto;}
 
@@ -1678,11 +1671,9 @@ html.a11y-hide-images .hero-poster{
     .footer-disclaimer p,
     .form-group label,
     .form-status,
-    .hero-badge,
     .lang-bar,
     .lang-bar a,
     .lang-btn,
-    .logo-sub,
     .meta-chip,
     .mkt-card p,
     .nav-link,
@@ -1751,7 +1742,6 @@ html.a11y-hide-images .hero-poster{
        status dots remain visible as dots, the listening/speaking states keep
        their border and colour change, and the typing indicator still shows
        three dots - it simply no longer bounces. */
-    .badge-dot,
     .diva-online-dot,
     .diva-mic.preparing,
     .diva-mic.listening,
@@ -1833,19 +1823,22 @@ html.a11y-hide-images .hero-poster{
    Colour is .btn-primary's, so the header button and the hero CTA read as one
    destination. min-height:44px keeps it clear of the waived small-target list
    rather than adding a new entry to it. */
-.nav-marketplace{
-  display:inline-flex;align-items:center;gap:7px;
+.nav-marketplace,.nav-book-lab{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
   min-height:44px;padding:0 16px;
-  background:#2554C7;color:#fff;border:1px solid #2554C7;
+  color:#fff;border:1px solid transparent;
   border-radius:100px;
   font-family:'Sora',sans-serif;font-size:0.82rem;font-weight:700;
   white-space:nowrap;text-decoration:none;
   box-shadow:var(--shadow-sm);
   transition:all var(--trans);
 }
+.nav-marketplace{background:#2554C7;border-color:#2554C7;}
+.nav-book-lab{background:linear-gradient(115deg,#174481,#0b6276);}
+.nav-book-lab:hover{background:linear-gradient(115deg,#10346b,#084f60);box-shadow:var(--shadow-md);}
 .nav-marketplace:hover{background:#1c44a8;border-color:#1c44a8;transform:translateY(-1px);box-shadow:var(--shadow-md);}
-.nav-marketplace svg{flex-shrink:0;}
-.nav-marketplace:focus-visible{outline:3px solid var(--blue-mid);outline-offset:2px;}
+.nav-marketplace svg,.nav-book-lab svg{flex-shrink:0;}
+.nav-marketplace:focus-visible,.nav-book-lab:focus-visible{outline:3px solid var(--blue-mid);outline-offset:2px;}
 
 /* The Simple language toggle was removed from the site; its own rules above
    are now unused. Left in place so the control can be reinstated intact. */
@@ -1853,7 +1846,17 @@ html.a11y-hide-images .hero-poster{
 @media(max-width:480px){
   /* Narrow phones: the bar is now logo + AI Marketplace + accessibility +
      hamburger. Moving Simple language into the menu is what buys the room. */
-  .nav-marketplace{padding:0 12px;font-size:0.76rem;gap:5px;}
+  .nav-marketplace,.nav-book-lab{padding:0 12px;font-size:0.76rem;gap:5px;}
+}
+
+@media(max-width:400px){
+  .nav-book-lab{min-width:44px;padding:0;}
+  .nav-book-lab span{display:none;}
+}
+
+@media(max-width:360px){
+  .nav-right{gap:4px;}
+  .nav-marketplace{padding-inline:8px;}
 }
 
 /* Practical booking details under the calendar (pages/ai-lab.php). h3 rather

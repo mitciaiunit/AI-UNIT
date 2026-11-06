@@ -28,34 +28,26 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
 ?>
 <header class="navbar" id="navbar">
   <div class="nav-inner">
-    <a <?= $isHome ? 'href="#hero" data-scroll="hero"' : 'href="' . e(url('/')) . '"' ?> class="nav-logo" aria-label="AI Unit Home">
-      <img src="<?= e(asset('images/logo.webp')) ?>" alt="AI Unit - Ministry of Information Technology, Communication and Innovation" class="nav-logo-img" width="300" height="200" decoding="async">
-      <div class="logo-text-wrap">
-        <span class="logo-main">AI Unit</span>
-        <span class="logo-sub">MITCI · Mauritius</span>
-      </div>
-    </a>
-    <nav class="nav-links" id="navLinks" aria-label="Site sections">
-      <?php
-      /**
-       * Order is deliberate: AI Lab, AI in Action, AI Framework, Highlights,
-       * About Us, Contact Us.
-       *
-       * AI Lab and Highlights target pages rather than homepage sections, so
-       * they carry a plain href and no data-scroll. They use aria-current for
-       * the highlight instead of the .active class: the scroll spy in
-       * script.js reassigns .active across every .nav-link on each scroll event
-       * and would strip a server-rendered one on the first wheel movement.
-       */
-      ?>
-      <a href="<?= e(url('ai-lab')) ?>" class="nav-link" data-i18n="nav_ailab"<?= $navCurrent === 'ai-lab' ? ' aria-current="page"' : '' ?>>AI Lab</a>
-      <a <?= $navTarget('action') ?> class="nav-link" data-i18n="nav_action">AI in Action</a>
-      <a <?= $navTarget('strategy') ?> class="nav-link" data-i18n="nav_framework">AI Framework</a>
-      <a href="<?= e(url('highlights')) ?>" class="nav-link" data-i18n="nav_highlights"<?= $navCurrent === 'highlights' ? ' aria-current="page"' : '' ?>>Highlights</a>
-      <a <?= $navTarget('about-combined') ?> class="nav-link" data-i18n="nav_about">About Us</a>
-      <a <?= $navTarget('contact') ?> class="nav-link" data-i18n="nav_contact">Contact Us</a>
-    </nav>
+    <div class="nav-branding">
+      <a <?= $isHome ? 'href="#hero" data-scroll="hero"' : 'href="' . e(url('/')) . '"' ?> class="nav-logo" target="_self" aria-label="AI Unit home">
+        <img src="<?= e(asset('images/logo.webp')) ?>" alt="" class="nav-logo-img" width="300" height="200" decoding="async">
+      </a>
+      <a class="nav-ministry" href="https://mitci.govmu.org/mitci/" target="_blank" rel="noopener noreferrer">
+        <span class="nav-ministry-mark">
+          <img src="<?= e(asset('images/MLogo.png')) ?>" alt="" width="896" height="251" decoding="async">
+        </span>
+        <span class="nav-ministry-name">Ministry of Information Technology, Communication and Innovation</span>
+        <span class="visually-hidden"> (opens in a new tab)</span>
+      </a>
+    </div>
     <div class="nav-right">
+      <a class="nav-book-lab" href="<?= e(url('ai-lab') . '#book') ?>" target="_self" aria-label="Book a lab session">
+        <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="16" rx="2"/>
+          <path d="M8 3v4m8-4v4M3 10h18m-12 5 2 2 4-4"/>
+        </svg>
+        <span>Book a lab</span>
+      </a>
       <?php
       /**
        * AI Marketplace: a persistent primary action, not a nav link.
@@ -79,9 +71,29 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
         </svg>
         <span class="visually-hidden">(opens in a new tab)</span>
       </a>
-      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <button class="hamburger" id="hamburger" aria-controls="navLinks" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
+    <nav class="nav-links" id="navLinks" aria-label="Site sections">
+      <?php
+      /**
+       * Order is deliberate: AI Lab, AI in Action, AI Framework, Highlights,
+       * About Us, Contact Us.
+       *
+       * AI Lab and Highlights target pages rather than homepage sections, so
+       * they carry a plain href and no data-scroll. They use aria-current for
+       * the highlight instead of the .active class: the scroll spy in
+       * script.js reassigns .active across every .nav-link on each scroll event
+       * and would strip a server-rendered one on the first wheel movement.
+       */
+      ?>
+      <a href="<?= e(url('ai-lab')) ?>" class="nav-link" data-i18n="nav_ailab"<?= $navCurrent === 'ai-lab' ? ' aria-current="page"' : '' ?>>AI Lab</a>
+      <a <?= $navTarget('action') ?> class="nav-link" data-i18n="nav_action">AI in Action</a>
+      <a <?= $navTarget('strategy') ?> class="nav-link" data-i18n="nav_framework">AI Framework</a>
+      <a href="<?= e(url('highlights')) ?>" class="nav-link" data-i18n="nav_highlights"<?= $navCurrent === 'highlights' ? ' aria-current="page"' : '' ?>>Highlights</a>
+      <a <?= $navTarget('about-combined') ?> class="nav-link" data-i18n="nav_about">About Us</a>
+      <a <?= $navTarget('contact') ?> class="nav-link" data-i18n="nav_contact">Contact Us</a>
+    </nav>
   </div>
 </header>
