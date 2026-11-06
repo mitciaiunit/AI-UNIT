@@ -544,23 +544,34 @@ try {
 } catch (e) {}
 updateSimpleSavingsNote();
 
-/* ─── HERO BACKGROUND VIDEO ───
-   The hero sits on a CSS gradient with the video layered over it. If the video
-   file is missing or fails to decode, an empty <video> box can paint black over
-   that gradient, so hide the element and let the gradient show through. */
+/* Decorative hero video. The poster stays visible until playback starts. */
 (function () {
-  const heroVideo = document.getElementById('heroVideo');
-  if (!heroVideo) return;
+  const video = document.getElementById('heroVideo');
+  if (!video) return;
 
-  const markUnavailable = () => heroVideo.classList.add('is-unavailable');
+  const root = document.documentElement;
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const showPoster = () => video.classList.remove('is-playing');
 
-  // A failing <source> fires "error" on the source element, not the <video>.
-  heroVideo.querySelectorAll('source').forEach(s => s.addEventListener('error', markUnavailable));
-  heroVideo.addEventListener('error', markUnavailable);
-  heroVideo.addEventListener('loadeddata', () => heroVideo.classList.remove('is-unavailable'));
+  video.addEventListener('playing', () => video.classList.add('is-playing'));
+  video.addEventListener('pause', showPoster);
+  video.addEventListener('error', showPoster);
 
-  // Covers the case where every source failed before these listeners attached.
-  if (heroVideo.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) markUnavailable();
+  function syncPlayback() {
+    if (motion.matches || root.classList.contains('a11y-no-motion') ||
+        root.classList.contains('a11y-hide-images')) {
+      video.pause();
+      showPoster();
+      return;
+    }
+
+    if (!video.hasAttribute('src')) video.src = video.dataset.src;
+    if (video.paused) video.play().catch(showPoster);
+  }
+
+  motion.addEventListener('change', syncPlayback);
+  new MutationObserver(syncPlayback).observe(root, { attributeFilter: ['class'] });
+  syncPlayback();
 })();
 
 const navbar=document.getElementById('navbar');
