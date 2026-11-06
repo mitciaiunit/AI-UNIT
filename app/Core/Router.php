@@ -33,6 +33,11 @@ final class Router
      */
     public function dispatch(string $method, string $uri, string $basePath = ''): void
     {
+        $method = strtoupper($method);
+        $isHeadRequest = $method === 'HEAD';
+        // HEAD has the same routing and headers as GET, but sends no body.
+        $routeMethod = $isHeadRequest ? 'GET' : $method;
+
         $path = parse_url($uri, PHP_URL_PATH) ?: '/';
 
         $basePath = rtrim($basePath, '/');
@@ -46,7 +51,7 @@ final class Router
         }
 
         foreach ($this->routes as $route) {
-            if ($route['method'] !== $method) {
+            if ($route['method'] !== $routeMethod) {
                 continue;
             }
 
@@ -55,7 +60,16 @@ final class Router
                 continue;
             }
 
-            $this->call($route['handler'], $params);
+            if ($isHeadRequest) {
+                ob_start();
+                try {
+                    $this->call($route['handler'], $params);
+                } finally {
+                    ob_end_clean();
+                }
+            } else {
+                $this->call($route['handler'], $params);
+            }
 
             return;
         }
@@ -67,7 +81,16 @@ final class Router
          * all render the same page. The 404 status alone does not undo that
          * for a crawler that has already been pointed at one.
          */
-        View::render('404', ['noindex' => true], 'app');
+        if ($isHeadRequest) {
+            ob_start();
+            try {
+                View::render('404', ['noindex' => true], 'app');
+            } finally {
+                ob_end_clean();
+            }
+        } else {
+            View::render('404', ['noindex' => true], 'app');
+        }
     }
 
     /**

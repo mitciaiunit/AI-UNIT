@@ -9,14 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <!--
-    Loaded so the "View as Text" button can extract the document's real text
-    layer with pdf.js's own parser, independent of whether this particular
-    PDF carries accessibility tags. See pages/booklet.php for the same
-    technique applied to the booklet reader. cdnjs/blob: are already allowed
-    by the site's CSP (app/Core/SecurityHeaders.php) for this exact purpose.
-  -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- PDF rendering and text extraction use self-hosted Mozilla PDF.js. -->
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -108,7 +101,7 @@
 
     .back-btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-      padding: 7px 16px; min-height: 40px;
+      padding: 7px 16px; min-height: 44px;
       border: 1px solid var(--border); border-radius: 100px;
       font-size: 0.8rem; font-weight: 500; color: var(--text2);
       background: none; cursor: pointer; text-decoration: none;
@@ -120,7 +113,7 @@
 
     .btn-dl {
       display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-      padding: 8px 18px; min-height: 40px;
+      padding: 8px 18px; min-height: 44px;
       background: var(--blue); color: #fff;
       border: none; border-radius: 100px;
       font-size: 0.8rem; font-weight: 600;
@@ -231,8 +224,8 @@
       .doc-meta { display: none; }
       .back-btn .btn-label,
       .btn-dl .btn-label { display: none; }
-      .back-btn { padding: 0; width: 40px; height: 40px; border-radius: 50%; }
-      .btn-dl   { padding: 0; width: 40px; height: 40px; border-radius: 50%; }
+      .back-btn { padding: 0; width: 44px; height: 44px; border-radius: 50%; }
+      .btn-dl   { padding: 0; width: 44px; height: 44px; border-radius: 50%; }
       .footer-dot { display: none; }
       .footer-bar { flex-direction: column; gap: 3px; font-size: 0.68rem; padding-top: 5px; }
     }
@@ -261,11 +254,33 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { transition: none !important; animation: none !important; }
     }
+    body.viewer-expanded .topbar,body.viewer-expanded .footer-bar { display:none; }
+    body.viewer-expanded .viewer-main { position:fixed; inset:0; z-index:9000; }
+    #exitViewer { position:fixed; bottom:16px; left:16px; z-index:10001; background:#fff; color:#1A3A8F; border:2px solid #1A3A8F; }
+    #exitViewer[hidden] { display:none; }
+    /* Keep document controls readable and reachable on narrow screens. */
+    body { height:100dvh; }
+    .back-btn,.btn-dl,.btn-new-tab,.logo-wrap { min-height:44px; min-width:44px; font-size:14px; }
+    .footer-bar { font-size:14px; color:#4B5E77; }
+    .footer-bar a { min-height:44px; display:inline-flex; align-items:center; text-decoration:underline; }
+    .doc-meta-label,.logo-sub { color:#4B5E77; font-size:14px; }
+    :focus-visible { outline:3px solid #005fcc; outline-offset:2px; }
+    .pdf-text-view { font-size:16px; }
+    @media(max-width:640px) {
+      .topbar { height:auto; min-height:58px; flex-basis:auto; flex-wrap:wrap; padding:8px 12px; }
+      .topbar-left { flex-basis:100%; overflow:visible; }
+      .doc-meta { display:block; overflow:visible; }
+      .doc-meta-title { font-size:16px; white-space:normal; }
+      .topbar-right { flex-wrap:wrap; gap:8px; width:100%; min-width:0; }
+      .back-btn,.btn-dl { width:auto; height:auto; padding:8px 12px; border-radius:8px; }
+      .back-btn .btn-label,.btn-dl .btn-label { display:inline; }
+      .footer-bar { display:none; }
+    }
   </style>
 </head>
 <body>
 
-<a class="skip-link" href="#pdfEmbed">Skip to document</a>
+<a class="skip-link" href="#main-content">Skip to document</a>
 
 <!-- TOP BAR -->
 <header class="topbar" role="banner">
@@ -274,7 +289,7 @@
       <img src="<?= e(asset('images/logo.webp')) ?>" alt="" aria-hidden="true" width="300" height="200" decoding="async" />
       <div class="logo-text">
         <span class="logo-main">AI Unit</span>
-        <span class="logo-sub">Ministry of ICT · Mauritius</span>
+        <span class="logo-sub">MITCI · Mauritius</span>
       </div>
     </a>
     <div class="divider-line" aria-hidden="true"></div>
@@ -291,6 +306,7 @@
       </svg>
       <span class="btn-label">Back to Homepage</span>
     </a>
+    <button type="button" class="back-btn" id="expandViewer" aria-expanded="false">Fullscreen</button>
     <button type="button" class="back-btn" id="textViewBtn" aria-pressed="false" aria-label="View this document as accessible text">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -298,7 +314,7 @@
         <line x1="9" y1="13" x2="15" y2="13"/>
         <line x1="9" y1="17" x2="15" y2="17"/>
       </svg>
-      <span class="btn-label">View as Text</span>
+      <span class="btn-label">Read as text</span>
     </button>
     <a href="<?= e($docUrl) ?>" class="btn-dl" id="dlBtn" download="<?= e($downloadName) ?>" aria-label="Download <?= e($title) ?>">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
@@ -312,12 +328,13 @@
 </header>
 
 <!-- VIEWER - takes all remaining height -->
-<main class="viewer-main" role="main">
+<main class="viewer-main" role="main" id="main-content" tabindex="-1">
+  <button type="button" id="exitViewer" class="back-btn" hidden>Exit fullscreen</button>
   <iframe
     id="pdfEmbed"
     title="PDF Document Viewer"
     aria-label="Document viewer"
-    src="<?= e($docUrl) ?>"
+    src="<?= e(url('assets/vendor/pdfjs-6.4.299/web/viewer.html') . '?file=' . rawurlencode($docUrl) . '#zoom=page-width') ?>"
     allowfullscreen
   ></iframe>
 
@@ -330,7 +347,7 @@
       <line x1="9" y1="15" x2="15" y2="15"/>
     </svg>
     <p class="fallback-title">Document preview unavailable</p>
-    <p class="fallback-desc">Your browser may be blocking the inline PDF viewer. Use one of the options below to access the document.</p>
+    <p class="fallback-desc">The document could not load. Please try again, use Read as text, or download the PDF.</p>
     <div class="fallback-actions">
       <a href="<?= e($docUrl) ?>" class="btn-dl" id="fallbackDl" download="<?= e($downloadName) ?>">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
@@ -376,7 +393,7 @@
 
 <!-- FOOTER BAR -->
 <footer class="footer-bar" role="contentinfo">
-  <span>AI Unit · Ministry of ICT, Mauritius</span>
+  <span>AI Unit · Ministry of Information Technology, Communication and Innovation</span>
   <span class="footer-dot" aria-hidden="true"></span>
   <a href="<?= e(url('/')) ?>" id="backBtnFooter">Back to Homepage</a>
   <span class="footer-dot" aria-hidden="true"></span>
@@ -384,6 +401,17 @@
 </footer>
 
 <script>
+(function () {
+  const open=document.getElementById('expandViewer'), close=document.getElementById('exitViewer');
+  function restore(){document.body.classList.remove('viewer-expanded');close.hidden=true;open.setAttribute('aria-expanded','false');open.focus();}
+  open.addEventListener('click',async()=>{
+    document.body.classList.add('viewer-expanded');close.hidden=false;open.setAttribute('aria-expanded','true');close.focus();
+    try {if(document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();} catch (_) { /* Full-window mode remains available when native fullscreen is restricted. */ }
+  });
+  close.addEventListener('click',()=>{if(document.fullscreenElement) document.exitFullscreen().catch(()=>{});restore();});
+  document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&document.body.classList.contains('viewer-expanded'))restore();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('viewer-expanded'))close.click();});
+})();
 (function () {
   // Use real browser back navigation so the homepage restores scroll
   // position instead of reloading fresh. Falls back to the href (plain
@@ -401,19 +429,10 @@
 })();
 (function () {
   const embed = document.getElementById('pdfEmbed');
-  let loaded = false;
-  embed.addEventListener('load', () => { loaded = true; });
   embed.addEventListener('error', () => {
-    embed.style.display = 'none';
+    embed.hidden = true;
     document.getElementById('pdfFallback').classList.add('show');
   });
-  /* If the inline viewer hasn't fired a load event after a few seconds, assume it's blocked. */
-  setTimeout(() => {
-    if (!loaded) {
-      embed.style.display = 'none';
-      document.getElementById('pdfFallback').classList.add('show');
-    }
-  }, 4000);
 })();
 (function () {
   const PDF_SRC = <?= json_encode($docUrl) ?>;
@@ -564,10 +583,12 @@
 
     initialTextPromise = (async () => {
       try {
-        if (typeof pdfjsLib === 'undefined') throw new Error('pdf.js failed to load');
-        pdfjsLib.GlobalWorkerOptions.workerSrc =
-          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        const pdf = await pdfjsLib.getDocument(PDF_SRC).promise;
+        const pdfjsLib = await import(<?= json_encode(url('assets/vendor/pdfjs-6.4.299/build/pdf.mjs')) ?>);
+        pdfjsLib.GlobalWorkerOptions.workerSrc = <?= json_encode(url('assets/vendor/pdfjs-6.4.299/build/pdf.worker.mjs')) ?>;
+        const pdf = await pdfjsLib.getDocument({url: PDF_SRC, isEvalSupported: false, useWasm: false,
+          cMapUrl: <?= json_encode(url('assets/vendor/pdfjs-6.4.299/web/cmaps/')) ?> + '/', cMapPacked: true,
+          standardFontDataUrl: <?= json_encode(url('assets/vendor/pdfjs-6.4.299/web/standard_fonts/')) ?> + '/'
+        }).promise;
 
         await appendTextPage(pdf, 1);
         const remainingPages = Array.from({ length: pdf.numPages - 1 }, (_, index) => index + 2);
@@ -601,13 +622,16 @@
     return initialTextPromise;
   }
 
+  panel.addEventListener('keydown', event => { if (event.key === 'Escape') { event.preventDefault(); btn.click(); } });
   btn.addEventListener('click', async () => {
     const open = !panel.classList.contains('show');
     panel.classList.toggle('show', open);
     btn.classList.toggle('active', open);
     btn.setAttribute('aria-pressed', String(open));
     embed.setAttribute('aria-hidden', String(open));
+    embed.inert = open;
     if (fallback) fallback.setAttribute('aria-hidden', String(open));
+    if (!open) btn.focus();
     if (open) {
       // extractText() fills #tvContent while nothing has focus yet - the
       // aria-live #tvStatus text ("Extracting…") is announced on its own

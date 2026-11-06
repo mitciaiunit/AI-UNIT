@@ -51,52 +51,18 @@
     document.head.appendChild(font);
 
     var style = document.createElement('style');
-    style.textContent = `:root {
-  --bg: #F7F8FC;
-  --surface: #FFFFFF;
-  --surface-2: #F0F2F9;
-  --surface-3: #E8EBF5;
-  --blue: #1A3A8F;
-  --blue-mid: #2554C7;
-  --blue-light: #D6E0FB;
-  --blue-pale: #EEF2FF;
-  --blue-glow: rgba(37,84,199,0.15);
-  --teal: #0B7285;
-  --teal-light: #C3F0FA;
-  --teal-pale: #F0FDFF;
-  --gold: #B45309;
-  --gold-light: #FEF3C7;
-  --emerald: #047857;
-  --emerald-light: #D1FAE5;
-  --violet: #5B21B6;
-  --violet-light: #EDE9FE;
-  --amber: #D97706;
-  --amber-light: #FEF3C7;
-  --amber-pale: #FFFBEB;
-  --sage: #059669;
-  --sage-light: #D1FAE5;
-  --sage-pale: #ECFDF5;
-  --coral: #92400E;
-  --coral-light: #FEF3C7;
-  --coral-pale: #FFFBEB;
-  --warm-gray: #78716C;
-  --warm-gray-light: #F5F5F4;
-  --text-1: #0D1B3E;
-  --text-2: #2D3A5A;
-  --text-3: #4B5E77;
-  --text-4: #6B7E96;
-  --border: #DDE2EF;
-  --border-2: #C8CFE4;
-  --radius: 18px;
-  --radius-sm: 10px;
-  --trans: 0.24s cubic-bezier(0.4,0,0.2,1);
-  --shadow-sm: 0 1px 4px rgba(13,27,62,0.07);
-  --shadow-md: 0 4px 18px rgba(13,27,62,0.09);
-  --shadow-lg: 0 12px 40px rgba(13,27,62,0.12);
-  --shadow-xl: 0 24px 64px rgba(13,27,62,0.14);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text-1);}
+    style.textContent = `/* No :root token block, no universal reset and no body rule here.
+   This file used to inject a full copy of the palette from style.css. It was
+   appended to <head> AFTER the stylesheet, so at equal specificity it won the
+   cascade and silently reverted every token style.css had corrected: --text-4
+   went back to #6B7E96 (placeholders at 4.16:1), --sage to #059669 (dimension
+   tags at 3.58:1) and --amber to #D97706 (icons at 2.86:1). The corrected
+   values had been in style.css since before this release; only this stale
+   duplicate was putting the failing ones back at runtime.
+
+   The widget consumes the host tokens, exactly as the comment below always
+   said it did. includes/header.php loads style.css on every page that loads
+   this script, so there is nothing for these declarations to fall back to. */
 
 /* ==========================================================
    ACCESSIBILITY WIDGET - CSS
@@ -113,6 +79,7 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text-1);}
 .a11y-trigger-wrap{
   position:fixed;bottom:20px;right:20px;z-index:2001;
   display:flex;align-items:center;gap:8px;
+  min-width:44px;min-height:44px;justify-content:center;
   padding:8px 14px;border-radius:100px;
   cursor:pointer;
   color:var(--text-2);
@@ -156,20 +123,20 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text-1);}
   border-left:1.5px solid var(--border);
   z-index:2000;
   overflow-y:auto;
-  transform:translateX(100%);
-  /* visibility is delayed on the way in (0s 0s) but instant on the way out
-     (0s .3s) so the slide animation still plays, while removing the closed
-     panel from the accessibility tree - see openPanel()/closePanel(), which
-     toggle aria-modal in lockstep with this class. Without this, NVDA (which
-     enforces aria-modal strictly) treats the still-present, merely
-     off-screen panel as the active modal from first page load and hides the
-     entire rest of the document, even though nothing looks wrong visually. */
+  transform:none;
+  opacity:0;
+  pointer-events:none;
+  /* Keep the closed panel inside the viewport. Translating a fixed element a
+     full width to the right enlarges Chrome's horizontal scroll area at some
+     breakpoints, even while visibility:hidden. Visibility still removes the
+     panel from the accessibility tree; opacity supplies a short open/close
+     transition without moving the panel outside the page. */
   visibility:hidden;
-  transition:transform 0.32s cubic-bezier(0.4,0,0.2,1), visibility 0s 0.32s;
+  transition:opacity 0.2s ease, visibility 0s 0.2s;
   font-family:'Sora',sans-serif;
   padding-bottom:24px;
 }
-#a11y-panel.open{transform:translateX(0);visibility:visible;transition:transform 0.32s cubic-bezier(0.4,0,0.2,1), visibility 0s 0s;}
+#a11y-panel.open{opacity:1;pointer-events:auto;visibility:visible;transition:opacity 0.2s ease, visibility 0s 0s;}
 #a11y-panel::-webkit-scrollbar{width:6px;}
 #a11y-panel::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:4px;}
 
