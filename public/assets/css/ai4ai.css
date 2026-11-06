@@ -24,10 +24,42 @@
   overflow-wrap: break-word;
 }
 
-.ai4ai h1 { font-size: clamp(3.25rem, 7vw, 5.25rem); }
+.ai4ai h1 {
+  font-size: clamp(3.5rem, 9vw, 6.5rem);
+  font-variant-numeric: lining-nums;
+  letter-spacing: -.035em;
+}
+.ai4ai-paths {
+  display: block;
+  width: min(100%, clamp(12rem, 31vw, 22.5rem));
+  height: auto;
+  margin-top: -.15rem;
+}
+.ai4ai-paths g { color: var(--segment-ink); }
+.ai4ai-paths circle { fill: currentColor; }
+.ai4ai-paths path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.a11y-no-motion) .ai4ai-paths path {
+    stroke-dasharray: 1;
+    animation: ai4ai-draw .56s ease-out var(--path-delay, 0ms) both;
+  }
+  .ai4ai-paths g:nth-child(2n) { --path-delay: 100ms; }
+  .ai4ai-paths g:nth-child(3n) { --path-delay: 180ms; }
+
+  @keyframes ai4ai-draw {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
+  }
+}
 .ai4ai h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); margin-bottom: .65rem; }
 .ai4ai h3 { font-size: 1.35rem; }
-.ai4ai-lead { max-width: 52ch; margin-top: .75rem; font-size: clamp(1.15rem, 2.2vw, 1.45rem); }
+.ai4ai-lead { hyphens: none; max-width: 52ch; margin-top: .75rem; font-size: clamp(1.15rem, 2.2vw, 1.45rem); }
 .ai4ai p { text-align: left; }
 .ai4ai-context { max-width: 65ch; margin-top: .75rem; }
 .ai4ai-section { padding-block: clamp(2.25rem, 4vw, 3.5rem); }
@@ -171,14 +203,23 @@
   font-size: .875rem;
   font-weight: 700;
 }
+.ai4ai-paths g:nth-child(1),
 .ai4ai-segments li:nth-child(1) { --segment-ink: #734500; --segment-tint: #fff0ba; }
+.ai4ai-paths g:nth-child(2),
 .ai4ai-segments li:nth-child(2) { --segment-ink: #8c2d18; --segment-tint: #ffe2d8; }
+.ai4ai-paths g:nth-child(3),
 .ai4ai-segments li:nth-child(3) { --segment-ink: #624c3d; --segment-tint: #eee4da; }
+.ai4ai-paths g:nth-child(4),
 .ai4ai-segments li:nth-child(4) { --segment-ink: #315817; --segment-tint: #e3f4cd; }
+.ai4ai-paths g:nth-child(5),
 .ai4ai-segments li:nth-child(5),
+.ai4ai-paths g:nth-child(9),
 .ai4ai-segments li:nth-child(9) { --segment-ink: #135861; --segment-tint: #d4f0f0; }
+.ai4ai-paths g:nth-child(6),
 .ai4ai-segments li:nth-child(6) { --segment-ink: #174f82; --segment-tint: #dbeefe; }
+.ai4ai-paths g:nth-child(7),
 .ai4ai-segments li:nth-child(7) { --segment-ink: #633178; --segment-tint: #f0e1f5; }
+.ai4ai-paths g:nth-child(8),
 .ai4ai-segments li:nth-child(8) { --segment-ink: #8a1854; --segment-tint: #fbddeb; }
 .ai4ai-strategy { margin-top: 1rem; }
 
