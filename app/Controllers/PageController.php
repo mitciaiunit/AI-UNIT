@@ -59,10 +59,6 @@ final class PageController extends Controller
         ]);
     }
 
-    /**
-     * Public AI Lab page. Booking is delegated to Calendly; nothing about a
-     * booking is stored or processed here, so this action touches no database.
-     */
     public function ai4ai(): void
     {
         $this->view('ai4ai', [
@@ -70,9 +66,14 @@ final class PageController extends Controller
             'description' => 'Explore AI training platforms and learn about Mauritius’ AI for All and Inclusion programme.',
             'navCurrent' => 'ai4ai',
             'pageStyles' => ['ai4ai.css'],
+            'pageScripts' => ['ai4ai.js'],
         ]);
     }
 
+    /**
+     * Public AI Lab page. Booking is delegated to Calendly; nothing about a
+     * booking is stored or processed here, so this action touches no database.
+     */
     public function aiLab(): void
     {
         $this->view('ai-lab', [

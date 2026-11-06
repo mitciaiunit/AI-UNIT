@@ -45,8 +45,12 @@ $segments = [
   <header class="ai4ai-intro">
     <div class="container ai4ai-hero">
       <div class="ai4ai-stage">
-        <div class="ai4ai-platform-plane" aria-hidden="true"></div>
-        <h1 aria-label="AI4AI"><span class="ai4ai-wordmark" aria-hidden="true"><span>A</span><span>I</span><span>4</span><span>A</span><span>I</span></span></h1>
+        <h1>AI4AI</h1>
+        <img class="ai4ai-stage-poster" src="<?= e(asset('images/ai4ai/ai4ai-hero.webp')) ?>"
+             width="960" height="600" alt="" role="presentation" fetchpriority="high">
+        <video class="ai4ai-stage-video" muted loop playsinline preload="none" aria-hidden="true"
+               data-src="<?= e(asset('images/ai4ai/ai4ai-hero.mp4')) ?>"></video>
+        <button class="ai4ai-motion-toggle" type="button" aria-label="Play AI4AI animation" hidden>Play</button>
       </div>
       <div class="ai4ai-hero-copy">
         <p class="ai4ai-kicker">AI for All and Inclusion</p>
