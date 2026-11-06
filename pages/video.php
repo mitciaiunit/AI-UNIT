@@ -69,7 +69,8 @@ $i18n = [
     --text1:    #0D1B3E;
     --text2:    #2D3A5A;
     --text3:    #4B5E77;
-    --text4:    #6B7E96;
+    /* Aligned with style.css --text-4. #6B7E96 measured 4.16:1 on white. */
+    --text4:    #60738B;
     --red:      #DC2626;
     --green:    #047857;
     --radius:   12px;
@@ -108,6 +109,7 @@ $i18n = [
   .back-btn {
     display: inline-flex;
     align-items: center;
+    min-height: 44px;
     gap: 7px;
     padding: 8px 16px;
     border: 1.5px solid var(--border2);
@@ -163,6 +165,8 @@ $i18n = [
     padding: 4px 6px;
   }
   .lang-btn {
+    min-width: 44px;
+    min-height: 44px;
     padding: 5px 13px;
     border-radius: 100px;
     font-size: 0.75rem;
@@ -314,19 +318,30 @@ $i18n = [
 
   .progress-track {
     flex: 1;
-    height: 4px;
-    background: rgba(255,255,255,0.25);
+    height: 44px;
+    background: transparent;
     border-radius: 100px;
     cursor: pointer;
     position: relative;
-    transition: height var(--trans);
+    transition: none;
   }
-  .progress-track:hover { height: 6px; }
+  .progress-track::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 50%;
+    height: 4px;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.25);
+    border-radius: 100px;
+  }
+  .progress-track:hover::before { height: 6px; }
   .progress-fill {
-    height: 100%;
+    position: absolute;
+    left: 0; top: 50%;
+    height: 4px;
+    transform: translateY(-50%);
     background: white;
     border-radius: 100px;
-    position: relative;
     pointer-events: none;
     transition: width 0.08s linear;
   }
@@ -347,8 +362,9 @@ $i18n = [
 
   .progress-buffer {
     position: absolute;
-    top: 0; left: 0;
-    height: 100%;
+    top: 50%; left: 0;
+    height: 4px;
+    transform: translateY(-50%);
     background: rgba(255,255,255,0.18);
     border-radius: 100px;
     pointer-events: none;
@@ -365,8 +381,8 @@ $i18n = [
     border: none;
     color: white;
     cursor: pointer;
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -398,11 +414,21 @@ $i18n = [
     -webkit-appearance: none;
     appearance: none;
     width: 72px;
-    height: 4px;
-    background: rgba(255,255,255,0.25);
+    height: 44px;
+    background: transparent;
     border-radius: 100px;
     cursor: pointer;
     outline: none;
+  }
+  .volume-slider::-webkit-slider-runnable-track {
+    height: 4px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 100px;
+  }
+  .volume-slider::-moz-range-track {
+    height: 4px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 100px;
   }
   .volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -582,6 +608,7 @@ $i18n = [
   }
 
   .lang-select {
+    min-height: 44px;
     padding: 6px 12px;
     border: 1.5px solid var(--border2);
     border-radius: 8px;

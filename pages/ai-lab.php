@@ -32,7 +32,7 @@ $calendlyUrl = $calendlyUrl ?? null;
     <div class="page-header">
       <div class="page-eyebrow">AI Unit Facility</div>
       <h1 class="page-title">AI Lab</h1>
-      <p class="page-subtitle" data-i18n="ailab_page_subtitle" tabindex="0">
+      <p class="page-subtitle" data-i18n="ailab_page_subtitle">
         A practical space where students, technopreneurs and innovators can
         learn, experiment and explore artificial intelligence.
       </p>
@@ -63,7 +63,7 @@ $calendlyUrl = $calendlyUrl ?? null;
      * machine-readable <time datetime> value and as the visible text, so the
      * two cannot drift apart.
      *
-     * NOTE: this is a fixed announcement, not a countdown. On 20 August 2026 the
+     * NOTE: the lab has opened; this panel now reads in the present tense. On 20 August 2026 the
      * wording here (and the shorter flag on the homepage, pages/home.php) needs
      * changing to the present tense - nothing switches it over automatically.
      */
@@ -72,55 +72,39 @@ $calendlyUrl = $calendlyUrl ?? null;
     <aside class="lab-launch" aria-labelledby="lab-launch-title">
       <p class="lab-launch-flag">
         <span class="lab-launch-dot" aria-hidden="true"></span>
-        Launch announcement
+        Now open
       </p>
       <h2 class="lab-launch-title" id="lab-launch-title">
-        AI Lab launching
-        <time datetime="<?= e($labLaunchDate->format('Y-m-d')) ?>"><?= e($labLaunchDate->format('j F Y')) ?></time>
+        The AI Lab is open
       </h2>
       <?php /* Deliberately no data-i18n: applyTranslations() replaces innerHTML
                from a static string, which would hardcode the date a second time
                in script.js and let the two copies drift. The date belongs in
                $labLaunchDate only. */ ?>
-      <p class="lab-launch-body" tabindex="0">
-        The AI Lab officially launches on
-        <?= e($labLaunchDate->format('j F Y')) ?>. From that date the space is
-        open to students, technopreneurs and innovators. Explore the platform and
-        the resources below to see what the lab offers and how to take part.
+      <p class="lab-launch-body">
+        The AI Lab opened on
+        <time datetime="<?= e($labLaunchDate->format('Y-m-d')) ?>"><?= e($labLaunchDate->format('j F Y')) ?></time>
+        and is open to students, technopreneurs and innovators. Explore the
+        resources below to see what the lab offers and how to book a session.
       </p>
     </aside>
 
-    <?php
-    /*
-     * Feature image, immediately under the introduction so the space is
-     * understandable before any body text is read.
-     *
-     * width/height are the file's real pixel dimensions (1536x1024, 3:2). With
-     * `height:auto` in CSS the browser uses them to reserve the right space
-     * before the file arrives, so the text below does not jump - and because
-     * the ratio is the image's own, nothing is stretched or cropped.
-     *
-     * eager/high priority: it sits at the top of the page, so lazy-loading it
-     * would only delay the one thing that explains the page at a glance.
-     */
-    ?>
     <figure class="lab-figure">
       <img src="<?= e(asset('images/ai-lab-workstations.webp')) ?>"
            width="1008" height="454"
            alt="A row of computer workstations and chairs inside the AI Lab.">
       <figcaption>Inside the AI Lab at METC, Cyber Tower 2, Ebene.</figcaption>
     </figure>
-
     <section class="lab-block" aria-labelledby="lab-about-title">
       <h2 id="lab-about-title">About the AI Lab</h2>
-      <p data-i18n="ailab_page_about1" tabindex="0">
+      <p data-i18n="ailab_page_about1">
         The AI Lab is an Innovation Lab approved by the Government and
         established by the Ministry of Information Technology, Communication and
         Innovation. It is a space for working with artificial intelligence
         directly - building, testing and exploring, rather than reading about it.
       </p>
-      <p data-i18n="ailab_page_about2" tabindex="0">
-        The Ministry is entering into an agreement with
+      <p data-i18n="ailab_page_about2">
+        The Ministry has entered into an agreement with
         <strong>STEMpower Inc.</strong>, a US-based non-profit organisation,
         which is supplying the laboratory's equipment and the expertise to
         install it.
@@ -140,7 +124,7 @@ $calendlyUrl = $calendlyUrl ?? null;
 
     <section class="lab-block" aria-labelledby="lab-who-title">
       <h2 id="lab-who-title">Who the lab is for</h2>
-      <p data-i18n="ailab_page_who" tabindex="0">
+      <p data-i18n="ailab_page_who">
         The AI Lab is open to secondary and higher education students, and to
         technopreneurs and innovators - for practical learning, experimentation,
         innovation and exploration.
@@ -155,7 +139,7 @@ $calendlyUrl = $calendlyUrl ?? null;
 
     <section class="lab-block lab-booking" id="book" aria-labelledby="lab-book-title">
       <h2 id="lab-book-title">Book the AI Lab</h2>
-      <p data-i18n="ailab_page_book_intro" tabindex="0">
+      <p data-i18n="ailab_page_book_intro">
         Choose an available date and time below, then enter the details
         requested to confirm your session. Booking is handled by Calendly, which
         sends your confirmation by email.
@@ -213,16 +197,30 @@ $calendlyUrl = $calendlyUrl ?? null;
         </p>
       <?php endif; ?>
 
-      <p class="lab-tbc">
-        <strong>To be confirmed:</strong> session lengths, group sizes, opening
-        hours and anything to bring will be added here once the AI Unit has
-        confirmed them.
+      <h3>Booking a session</h3>
+      <p>Sessions run for up to three hours.</p>
+      <p>Individuals book under their own name.</p>
+      <p>
+        For a school or college group, the accompanying teacher makes the
+        booking and remains with the group for the whole session. Groups are
+        limited to 20 students. Please email
+        <?= email_link() ?>
+        for arrangements.
       </p>
-      <p class="lab-privacy">
-        Booking details you enter are submitted to Calendly and handled under
-        Calendly's own terms and privacy policy. See our
-        <a href="<?= e(url('privacy-policy')) ?>">Privacy Policy</a> for how the
-        AI Unit handles information it receives.
+
+      <h3>Getting here</h3>
+      <p>
+        The AI Lab is on Level 6 at METC, Cyber Tower 2, Ebene. On arrival,
+        report to METC reception on Level 6.
+      </p>
+      <p>There is no parking at the building.</p>      <p class="lab-privacy">
+        The booking calendar is provided by Calendly and loads with this page,
+        which may set cookies from that service. Booking details you enter are
+        submitted to Calendly and handled under Calendly's own terms and privacy
+        policy. See our <a href="<?= e(url('privacy-policy')) ?>">Privacy Policy</a>
+        for how the AI Unit handles information it receives, and our
+        <a href="<?= e(url('cookie-policy')) ?>">Cookie Policy</a> for what is
+        stored on your device.
       </p>
     </section>
 

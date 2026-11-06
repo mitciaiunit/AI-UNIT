@@ -55,7 +55,8 @@
   /* Text */
   --ink: #131c31;
   --ink-muted: #4d5771;
-  --ink-subtle: #6b7590;
+  /* 4.61:1 on the page background. #6b7590 measured 4.35:1, under 4.5:1. */
+  --ink-subtle: #60738B;
 
   /* Hairlines */
   --line: rgba(19, 28, 49, .08);

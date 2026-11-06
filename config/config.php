@@ -36,10 +36,18 @@ $publicUrl = PHP_SAPI === 'cli-server'
     ? ''
     : rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/index.php')), '/');
 
+// GOC publishes this application at https://aim.govmu.org/aim/.
+// Match only the approved Host; arbitrary forwarded-host headers are ignored.
+if (strtolower((string) ($_SERVER['HTTP_HOST'] ?? '')) === 'aim.govmu.org') {
+    $publicUrl = '/aim';
+    $_ENV['APP_BASE_URL'] = '/aim';
+    $_ENV['APP_CANONICAL_ORIGIN'] = 'https://aim.govmu.org';
+}
+
 return [
     'site' => [
         'name' => 'AI Unit',
-        'full_name' => 'AI Unit - Ministry of ICT, Mauritius',
+        'full_name' => 'AI Unit - Ministry of Information Technology, Communication and Innovation',
         'tagline' => 'Ministry of Information Technology, Communication and Innovation - Republic of Mauritius',
         /*
          * The one URL base for everything the browser sees - routes, assets
@@ -69,7 +77,7 @@ return [
         'canonical_origin' => env('APP_CANONICAL_ORIGIN', ''),
         'asset_path' => '/assets',
         'contact_email' => env('CONTACT_EMAIL', 'aiunit@govmu.org'),
-        'contact_phone' => '(+230) 650 3000',
+        'contact_phone' => '(+230) 650 3009',
         'default_lang' => 'en',
     ],
 

@@ -270,14 +270,6 @@
             "usedBy": "Footer ministry logo"
         },
         {
-            "path": "assets/images/ai-lab.jpg",
-            "group": "images",
-            "bytes": 246577,
-            "sha256": "edd4821ac89f334b8841bde8d834e82bc66acf55c73bfd8699bd6b8196ae9d9f",
-            "required": true,
-            "usedBy": "AI Lab page - feature image"
-        },
-        {
             "path": "assets/images/blueprint.webp",
             "group": "images",
             "bytes": 101704,
@@ -408,11 +400,27 @@
         {
             "path": "assets/images/yr.jpeg",
             "group": "images",
-            "bytes": null,
-            "sha256": null,
+            "bytes": 99803,
+            "sha256": "999b2c4104e4698774ef881dc83cf2fcd7ef1dc5429de00793692287169eb12b",
             "required": true,
             "usedBy": "Homepage team tab 4 - Mr. Yudhaveer Ramdoyal",
-            "note": "WO-05 closed. The portrait was supplied as yr.jpeg, not the yr.jpg this entry originally named, so the path and the required flag were both corrected - a manifest that names a file nobody ships reports a warning forever and stops meaning anything."
+            "note": "WO-05 closed. The portrait was supplied as yr.jpeg, not the yr.jpg this entry originally named, so the path and the required flag were both corrected - a manifest that names a file nobody ships reports a warning forever and stops meaning anything. The size and checksum were left null when the path was corrected, which made this the one required asset the verifier could not actually verify; both are now recorded from the shipped file."
+        },
+        {
+            "path": "assets/images/ai-lab-workstations.webp",
+            "group": "images",
+            "bytes": 50594,
+            "sha256": "3d9448a67ed4d07eac02a5d2d2a1e63895672b5d66cf27417d5dafcf2a064479",
+            "required": true,
+            "usedBy": "AI Lab page workstation photograph"
+        },
+        {
+            "path": "assets/images/hero-poster.webp",
+            "group": "images",
+            "bytes": 13816,
+            "sha256": "48e8e51ed1d339459c0ef73812d771b0a5c362e888ee558b8553611647c854c2",
+            "required": true,
+            "usedBy": "Homepage hero still"
         }
     ]
 }

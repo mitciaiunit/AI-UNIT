@@ -79,6 +79,12 @@ final class SecurityHeaders
      */
     private const HERO_VIDEO_HOST = 'https://d8j0ntlcm91z4.cloudfront.net';
 
+
+    /* Google Maps frame origin. Only reached after the visitor clicks
+       Show map in the contact section, so nothing loads from Google on a
+       normal page view. The map assets inside the iframe run under
+       Google's own CSP, not this one, so frame-src is all we need. */
+    private const GOOGLE_MAPS = 'https://www.google.com';
     public static function send(): void
     {
         // Nothing to send for tools/create-admin.php and friends, and a
@@ -116,7 +122,7 @@ final class SecurityHeaders
             'media-src' => "'self' " . self::HERO_VIDEO_HOST,
 
             // 'self' covers the same-origin PDF iframe in pages/document.php.
-            'frame-src' => "'self' " . $calendly,
+            'frame-src' => "'self' " . $calendly . ' ' . self::GOOGLE_MAPS,
 
             // pdf.js sets workerSrc to a cdnjs URL and falls back to a blob
             // worker when the browser refuses a cross-origin one, so both are

@@ -19,7 +19,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -81,6 +80,7 @@
     .topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
     .back-btn {
       display: inline-flex; align-items: center; gap: 6px;
+      min-height: 44px;
       padding: 6px 14px;
       border: 1px solid var(--border);
       border-radius: 100px;
@@ -105,6 +105,7 @@
     .topbar-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .btn-dl {
       display: inline-flex; align-items: center; gap: 6px;
+      min-width: 44px; min-height: 44px; justify-content: center;
       padding: 7px 16px;
       background: var(--blue); color: #fff;
       border: none; border-radius: 100px;
@@ -281,7 +282,7 @@
     }
     .bb-sep { width: 1px; height: 22px; background: var(--border); flex-shrink: 0; margin: 0 2px; }
     .bb-btn {
-      width: 34px; height: 34px; border-radius: 50%;
+      width: 44px; height: 44px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       border: none; background: none;
       color: var(--text2); cursor: pointer;
@@ -296,7 +297,7 @@
       font-size: 0.8rem; color: var(--text2);
     }
     .bb-page input {
-      width: 36px; text-align: center;
+      width: 44px; min-height: 44px; text-align: center;
       border: 1px solid var(--border2);
       border-radius: 6px; padding: 3px 4px;
       font-size: 0.8rem; font-family: 'Sora', sans-serif;
@@ -377,7 +378,7 @@
 
     @media (max-width: 768px) {
       .breadcrumb { display: none; }
-      .nav-btn { width: 38px; height: 38px; }
+      .nav-btn { width: 44px; height: 44px; }
       .nav-btn i { font-size: 18px; }
       .nav-btn.prev { left: 6px; }
       .nav-btn.next { right: 6px; }
@@ -594,8 +595,7 @@
   });
 })();
 (function () {
-  pdfjsLib.GlobalWorkerOptions.workerSrc =
-    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const PDFJS_BASE = <?= json_encode(url('assets/vendor/pdfjs-6.4.299/')) ?>.replace(/\/?$/, '/');
 
   let pdf       = null;
   let total     = 0;
@@ -909,7 +909,16 @@
 
   async function init() {
     try {
-      pdf   = await pdfjsLib.getDocument(PDF_SRC).promise;
+      const pdfjsLib = await import(PDFJS_BASE + 'build/pdf.mjs');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_BASE + 'build/pdf.worker.mjs';
+      pdf = await pdfjsLib.getDocument({
+        url: PDF_SRC,
+        isEvalSupported: false,
+        useWasm: false,
+        cMapUrl: PDFJS_BASE + 'web/cmaps/',
+        cMapPacked: true,
+        standardFontDataUrl: PDFJS_BASE + 'web/standard_fonts/'
+      }).promise;
       total = pdf.numPages;
       pageInput.max = total;
       loader.style.display = 'none';

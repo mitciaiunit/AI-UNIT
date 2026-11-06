@@ -13,9 +13,9 @@ const ASSET_BASE = AI_UNIT_CONFIG.assetBase || '/assets';
 // Translation Data - English only
 const translations = {
   en: {
-    nav_action: "AI in Action", nav_framework: "Framework", nav_about: "About Us", nav_contact: "Contact Us", nav_ailab: "AI Lab", nav_highlights: "Highlights", accessibility: "Accessibility",
-    hero_badge: "Ministry of ICT, Communication & Innovation", hero_title_prefix: "Where", hero_title_suffix: "Meets Impact", hero_subtitle: "Welcome to the AI Unit of Mauritius - your guide to how artificial intelligence is making public services smarter, faster, and fairer for every citizen.",
-    hero_cta_marketplace: "Explore Regional AI Marketplace", hero_cta_learn: "Learn More", badge_fair: "FAIR Guidelines", badge_ai4all: "AI4ALL Inclusion", badge_marketplace: "AI Marketplace", badge_smart: "Smart Services", badge_ppp: "PPP Adoption", badge_privacy: "Data Privacy",
+    nav_action: "AI in Action", nav_framework: "Framework", nav_about: "About Us", nav_contact: "Contact Us", nav_ailab: "AI Lab", nav_highlights: "Highlights", nav_marketplace: "AI Marketplace", accessibility: "Accessibility",
+    hero_badge: "Ministry of Information Technology, Communication and Innovation", hero_title_prefix: "Where", hero_title_suffix: "Meets Impact", hero_subtitle: "Welcome to the AI Unit - your guide to how artificial intelligence is making public services smarter, faster, and fairer for every citizen.",
+    hero_cta_marketplace: "Explore Regional AI Marketplace", hero_cta_learn: "Learn More", hero_cta_ailab: "Book an AI Lab session", badge_fair: "FAIR Guidelines", badge_ai4all: "AI4ALL Inclusion", badge_marketplace: "AI Marketplace", badge_smart: "Smart Services", badge_ppp: "PPP Adoption", badge_privacy: "Data Privacy",
     ailab_eyebrow: "AI Unit Facility", ailab_title1: "Explore the", ailab_title2: "AI Lab",
     ailab_desc: "A space at the AI Unit for learning, exploring and working with artificial intelligence - available primarily to students from colleges and universities, researchers, educators and members of the public.",
     ailab_tag1: "College & university students", ailab_tag2: "Researchers", ailab_tag3: "Educators", ailab_tag4: "Members of the public",
@@ -23,7 +23,7 @@ const translations = {
     // Keeps the <time> element: applyTranslations() assigns innerHTML, so the
     // markup survives a language switch. Update this date together with the
     // announcement in pages/ai-lab.php and pages/home.php.
-    ailab_launch_flag: "Launching <time datetime=\"2026-08-20\">20 August 2026</time>",
+    ailab_launch_flag: "Open since <time datetime=\"2026-08-20\">20 August 2026</time>",
     about_eyebrow: "Who We Are", about_title_prefix: "Driving Mauritius", about_title_suffix: "AI Future", about_mission_quote: "\"Mauritius is committed to becoming a smart, inclusive and future-ready nation - where every citizen benefits from responsible AI.\"",
     about_body1: "The AI Unit is the dedicated body established under the Ministry of Information Technology, Communication and Innovation (MITCI) to lead Mauritius' artificial intelligence journey. We coordinate AI governance, promote innovation, and ensure that technology serves all Mauritians - fairly and transparently.",
     about_body2: "We are the strategic vehicle for MITCI's <strong>Digital Transformation 2025-2029</strong> blueprint - a bold roadmap to modernise public services and position Mauritius as a leading AI nation in Africa.",
@@ -102,7 +102,7 @@ const translations = {
     footer_resources: "Resources", footer_strategy: "National AI Strategy", footer_fair: "FAIR Guidelines", footer_blueprint: "Digital Blueprint", footer_playbook: "AI Playbook",
     footer_info: "Information", footer_privacy: "Privacy Policy", footer_disclaimer: "Disclaimer", footer_cookie: "Cookie Policy", footer_accessibility: "Accessibility Statement", footer_contact: "Connect with us",
     footer_disclaimer_text: "The Regional AI Marketplace is a facilitation tool. Listing a company or solution does not constitute an official government endorsement, certification, or guarantee of quality by the Ministry of Information Technology, Communication and Innovation or the Government of Mauritius. Users are encouraged to conduct their own due diligence before entering into technical or financial agreements.",
-    footer_copyright: "© 2026 Artificial Intelligence Unit, Republic of Mauritius. Developed and Hosted by Government Online Centre.",
+    footer_copyright: "© 2026 Artificial Intelligence Unit, Republic of Mauritius. Developed at the AI Unit, hosted by the Government Online Centre.",
     diva_online: "Online & ready to help", diva_welcome: "Hello! I'm <strong>DIVA</strong> - the Government of Mauritius' AI assistant. I'm here to help you with questions about our Digital Transformation Blueprint, AI strategy, and government services.<br><br>You can also <strong>speak to me</strong> - press the microphone button below and ask your question out loud.",
     diva_sug1: "What is the Digital Transformation Blueprint?", diva_sug2: "What does FAIR stand for in the AI Framework?", diva_sug3: "How is AI used in Mauritius government services?",
     // Screen-reader-only strings for the chat transcript's live region -
@@ -127,9 +127,9 @@ const translations = {
     // Final strings from Kate (simple-summaries-en.js), pasted verbatim -
     // not Claude drafts. Ready to review and ship as-is. Word counts are
     // Kate's own, shown as (full → simple).
-    hero_subtitle_s: "Welcome to the AI Unit of Mauritius. We explain how AI is making public services better for everyone.", // (24 → 19)
+    hero_subtitle_s: "Welcome to the AI Unit. We explain how AI is making public services better for everyone.", // (24 → 19)
     about_mission_quote_s: "\"Mauritius wants to be a smart and fair country, where AI helps every citizen.\"", // (19 → 15)
-    about_body1_s: "The AI Unit leads Mauritius' work on artificial intelligence. We are part of the Ministry of ICT. We make sure AI is fair and open for everyone.", // (68 → 27)
+    about_body1_s: "The AI Unit leads Mauritius' work on artificial intelligence. We are part of the Ministry of Information Technology, Communication and Innovation. We make sure AI is fair and open for everyone.", // (68 → 27)
     about_body2_s: "We carry out the Ministry's <strong>Digital Transformation plan for 2025 to 2029</strong>. The goal is better public services and a strong AI sector.", // (29 → 25)
     about_body3_s: "The AI Unit is here for everyone: citizens, businesses and students.", // (26 → 11)
     vision_text_s: "We want Mauritius to lead the region in safe, trusted AI that improves the economy, public services and daily life.", // (25 → 20)
@@ -184,12 +184,12 @@ const translations = {
     // ─── SIMPLE LANGUAGE MODE: AI Lab page (pages/ai-lab.php) ───
     // Claude drafts, not yet reviewed by Kate/the Ministry - unlike the Tier
     // 1/2 strings above. Every fact from the full text is preserved (Government
-    // approval, Ministry of ICT, the STEMpower Inc. partnership, who the lab is
+    // approval, Ministry of Information Technology, Communication and Innovation, the STEMpower Inc. partnership, who the lab is
     // for, and how booking works); only the wording is shortened. Flag for
     // review before treating as final.
     ailab_page_subtitle_s: "A place where students and innovators can learn and try out AI.", // (18 → 12)
-    ailab_page_about1_s: "The Government approved the AI Lab as an Innovation Lab. The Ministry of ICT set it up. Here, you build, test and try AI yourself, instead of just reading about it.", // (42 → 29)
-    ailab_page_about2_s: "The Ministry is partnering with <strong>STEMpower Inc.</strong>, a US non-profit. STEMpower supplies the lab's equipment and helps set it up.", // (27 → 20)
+    ailab_page_about1_s: "The Government approved the AI Lab as an Innovation Lab. The Ministry of Information Technology, Communication and Innovation set it up. Here, you build, test and try AI yourself, instead of just reading about it.", // (42 → 29)
+    ailab_page_about2_s: "The Ministry has partnered with <strong>STEMpower Inc.</strong>, a US non-profit. STEMpower supplies the lab's equipment and helps set it up.", // (27 → 20)
     ailab_page_who_s: "The AI Lab is open to secondary and university students, technopreneurs and innovators, to learn and experiment with AI.", // (23 → 19)
     ailab_page_book_intro_s: "Pick a date and time below, then fill in your details to book. Calendly handles booking and emails you a confirmation.", // (27 → 19)
 
@@ -521,28 +521,16 @@ if (simpleToggleBtn) {
   simpleToggleBtn.addEventListener('click', function () { setSimpleMode(!simpleMode); });
 }
 
-// Alt+M: quick keyboard toggle for simple language from anywhere on the
-// page. Never touches the built-in screen reader - reading only ever starts
-// from an explicit click on the reader's own controls.
-function handleAltM() {
-  setSimpleMode(!simpleMode);
-}
+/* The Alt+M shortcut is removed along with the Simple language control.
+   Leaving it would have let any visitor silently switch the whole site
+   into simplified copy with no visible control to switch it back. */
 
-document.addEventListener('keydown', function (e) {
-  if (e.altKey && e.key.toLowerCase() === 'm') {
-    e.preventDefault();
-    handleAltM();
-  }
-});
-
-// Restore saved preference and apply as early as this script runs (it loads
-// before accessibility-widget.js, at the end of <body> - see Task 2; true
-// before-first-paint would require moving script loading into <head>, which
-// was out of scope here).
-try {
-  if (localStorage.getItem(SIMPLE_MODE_KEY) === '1') setSimpleMode(true, { silent: true });
-} catch (e) {}
-updateSimpleSavingsNote();
+/* The saved-preference restore is removed with the control. A returning
+   visitor who had switched simple mode on would otherwise be pinned in
+   simplified copy forever, with nothing on the page to turn it off.
+   simpleMode therefore stays false and applyTranslations() always serves the
+   full text. Kate's _s strings are retained in the dictionary above so the
+   feature can be reinstated by restoring the toggle and these few lines. */updateSimpleSavingsNote();
 
 /* Decorative hero video. The poster stays visible until playback starts. */
 (function () {
@@ -600,6 +588,7 @@ function closeMobileMenu(returnFocus){
   navLinksDiv.classList.remove('mobile-open');
   hamburger.classList.remove('open');
   hamburger.setAttribute('aria-expanded','false');
+  hamburger.setAttribute('aria-label','Open menu');
   if(returnFocus)hamburger.focus();
 }
 
@@ -620,6 +609,19 @@ hamburger.addEventListener('click',()=>{
   // and the button cannot drift out of step.
   navLinksDiv.classList.toggle('mobile-open',open);
   hamburger.setAttribute('aria-expanded',open.toString());
+  hamburger.setAttribute('aria-label',open ? 'Close menu' : 'Open menu');
+});
+
+// Page links do not carry data-scroll, so they need their own close path.
+navLinksDiv.querySelectorAll('a').forEach(link=>{
+  link.addEventListener('click',()=>closeMobileMenu(false));
+});
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&navLinksDiv.classList.contains('mobile-open')){
+    e.preventDefault();
+    closeMobileMenu(true);
+  }
 });
 
 const teamTabs = Array.from(document.querySelectorAll('.team-tab'));
@@ -1928,3 +1930,52 @@ function formatTime(seconds) {
 
     return `${mins}:${String(secs).padStart(2, '0')}`;
 }
+
+/* ─── EMAIL ADDRESS ASSEMBLY ───
+   Addresses are emitted by email_link() as data attributes plus a <noscript>
+   fallback, so the plain string is absent from the served HTML. Assembled here
+   into a real mailto link. Friction against naive harvesters, not protection
+   against one that runs JavaScript. */
+function initEmailObfuscation() {
+  document.querySelectorAll('.email-obf').forEach(function (el) {
+    var user = el.getAttribute('data-eu');
+    var domain = el.getAttribute('data-ed');
+    if (!user || !domain) return;
+    var address = user + '@' + domain;
+    var a = document.createElement('a');
+    a.href = 'mailto:' + address;
+    a.textContent = address;
+    el.textContent = '';
+    el.appendChild(a);
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initEmailObfuscation);
+} else {
+  initEmailObfuscation();
+}
+
+/* --- CONTACT MAP: click to load ---
+   Not embedded on page load: Google Maps sets non-essential cookies and this
+   site has no consent banner, because until now it set only PHPSESSID. The
+   click is the consent. Nothing reaches Google before it. */
+(function () {
+  var btn = document.getElementById('showMapBtn');
+  if (!btn) { return; }
+  btn.addEventListener('click', function () {
+    var host = document.getElementById('contactMap');
+    var consent = document.getElementById('mapConsent');
+    if (!host) { return; }
+    var query = 'Cyber Tower 2, Ebene Cyber City, Mauritius';
+    var frame = document.createElement('iframe');
+    frame.src = 'https://www.google.com/maps?q=' + encodeURIComponent(query) + '&output=embed';
+    frame.title = 'Map showing Cyber Tower 2, Ebene Cyber City, Mauritius';
+    frame.className = 'contact-map-frame';
+    frame.loading = 'lazy';
+    frame.referrerPolicy = 'no-referrer-when-downgrade';
+    frame.setAttribute('allowfullscreen', '');
+    if (consent) { consent.remove(); }
+    host.appendChild(frame);
+    frame.focus();
+  });
+})();

@@ -19,9 +19,13 @@
     result exits 1, so the script can gate a deployment or a CI step.
 
     Assets marked "required": false in the manifest report as warnings rather
-    than failures. That is how a known, accepted gap is recorded without
-    turning every run red - see assets/images/yr.jpg, which is waiting on work
-    order WO-05.
+    than failures. That is how a known, accepted gap - an asset still on a work
+    order, say - is recorded without turning every run red.
+
+    An asset whose manifest entry has no recorded size or SHA-256 also reports
+    as a warning, never as a pass. Presence is all that can be checked without
+    a baseline, and a run that counted such an entry as verified would report
+    full coverage it does not have.
 
 .PARAMETER ProjectRoot
     The directory that CONTAINS public/, i.e. the repository or deployment
@@ -166,6 +170,9 @@ Write-Host ""
 $failures = New-Object System.Collections.ArrayList
 $warnings = New-Object System.Collections.ArrayList
 $okCount  = 0
+# Counted separately from $okCount so the closing summary can state how many
+# REQUIRED assets were fully verified, rather than how many entries passed.
+$requiredOk = 0
 $lastGroup = ''
 
 foreach ($asset in $data.assets) {
@@ -228,8 +235,33 @@ foreach ($asset in $data.assets) {
     }
 
     if ($problems.Count -eq 0) {
-        $okCount++
-        if (-not $Quiet) { Write-Host ("  OK    {0}" -f $asset.path) -ForegroundColor DarkGray }
+        # The file is present and nothing is wrong with it, but an entry that
+        # records no size or checksum can only ever be presence-checked. Such
+        # an entry used to fall through to OK, so a run reported full coverage
+        # while one required asset had never actually been verified. It now
+        # reports as a warning whether or not the asset is required.
+        $baseline = New-Object System.Collections.ArrayList
+        if ($null -eq $asset.bytes) {
+            [void]$baseline.Add('manifest records no size - presence checked only')
+        }
+        if ($Checksum -and -not $asset.sha256) {
+            [void]$baseline.Add('manifest records no SHA-256 - contents not verified')
+        }
+
+        if ($baseline.Count -eq 0) {
+            $okCount++
+            if ($asset.required) { $requiredOk++ }
+            if (-not $Quiet) { Write-Host ("  OK    {0}" -f $asset.path) -ForegroundColor DarkGray }
+            continue
+        }
+
+        [void]$warnings.Add([PSCustomObject]@{
+            Path     = $asset.path
+            UsedBy   = $asset.usedBy
+            Note     = $asset.note
+            Problems = $baseline
+        })
+        Write-Host ("  WARN  {0}" -f $asset.path) -ForegroundColor Yellow
         continue
     }
 
@@ -276,11 +308,19 @@ if ($failures.Count -gt 0) {
     Write-Host ""
     Write-Host "If media is simply not deployed on this machine, copy it in with:" -ForegroundColor Yellow
     Write-Host "  powershell -ExecutionPolicy Bypass -File tools\deploy-media.ps1 -Source <media folder>" -ForegroundColor Yellow
+    Write-Host "  (deploy-media.ps1 is a development tool and is not part of a release" -ForegroundColor Yellow
+    Write-Host "   package - on a deployment target, request a fresh transfer instead.)" -ForegroundColor Yellow
     Write-Host ""
     Write-Host ("RESULT: FAIL - {0} of {1} required assets have problems ({2} warnings)" -f $failures.Count, $requiredTotal, $warnings.Count) -ForegroundColor Red
     exit 1
 }
 
 Write-Host ""
-Write-Host ("RESULT: PASS - all {0} required assets present and valid ({1} warnings)" -f $requiredTotal, $warnings.Count) -ForegroundColor Green
+if ($requiredOk -eq $requiredTotal) {
+    Write-Host ("RESULT: PASS - all {0} required assets present and verified ({1} warnings)" -f $requiredTotal, $warnings.Count) -ForegroundColor Green
+} else {
+    # Nothing is wrong, but the run does not amount to full coverage and must
+    # not be recorded as though it did.
+    Write-Host ("RESULT: PASS WITH WARNINGS - {0} of {1} required assets fully verified, {2} present but unverifiable" -f $requiredOk, $requiredTotal, ($requiredTotal - $requiredOk)) -ForegroundColor Yellow
+}
 exit 0

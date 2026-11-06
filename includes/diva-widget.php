@@ -33,7 +33,11 @@ $divaAvailable = diva_api_url() !== '';
     <div class="diva-panel-header">
       <img src="<?= e(asset('images/DIVA.png')) ?>" alt="DIVA">
       <div class="diva-panel-header-text">
-        <h4 id="divaPanelTitle">DIVA</h4>
+        <?php /* h2, not h4: the panel sits after the footer h2 headings, so an
+                 h4 here skipped a level on every page. The .diva-panel-header
+                 rule in style.css was moved to match the tag, so this still
+                 renders at 1.05rem and nothing changes visually. */ ?>
+        <h2 id="divaPanelTitle">DIVA</h2>
         <p>Digital Interactive Virtual Assistant</p>
         <div class="diva-online"><span class="diva-online-dot"></span><span data-i18n="diva_online">Online &amp; ready to help</span></div>
       </div>
@@ -83,7 +87,7 @@ $divaAvailable = diva_api_url() !== '';
       </button>
     </div>
 
-    <div class="diva-footer">Powered by <span>AI Unit · Ministry of ICT, Mauritius</span></div>
+    <div class="diva-footer">Powered by <span>AI Unit · Ministry of Information Technology, Communication and Innovation</span></div>
   </div>
   <?php if (!$divaAvailable): ?>
     <?php

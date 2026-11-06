@@ -47,6 +47,12 @@ function env(string $key, mixed $default = null): mixed
  */
 function request_is_https(): bool
 {
+    // This approved public host is HTTPS-only at the government reverse proxy.
+    // Secure cookies remain mandatory even if its forwarding header is absent.
+    if (strtolower((string) ($_SERVER['HTTP_HOST'] ?? '')) === 'aim.govmu.org') {
+        return true;
+    }
+
     $https = $_SERVER['HTTPS'] ?? '';
     if ($https !== '' && strtolower((string) $https) !== 'off') {
         return true;
@@ -154,6 +160,8 @@ function canonical_url(?string $path = null): string
     if ($path === null) {
         $requestPath = (string) parse_url((string) ($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH);
 
+        // Preserve the /aim prefix used by the published website.
+
         return site_origin() . ($requestPath === '' ? '/' : $requestPath);
     }
 
@@ -212,7 +220,7 @@ function asset_filesize(string $path): ?string
 
 /**
  * Compose a <title> value consistent with the original pages' convention:
- * "{Page Title} - AI Unit, Ministry of ICT, Mauritius".
+ * "{Page Title} - AI Unit, Ministry of Information Technology, Communication and Innovation".
  */
 function page_title(string $title = ''): string
 {
@@ -286,4 +294,32 @@ function diva_api_url(): string
 function csrf_token(): string
 {
     return \App\Core\Csrf::token();
+}
+
+/**
+ * Renders a contact email address without putting the plain string in the
+ * served HTML. The parts are emitted as data attributes and reassembled by
+ * assets/js/script.js.
+ *
+ * This is friction, not protection: a scraper that executes JavaScript still
+ * gets the address. It stops the naive harvesters that only parse markup.
+ *
+ * The <noscript> fallback is not optional. The privacy and cookie policies use
+ * this address as the data-protection contact point, so it has to stay
+ * readable and usable with scripting off.
+ */
+function email_link(?string $address = null): string
+{
+    $address = $address ?? (string) config('site.contact_email');
+    $parts = explode('@', $address, 2);
+
+    if (count($parts) !== 2 || $parts[0] === '' || $parts[1] === '') {
+        return '<a href="mailto:' . e($address) . '">' . e($address) . '</a>';
+    }
+
+    [$user, $domain] = $parts;
+
+    return '<span class="email-obf" data-eu="' . e($user) . '" data-ed="' . e($domain) . '">'
+        . '<noscript>' . e($user) . ' at ' . e(str_replace('.', ' dot ', $domain)) . '</noscript>'
+        . '</span>';
 }

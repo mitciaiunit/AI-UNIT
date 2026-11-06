@@ -37,6 +37,20 @@ $router->get('/student-corner', static function (): void {
     http_response_code(301);
     header('Location: ' . url('highlights'));
 });
+/*
+ * The Innovation Lab page was published at /ai-innovation-lab on the previous
+ * site, and that URL has already gone out in printed correspondence. It stays
+ * alive as a permanent redirect so those references land on the renamed page
+ * instead of a 404. url() is used rather than a hardcoded path so the target
+ * follows APP_BASE_URL when the site moves to its public hostname.
+ *
+ * The trailing-slash form is covered without a second route: Router::dispatch()
+ * rtrims the path before matching, so /ai-innovation-lab/ resolves here too.
+ */
+$router->get('/ai-innovation-lab', static function (): void {
+    http_response_code(301);
+    header('Location: ' . url('ai-lab'));
+});
 
 $router->get('/admin', [DashboardController::class, 'index']);
 $router->get('/admin/login', [AuthController::class, 'showLogin']);
@@ -68,3 +82,45 @@ $router->get('/document/{slug}', [DocumentController::class, 'show']);
 $router->get('/video/{id}', [VideoController::class, 'show']);
 
 $router->get('/booklet/{slug}', [BookletController::class, 'show']);
+
+
+// Keep the published short playbook URL working, including its trailing slash.
+$router->get('/playbook', static function (): void {
+    http_response_code(301);
+    header('Location: ' . url('document/playbook'));
+});
+
+
+// Exact replacements for published URLs from the previous website.
+// Unknown paths still return 404; these aliases do not expose WordPress endpoints.
+$legacyPages = [
+    '/a-blueprint-for-mauritius' => 'document/blueprint',
+    '/ai-strategy' => 'document/aistrategy',
+    '/fair-guidelines' => 'document/fairguidelines',
+    '/about-us' => '#about-combined',
+    '/contact-us' => '#contact',
+    '/ai-framework' => '#strategy',
+    '/marketplace' => '#marketplace',
+    '/projects' => '#action',
+    '/ai-for-all' => '#action',
+    '/ai-for-all-english-version' => 'booklet/aie',
+    '/violence-numerique-contre-les-enfants' => 'booklet/livret',
+];
+foreach ($legacyPages as $oldPath => $destination) {
+    $router->get($oldPath, static function () use ($destination): void {
+        http_response_code(301);
+        header('Location: ' . url($destination));
+    });
+}
+
+$legacyDocuments = [
+    '/wp-content/uploads/2026/04/aistrategy.pdf' => 'documents/aistrategy.pdf',
+    '/wp-content/uploads/2026/04/fairguidelines.pdf' => 'documents/fairguidelines.pdf',
+    '/blueprint/blueprint.pdf' => 'documents/blueprint.pdf',
+];
+foreach ($legacyDocuments as $oldPath => $destination) {
+    $router->get($oldPath, static function () use ($destination): void {
+        http_response_code(301);
+        header('Location: ' . asset($destination));
+    });
+}

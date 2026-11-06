@@ -46,11 +46,31 @@ final class Database
             );
 
             try {
-                self::$connection = new PDO($dsn, $config['username'], $config['password'], [
+                $options = [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                     PDO::ATTR_EMULATE_PREPARES => false,
-                ]);
+                ];
+                $tls = [
+                    'ca' => (string) env('DATABASE_TLS_CA', ''),
+                    'cert' => (string) env('DATABASE_TLS_CERT', ''),
+                    'key' => (string) env('DATABASE_TLS_KEY', ''),
+                ];
+                $requiresTls = env('APP_ENV') === 'production'
+                    || strtolower((string) ($_SERVER['HTTP_HOST'] ?? '')) === 'aim.govmu.org';
+                if ($requiresTls || $tls !== ['ca' => '', 'cert' => '', 'key' => '']) {
+                    if (in_array('', $tls, true)) {
+                        throw new PDOException('Database TLS requires a CA, client certificate and private key.');
+                    }
+                    $options += [
+                        PDO::MYSQL_ATTR_SSL_CA => $tls['ca'],
+                        PDO::MYSQL_ATTR_SSL_CERT => $tls['cert'],
+                        PDO::MYSQL_ATTR_SSL_KEY => $tls['key'],
+                        PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => true,
+                    ];
+                }
+
+                self::$connection = new PDO($dsn, $config['username'], $config['password'], $options);
             } catch (PDOException $e) {
                 /*
                  * The original message can carry the host, port, user and

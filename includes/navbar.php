@@ -29,10 +29,10 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
 <header class="navbar" id="navbar">
   <div class="nav-inner">
     <a <?= $isHome ? 'href="#hero" data-scroll="hero"' : 'href="' . e(url('/')) . '"' ?> class="nav-logo" aria-label="AI Unit Home">
-      <img src="<?= e(asset('images/logo.webp')) ?>" alt="AI Unit - Ministry of ICT, Mauritius" class="nav-logo-img" width="300" height="200" decoding="async">
+      <img src="<?= e(asset('images/logo.webp')) ?>" alt="AI Unit - Ministry of Information Technology, Communication and Innovation" class="nav-logo-img" width="300" height="200" decoding="async">
       <div class="logo-text-wrap">
         <span class="logo-main">AI Unit</span>
-        <span class="logo-sub">Ministry of ICT · Mauritius</span>
+        <span class="logo-sub">MITCI · Mauritius</span>
       </div>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Site sections">
@@ -56,15 +56,29 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
       <a <?= $navTarget('contact') ?> class="nav-link" data-i18n="nav_contact">Contact Us</a>
     </nav>
     <div class="nav-right">
-      <button type="button" class="simple-toggle" id="simple-toggle" aria-pressed="false">
-        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="4" y1="7" x2="20" y2="7"/>
-          <line x1="4" y1="12" x2="14" y2="12"/>
-          <line x1="4" y1="17" x2="10" y2="17"/>
+      <?php
+      /**
+       * AI Marketplace: a persistent primary action, not a nav link.
+       *
+       * Before this, the marketplace had exactly two entry points, both on the
+       * homepage - the hero CTA and the card block in the middle of the page.
+       * Anyone who scrolled past the hero, or who arrived on any other page,
+       * had no route to it at all. It is a separate site, so it carries the
+       * outbound icon, rel="noopener" and a spoken "opens in a new tab".
+       *
+       * Colour matches .btn-primary (the hero CTA) so both read as the same
+       * destination rather than two different offers.
+       */
+      ?>
+      <a href="https://aimarketplace.govmu.org/" class="nav-marketplace" target="_blank" rel="noopener noreferrer">
+        <span data-i18n="nav_marketplace">AI Marketplace</span>
+        <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
         </svg>
-        <span data-i18n="simple_toggle">Simple language</span>
-        <span class="simple-savings-note visually-hidden" id="simple-savings-note" hidden></span>
-      </button>
+        <span class="visually-hidden">(opens in a new tab)</span>
+      </a>
       <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>

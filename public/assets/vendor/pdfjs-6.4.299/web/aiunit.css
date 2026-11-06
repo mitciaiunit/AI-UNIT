@@ -1,0 +1,6 @@
+/* AI Unit additions; Mozilla distribution retained under Apache-2.0. */
+:root { color-scheme: light; --toolbar-height: 44px; }
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible { outline: 3px solid #005fcc !important; outline-offset: -3px; }
+.toolbarButton { min-width:44px; min-height:44px; }
+input,select { font-size:16px !important; }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } }
