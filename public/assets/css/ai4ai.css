@@ -6,15 +6,31 @@
 }
 
 .ai4ai-intro {
-  border-bottom: 1px solid var(--border);
-  background: var(--ai4ai-banner);
-  color: var(--ai4ai-ink);
-  padding: clamp(2.25rem, 4vw, 3.5rem) 0;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #f4f7ff;
+  background:
+    radial-gradient(ellipse at 78% 30%, #1b3359 0, transparent 64%),
+    linear-gradient(130deg, #0b101c, #101b32 68%, #121c34);
+  padding: clamp(1.25rem, 3vw, 2.75rem) 0 clamp(2rem, 4vw, 3.5rem);
+}
+
+.ai4ai-intro::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, #7aaed611 1px, transparent 1px) 50% 0 / 5rem 5rem,
+    linear-gradient(#7aaed611 1px, transparent 1px) 50% 0 / 5rem 5rem;
+  mask-image: linear-gradient(transparent, #000 50%, transparent);
 }
 
 .ai4ai-kicker {
   font-weight: 600;
-  color: var(--ai4ai-accent);
+  color: #b3eee5;
   margin-bottom: .5rem;
 }
 
@@ -28,7 +44,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
   align-items: center;
-  gap: clamp(1.5rem, 5vw, 4.5rem);
+  gap: clamp(.75rem, 3vw, 2.75rem);
 }
 
 .ai4ai-stage {
@@ -38,12 +54,6 @@
   place-items: center;
   min-height: clamp(15rem, 27vw, 21rem);
   overflow: hidden;
-  border: 1px solid #2a4870;
-  border-radius: var(--radius);
-  background:
-    radial-gradient(ellipse at 61% 72%, #245d71 0, #162f55 43%, transparent 73%),
-    linear-gradient(145deg, #142a51, #0d1b3e 70%);
-  box-shadow: var(--shadow-lg);
 }
 
 .ai4ai-stage h1 {
@@ -59,6 +69,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  mask-image:
+    linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent),
+    linear-gradient(transparent, #000 15%, #000 78%, transparent);
+  mask-composite: intersect;
 }
 .ai4ai-stage-video:not(.is-visible) { opacity: 0; }
 html.a11y-no-motion .ai4ai-stage-video { visibility: hidden; }
@@ -95,9 +109,16 @@ html.a11y-no-motion .ai4ai-stage-video { visibility: hidden; }
 
 .ai4ai h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); margin-bottom: .65rem; }
 .ai4ai h3 { font-size: 1.35rem; }
-.ai4ai-lead { hyphens: none; max-width: 52ch; margin-top: .75rem; font-size: clamp(1.15rem, 2.2vw, 1.45rem); }
+.ai4ai-lead {
+  max-width: 18ch;
+  font-family: Lora, Georgia, serif;
+  font-size: clamp(2.15rem, 4vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.12;
+  hyphens: none;
+}
 .ai4ai p { text-align: left; }
-.ai4ai-context { max-width: 65ch; margin-top: .75rem; }
+.ai4ai-context { max-width: 46ch; margin-top: 1rem; color: #d9e3f6; }
 .ai4ai-section { padding-block: clamp(2.25rem, 4vw, 3.5rem); }
 .ai4ai-section-intro { max-width: 67ch; color: var(--text-2); margin-bottom: 1.6rem; }
 #ai4ai-training { scroll-margin-top: 5rem; }
@@ -113,11 +134,66 @@ html.a11y-no-motion .ai4ai-stage-video { visibility: hidden; }
   text-decoration: underline;
 }
 
-.ai4ai-jump { color: var(--ai4ai-accent); margin-top: .7rem; }
+.ai4ai-jump { color: #b3eee5; margin-top: .7rem; }
 .ai4ai-strategy { color: var(--blue); }
+.ai4ai-intro .ai4ai-jump:focus-visible,
+.ai4ai-starter-link:focus-visible {
+  outline: 2px solid #b3eee5;
+  outline-offset: 3px;
+}
 .ai4ai-jump:focus-visible, .ai4ai-provider-link:focus-visible, .ai4ai-strategy:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 3px;
+}
+
+.ai4ai-starter {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem 2rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  margin-top: clamp(1.25rem, 3vw, 2.25rem);
+  background: #1b3152;
+  border: 1px solid #4f6d8c;
+  border-left: 4px solid #9bded8;
+  border-radius: var(--radius-sm);
+}
+.ai4ai-starter .ai4ai-starter-label {
+  margin-bottom: .25rem;
+  color: #b3eee5;
+  font-weight: 600;
+}
+.ai4ai-starter h2 { font-size: clamp(1.4rem, 2.6vw, 2rem); }
+.ai4ai-starter p { color: #d9e3f6; }
+.ai4ai-starter ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem .55rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.ai4ai-starter li {
+  padding: .18rem .55rem;
+  border-radius: .35rem;
+  background: #283f61;
+  font-size: .875rem;
+}
+.ai4ai-starter-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 44px;
+  color: #b3eee5;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.ai4ai-starter-action p { font-size: .875rem; }
+
+@media (max-width: 780px) {
+  .ai4ai-stage { min-height: clamp(12rem, 58vw, 18rem); }
+  .ai4ai-starter { grid-template-columns: minmax(0, 1fr); }
 }
 
 .ai4ai-platforms, .ai4ai-segments {

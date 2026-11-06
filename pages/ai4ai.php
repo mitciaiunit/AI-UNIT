@@ -2,7 +2,7 @@
 $providers = [
     [
         'name' => 'AWS Skill Builder',
-        'topic' => 'AI and cloud skills',
+        'topic' => 'Build with AI',
         'description' => 'Explore Amazon Web Services training on generative AI, machine learning and building with AI in the cloud. The catalogue includes free self-paced courses and paid options.',
         'url' => 'https://aws.amazon.com/ai/learn/',
         'action' => 'Explore AWS training',
@@ -11,7 +11,7 @@ $providers = [
     ],
     [
         'name' => 'Google AI Essentials',
-        'topic' => 'AI for everyday tasks',
+        'topic' => 'Use AI at work',
         'description' => 'Practise writing prompts, using generative AI for everyday tasks and checking its output. Google offers this beginner course through Coursera. Check the course page for pricing.',
         'url' => 'https://www.coursera.org/google-certificates/ai-essentials-google',
         'action' => 'View Google AI Essentials',
@@ -20,7 +20,7 @@ $providers = [
     ],
     [
         'name' => 'Infosys Springboard',
-        'topic' => 'AI and digital literacy',
+        'topic' => 'Build digital confidence',
         'description' => 'Explore free digital learning from Infosys, including AI and other technology topics. Course availability may vary by region.',
         'url' => 'https://infyspringboard.onwingspan.com/web/en/page/home',
         'action' => 'Open Infosys Springboard',
@@ -54,11 +54,32 @@ $segments = [
       </div>
       <div class="ai4ai-hero-copy">
         <p class="ai4ai-kicker">AI for All and Inclusion</p>
-        <p class="ai4ai-lead">Find AI training in one place. Start with the basics, learn how to use AI responsibly or build skills for work and study.</p>
-        <p class="ai4ai-context">AI4AI is Mauritius’ national programme to make AI knowledge and skills accessible to people of all ages and backgrounds.</p>
+        <p class="ai4ai-lead">Learn AI. Find your starting point.</p>
+        <p class="ai4ai-context">Explore training for everyday life, work and study through Mauritius’ national AI4AI programme.</p>
         <a class="ai4ai-jump" href="#ai4ai-training" target="_self">Browse training platforms <span aria-hidden="true">↓</span></a>
       </div>
     </div>
+    <section class="container" aria-labelledby="ai4ai-starter-title">
+      <div class="ai4ai-starter">
+        <div>
+          <p class="ai4ai-starter-label">New to AI? Start here</p>
+          <h2 id="ai4ai-starter-title">AI Foundations on AWS</h2>
+          <p>Learn how generative AI works, practise writing prompts and explore Amazon PartyRock.</p>
+        </div>
+        <div class="ai4ai-starter-action">
+          <ul aria-label="Course details">
+            <li>Foundational</li>
+            <li>7 hours</li>
+            <li>Free</li>
+            <li>Self-paced</li>
+          </ul>
+          <a class="ai4ai-starter-link" href="https://learninghub.myt.mu/courses/ai-foundations-ai-foundational-10" target="_blank" rel="noopener noreferrer">
+            View course on my.t Learning Hub <span aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span>
+          </a>
+          <p>Sign in or create a my.t Learning Hub account to enrol.</p>
+        </div>
+      </div>
+    </section>
   </header>
 
   <section class="container ai4ai-section" id="ai4ai-training" aria-labelledby="ai4ai-training-title">
