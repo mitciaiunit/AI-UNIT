@@ -1206,6 +1206,7 @@ html.a11y-hide-images .hero-poster{
     .nav-links{justify-content:center;}
 }
 @media(max-width:900px){
+    html{scroll-padding-top:5rem;}
     /* The closed menu used to be hidden by appearance alone - slid off-screen
        and made transparent. Neither transform nor opacity takes an element out
        of the tab order or the accessibility tree, so all six links stayed
@@ -1247,7 +1248,7 @@ html.a11y-hide-images .hero-poster{
     .nav-ministry{min-width:0;}
     .hamburger{display:flex;}
 }
-@media(max-width:570px){
+@media(max-width:767px){
     html{scroll-padding-top:8rem;}
     .nav-inner{min-height:72px;grid-template-columns:minmax(0,1fr);grid-template-rows:auto;gap:4px;padding:6px 16px;}
     .nav-branding{max-width:100%;gap:8px;}
@@ -1822,19 +1823,22 @@ html.a11y-hide-images .hero-poster{
    Colour is .btn-primary's, so the header button and the hero CTA read as one
    destination. min-height:44px keeps it clear of the waived small-target list
    rather than adding a new entry to it. */
-.nav-marketplace{
-  display:inline-flex;align-items:center;gap:7px;
+.nav-marketplace,.nav-book-lab{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
   min-height:44px;padding:0 16px;
-  background:#2554C7;color:#fff;border:1px solid #2554C7;
+  color:#fff;border:1px solid transparent;
   border-radius:100px;
   font-family:'Sora',sans-serif;font-size:0.82rem;font-weight:700;
   white-space:nowrap;text-decoration:none;
   box-shadow:var(--shadow-sm);
   transition:all var(--trans);
 }
+.nav-marketplace{background:#2554C7;border-color:#2554C7;}
+.nav-book-lab{background:linear-gradient(115deg,#174481,#0b6276);}
+.nav-book-lab:hover{background:linear-gradient(115deg,#10346b,#084f60);box-shadow:var(--shadow-md);}
 .nav-marketplace:hover{background:#1c44a8;border-color:#1c44a8;transform:translateY(-1px);box-shadow:var(--shadow-md);}
-.nav-marketplace svg{flex-shrink:0;}
-.nav-marketplace:focus-visible{outline:3px solid var(--blue-mid);outline-offset:2px;}
+.nav-marketplace svg,.nav-book-lab svg{flex-shrink:0;}
+.nav-marketplace:focus-visible,.nav-book-lab:focus-visible{outline:3px solid var(--blue-mid);outline-offset:2px;}
 
 /* The Simple language toggle was removed from the site; its own rules above
    are now unused. Left in place so the control can be reinstated intact. */
@@ -1842,7 +1846,17 @@ html.a11y-hide-images .hero-poster{
 @media(max-width:480px){
   /* Narrow phones: the bar is now logo + AI Marketplace + accessibility +
      hamburger. Moving Simple language into the menu is what buys the room. */
-  .nav-marketplace{padding:0 12px;font-size:0.76rem;gap:5px;}
+  .nav-marketplace,.nav-book-lab{padding:0 12px;font-size:0.76rem;gap:5px;}
+}
+
+@media(max-width:400px){
+  .nav-book-lab{min-width:44px;padding:0;}
+  .nav-book-lab span{display:none;}
+}
+
+@media(max-width:360px){
+  .nav-right{gap:4px;}
+  .nav-marketplace{padding-inline:8px;}
 }
 
 /* Practical booking details under the calendar (pages/ai-lab.php). h3 rather

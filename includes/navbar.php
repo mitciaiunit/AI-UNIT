@@ -41,6 +41,13 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
       </a>
     </div>
     <div class="nav-right">
+      <a class="nav-book-lab" href="<?= e(url('ai-lab') . '#book') ?>" target="_self" aria-label="Book a lab session">
+        <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="16" rx="2"/>
+          <path d="M8 3v4m8-4v4M3 10h18m-12 5 2 2 4-4"/>
+        </svg>
+        <span>Book a lab</span>
+      </a>
       <?php
       /**
        * AI Marketplace: a persistent primary action, not a nav link.
