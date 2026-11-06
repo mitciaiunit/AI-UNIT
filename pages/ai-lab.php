@@ -7,9 +7,8 @@
  * visitor to Calendly's own scheduling interface.
  *
  * $calendlyUrl is validated in PageController::calendlyUrl() and is either a
- * real https://calendly.com/... link or null. Null is the expected state until
- * the AI Unit supplies the link, and renders a clearly-marked notice rather
- * than a broken embed.
+ * real https://calendly.com/... link or null. With no URL, the booking
+ * section directs visitors to the AI Unit contact form.
  *
  * Structure and classes follow the other standalone content pages
  * (see pages/accessibility.php): .main-content > .container > .page-header,
@@ -139,13 +138,13 @@ $calendlyUrl = $calendlyUrl ?? null;
 
     <section class="lab-block lab-booking" id="book" aria-labelledby="lab-book-title">
       <h2 id="lab-book-title">Book the AI Lab</h2>
-      <p data-i18n="ailab_page_book_intro">
-        Choose an available date and time below, then enter the details
-        requested to confirm your session. Booking is handled by Calendly, which
-        sends your confirmation by email.
-      </p>
-
       <?php if ($calendlyUrl !== null): ?>
+        <p data-i18n="ailab_page_book_intro">
+          Choose an available date and time below, then enter the details
+          requested to confirm your session. Booking is handled by Calendly, which
+          sends your confirmation by email.
+        </p>
+
         <?php
         /*
          * The embed is progressive: this container is inert markup, and
@@ -181,20 +180,7 @@ $calendlyUrl = $calendlyUrl ?? null;
           </a>
         </p>
       <?php else: ?>
-        <?php
-        /*
-         * Expected state until CALENDLY_AI_LAB_URL is set in .env. Says so
-         * plainly rather than rendering an empty embed frame, and points at the
-         * contact form so an enquiry is still possible.
-         */
-        ?>
-        <p class="lab-notice" role="status">
-          <strong>Online booking is not open yet.</strong>
-          The AI Lab booking calendar will appear here once it goes live. In the
-          meantime, please
-          <a href="<?= e(url('/') . '#contact') ?>">contact the AI Unit</a>
-          to enquire about a session.
-        </p>
+        <p>Please <a href="<?= e(url('/') . '#contact') ?>">contact the AI Unit</a> to enquire about booking a session.</p>
       <?php endif; ?>
 
       <h3>Booking a session</h3>
@@ -213,15 +199,19 @@ $calendlyUrl = $calendlyUrl ?? null;
         The AI Lab is on Level 6 at METC, Cyber Tower 2, Ebene. On arrival,
         report to METC reception on Level 6.
       </p>
-      <p>There is no parking at the building.</p>      <p class="lab-privacy">
-        The booking calendar is provided by Calendly and loads with this page,
-        which may set cookies from that service. Booking details you enter are
-        submitted to Calendly and handled under Calendly's own terms and privacy
-        policy. See our <a href="<?= e(url('privacy-policy')) ?>">Privacy Policy</a>
-        for how the AI Unit handles information it receives, and our
-        <a href="<?= e(url('cookie-policy')) ?>">Cookie Policy</a> for what is
-        stored on your device.
-      </p>
+      <p>There is no parking at the building.</p>
+
+      <?php if ($calendlyUrl !== null): ?>
+        <p class="lab-privacy">
+          The booking calendar is provided by Calendly and loads with this page,
+          which may set cookies from that service. Booking details you enter are
+          submitted to Calendly and handled under Calendly's own terms and privacy
+          policy. See our <a href="<?= e(url('privacy-policy')) ?>">Privacy Policy</a>
+          for how the AI Unit handles information it receives, and our
+          <a href="<?= e(url('cookie-policy')) ?>">Cookie Policy</a> for what is
+          stored on your device.
+        </p>
+      <?php endif; ?>
     </section>
 
     <p class="lab-back-home">
