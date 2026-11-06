@@ -26,6 +26,7 @@ $router->get('/disclaimer', [PageController::class, 'disclaimer']);
 $router->get('/cookie-policy', [PageController::class, 'cookiePolicy']);
 $router->get('/accessibility', [PageController::class, 'accessibility']);
 $router->get('/ai-lab', [PageController::class, 'aiLab']);
+$router->get('/ai4ai', [PageController::class, 'ai4ai']);
 $router->get('/highlights', [HighlightsController::class, 'index']);
 
 /*
