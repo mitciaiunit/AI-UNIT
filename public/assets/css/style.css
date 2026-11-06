@@ -1203,6 +1203,7 @@ html.a11y-hide-images .hero-poster{
    so the complete desktop header requires more room than the content grids. */
 @media (min-width:901px) {
     html{scroll-padding-top:7.5rem;}
+    .nav-links{justify-content:center;}
 }
 @media(max-width:900px){
     /* The closed menu used to be hidden by appearance alone - slid off-screen
