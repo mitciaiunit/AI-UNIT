@@ -28,15 +28,18 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
 ?>
 <header class="navbar" id="navbar">
   <div class="nav-inner">
-    <a <?= $isHome ? 'href="#hero" data-scroll="hero"' : 'href="' . e(url('/')) . '"' ?> class="nav-logo" target="_self" aria-label="AI Unit home, Ministry of Information Technology, Communication and Innovation">
-      <img src="<?= e(asset('images/logo.webp')) ?>" alt="" class="nav-logo-img" width="300" height="200" decoding="async">
-      <span class="nav-ministry">
+    <div class="nav-branding">
+      <a <?= $isHome ? 'href="#hero" data-scroll="hero"' : 'href="' . e(url('/')) . '"' ?> class="nav-logo" target="_self" aria-label="AI Unit home">
+        <img src="<?= e(asset('images/logo.webp')) ?>" alt="" class="nav-logo-img" width="300" height="200" decoding="async">
+      </a>
+      <a class="nav-ministry" href="https://mitci.govmu.org/mitci/" target="_blank" rel="noopener noreferrer">
         <span class="nav-ministry-mark">
           <img src="<?= e(asset('images/MLogo.png')) ?>" alt="" width="896" height="251" decoding="async">
         </span>
         <span class="nav-ministry-name">Ministry of Information Technology, Communication and Innovation</span>
-      </span>
-    </a>
+        <span class="visually-hidden"> (opens in a new tab)</span>
+      </a>
+    </div>
     <div class="nav-right">
       <?php
       /**
