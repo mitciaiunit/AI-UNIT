@@ -46,9 +46,9 @@
 }
 
 .ai4ai-jump { color: var(--ai4ai-accent); margin-top: .7rem; }
-.ai4ai-provider-link, .ai4ai-strategy { color: var(--blue); }
+.ai4ai-strategy { color: var(--blue); }
 .ai4ai-jump:focus-visible, .ai4ai-provider-link:focus-visible, .ai4ai-strategy:focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--blue);
   outline-offset: 3px;
 }
 
@@ -67,18 +67,78 @@
   align-items: flex-start;
   gap: .65rem;
   padding: clamp(1rem, 2.5vw, 1.7rem);
-  background: var(--surface);
+  background: linear-gradient(160deg, var(--surface) 55%, var(--surface-2));
   border: 1px solid var(--border);
   border-top: 4px solid var(--provider-accent);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 0 var(--border-2), var(--shadow-md);
 }
 .ai4ai-platform--aws { --provider-accent: #b45309; }
 .ai4ai-platform--google { --provider-accent: #2554c7; }
 .ai4ai-platform--infosys { --provider-accent: #0b7285; }
+
+.ai4ai-logo {
+  display: grid;
+  place-items: center;
+  width: 8.75rem;
+  max-width: 100%;
+  height: 4rem;
+  padding: .65rem 1rem;
+  margin-bottom: .4rem;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #dde2ef;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 3px 0 #dde2ef, var(--shadow-sm);
+}
+.ai4ai-logo img {
+  display: block;
+  max-width: 100%;
+  max-height: 2.25rem;
+  object-fit: contain;
+}
+.ai4ai-platform--aws .ai4ai-logo {
+  display: flex;
+  justify-content: center;
+  background: #222d3b;
+  border-color: #222d3b;
+}
+.ai4ai-platform--aws .ai4ai-logo img {
+  width: 12.5rem;
+  max-width: none;
+  max-height: none;
+  flex: none;
+}
+
 .ai4ai-platform p, .ai4ai-segments p { color: var(--text-2); }
 .ai4ai-platform .ai4ai-topic { font-weight: 600; font-size: .9rem; }
-.ai4ai-provider-link { margin-top: auto; }
+.ai4ai-provider-link {
+  justify-content: space-between;
+  width: 100%;
+  margin-top: auto;
+  padding: .65rem .9rem;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  background: linear-gradient(115deg, #1a3a8f, #0b6276);
+  box-shadow: 0 3px 0 #0d284e;
+  text-decoration: none;
+}
+.ai4ai-provider-link:is(:hover, :focus-visible) {
+  color: #fff;
+  background: linear-gradient(115deg, #132f78, #084f60);
+  text-decoration: underline;
+}
 .ai4ai-provider-link svg { flex: 0 0 auto; }
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html:not(.a11y-no-motion) .ai4ai-platform {
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  html:not(.a11y-no-motion) .ai4ai-platform:hover {
+    transform: perspective(900px) translateY(-5px) rotateX(2deg);
+    box-shadow: 0 5px 0 var(--border-2), var(--shadow-lg);
+  }
+}
 
 .ai4ai-audiences {
   background: var(--surface-2);

@@ -7,6 +7,7 @@ $providers = [
         'url' => 'https://aws.amazon.com/ai/learn/',
         'action' => 'Explore AWS training',
         'accent' => 'aws',
+        'logo' => 'aws.png',
     ],
     [
         'name' => 'Google AI Essentials',
@@ -15,6 +16,7 @@ $providers = [
         'url' => 'https://www.coursera.org/google-certificates/ai-essentials-google',
         'action' => 'View Google AI Essentials',
         'accent' => 'google',
+        'logo' => 'google.png',
     ],
     [
         'name' => 'Infosys Springboard',
@@ -23,6 +25,7 @@ $providers = [
         'url' => 'https://infyspringboard.onwingspan.com/web/en/page/home',
         'action' => 'Open Infosys Springboard',
         'accent' => 'infosys',
+        'logo' => 'infosys.svg',
     ],
 ];
 
@@ -56,6 +59,9 @@ $segments = [
     <ul class="ai4ai-platforms">
       <?php foreach ($providers as $provider): ?>
         <li class="ai4ai-platform ai4ai-platform--<?= e($provider['accent']) ?>">
+          <div class="ai4ai-logo">
+            <img src="<?= e(asset('images/ai4ai/' . $provider['logo'])) ?>" alt="" role="presentation">
+          </div>
           <p class="ai4ai-topic"><?= e($provider['topic']) ?></p>
           <h3><?= e($provider['name']) ?></h3>
           <p><?= e($provider['description']) ?></p>
