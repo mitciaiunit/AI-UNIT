@@ -28,12 +28,14 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
 ?>
 <header class="navbar" id="navbar">
   <div class="nav-inner">
-    <a <?= $isHome ? 'href="#hero" data-scroll="hero"' : 'href="' . e(url('/')) . '"' ?> class="nav-logo" aria-label="AI Unit Home">
-      <img src="<?= e(asset('images/logo.webp')) ?>" alt="AI Unit - Ministry of Information Technology, Communication and Innovation" class="nav-logo-img" width="300" height="200" decoding="async">
-      <div class="logo-text-wrap">
-        <span class="logo-main">AI Unit</span>
-        <span class="logo-sub">MITCI · Mauritius</span>
-      </div>
+    <a <?= $isHome ? 'href="#hero" data-scroll="hero"' : 'href="' . e(url('/')) . '"' ?> class="nav-logo" target="_self" aria-label="AI Unit home, Ministry of Information Technology, Communication and Innovation">
+      <img src="<?= e(asset('images/logo.webp')) ?>" alt="" class="nav-logo-img" width="300" height="200" decoding="async">
+      <span class="nav-ministry">
+        <span class="nav-ministry-mark">
+          <img src="<?= e(asset('images/MLogo.png')) ?>" alt="" width="896" height="251" decoding="async">
+        </span>
+        <span class="nav-ministry-name">Ministry of Information Technology, Communication and Innovation</span>
+      </span>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Site sections">
       <?php
