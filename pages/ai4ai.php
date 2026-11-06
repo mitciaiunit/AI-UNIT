@@ -43,23 +43,17 @@ $segments = [
 ?>
 <main class="ai4ai" id="main-content" tabindex="-1">
   <header class="ai4ai-intro">
-    <div class="container">
-      <p class="ai4ai-kicker">AI for All and Inclusion</p>
-      <h1>AI4AI</h1>
-      <svg class="ai4ai-paths" viewBox="0 0 360 48" width="360" height="48" aria-hidden="true" focusable="false">
-        <g><circle cx="7" cy="8" r="2.5"/><path pathLength="1" d="M7 8 C7 24 27 24 27 36 H58"/></g>
-        <g><circle cx="50" cy="16" r="2.5"/><path pathLength="1" d="M50 16 C50 24 61 24 61 36 H92"/></g>
-        <g><circle cx="92" cy="8" r="2.5"/><path pathLength="1" d="M92 8 C92 24 95 24 95 36 H126"/></g>
-        <g><circle cx="135" cy="16" r="2.5"/><path pathLength="1" d="M135 16 C135 24 129 24 129 36 H160"/></g>
-        <g><circle cx="177" cy="8" r="2.5"/><path pathLength="1" d="M177 8 C177 24 163 24 163 36 H194"/></g>
-        <g><circle cx="220" cy="16" r="2.5"/><path pathLength="1" d="M220 16 C220 24 228 24 228 36 H197"/></g>
-        <g><circle cx="262" cy="8" r="2.5"/><path pathLength="1" d="M262 8 C262 24 262 24 262 36 H231"/></g>
-        <g><circle cx="305" cy="16" r="2.5"/><path pathLength="1" d="M305 16 C305 24 296 24 296 36 H265"/></g>
-        <g><circle cx="348" cy="8" r="2.5"/><path pathLength="1" d="M348 8 C348 24 330 24 330 36 H299"/></g>
-      </svg>
-      <p class="ai4ai-lead">Find AI training in one place. Start with the basics, learn how to use AI responsibly or build skills for work and study.</p>
-      <p class="ai4ai-context">AI4AI is Mauritius’ national programme to make AI knowledge and skills accessible to people of all ages and backgrounds.</p>
-      <a class="ai4ai-jump" href="#ai4ai-training" target="_self">Browse training platforms <span aria-hidden="true">↓</span></a>
+    <div class="container ai4ai-hero">
+      <div class="ai4ai-stage">
+        <div class="ai4ai-platform-plane" aria-hidden="true"></div>
+        <h1 aria-label="AI4AI"><span class="ai4ai-wordmark" aria-hidden="true"><span>A</span><span>I</span><span>4</span><span>A</span><span>I</span></span></h1>
+      </div>
+      <div class="ai4ai-hero-copy">
+        <p class="ai4ai-kicker">AI for All and Inclusion</p>
+        <p class="ai4ai-lead">Find AI training in one place. Start with the basics, learn how to use AI responsibly or build skills for work and study.</p>
+        <p class="ai4ai-context">AI4AI is Mauritius’ national programme to make AI knowledge and skills accessible to people of all ages and backgrounds.</p>
+        <a class="ai4ai-jump" href="#ai4ai-training" target="_self">Browse training platforms <span aria-hidden="true">↓</span></a>
+      </div>
     </div>
   </header>
 
