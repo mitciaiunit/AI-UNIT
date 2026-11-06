@@ -27,15 +27,15 @@ $providers = [
 ];
 
 $segments = [
-    ['Pre-primary', 'Build curiosity and safe digital habits through stories, play and guided activities.'],
-    ['Primary', 'Recognise AI in everyday tools and start talking about fairness and safe use.'],
-    ['Secondary', 'Explore AI through creative projects, coding and discussion about its role in society.'],
-    ['Technical and vocational education (TVET)', 'Apply AI to practical tasks in technical and vocational settings.'],
-    ['Tertiary education', 'Use AI responsibly in higher education, research and innovation.'],
-    ['Special educational needs (SEN)', 'Explore assistive AI tools for accessibility, independence and personalised learning.'],
-    ['Working adults', 'Apply AI responsibly to improve productivity and solve problems at work.'],
-    ['Non-working adults', 'Build confidence using AI in daily life and staying safe online.'],
-    ['Policy-makers and leaders', 'Develop the skills to guide responsible AI adoption, governance and policy.'],
+    ['Pre-primary', 'Build curiosity and safe digital habits through stories, play and guided activities.', 'M3 4h13v10H8l-5 4V4m13 4h5v10l-3-3h-2M6 8h1m2 0h1m2 0h1'],
+    ['Primary', 'Recognise AI in everyday tools and start talking about fairness and safe use.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-4 11v-2a4 4 0 0 1 8 0v2'],
+    ['Secondary', 'Explore AI through creative projects, coding and discussion about its role in society.', 'M4 6h16v14H4zM8 3v6m8-6v6M4 10h16m-12 4h1m3 0h1m3 0h1m-8 3h1m3 0h1m3 0h1'],
+    ['Technical and vocational education (TVET)', 'Apply AI to practical tasks in technical and vocational settings.', 'M3 7h18v13H3zM8 7V4h8v3M3 12h18m-11 0v2h4v-2'],
+    ['Tertiary education', 'Use AI responsibly in higher education, research and innovation.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 0c3 3 4 6 4 9s-1 6-4 9c-3-3-4-6-4-9s1-6 4-9ZM3 12h18'],
+    ['Special educational needs (SEN)', 'Explore assistive AI tools for accessibility, independence and personalised learning.', 'M3 20v-3m5 3v-6m5 6v-9m5 9V8M3 12l5-5 4 2 8-6m-5 0h5v5'],
+    ['Working adults', 'Apply AI responsibly to improve productivity and solve problems at work.', 'M5 9h13v5a5 5 0 0 1-5 5h-3a5 5 0 0 1-5-5V9Zm13 1h2a2 2 0 0 1 0 4h-2M3 21h18M10 6c-2-2 2-2 0-4m5 4c-2-2 2-2 0-4'],
+    ['Non-working adults', 'Build confidence using AI in daily life and staying safe online.', 'M3 10h5l11-5v14l-11-5H3zm5 4 2 6h3l-2-5m10-5 2-1m-2 5 2 1'],
+    ['Policy-makers and leaders', 'Develop the skills to guide responsible AI adoption, governance and policy.', 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 0c3 3 4 6 4 9s-1 6-4 9c-3-3-4-6-4-9s1-6 4-9ZM3 12h18'],
 ];
 ?>
 <main class="ai4ai" id="main-content" tabindex="-1">
@@ -74,9 +74,12 @@ $segments = [
       <h2 id="ai4ai-audiences-title">Who AI4AI is designed for</h2>
       <p class="ai4ai-section-intro">The National AI Strategy identifies nine learner groups. Each group has different needs and a different starting point.</p>
       <ol class="ai4ai-segments">
-        <?php foreach ($segments as $index => [$name, $description]): ?>
+        <?php foreach ($segments as $index => [$name, $description, $icon]): ?>
           <li>
-            <span class="ai4ai-segment-number" aria-hidden="true"><?= $index + 1 ?></span>
+            <span class="ai4ai-segment-number" aria-hidden="true">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="<?= e($icon) ?>"/></svg>
+              <span><?= $index + 1 ?></span>
+            </span>
             <div>
               <h3><?= e($name) ?></h3>
               <p><?= e($description) ?></p>
