@@ -105,13 +105,10 @@ $calendlyUrl = $calendlyUrl ?? null;
      */
     ?>
     <figure class="lab-figure">
-      <img src="<?= e(asset('images/ai-lab.jpg')) ?>"
-           width="1536" height="1024"
-           alt="Artist's impression of the AI Lab: computer workstations showing code, a small robotics kit on a worktable, a round meeting table, and a whiteboard headed AI Project Workflow."
-           loading="eager" decoding="async" fetchpriority="high">
-      <?php /* Stated plainly: the lab is not yet photographed, and a government
-               page should not imply this is a picture of the finished room. */ ?>
-      <figcaption>Artist's impression of the AI Lab.</figcaption>
+      <img src="<?= e(asset('images/ai-lab-workstations.webp')) ?>"
+           width="1008" height="454"
+           alt="A row of computer workstations and chairs inside the AI Lab.">
+      <figcaption>Inside the AI Lab at METC, Cyber Tower 2, Ebene.</figcaption>
     </figure>
 
     <section class="lab-block" aria-labelledby="lab-about-title">

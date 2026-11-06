@@ -5,9 +5,9 @@ $isHome = true;
 <main id="main-content" tabindex="-1">
 <!-- HERO -->
 <section class="hero" id="hero" aria-labelledby="hero-title">
-  <video class="hero-video" id="heroVideo" autoplay muted loop playsinline aria-hidden="true">
-    <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_105406_16f4600d-7a92-4292-b96e-b19156c7830a.mp4" type="video/mp4">
-  </video>
+  <img class="hero-poster" src="<?= e(asset('images/hero-poster.webp')) ?>" alt="" aria-hidden="true">
+  <video class="hero-video" id="heroVideo" muted loop playsinline aria-hidden="true"
+    data-src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_105406_16f4600d-7a92-4292-b96e-b19156c7830a.mp4"></video>
   <div class="hero-video-overlay" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-content">

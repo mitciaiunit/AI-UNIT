@@ -340,6 +340,7 @@ img.emoji{
     background:linear-gradient(140deg,#1A3A8F 0%,#12295e 60%,#0B7285 100%);
 }
 
+.hero-poster,
 .hero-video{
     position:absolute;
     inset:0;
@@ -347,11 +348,31 @@ img.emoji{
     height:100%;
     object-fit:cover;
     z-index:0;
-	transform: scaleX(-1);
+    transform:scaleX(-1);
 }
 
-.hero-video.is-unavailable{
-    display:none;
+.hero-video:not(.is-playing),
+html.a11y-hide-images .hero-poster{
+    visibility:hidden;
+}
+
+@media (max-width:1024px) and (orientation:portrait){
+    .hero{
+        min-height:clamp(26rem,68vh,38rem);
+        min-height:clamp(26rem,68svh,38rem);
+    }
+
+    .hero-poster,
+    .hero-video{
+        /* The source is mirrored, so a leftward source crop frames the right of the visual. */
+        object-position:38% center;
+    }
+}
+
+@media (prefers-reduced-motion:reduce){
+    .hero-video{
+        visibility:hidden;
+    }
 }
 
 .hero-video-overlay{
