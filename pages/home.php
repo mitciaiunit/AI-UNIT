@@ -11,10 +11,6 @@ $isHome = true;
   <div class="hero-video-overlay" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-content">
-      <div class="hero-badge" aria-label="Ministry badge">
-        <span class="badge-dot" aria-hidden="true"></span>
-        <span data-i18n="hero_badge">Ministry of Information Technology, Communication and Innovation</span>
-      </div>
       <h1 class="hero-title" id="hero-title"><span data-i18n="hero_title_prefix">Where</span> <em>Intelligence</em> <span data-i18n="hero_title_suffix">Meets Impact</span></h1>
       <p class="hero-subtitle" data-i18n="hero_subtitle">Welcome to the AI Unit - your guide to how artificial intelligence is making public services smarter, faster, and fairer for every citizen.</p>
       <div class="hero-cta">
