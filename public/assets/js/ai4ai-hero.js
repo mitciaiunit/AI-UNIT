@@ -5,22 +5,45 @@
  * bursts into 216 pieces and rebuilds itself as the word AI4AI. 216 is exactly
  * the number of voxels the five letters need, so every piece is used.
  *
- * The poster image is the finished word and stays in place whenever this
- * script cannot run (no JS, no WebGL). With reduced motion, or the site's own
- * "stop animations" setting, the scene renders once in its finished state.
+ * The poster image is the finished word. It is the whole hero whenever the
+ * scene does not run: no JavaScript, no WebGL2, reduced motion or the site's
+ * own "stop animations" setting. three.js is only downloaded when the scene
+ * will actually play, and only after the page has loaded and gone idle.
  */
-import * as THREE from '../vendor/three-0.170.0/three.module.min.js';
-import { RoundedBoxGeometry } from '../vendor/three-0.170.0/RoundedBoxGeometry.js';
-import { RoomEnvironment } from '../vendor/three-0.170.0/RoomEnvironment.js';
-
 const stage = document.querySelector('.ai4ai-stage');
 const holder = stage && stage.querySelector('.ai4ai-canvas');
 const toggle = stage && stage.querySelector('.ai4ai-motion-toggle');
 const intro = document.querySelector('.ai4ai-intro');
+const root = document.documentElement;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const motionDisabled = () => reducedMotion.matches || root.classList.contains('a11y-no-motion');
+const VENDOR = '../vendor/three-0.170.0/';
 
-function start() {
-  const root = document.documentElement;
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+function webgl2Available() {
+  try {
+    return !!document.createElement('canvas').getContext('webgl2');
+  } catch (error) {
+    return false;
+  }
+}
+
+let starting = false;
+async function start() {
+  if (starting || motionDisabled() || !webgl2Available()) return;
+  starting = true;
+  try {
+    const [THREE, { RoundedBoxGeometry }, { RoomEnvironment }] = await Promise.all([
+      import(VENDOR + 'three.module.min.js'),
+      import(VENDOR + 'RoundedBoxGeometry.js'),
+      import(VENDOR + 'RoomEnvironment.js'),
+    ]);
+    build(THREE, RoundedBoxGeometry, RoomEnvironment);
+  } catch (error) {
+    // The poster stays as the hero image.
+  }
+}
+
+function build(THREE, RoundedBoxGeometry, RoomEnvironment) {
   const small = window.matchMedia('(max-width: 700px)');
 
   let renderer;
@@ -249,7 +272,6 @@ function start() {
   let last = 0;
   let shown = false;
 
-  const motionDisabled = () => reducedMotion.matches || root.classList.contains('a11y-no-motion');
   const running = () => !motionDisabled() && !userPaused && onScreen && document.visibilityState === 'visible';
   const rested = () => time >= T.rest;
 
@@ -348,14 +370,19 @@ function start() {
   new MutationObserver(sync).observe(root, { attributeFilter: ['class'] });
   if (intro) new MutationObserver(applyTheme).observe(intro, { attributeFilter: ['class'] });
 
-  // Compile both meshes' shaders off the main thread where the GPU allows it,
-  // so the burst does not stall when the pieces first appear.
+  // Compile both meshes' shaders up front, off the main thread where the GPU
+  // allows it, so the burst does not stall when the pieces first appear.
   const begin = () => {
     applyTheme();
     resize();
     sync();
   };
-  renderer.compileAsync(scene, camera).then(begin, begin);
+  if (renderer.extensions.has('KHR_parallel_shader_compile')) {
+    renderer.compileAsync(scene, camera).then(begin, begin);
+  } else {
+    renderer.compile(scene, camera);
+    begin();
+  }
 }
 
 // Start once the page has loaded and the browser is idle: the poster covers
@@ -366,4 +393,10 @@ function startWhenIdle() {
   else window.addEventListener('load', go, { once: true });
 }
 
-if (stage && holder) startWhenIdle();
+if (stage && holder) {
+  startWhenIdle();
+  // Motion switched back on later (system setting or the site's panel).
+  const retry = () => { if (!motionDisabled()) startWhenIdle(); };
+  reducedMotion.addEventListener('change', retry);
+  new MutationObserver(retry).observe(root, { attributeFilter: ['class'] });
+}
