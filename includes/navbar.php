@@ -38,7 +38,7 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
     <nav class="nav-links" id="navLinks" aria-label="Site sections">
       <?php
       /**
-       * Order is deliberate: AI Lab, AI in Action, AI Framework, Highlights,
+       * Order is deliberate: AI Lab, AI4AI, AI in Action, AI Framework, Highlights,
        * About Us, Contact Us.
        *
        * AI Lab and Highlights target pages rather than homepage sections, so
@@ -49,6 +49,7 @@ $navTarget = static function (string $sectionId) use ($isHome): string {
        */
       ?>
       <a href="<?= e(url('ai-lab')) ?>" class="nav-link" data-i18n="nav_ailab"<?= $navCurrent === 'ai-lab' ? ' aria-current="page"' : '' ?>>AI Lab</a>
+      <a href="<?= e(url('ai4ai')) ?>" class="nav-link" target="_self"<?= $navCurrent === 'ai4ai' ? ' aria-current="page"' : '' ?>>AI4AI</a>
       <a <?= $navTarget('action') ?> class="nav-link" data-i18n="nav_action">AI in Action</a>
       <a <?= $navTarget('strategy') ?> class="nav-link" data-i18n="nav_framework">AI Framework</a>
       <a href="<?= e(url('highlights')) ?>" class="nav-link" data-i18n="nav_highlights"<?= $navCurrent === 'highlights' ? ' aria-current="page"' : '' ?>>Highlights</a>
