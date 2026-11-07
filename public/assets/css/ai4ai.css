@@ -11,21 +11,9 @@
   overflow: hidden;
   color: #f4f7ff;
   background:
-    radial-gradient(ellipse at 78% 30%, #1b3359 0, transparent 64%),
-    linear-gradient(130deg, #0b101c, #101b32 68%, #121c34);
+    radial-gradient(ellipse 60% 80% at 26% 42%, #1c2a4c, transparent 72%),
+    linear-gradient(130deg, #0a0f1c, #0f1a31 68%, #111b33);
   padding: clamp(1.25rem, 3vw, 2.75rem) 0 clamp(2rem, 4vw, 3.5rem);
-}
-
-.ai4ai-intro::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, #7aaed611 1px, transparent 1px) 50% 0 / 5rem 5rem,
-    linear-gradient(#7aaed611 1px, transparent 1px) 50% 0 / 5rem 5rem;
-  mask-image: linear-gradient(transparent, #000 50%, transparent);
 }
 
 .ai4ai-kicker {
@@ -48,247 +36,78 @@
 }
 
 /* ------------------------------------------------------------------
-   AI4AI wordmark: real text, extruded in CSS 3D.
-   h1 (perspective) > scene > rig (pointer parallax) > orbit (idle camera)
-   > backdrop, plinth and five glyphs. Each glyph is 12 stacked slices
-   behind a lit face. Only transform and opacity animate, so playback
-   stays on the compositor. With motion off, the same scene rests in a
-   fixed pose: that resting frame is the static fallback.
+   Hero stage: the nine-path cube, drawn by assets/js/ai4ai-hero.js.
+   The poster is the finished word. It shows until the 3D scene draws,
+   and stays when the scene cannot run.
    ------------------------------------------------------------------ */
 .ai4ai-stage {
   position: relative;
   isolation: isolate;
   display: grid;
   place-items: center;
-  min-height: clamp(15rem, 27vw, 21rem);
-  overflow: hidden;
+  --controls: 3.5rem; /* row under the scene for the two switches */
+  width: 100%;
+  aspect-ratio: 5 / 3.4;
 }
-
 .ai4ai .ai4ai-wordmark {
-  --baseline: .87em;
-  --depth: .024em;
-  --face:
-    linear-gradient(100deg, #ffffff40, transparent 45%),
-    linear-gradient(176deg, #fbfdff 6%, #d9e3f2 50%, #98acce 97%);
-  --bevel: #d2deef;
-  --side-near: #6f8cb6;
-  --side-far: #0b1730;
-  --reflect: #c9d7ec;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.ai4ai-poster,
+.ai4ai-canvas {
+  position: absolute;
+  inset: 0 0 var(--controls);
+  width: 100%;
+  height: calc(100% - var(--controls));
+}
+.ai4ai-poster { object-fit: contain; }
+.ai4ai-canvas { opacity: 0; }
+.ai4ai-canvas canvas { display: block; width: 100%; height: 100%; }
+.ai4ai-stage.is-live .ai4ai-canvas { opacity: 1; }
+.ai4ai-stage.is-live .ai4ai-poster { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.a11y-no-motion) .ai4ai-poster,
+  html:not(.a11y-no-motion) .ai4ai-canvas { transition: opacity .6s ease; }
+}
+
+/* "Hide images" in the accessibility panel: show the heading as text. */
+html.a11y-hide-images .ai4ai-poster,
+html.a11y-hide-images .ai4ai-canvas { visibility: hidden; }
+html.a11y-hide-images .ai4ai .ai4ai-wordmark {
+  position: static;
+  width: auto;
+  height: auto;
   margin: 0;
-  color: #f3f7ff;
+  overflow: visible;
+  clip: auto;
   font-size: clamp(3.45rem, 7.8vw, 7rem);
-  font-weight: 600;
-  font-variant-numeric: lining-nums;
-  letter-spacing: 0;
   line-height: 1;
-  perspective: 7em;
-  perspective-origin: 50% 20%;
 }
 
-.ai4ai-scene,
-.ai4ai-rig,
-.ai4ai-orbit,
-.ai4ai-glyph,
-.ai4ai-plinth {
-  transform-style: preserve-3d;
-}
-.ai4ai-scene {
-  display: block;
-  padding: .3em .55em .75em;
-  user-select: none;
-}
-.ai4ai-rig {
-  display: block;
-  transform: rotateX(calc(var(--rx, 0) * 1deg)) rotateY(calc(var(--ry, 0) * 1deg));
-  transition: transform .9s cubic-bezier(.2, .7, .2, 1);
-}
-.ai4ai-orbit {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  transform: rotateX(-11deg) rotateY(-13deg);
-}
-
-/* Back wall: a low pool of warm light and two soft shafts, set well behind
-   the letters so the orbit separates the layers. */
-.ai4ai-backdrop {
+.ai4ai-stage-controls {
   position: absolute;
-  inset: -70% -75% -55%;
-  transform: translateZ(-2.4em) scale(1.35);
-  background:
-    radial-gradient(ellipse 30% 42% at 50% 58%, #ffe6c42e, transparent 72%),
-    linear-gradient(104deg, transparent 31%, #bcd6f514 36%, #bcd6f51f 39%, transparent 45%),
-    linear-gradient(104deg, transparent 49%, #bcd6f50f 53%, #bcd6f51a 56%, transparent 61%);
-  -webkit-mask-image: radial-gradient(closest-side, #000 45%, transparent);
-  mask-image: radial-gradient(closest-side, #000 45%, transparent);
-  pointer-events: none;
-}
-
-/* Rear wall: a low stele at the back edge of the plinth. It catches the
-   light shafts and gives the orbit a middle layer between the letters and
-   the far backdrop. */
-.ai4ai-plinth-wall {
-  left: .25em;
-  right: .25em;
+  right: 0;
   bottom: 0;
-  height: 1.02em;
-  transform: translateZ(-.72em);
-  border: 1px solid #c3d6f02e;
-  border-bottom: 0;
-  border-radius: .02em .02em 0 0;
-  background:
-    radial-gradient(ellipse 40% 80% at 50% 0, #ffe6c424, transparent 75%),
-    linear-gradient(#1f3a64b3, #10213fcc 70%, #0b1730e6);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: .5rem;
 }
-
-/* Plinth: polished slate slab the letters stand on. */
-.ai4ai-plinth {
-  position: absolute;
-  left: -.42em;
-  right: -.42em;
-  top: var(--baseline);
-  height: 0;
-}
-.ai4ai-plinth > span { position: absolute; }
-.ai4ai-plinth-top {
-  left: 0;
-  right: 0;
-  top: -.75em;
-  height: 1.5em;
-  transform: translateZ(-.05em) rotateX(90deg);
-  border: 1px solid #a9c3e624;
-  border-radius: .03em;
-  background:
-    radial-gradient(ellipse 55% 65% at 52% 48%, #ffe8cc17, transparent 70%),
-    linear-gradient(#0a1428c7, #182f55d9 68%, #2a4673e6);
-}
-.ai4ai-plinth-front {
-  left: 0;
-  right: 0;
-  top: 0;
-  height: .16em;
-  transform: translateZ(.7em);
-  background: linear-gradient(#2b4a76, #142a4d 26%, #0b1730);
-  box-shadow: inset 0 1px 0 #e4edff70;
-}
-.ai4ai-plinth-side {
-  top: 0;
-  width: 1.5em;
-  height: .16em;
-  background: linear-gradient(#1d3459, #0a1428);
-}
-.ai4ai-plinth-side--left {
-  left: 0;
-  transform-origin: 0 0;
-  transform: translateZ(.7em) rotateY(90deg);
-}
-.ai4ai-plinth-side--right {
-  right: 0;
-  transform-origin: 100% 0;
-  transform: translateZ(.7em) rotateY(-90deg);
-}
-.ai4ai-plinth-floor {
-  left: -.5em;
-  right: -.5em;
-  top: -1.1em;
-  height: 2.2em;
-  transform: translateY(.17em) translateZ(-.05em) rotateX(90deg);
-  background: radial-gradient(closest-side, #02060fb3, transparent);
-}
-
-/* Glyphs */
-.ai4ai-glyph {
-  --lift: 0em;
-  --i: 0;
-  position: relative;
-  display: block;
-  margin-inline: -.015em;
-  transform-origin: 50% var(--baseline);
-  transform: translateZ(var(--lift));
-}
-/* Children 1-2 are the backdrop and plinth. */
-.ai4ai-glyph:nth-child(3) { --i: 0; }
-.ai4ai-glyph:nth-child(4) { --i: 1; }
-.ai4ai-glyph:nth-child(5) { --i: 2; }
-.ai4ai-glyph:nth-child(6) { --i: 3; }
-.ai4ai-glyph:nth-child(7) { --i: 4; }
-.ai4ai-glyph--hinge {
-  --lift: .3em;
-  --face:
-    linear-gradient(100deg, #ffffff40, transparent 45%),
-    linear-gradient(176deg, #e9fffb 6%, #a9e8de 50%, #5cb8ad 97%);
-  --bevel: #d9f8f2;
-  --side-near: #3a9796;
-  --side-far: #052a33;
-  --reflect: #a6e6dc;
-  margin-inline: .04em;
-}
-.ai4ai-glyph > span {
-  position: absolute;
-  inset: 0;
-}
-.ai4ai-glyph > [data-glyph]::before { content: attr(data-glyph); }
-.ai4ai-glyph > .ai4ai-glyph-face {
-  position: relative;
-  display: block;
-  color: #f3f7ff;
-  background: var(--face);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.ai4ai-glyph-sheen {
-  transform: translateZ(1px);
-  background: linear-gradient(112deg, transparent 30%, #fff8ec 47%, #fff 50%, transparent 66%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  opacity: 0;
-}
-.ai4ai-glyph-slice {
-  color: color-mix(in oklab, var(--side-far) calc(var(--z) * 8.333%), var(--side-near));
-  transform: translateZ(calc(var(--z) * var(--depth) * -1));
-  -webkit-text-stroke: .006em currentColor;
-}
-.ai4ai-glyph-slice:nth-child(3) { --z: 1; color: var(--bevel); }
-.ai4ai-glyph-slice:nth-child(4) { --z: 2; }
-.ai4ai-glyph-slice:nth-child(5) { --z: 3; }
-.ai4ai-glyph-slice:nth-child(6) { --z: 4; }
-.ai4ai-glyph-slice:nth-child(7) { --z: 5; }
-.ai4ai-glyph-slice:nth-child(8) { --z: 6; }
-.ai4ai-glyph-slice:nth-child(9) { --z: 7; }
-.ai4ai-glyph-slice:nth-child(10) { --z: 8; }
-.ai4ai-glyph-slice:nth-child(11) { --z: 9; }
-.ai4ai-glyph-slice:nth-child(12) { --z: 10; }
-.ai4ai-glyph-slice:nth-child(13) { --z: 11; }
-.ai4ai-glyph-slice:nth-child(14) { --z: 12; }
-
-/* Mirror image below the glossy plinth top, faded within the slab. */
-.ai4ai-glyph-reflection {
-  color: var(--reflect);
-  transform-origin: 50% var(--baseline);
-  transform: translateZ(-.11em) scaleY(-1);
-  opacity: .34;
-  -webkit-mask-image: linear-gradient(transparent 52%, #000);
-  mask-image: linear-gradient(transparent 52%, #000);
-}
-.ai4ai-glyph > .ai4ai-glyph-shadow {
-  inset: auto -12%;
-  top: calc(var(--baseline) - .3em);
-  height: .6em;
-  transform: translateY(-1px) translateZ(-.12em) rotateX(90deg);
-  background: radial-gradient(closest-side, #030812d9, #03081200);
-}
-
+.ai4ai-theme-toggle,
 .ai4ai-motion-toggle {
-  position: absolute;
-  bottom: .7rem;
-  right: .7rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
   min-width: 44px;
   min-height: 44px;
-  padding: .35rem .75rem;
+  padding: .35rem .8rem;
   border: 1px solid #afc8db;
-  border-radius: .55rem;
+  border-radius: 999px;
   background: #101d31;
   color: #fff;
   font: inherit;
@@ -296,65 +115,28 @@
   font-weight: 600;
   cursor: pointer;
 }
+.ai4ai-theme-toggle:hover,
 .ai4ai-motion-toggle:hover { background: #1b3152; }
+.ai4ai-theme-toggle:focus-visible,
 .ai4ai-motion-toggle:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 2px;
 }
+/* Pressed state is shown by a filled dot, not by colour alone. */
+.ai4ai-theme-toggle::before {
+  content: "";
+  width: .7rem;
+  height: .7rem;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+.ai4ai-theme-toggle[aria-pressed="true"]::before { background: currentColor; }
+.ai4ai-theme-toggle[hidden],
 .ai4ai-motion-toggle[hidden] { display: none; }
-
-/* One orchestrated moment: the letters are raised upright on the plinth,
-   then the camera walks slowly round them while a glint crosses the faces. */
-@media (prefers-reduced-motion: no-preference) {
-  html:not(.a11y-no-motion) .ai4ai-orbit {
-    animation: ai4ai-orbit 18s ease-in-out -4.5s infinite alternate;
-  }
-  html:not(.a11y-no-motion) .ai4ai-glyph {
-    animation: ai4ai-raise 1.25s cubic-bezier(.16, .84, .24, 1) calc(.15s + var(--i) * .11s) both;
-  }
-  html:not(.a11y-no-motion) .ai4ai-glyph-shadow {
-    animation: ai4ai-settle .9s ease-out calc(.55s + var(--i) * .11s) both;
-  }
-  html:not(.a11y-no-motion) .ai4ai-glyph-sheen {
-    animation: ai4ai-glint 9s ease-in-out calc(1.7s + var(--i) * .2s) infinite;
-  }
-  html:not(.a11y-no-motion) .ai4ai-backdrop {
-    animation: ai4ai-settle 1.6s ease-out both;
-  }
-}
-
-.ai4ai-stage.is-paused * { animation-play-state: paused !important; }
-
-@keyframes ai4ai-orbit {
-  from { transform: rotateX(-13deg) rotateY(-19deg); }
-  to { transform: rotateX(-8deg) rotateY(16deg); }
-}
-@keyframes ai4ai-raise {
-  from { transform: translateZ(var(--lift)) rotateX(86deg); }
-  to { transform: translateZ(var(--lift)); }
-}
-@keyframes ai4ai-settle {
-  from { opacity: 0; }
-}
-@keyframes ai4ai-glint {
-  0%, 18%, 100% { opacity: 0; }
-  7% { opacity: 1; }
-}
-
-/* Browsers without 3D transforms, and Windows contrast themes, get the flat
-   wordmark rather than a stack of misplaced slices. */
-@supports not (transform-style: preserve-3d) {
-  .ai4ai-glyph > span:not(.ai4ai-glyph-face), .ai4ai-plinth, .ai4ai-backdrop { display: none; }
-  .ai4ai-glyph > .ai4ai-glyph-face { text-shadow: 0 2px 0 #6f8cb6, 0 4px 0 #2c4f6e, 0 10px 18px #07132b; }
-}
-@media (forced-colors: active) {
-  .ai4ai-glyph > span:not(.ai4ai-glyph-face), .ai4ai-plinth, .ai4ai-backdrop { display: none; }
-  .ai4ai-glyph > .ai4ai-glyph-face { background: none; -webkit-text-fill-color: CanvasText; }
-}
 
 @media (max-width: 780px) {
   .ai4ai-hero { grid-template-columns: minmax(0, 1fr); }
-  .ai4ai .ai4ai-wordmark { font-size: clamp(3.45rem, 17.5vw, 6rem); }
+  .ai4ai-stage { aspect-ratio: auto; height: clamp(16rem, 70vw, 24rem); }
 }
 
 .ai4ai h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); margin-bottom: .65rem; }
@@ -442,9 +224,36 @@
 .ai4ai-starter-action p { font-size: .875rem; }
 
 @media (max-width: 780px) {
-  .ai4ai-stage { min-height: clamp(12rem, 58vw, 18rem); }
   .ai4ai-starter { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Light hero background, chosen with the switch on the stage. */
+.ai4ai-intro.is-light {
+  color: #0d1b3e;
+  background:
+    radial-gradient(ellipse 60% 80% at 26% 42%, #fff, transparent 72%),
+    linear-gradient(130deg, #f3f5f9, #e8edf4 68%, #e3e9f1);
+}
+.ai4ai-intro.is-light .ai4ai-kicker,
+.ai4ai-intro.is-light .ai4ai-jump,
+.ai4ai-intro.is-light .ai4ai-starter-label,
+.ai4ai-intro.is-light .ai4ai-starter-link { color: #0a5c55; }
+.ai4ai-intro.is-light .ai4ai-context,
+.ai4ai-intro.is-light .ai4ai-starter p { color: #2c3a57; }
+.ai4ai-intro.is-light .ai4ai-starter {
+  background: #fff;
+  border-color: #c3cede;
+  border-left-color: #0b7285;
+}
+.ai4ai-intro.is-light .ai4ai-starter li { background: #e8eef7; color: #0d1b3e; }
+.ai4ai-intro.is-light :is(.ai4ai-jump, .ai4ai-starter-link):focus-visible { outline-color: #0d1b3e; }
+.ai4ai-intro.is-light :is(.ai4ai-theme-toggle, .ai4ai-motion-toggle) {
+  border-color: #5b6b88;
+  background: #fff;
+  color: #0d1b3e;
+}
+.ai4ai-intro.is-light :is(.ai4ai-theme-toggle, .ai4ai-motion-toggle):hover { background: #eef2f8; }
+.ai4ai-intro.is-light :is(.ai4ai-theme-toggle, .ai4ai-motion-toggle):focus-visible { outline-color: #0d1b3e; }
 
 .ai4ai-platforms, .ai4ai-segments {
   display: grid;
