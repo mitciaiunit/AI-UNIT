@@ -45,12 +45,15 @@ $segments = [
   <header class="ai4ai-intro">
     <div class="container ai4ai-hero">
       <div class="ai4ai-stage">
-        <h1>AI4AI</h1>
-        <img class="ai4ai-stage-poster" src="<?= e(asset('images/ai4ai/ai4ai-hero.webp')) ?>"
-             width="960" height="600" alt="" role="presentation" fetchpriority="high">
-        <video class="ai4ai-stage-video" muted loop playsinline preload="none" aria-hidden="true"
-               data-src="<?= e(asset('images/ai4ai/ai4ai-hero.mp4')) ?>"></video>
-        <button class="ai4ai-motion-toggle" type="button" aria-label="Play AI4AI animation" hidden>Play</button>
+        <h1 class="ai4ai-wordmark">AI4AI</h1>
+        <?php /* Finished frame of the cube animation: shown until the 3D scene draws, and kept if it cannot. */ ?>
+        <img class="ai4ai-poster" src="<?= e(asset('images/ai4ai/ai4ai-cube.webp')) ?>"
+             width="1200" height="720" alt="" role="presentation" fetchpriority="high">
+        <div class="ai4ai-canvas" aria-hidden="true"></div>
+        <div class="ai4ai-stage-controls">
+          <button class="ai4ai-theme-toggle" type="button" aria-pressed="false" hidden>Light background</button>
+          <button class="ai4ai-motion-toggle" type="button" aria-label="Pause AI4AI animation" hidden>Pause</button>
+        </div>
       </div>
       <div class="ai4ai-hero-copy">
         <p class="ai4ai-kicker">AI for All and Inclusion</p>
@@ -127,3 +130,4 @@ $segments = [
     </div>
   </section>
 </main>
+<script type="module" src="<?= e(asset('js/ai4ai-hero.js')) ?>"></script>

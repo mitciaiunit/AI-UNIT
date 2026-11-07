@@ -1,49 +1,28 @@
+// AI4AI hero background switch: dark (default) or light. The choice is a
+// per-browser convenience, kept in localStorage when that is available.
 (() => {
-  const video = document.querySelector('.ai4ai-stage-video');
-  const toggle = document.querySelector('.ai4ai-motion-toggle');
-  if (!video || !toggle) return;
+  const intro = document.querySelector('.ai4ai-intro');
+  const button = intro && intro.querySelector('.ai4ai-theme-toggle');
+  if (!intro || !button) return;
 
-  const root = document.documentElement;
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let failed = false;
-  let userPaused = false;
-  const motionDisabled = () => reducedMotion.matches
-    || root.classList.contains('a11y-no-motion')
-    || root.classList.contains('a11y-hide-images');
+  const KEY = 'ai4ai-hero-theme';
+  const read = () => {
+    try { return localStorage.getItem(KEY); } catch (error) { return null; }
+  };
+  const save = (value) => {
+    try { localStorage.setItem(KEY, value); } catch (error) { /* not stored */ }
+  };
 
-  function updateButton() {
-    const action = video.paused ? 'Play' : 'Pause';
-    toggle.textContent = action;
-    toggle.setAttribute('aria-label', action + ' AI4AI animation');
+  function apply(light) {
+    intro.classList.toggle('is-light', light);
+    button.setAttribute('aria-pressed', String(light));
   }
 
-  function sync() {
-    toggle.hidden = failed || motionDisabled();
-    if (toggle.hidden) {
-      video.pause();
-      video.classList.remove('is-visible');
-      return;
-    }
-    if (userPaused) return;
-    if (!video.hasAttribute('src')) video.src = video.dataset.src;
-    if (video.paused) video.play().catch(updateButton);
-  }
-
-  toggle.addEventListener('click', () => {
-    userPaused = !video.paused;
-    if (userPaused) video.pause();
-    else sync();
+  apply(read() === 'light');
+  button.hidden = false;
+  button.addEventListener('click', () => {
+    const light = !intro.classList.contains('is-light');
+    apply(light);
+    save(light ? 'light' : 'dark');
   });
-  video.addEventListener('playing', () => {
-    if (!motionDisabled()) video.classList.add('is-visible');
-    updateButton();
-  });
-  video.addEventListener('pause', updateButton);
-  video.addEventListener('error', () => {
-    failed = true;
-    sync();
-  });
-  reducedMotion.addEventListener('change', sync);
-  new MutationObserver(sync).observe(root, { attributeFilter: ['class'] });
-  sync();
 })();

@@ -11,21 +11,9 @@
   overflow: hidden;
   color: #f4f7ff;
   background:
-    radial-gradient(ellipse at 78% 30%, #1b3359 0, transparent 64%),
-    linear-gradient(130deg, #0b101c, #101b32 68%, #121c34);
+    radial-gradient(ellipse 60% 80% at 26% 42%, #1c2a4c, transparent 72%),
+    linear-gradient(130deg, #0a0f1c, #0f1a31 68%, #111b33);
   padding: clamp(1.25rem, 3vw, 2.75rem) 0 clamp(2rem, 4vw, 3.5rem);
-}
-
-.ai4ai-intro::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, #7aaed611 1px, transparent 1px) 50% 0 / 5rem 5rem,
-    linear-gradient(#7aaed611 1px, transparent 1px) 50% 0 / 5rem 5rem;
-  mask-image: linear-gradient(transparent, #000 50%, transparent);
 }
 
 .ai4ai-kicker {
@@ -47,45 +35,79 @@
   gap: clamp(.75rem, 3vw, 2.75rem);
 }
 
+/* ------------------------------------------------------------------
+   Hero stage: the nine-path cube, drawn by assets/js/ai4ai-hero.js.
+   The poster is the finished word. It shows until the 3D scene draws,
+   and stays when the scene cannot run.
+   ------------------------------------------------------------------ */
 .ai4ai-stage {
   position: relative;
   isolation: isolate;
   display: grid;
   place-items: center;
-  min-height: clamp(15rem, 27vw, 21rem);
+  --controls: 3.5rem; /* row under the scene for the two switches */
+  width: 100%;
+  aspect-ratio: 5 / 3.4;
+}
+.ai4ai .ai4ai-wordmark {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
   overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.ai4ai-poster,
+.ai4ai-canvas {
+  position: absolute;
+  inset: 0 0 var(--controls);
+  width: 100%;
+  height: calc(100% - var(--controls));
+}
+.ai4ai-poster { object-fit: contain; }
+.ai4ai-canvas { opacity: 0; }
+.ai4ai-canvas canvas { display: block; width: 100%; height: 100%; }
+.ai4ai-stage.is-live .ai4ai-canvas { opacity: 1; }
+.ai4ai-stage.is-live .ai4ai-poster { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.a11y-no-motion) .ai4ai-poster,
+  html:not(.a11y-no-motion) .ai4ai-canvas { transition: opacity .6s ease; }
 }
 
-.ai4ai-stage h1 {
-  color: #f3f7ff;
+/* "Hide images" in the accessibility panel: show the heading as text. */
+html.a11y-hide-images .ai4ai-poster,
+html.a11y-hide-images .ai4ai-canvas { visibility: hidden; }
+html.a11y-hide-images .ai4ai .ai4ai-wordmark {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
   font-size: clamp(3.45rem, 7.8vw, 7rem);
-  font-variant-numeric: lining-nums;
-  letter-spacing: -.055em;
   line-height: 1;
 }
-.ai4ai-stage-poster, .ai4ai-stage-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  mask-image:
-    linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent),
-    linear-gradient(transparent, #000 15%, #000 78%, transparent);
-  mask-composite: intersect;
-}
-.ai4ai-stage-video:not(.is-visible) { opacity: 0; }
-html.a11y-no-motion .ai4ai-stage-video { visibility: hidden; }
 
-.ai4ai-motion-toggle {
+.ai4ai-stage-controls {
   position: absolute;
-  bottom: .7rem;
-  right: .7rem;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: .5rem;
+}
+.ai4ai-theme-toggle,
+.ai4ai-motion-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
   min-width: 44px;
   min-height: 44px;
-  padding: .35rem .75rem;
+  padding: .35rem .8rem;
   border: 1px solid #afc8db;
-  border-radius: .55rem;
+  border-radius: 999px;
   background: #101d31;
   color: #fff;
   font: inherit;
@@ -93,18 +115,28 @@ html.a11y-no-motion .ai4ai-stage-video { visibility: hidden; }
   font-weight: 600;
   cursor: pointer;
 }
+.ai4ai-theme-toggle:hover,
+.ai4ai-motion-toggle:hover { background: #1b3152; }
+.ai4ai-theme-toggle:focus-visible,
 .ai4ai-motion-toggle:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 2px;
 }
+/* Pressed state is shown by a filled dot, not by colour alone. */
+.ai4ai-theme-toggle::before {
+  content: "";
+  width: .7rem;
+  height: .7rem;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+.ai4ai-theme-toggle[aria-pressed="true"]::before { background: currentColor; }
+.ai4ai-theme-toggle[hidden],
 .ai4ai-motion-toggle[hidden] { display: none; }
 
-@media (prefers-reduced-motion: reduce) {
-  .ai4ai-stage-video, .ai4ai-motion-toggle { visibility: hidden; }
-}
 @media (max-width: 780px) {
   .ai4ai-hero { grid-template-columns: minmax(0, 1fr); }
-  .ai4ai-stage h1 { font-size: clamp(3.45rem, 13vw, 6rem); }
+  .ai4ai-stage { aspect-ratio: auto; height: clamp(16rem, 70vw, 24rem); }
 }
 
 .ai4ai h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); margin-bottom: .65rem; }
@@ -192,9 +224,36 @@ html.a11y-no-motion .ai4ai-stage-video { visibility: hidden; }
 .ai4ai-starter-action p { font-size: .875rem; }
 
 @media (max-width: 780px) {
-  .ai4ai-stage { min-height: clamp(12rem, 58vw, 18rem); }
   .ai4ai-starter { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Light hero background, chosen with the switch on the stage. */
+.ai4ai-intro.is-light {
+  color: #0d1b3e;
+  background:
+    radial-gradient(ellipse 60% 80% at 26% 42%, #fff, transparent 72%),
+    linear-gradient(130deg, #f3f5f9, #e8edf4 68%, #e3e9f1);
+}
+.ai4ai-intro.is-light .ai4ai-kicker,
+.ai4ai-intro.is-light .ai4ai-jump,
+.ai4ai-intro.is-light .ai4ai-starter-label,
+.ai4ai-intro.is-light .ai4ai-starter-link { color: #0a5c55; }
+.ai4ai-intro.is-light .ai4ai-context,
+.ai4ai-intro.is-light .ai4ai-starter p { color: #2c3a57; }
+.ai4ai-intro.is-light .ai4ai-starter {
+  background: #fff;
+  border-color: #c3cede;
+  border-left-color: #0b7285;
+}
+.ai4ai-intro.is-light .ai4ai-starter li { background: #e8eef7; color: #0d1b3e; }
+.ai4ai-intro.is-light :is(.ai4ai-jump, .ai4ai-starter-link):focus-visible { outline-color: #0d1b3e; }
+.ai4ai-intro.is-light :is(.ai4ai-theme-toggle, .ai4ai-motion-toggle) {
+  border-color: #5b6b88;
+  background: #fff;
+  color: #0d1b3e;
+}
+.ai4ai-intro.is-light :is(.ai4ai-theme-toggle, .ai4ai-motion-toggle):hover { background: #eef2f8; }
+.ai4ai-intro.is-light :is(.ai4ai-theme-toggle, .ai4ai-motion-toggle):focus-visible { outline-color: #0d1b3e; }
 
 .ai4ai-platforms, .ai4ai-segments {
   display: grid;
