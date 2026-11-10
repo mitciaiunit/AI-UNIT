@@ -16,7 +16,7 @@ $providers = [
     [
         'name' => 'Infosys Springboard',
         'topic' => 'Build digital confidence',
-        'description' => 'Explore free digital learning from Infosys, including AI and other technology topics. Course availability may vary by region.',
+        'description' => 'Free digital learning from Infosys, including AI and other technology topics.',
         'url' => $springboardUrl,
         'action' => 'Open Infosys Springboard',
         'accent' => 'infosys',
@@ -25,11 +25,9 @@ $providers = [
     [
         'name' => 'AI Foundations on AWS',
         'topic' => 'Build with AI',
-        'description' => 'Learn how generative AI works, practise writing prompts and explore Amazon PartyRock. my.t offers this AWS course on its Learning Hub, fully sponsored, with a record of completion at the end.',
-        'details' => ['Foundational', '7 hours', 'Free', 'Self-paced'],
-        'note' => 'Sign in or create a my.t Learning Hub account to enrol.',
+        'description' => 'A free, 7-hour self-paced course on generative AI, prompting and Amazon PartyRock, offered by my.t.',
         'url' => 'https://learninghub.myt.mu/courses/ai-foundations-ai-foundational-10',
-        'action' => 'View course on my.t Learning Hub',
+        'action' => 'View course on my.t',
         'accent' => 'aws',
         'logo' => 'aws.png',
     ],
@@ -130,16 +128,6 @@ $segments = [
           <p class="ai4ai-topic"><?= e($provider['topic']) ?></p>
           <h3><?= e($provider['name']) ?></h3>
           <p><?= e($provider['description']) ?></p>
-          <?php if (!empty($provider['details'])): ?>
-            <ul class="ai4ai-details" aria-label="Course details">
-              <?php foreach ($provider['details'] as $detail): ?>
-                <li><?= e($detail) ?></li>
-              <?php endforeach; ?>
-            </ul>
-          <?php endif; ?>
-          <?php if (!empty($provider['note'])): ?>
-            <p class="ai4ai-note"><?= e($provider['note']) ?></p>
-          <?php endif; ?>
           <a class="ai4ai-provider-link" href="<?= e($provider['url']) ?>" target="_blank" rel="noopener noreferrer">
             <span><?= e($provider['action']) ?></span>
             <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 5h6v6m0-6-9 9m7-1v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h5"/></svg>

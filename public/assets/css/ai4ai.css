@@ -317,6 +317,7 @@ html.a11y-hide-images .ai4ai .ai4ai-wordmark {
 }
 
 .ai4ai-platform p, .ai4ai-segments p { color: var(--text-2); }
+.ai4ai-platform p { hyphens: manual; } /* short card text reads better unbroken */
 .ai4ai-platform .ai4ai-topic { font-weight: 600; font-size: .9rem; }
 .ai4ai-provider-link {
   justify-content: space-between;
@@ -335,24 +336,6 @@ html.a11y-hide-images .ai4ai .ai4ai-wordmark {
   text-decoration: underline;
 }
 .ai4ai-provider-link svg { flex: 0 0 auto; }
-
-.ai4ai-details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .3rem .45rem;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-.ai4ai-details li {
-  padding: .15rem .55rem;
-  border: 1px solid var(--border-2);
-  border-radius: .35rem;
-  background: var(--surface-2);
-  color: var(--text-1);
-  font-size: .875rem;
-}
-.ai4ai-platform .ai4ai-note { font-size: .875rem; }
 
 /* ------------------------------------------------------------------
    "Launching soon" teaser. The blurred shapes stand in for a card's
