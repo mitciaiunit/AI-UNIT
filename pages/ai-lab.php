@@ -90,9 +90,11 @@ $calendlyUrl = $calendlyUrl ?? null;
     </aside>
 
     <figure class="lab-figure">
-      <img src="<?= e(asset('images/ai-lab-workstations.webp')) ?>"
-           width="1008" height="454"
-           alt="A row of computer workstations and chairs inside the AI Lab.">
+      <img src="<?= e(asset('images/ai-lab-session.webp')) ?>"
+           srcset="<?= e(asset('images/ai-lab-session-960.webp')) ?> 960w, <?= e(asset('images/ai-lab-session.webp')) ?> 1600w"
+           sizes="(max-width: 1000px) 100vw, 960px"
+           width="1600" height="1067" fetchpriority="high"
+           alt="A presenter speaks to students and visitors seated among the workstations of the AI Innovation Lab, under the lab's wall sign.">
       <figcaption>Inside the AI Lab at METC, Cyber Tower 2, Ebene.</figcaption>
     </figure>
     <section class="lab-block" aria-labelledby="lab-about-title">
