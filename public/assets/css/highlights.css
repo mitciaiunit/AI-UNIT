@@ -1120,6 +1120,17 @@ body.is-locked { overflow: hidden; }
 
 .sc .usertest__intro .h3 { margin-bottom: .45rem; }
 
+/* The SENA link in the heading. `.sc a` inherits the text colour, which left
+   it indistinguishable from the heading (WCAG 1.4.1), so it gets the link
+   blue and an underline. */
+.sc .usertest__intro a {
+  color: var(--blue-600);
+  text-decoration: underline;
+  text-decoration-thickness: .08em;
+  text-underline-offset: .15em;
+}
+.sc .usertest__intro a:hover { color: var(--blue-700); text-decoration-thickness: .12em; }
+
 /* Participant card beside the findings; stacks below 62rem. */
 .sc .usertest__layout {
   display: grid;
