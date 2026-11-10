@@ -1,15 +1,40 @@
 <?php
+/*
+ * Infosys Springboard is MITCI's flagship platform, so it leads twice: as the
+ * "Start here" panel in the hero and as the first card in the list.
+ * Its URL is written once here so the panel and the card cannot drift apart.
+ */
+$springboardUrl = 'https://infyspringboard.eu.onwingspan.com/web/en/';
+
+/*
+ * 'launch' => 'soon' renders a card as a blurred "Launching soon" teaser.
+ * The teaser prints none of the provider's details (name, logo, text or link),
+ * so nothing about the partner can be read from the page source before launch.
+ * To unveil it, delete the 'launch' line.
+ */
 $providers = [
     [
-        'name' => 'AWS Skill Builder',
+        'name' => 'Infosys Springboard',
+        'topic' => 'Build digital confidence',
+        'description' => 'Explore free digital learning from Infosys, including AI and other technology topics. Course availability may vary by region.',
+        'url' => $springboardUrl,
+        'action' => 'Open Infosys Springboard',
+        'accent' => 'infosys',
+        'logo' => 'infosys.svg',
+    ],
+    [
+        'name' => 'AI Foundations on AWS',
         'topic' => 'Build with AI',
-        'description' => 'Explore Amazon Web Services training on generative AI, machine learning and building with AI in the cloud. The catalogue includes free self-paced courses and paid options.',
-        'url' => 'https://aws.amazon.com/ai/learn/',
-        'action' => 'Explore AWS training',
+        'description' => 'Learn how generative AI works, practise writing prompts and explore Amazon PartyRock. my.t offers this AWS course on its Learning Hub, fully sponsored, with a record of completion at the end.',
+        'details' => ['Foundational', '7 hours', 'Free', 'Self-paced'],
+        'note' => 'Sign in or create a my.t Learning Hub account to enrol.',
+        'url' => 'https://learninghub.myt.mu/courses/ai-foundations-ai-foundational-10',
+        'action' => 'View course on my.t Learning Hub',
         'accent' => 'aws',
         'logo' => 'aws.png',
     ],
     [
+        'launch' => 'soon',
         'name' => 'Google AI Essentials',
         'topic' => 'Use AI at work',
         'description' => 'Practise writing prompts, using generative AI for everyday tasks and checking its output. Google offers this beginner course through Coursera. Check the course page for pricing.',
@@ -17,15 +42,6 @@ $providers = [
         'action' => 'View Google AI Essentials',
         'accent' => 'google',
         'logo' => 'google.png',
-    ],
-    [
-        'name' => 'Infosys Springboard',
-        'topic' => 'Build digital confidence',
-        'description' => 'Explore free digital learning from Infosys, including AI and other technology topics. Course availability may vary by region.',
-        'url' => 'https://infyspringboard.onwingspan.com/web/en/page/home',
-        'action' => 'Open Infosys Springboard',
-        'accent' => 'infosys',
-        'logo' => 'infosys.svg',
     ],
 ];
 
@@ -66,20 +82,17 @@ $segments = [
       <div class="ai4ai-starter">
         <div>
           <p class="ai4ai-starter-label">New to AI? Start here</p>
-          <h2 id="ai4ai-starter-title">AI Foundations on AWS</h2>
-          <p>Learn how generative AI works, practise writing prompts and explore Amazon PartyRock.</p>
+          <h2 id="ai4ai-starter-title">Infosys Springboard</h2>
+          <p>MITCI’s flagship learning platform for AI4AI. Explore free digital learning from Infosys, including AI and other technology topics.</p>
         </div>
         <div class="ai4ai-starter-action">
-          <ul aria-label="Course details">
-            <li>Foundational</li>
-            <li>7 hours</li>
-            <li>Free</li>
-            <li>Self-paced</li>
-          </ul>
-          <a class="ai4ai-starter-link" href="https://learninghub.myt.mu/courses/ai-foundations-ai-foundational-10" target="_blank" rel="noopener noreferrer">
-            View course on my.t Learning Hub <span aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span>
+          <div class="ai4ai-starter-logo">
+            <img src="<?= e(asset('images/ai4ai/infosys.svg')) ?>" alt="" role="presentation">
+          </div>
+          <a class="ai4ai-starter-link" href="<?= e($springboardUrl) ?>" target="_blank" rel="noopener noreferrer">
+            Open Infosys Springboard <span aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span>
           </a>
-          <p>Sign in or create a my.t Learning Hub account to enrol.</p>
+          <p>Register or log in on Infosys Springboard to start learning.</p>
         </div>
       </div>
     </section>
@@ -91,6 +104,25 @@ $segments = [
 
     <ul class="ai4ai-platforms">
       <?php foreach ($providers as $provider): ?>
+        <?php if (($provider['launch'] ?? null) === 'soon'): ?>
+        <li class="ai4ai-platform ai4ai-platform--soon">
+          <?php /* Stand-in shapes, blurred: the card's outline without any of its content. */ ?>
+          <div class="ai4ai-soon-preview" aria-hidden="true">
+            <span class="ai4ai-soon-shape ai4ai-soon-shape--logo"></span>
+            <span class="ai4ai-soon-shape ai4ai-soon-shape--topic"></span>
+            <span class="ai4ai-soon-shape ai4ai-soon-shape--title"></span>
+            <span class="ai4ai-soon-shape"></span>
+            <span class="ai4ai-soon-shape"></span>
+            <span class="ai4ai-soon-shape ai4ai-soon-shape--short"></span>
+            <span class="ai4ai-soon-shape ai4ai-soon-shape--action"></span>
+          </div>
+          <div class="ai4ai-soon-message">
+            <p class="ai4ai-soon-badge">Launching soon</p>
+            <h3>A new training platform</h3>
+            <p>Another partner is joining AI4AI. Details will be shared at launch.</p>
+          </div>
+        </li>
+        <?php continue; endif; ?>
         <li class="ai4ai-platform ai4ai-platform--<?= e($provider['accent']) ?>">
           <div class="ai4ai-logo">
             <img src="<?= e(asset('images/ai4ai/' . $provider['logo'])) ?>" alt="" role="presentation">
@@ -98,6 +130,16 @@ $segments = [
           <p class="ai4ai-topic"><?= e($provider['topic']) ?></p>
           <h3><?= e($provider['name']) ?></h3>
           <p><?= e($provider['description']) ?></p>
+          <?php if (!empty($provider['details'])): ?>
+            <ul class="ai4ai-details" aria-label="Course details">
+              <?php foreach ($provider['details'] as $detail): ?>
+                <li><?= e($detail) ?></li>
+              <?php endforeach; ?>
+            </ul>
+          <?php endif; ?>
+          <?php if (!empty($provider['note'])): ?>
+            <p class="ai4ai-note"><?= e($provider['note']) ?></p>
+          <?php endif; ?>
           <a class="ai4ai-provider-link" href="<?= e($provider['url']) ?>" target="_blank" rel="noopener noreferrer">
             <span><?= e($provider['action']) ?></span>
             <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 5h6v6m0-6-9 9m7-1v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h5"/></svg>
