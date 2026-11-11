@@ -197,19 +197,22 @@ html.a11y-hide-images .ai4ai .ai4ai-wordmark {
 }
 .ai4ai-starter h2 { font-size: clamp(1.4rem, 2.6vw, 2rem); }
 .ai4ai-starter p { color: #d9e3f6; }
-.ai4ai-starter ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .3rem .55rem;
-  padding: 0;
-  margin: 0;
-  list-style: none;
+/* The logo sits on its own white tile, as on the platform cards, so the
+   artwork reads the same on the dark and the light hero. */
+.ai4ai-starter-logo {
+  display: grid;
+  place-items: center;
+  width: 9.5rem;
+  height: 3.5rem;
+  padding: .55rem 1rem;
+  background: #fff;
+  border-radius: var(--radius-sm);
 }
-.ai4ai-starter li {
-  padding: .18rem .55rem;
-  border-radius: .35rem;
-  background: #283f61;
-  font-size: .875rem;
+.ai4ai-starter-logo img {
+  display: block;
+  max-width: 100%;
+  max-height: 2rem;
+  object-fit: contain;
 }
 .ai4ai-starter-link {
   display: inline-flex;
@@ -245,7 +248,7 @@ html.a11y-hide-images .ai4ai .ai4ai-wordmark {
   border-color: #c3cede;
   border-left-color: #0b7285;
 }
-.ai4ai-intro.is-light .ai4ai-starter li { background: #e8eef7; color: #0d1b3e; }
+.ai4ai-intro.is-light .ai4ai-starter-logo { box-shadow: 0 0 0 1px #c3cede; }
 .ai4ai-intro.is-light :is(.ai4ai-jump, .ai4ai-starter-link):focus-visible { outline-color: #0d1b3e; }
 .ai4ai-intro.is-light :is(.ai4ai-theme-toggle, .ai4ai-motion-toggle) {
   border-color: #5b6b88;
@@ -314,6 +317,7 @@ html.a11y-hide-images .ai4ai .ai4ai-wordmark {
 }
 
 .ai4ai-platform p, .ai4ai-segments p { color: var(--text-2); }
+.ai4ai-platform p { hyphens: manual; } /* short card text reads better unbroken */
 .ai4ai-platform .ai4ai-topic { font-weight: 600; font-size: .9rem; }
 .ai4ai-provider-link {
   justify-content: space-between;
@@ -333,11 +337,88 @@ html.a11y-hide-images .ai4ai .ai4ai-wordmark {
 }
 .ai4ai-provider-link svg { flex: 0 0 auto; }
 
+/* ------------------------------------------------------------------
+   "Launching soon" teaser. The blurred shapes stand in for a card's
+   logo, heading, text and button; they carry no partner content.
+   ------------------------------------------------------------------ */
+.ai4ai-platform--soon {
+  --provider-accent: var(--border-2);
+  position: relative;
+  overflow: hidden;
+  border-top-style: dashed;
+}
+.ai4ai-soon-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .75rem;
+  width: 100%;
+  flex: 1;
+  filter: blur(6px);
+  opacity: .8;
+  user-select: none;
+  pointer-events: none;
+}
+.ai4ai-soon-shape {
+  display: block;
+  width: 100%;
+  height: .85rem;
+  border-radius: .3rem;
+  background: var(--border-2);
+}
+.ai4ai-soon-shape--logo {
+  width: 8.75rem;
+  height: 4rem;
+  margin-bottom: .4rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(120deg, #4f7be0, #3da37a 55%, #e3b341);
+}
+.ai4ai-soon-shape--topic { width: 38%; }
+.ai4ai-soon-shape--title { width: 72%; height: 1.4rem; }
+.ai4ai-soon-shape--short { width: 55%; }
+.ai4ai-soon-shape--action {
+  height: 2.75rem;
+  margin-top: auto;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(115deg, #1a3a8f, #0b6276);
+}
+.ai4ai-soon-message {
+  position: absolute;
+  inset: auto clamp(.75rem, 2vw, 1.25rem) 50%;
+  transform: translateY(50%);
+  padding: 1rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+}
+.ai4ai-soon-message h3 { font-size: 1.2rem; margin: .45rem 0 .3rem; }
+.ai4ai-platform .ai4ai-soon-message p { margin: 0; }
+.ai4ai-platform .ai4ai-soon-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .15rem .6rem;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  color: var(--text-1);
+  font-size: .875rem;
+  font-weight: 700;
+}
+.ai4ai-soon-badge::before {
+  content: "";
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  background: #0b7285;
+}
+
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   html:not(.a11y-no-motion) .ai4ai-platform {
     transition: transform .2s ease, box-shadow .2s ease;
   }
-  html:not(.a11y-no-motion) .ai4ai-platform:hover {
+  html:not(.a11y-no-motion) .ai4ai-platform:not(.ai4ai-platform--soon):hover {
     transform: perspective(900px) translateY(-5px) rotateX(2deg);
     box-shadow: 0 5px 0 var(--border-2), var(--shadow-lg);
   }
