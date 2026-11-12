@@ -60,6 +60,24 @@ final class PageController extends Controller
     }
 
     /**
+     * AI4AI is published unlisted for Ministry review: reachable by its URL,
+     * but not in the navigation (includes/navbar.php) and kept out of search
+     * results. At launch, add the nav link and remove 'noindex' so the page
+     * also gets its canonical and Open Graph tags (see includes/meta.php).
+     */
+    public function ai4ai(): void
+    {
+        $this->view('ai4ai', [
+            'title' => 'AI4AI',
+            'description' => 'Explore AI training platforms and learn about Mauritius’ AI for All and Inclusion programme.',
+            'navCurrent' => 'ai4ai',
+            'noindex' => true,
+            'pageStyles' => ['ai4ai.css'],
+            'pageScripts' => ['ai4ai.js'],
+        ]);
+    }
+
+    /**
      * Public AI Lab page. Booking is delegated to Calendly; nothing about a
      * booking is stored or processed here, so this action touches no database.
      */

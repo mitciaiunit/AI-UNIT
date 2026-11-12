@@ -1,0 +1,474 @@
+.ai4ai {
+  --ai4ai-ink: #0d1b3e;
+  --ai4ai-banner: #eef2ff;
+  --ai4ai-accent: #1a3a8f;
+  text-align: left;
+}
+
+.ai4ai-intro {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #f4f7ff;
+  background:
+    radial-gradient(ellipse 60% 80% at 26% 42%, #1c2a4c, transparent 72%),
+    linear-gradient(130deg, #0a0f1c, #0f1a31 68%, #111b33);
+  padding: clamp(1.25rem, 3vw, 2.75rem) 0 clamp(2rem, 4vw, 3.5rem);
+}
+
+.ai4ai-kicker {
+  font-weight: 600;
+  color: #b3eee5;
+  margin-bottom: .5rem;
+}
+
+.ai4ai h1, .ai4ai h2, .ai4ai h3 {
+  font-family: Lora, Georgia, serif;
+  line-height: 1.2;
+  overflow-wrap: break-word;
+}
+
+.ai4ai-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(.75rem, 3vw, 2.75rem);
+}
+
+/* ------------------------------------------------------------------
+   Hero stage: the nine-path cube, drawn by assets/js/ai4ai-hero.js.
+   The poster is the finished word. It shows until the 3D scene draws,
+   and stays when the scene cannot run.
+   ------------------------------------------------------------------ */
+.ai4ai-stage {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  --controls: 3.5rem; /* row under the scene for the two switches */
+  width: 100%;
+  aspect-ratio: 5 / 3.4;
+}
+.ai4ai .ai4ai-wordmark {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.ai4ai-poster,
+.ai4ai-canvas {
+  position: absolute;
+  inset: 0 0 var(--controls);
+  width: 100%;
+  height: calc(100% - var(--controls));
+}
+.ai4ai-poster { object-fit: contain; }
+.ai4ai-canvas { opacity: 0; }
+.ai4ai-canvas canvas { display: block; width: 100%; height: 100%; }
+.ai4ai-stage.is-live .ai4ai-canvas { opacity: 1; }
+.ai4ai-stage.is-live .ai4ai-poster { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.a11y-no-motion) .ai4ai-poster,
+  html:not(.a11y-no-motion) .ai4ai-canvas { transition: opacity .6s ease; }
+}
+
+/* "Hide images" in the accessibility panel: show the heading as text. */
+html.a11y-hide-images .ai4ai-poster,
+html.a11y-hide-images .ai4ai-canvas { visibility: hidden; }
+html.a11y-hide-images .ai4ai .ai4ai-wordmark {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  font-size: clamp(3.45rem, 7.8vw, 7rem);
+  line-height: 1;
+}
+
+.ai4ai-stage-controls {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: .5rem;
+}
+.ai4ai-theme-toggle,
+.ai4ai-motion-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-width: 44px;
+  min-height: 44px;
+  padding: .35rem .8rem;
+  border: 1px solid #afc8db;
+  border-radius: 999px;
+  background: #101d31;
+  color: #fff;
+  font: inherit;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ai4ai-theme-toggle:hover,
+.ai4ai-motion-toggle:hover { background: #1b3152; }
+.ai4ai-theme-toggle:focus-visible,
+.ai4ai-motion-toggle:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+/* Pressed state is shown by a filled dot, not by colour alone. */
+.ai4ai-theme-toggle::before {
+  content: "";
+  width: .7rem;
+  height: .7rem;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+.ai4ai-theme-toggle[aria-pressed="true"]::before { background: currentColor; }
+.ai4ai-theme-toggle[hidden],
+.ai4ai-motion-toggle[hidden] { display: none; }
+
+@media (max-width: 780px) {
+  .ai4ai-hero { grid-template-columns: minmax(0, 1fr); }
+  .ai4ai-stage { aspect-ratio: auto; height: clamp(16rem, 70vw, 24rem); }
+}
+
+.ai4ai h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); margin-bottom: .65rem; }
+.ai4ai h3 { font-size: 1.35rem; }
+.ai4ai-lead {
+  max-width: 18ch;
+  font-family: Lora, Georgia, serif;
+  font-size: clamp(2.15rem, 4vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.12;
+  hyphens: none;
+}
+.ai4ai p { text-align: left; }
+.ai4ai-context { max-width: 46ch; margin-top: 1rem; color: #d9e3f6; }
+.ai4ai-section { padding-block: clamp(2.25rem, 4vw, 3.5rem); }
+.ai4ai-section-intro { max-width: 67ch; color: var(--text-2); margin-bottom: 1.6rem; }
+#ai4ai-training { scroll-margin-top: 5rem; }
+
+.ai4ai-jump, .ai4ai-provider-link, .ai4ai-strategy {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 44px;
+  max-width: 100%;
+  font-weight: 600;
+  text-underline-offset: .2em;
+  text-decoration: underline;
+}
+
+.ai4ai-jump { color: #b3eee5; margin-top: .7rem; }
+.ai4ai-strategy { color: var(--blue); }
+.ai4ai-intro .ai4ai-jump:focus-visible,
+.ai4ai-starter-link:focus-visible {
+  outline: 2px solid #b3eee5;
+  outline-offset: 3px;
+}
+.ai4ai-jump:focus-visible, .ai4ai-provider-link:focus-visible, .ai4ai-strategy:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.ai4ai-starter {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem 2rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  margin-top: clamp(1.25rem, 3vw, 2.25rem);
+  background: #1b3152;
+  border: 1px solid #4f6d8c;
+  border-left: 4px solid #9bded8;
+  border-radius: var(--radius-sm);
+}
+.ai4ai-starter .ai4ai-starter-label {
+  margin-bottom: .25rem;
+  color: #b3eee5;
+  font-weight: 600;
+}
+.ai4ai-starter h2 { font-size: clamp(1.4rem, 2.6vw, 2rem); }
+.ai4ai-starter p { color: #d9e3f6; }
+/* The logo sits on its own white tile, as on the platform cards, so the
+   artwork reads the same on the dark and the light hero. */
+.ai4ai-starter-logo {
+  display: grid;
+  place-items: center;
+  width: 9.5rem;
+  height: 3.5rem;
+  padding: .55rem 1rem;
+  background: #fff;
+  border-radius: var(--radius-sm);
+}
+.ai4ai-starter-logo img {
+  display: block;
+  max-width: 100%;
+  max-height: 2rem;
+  object-fit: contain;
+}
+.ai4ai-starter-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 44px;
+  color: #b3eee5;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.ai4ai-starter-action p { font-size: .875rem; }
+
+@media (max-width: 780px) {
+  .ai4ai-starter { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Light hero background, chosen with the switch on the stage. */
+.ai4ai-intro.is-light {
+  color: #0d1b3e;
+  background:
+    radial-gradient(ellipse 60% 80% at 26% 42%, #fff, transparent 72%),
+    linear-gradient(130deg, #f3f5f9, #e8edf4 68%, #e3e9f1);
+}
+.ai4ai-intro.is-light .ai4ai-kicker,
+.ai4ai-intro.is-light .ai4ai-jump,
+.ai4ai-intro.is-light .ai4ai-starter-label,
+.ai4ai-intro.is-light .ai4ai-starter-link { color: #0a5c55; }
+.ai4ai-intro.is-light .ai4ai-context,
+.ai4ai-intro.is-light .ai4ai-starter p { color: #2c3a57; }
+.ai4ai-intro.is-light .ai4ai-starter {
+  background: #fff;
+  border-color: #c3cede;
+  border-left-color: #0b7285;
+}
+.ai4ai-intro.is-light .ai4ai-starter-logo { box-shadow: 0 0 0 1px #c3cede; }
+.ai4ai-intro.is-light :is(.ai4ai-jump, .ai4ai-starter-link):focus-visible { outline-color: #0d1b3e; }
+.ai4ai-intro.is-light :is(.ai4ai-theme-toggle, .ai4ai-motion-toggle) {
+  border-color: #5b6b88;
+  background: #fff;
+  color: #0d1b3e;
+}
+.ai4ai-intro.is-light :is(.ai4ai-theme-toggle, .ai4ai-motion-toggle):hover { background: #eef2f8; }
+.ai4ai-intro.is-light :is(.ai4ai-theme-toggle, .ai4ai-motion-toggle):focus-visible { outline-color: #0d1b3e; }
+
+.ai4ai-platforms, .ai4ai-segments {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ai4ai-platform {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .65rem;
+  padding: clamp(1rem, 2.5vw, 1.7rem);
+  background: linear-gradient(160deg, var(--surface) 55%, var(--surface-2));
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--provider-accent);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 0 var(--border-2), var(--shadow-md);
+}
+.ai4ai-platform--aws { --provider-accent: #b45309; }
+.ai4ai-platform--google { --provider-accent: #2554c7; }
+.ai4ai-platform--infosys { --provider-accent: #0b7285; }
+
+.ai4ai-logo {
+  display: grid;
+  place-items: center;
+  width: 8.75rem;
+  max-width: 100%;
+  height: 4rem;
+  padding: .65rem 1rem;
+  margin-bottom: .4rem;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #dde2ef;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 3px 0 #dde2ef, var(--shadow-sm);
+}
+.ai4ai-logo img {
+  display: block;
+  max-width: 100%;
+  max-height: 2.25rem;
+  object-fit: contain;
+}
+.ai4ai-platform--aws .ai4ai-logo {
+  display: flex;
+  justify-content: center;
+  background: #222d3b;
+  border-color: #222d3b;
+}
+.ai4ai-platform--aws .ai4ai-logo img {
+  width: 12.5rem;
+  max-width: none;
+  max-height: none;
+  flex: none;
+}
+
+.ai4ai-platform p, .ai4ai-segments p { color: var(--text-2); }
+.ai4ai-platform p { hyphens: manual; } /* short card text reads better unbroken */
+.ai4ai-platform .ai4ai-topic { font-weight: 600; font-size: .9rem; }
+.ai4ai-provider-link {
+  justify-content: space-between;
+  width: 100%;
+  margin-top: auto;
+  padding: .65rem .9rem;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  background: linear-gradient(115deg, #1a3a8f, #0b6276);
+  box-shadow: 0 3px 0 #0d284e;
+  text-decoration: none;
+}
+.ai4ai-provider-link:is(:hover, :focus-visible) {
+  color: #fff;
+  background: linear-gradient(115deg, #132f78, #084f60);
+  text-decoration: underline;
+}
+.ai4ai-provider-link svg { flex: 0 0 auto; }
+
+/* ------------------------------------------------------------------
+   "Launching soon" teaser. The blurred shapes stand in for a card's
+   logo, heading, text and button; they carry no partner content.
+   ------------------------------------------------------------------ */
+.ai4ai-platform--soon {
+  --provider-accent: var(--border-2);
+  position: relative;
+  overflow: hidden;
+  border-top-style: dashed;
+}
+.ai4ai-soon-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .75rem;
+  width: 100%;
+  flex: 1;
+  filter: blur(6px);
+  opacity: .8;
+  user-select: none;
+  pointer-events: none;
+}
+.ai4ai-soon-shape {
+  display: block;
+  width: 100%;
+  height: .85rem;
+  border-radius: .3rem;
+  background: var(--border-2);
+}
+.ai4ai-soon-shape--logo {
+  width: 8.75rem;
+  height: 4rem;
+  margin-bottom: .4rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(120deg, #4f7be0, #3da37a 55%, #e3b341);
+}
+.ai4ai-soon-shape--topic { width: 38%; }
+.ai4ai-soon-shape--title { width: 72%; height: 1.4rem; }
+.ai4ai-soon-shape--short { width: 55%; }
+.ai4ai-soon-shape--action {
+  height: 2.75rem;
+  margin-top: auto;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(115deg, #1a3a8f, #0b6276);
+}
+.ai4ai-soon-message {
+  position: absolute;
+  inset: auto clamp(.75rem, 2vw, 1.25rem) 50%;
+  transform: translateY(50%);
+  padding: 1rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+}
+.ai4ai-soon-message h3 { font-size: 1.2rem; margin: .45rem 0 .3rem; }
+.ai4ai-platform .ai4ai-soon-message p { margin: 0; }
+.ai4ai-platform .ai4ai-soon-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .15rem .6rem;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  color: var(--text-1);
+  font-size: .875rem;
+  font-weight: 700;
+}
+.ai4ai-soon-badge::before {
+  content: "";
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  background: #0b7285;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html:not(.a11y-no-motion) .ai4ai-platform {
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  html:not(.a11y-no-motion) .ai4ai-platform:not(.ai4ai-platform--soon):hover {
+    transform: perspective(900px) translateY(-5px) rotateX(2deg);
+    box-shadow: 0 5px 0 var(--border-2), var(--shadow-lg);
+  }
+}
+
+.ai4ai-audiences {
+  background: var(--surface-2);
+  border-top: 1px solid var(--border);
+}
+.ai4ai-segments {
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.ai4ai-segments li {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  gap: .65rem;
+  padding: 1rem;
+  background: var(--surface);
+}
+.ai4ai-segments h3 { font-size: 1.05rem; margin: .2rem 0 .35rem; }
+.ai4ai-segment-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .25rem;
+  height: 2.25rem;
+  color: var(--segment-ink);
+  background: var(--segment-tint);
+  border-radius: .35rem;
+  font-size: .875rem;
+  font-weight: 700;
+}
+.ai4ai-segments li:nth-child(1) { --segment-ink: #734500; --segment-tint: #fff0ba; }
+.ai4ai-segments li:nth-child(2) { --segment-ink: #8c2d18; --segment-tint: #ffe2d8; }
+.ai4ai-segments li:nth-child(3) { --segment-ink: #624c3d; --segment-tint: #eee4da; }
+.ai4ai-segments li:nth-child(4) { --segment-ink: #315817; --segment-tint: #e3f4cd; }
+.ai4ai-segments li:nth-child(5),
+.ai4ai-segments li:nth-child(9) { --segment-ink: #135861; --segment-tint: #d4f0f0; }
+.ai4ai-segments li:nth-child(6) { --segment-ink: #174f82; --segment-tint: #dbeefe; }
+.ai4ai-segments li:nth-child(7) { --segment-ink: #633178; --segment-tint: #f0e1f5; }
+.ai4ai-segments li:nth-child(8) { --segment-ink: #8a1854; --segment-tint: #fbddeb; }
+.ai4ai-strategy { margin-top: 1rem; }
+
+@media (max-width: 850px) {
+  .ai4ai-platforms, .ai4ai-segments { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .ai4ai-platforms, .ai4ai-segments { grid-template-columns: minmax(0, 1fr); }
+}
